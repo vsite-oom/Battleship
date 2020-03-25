@@ -20,7 +20,10 @@ namespace Vsite.Oom.Battleship.Model
                 }
             }
         }
-
+        public void EliminateSquares(IEnumerable<Square> squares )
+        {
+            throw new NotImplementedException();
+        }
        public  IEnumerable<IEnumerable<Square>> GetAvailablePlacements(int length)
         {   
            throw new NotImplementedException();
