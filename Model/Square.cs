@@ -8,8 +8,6 @@ namespace Model
     { 
         
         
-        public readonly int Row;
-        public readonly int Column;
 
 
         public Square(int row, int column)
@@ -17,7 +15,9 @@ namespace Model
             Row = row;
             Column = column;
         }
-       
+
+        public readonly int Row;
+        public readonly int Column;
     }
 }
 
