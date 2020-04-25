@@ -81,10 +81,14 @@ namespace View
         private void PaintCell_MouseClick(object sender, EventArgs e)
         {
             Panel me = (Panel)sender;
-
+            
             if (ModifierKeys.HasFlag(Keys.Shift))
             {
                 me.BackColor = Color.White;
+            }
+            else if (me.BackColor == Color.MidnightBlue)
+            {
+                me.BackColor = Color.DarkViolet;
             }
             else
             {
