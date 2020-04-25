@@ -31,6 +31,11 @@ namespace View
 
         // Helper methods //
 
+        /// <summary>
+        /// Formats the TableLayoutPanel control to even out its grids.
+        /// </summary>
+        /// <param name="tbl">Control to format</param>
+        /// <param name="percent">Depends on the number of rows and columns (Percentage).</param>
         private void FormatLayoutTable(TableLayoutPanel tbl, int percent)
         {
             TableLayoutColumnStyleCollection ColumnStyles = tbl.ColumnStyles;
@@ -48,6 +53,11 @@ namespace View
             }
 
         }
+        /// <summary>
+        /// Paints all cells within TableLayoutPanel control to user-given Color scheme.
+        /// </summary>
+        /// <param name="tbl">Control to paint.</param>
+        /// <param name="clr">Color scheme with which to paint cells.</param>
         private void PaintTableCells(TableLayoutPanel tbl, Color clr)
         {
             foreach (Panel panel in tbl.Controls)
@@ -55,11 +65,22 @@ namespace View
                 panel.BackColor = clr;
             }
         }
+        /// <summary>
+        /// Paints only a single TableLayoutPanel "cell".
+        /// </summary>
+        /// <param name="tbl">Control to paint.</param>
+        /// <param name="clr">Color scheme.</param>
+        /// <param name="column">Cell column (zero based).</param>
+        /// <param name="row">Cell row (zero based).</param>
         private void PaintSingleTableCell(TableLayoutPanel tbl, Color clr, int column, int row)
         {
             var pnl = tbl.GetControlFromPosition(column, row);
             pnl.BackColor = clr;
         }
+        /// <summary>
+        /// Fills all cells of the TableLayoutPanel control with Panel Control.
+        /// </summary>
+        /// <param name="tbl">Control to be filed.</param>
         private void FillTableWithPanels(TableLayoutPanel tbl)
         {
             for (int i = 0; i < tbl.ColumnCount; i++)
@@ -78,10 +99,14 @@ namespace View
                 }
             }
         }
+
+
+        // Event Handlers // 
+
         private void PaintCell_MouseClick(object sender, EventArgs e)
         {
             Panel me = (Panel)sender;
-            
+
             if (ModifierKeys.HasFlag(Keys.Shift))
             {
                 me.BackColor = Color.White;
@@ -95,9 +120,6 @@ namespace View
                 me.BackColor = Color.Red;
             }
         }
-
-
-
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
             this.Close();
@@ -128,6 +150,7 @@ namespace View
                 }
 
             }
+            // In case the algorithm fails to place ships three times, try again.
             catch (ArgumentOutOfRangeException)
             {
                 NewGame();
