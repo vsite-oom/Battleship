@@ -12,67 +12,92 @@ namespace View
 {
     public partial class FormMain : Form
     {
-
-        public delegate void PaintRed(Button btn);
-
         public FormMain()
         {
             InitializeComponent();
 
-
-
             GridCtrl.CellBorderStyle = TableLayoutPanelCellBorderStyle.Inset;
+            FormatLayoutTable(GridCtrl, 10);
+            FillTableWithPanels(GridCtrl);
 
+        }
 
-            
-            for (int i = 0; i < 10; i++)
-            {
-                for (int j = 0; j < 10; j++)
-                {
-                    Button btn = new Button();
-                    btn.Dock = DockStyle.Fill;
-                    btn.BackColor = Color.White;
-                    btn.Enter += Btn_Enter;
-                    btn.Leave += Btn_Leave;
+        // Helper methods //
 
-                    GridCtrl.Controls.Add( btn  , i, j);
-
-                }
-            }
-
-
-            TableLayoutColumnStyleCollection ColumnStyles = GridCtrl.ColumnStyles;
+        private void FormatLayoutTable(TableLayoutPanel tbl, int percent)
+        {
+            TableLayoutColumnStyleCollection ColumnStyles = tbl.ColumnStyles;
             foreach (ColumnStyle style in ColumnStyles)
             {
                 style.SizeType = SizeType.Percent;
-                style.Width = 10;
+                style.Width = percent;
             }
 
-            TableLayoutRowStyleCollection RowStyles = GridCtrl.RowStyles;
+            TableLayoutRowStyleCollection RowStyles = tbl.RowStyles;
             foreach (RowStyle style in RowStyles)
             {
                 style.SizeType = SizeType.Percent;
-                style.Height = 10;
+                style.Height = percent;
             }
 
         }
-
-        private void Btn_Leave(object sender, EventArgs e)
+        private void PaintTableCells(TableLayoutPanel tbl, Color clr)
         {
-            Button me = (Button)sender;
-            me.BackColor = Color.White;
+            foreach (Panel panel in tbl.Controls)
+            {
+                panel.BackColor = clr;
+            }
+        }
+        private void PaintSingleTableCell(TableLayoutPanel tbl, Color clr, int column, int row)
+        {
+            var pnl = tbl.GetControlFromPosition(column, row);
+            pnl.BackColor = clr;
+        }
+        private void FillTableWithPanels(TableLayoutPanel tbl)
+        {
+            for (int i = 0; i < tbl.ColumnCount; i++)
+            {
+                for (int j = 0; j < tbl.RowCount; j++)
+                {
+                    Panel nwpanel = new Panel();
+                    nwpanel.Dock = DockStyle.Fill;
+                    nwpanel.Margin = new Padding(0);
+                    nwpanel.BackColor = Color.White;
+                    //nwpanel.MouseHover += Nwpanel_MouseHover;
+                    nwpanel.MouseClick += PaintCell_MouseClick;
+
+
+                    tbl.Controls.Add(nwpanel);
+                }
+            }
+        }
+        private void PaintCell_MouseClick(object sender, EventArgs e)
+        {
+            Panel me = (Panel)sender;
+
+            if (ModifierKeys.HasFlag(Keys.Shift))
+            {
+                me.BackColor = Color.White;
+            }
+            else
+            {
+                me.BackColor = Color.Red;
+            }
         }
 
-        private void Btn_Enter(object sender, EventArgs e)
-        {
-            Button me = (Button)sender;
-            me.BackColor = Color.Red;
 
-        }
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
             this.Close();
+        }
+        private void GridCtrl_CellPaint(object sender, TableLayoutCellPaintEventArgs e)
+        {
+            e.Graphics.FillRectangle(Brushes.White, e.CellBounds);
+        }
+        private void newGameToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            PaintTableCells(GridCtrl, Color.White);
         }
     }
 }

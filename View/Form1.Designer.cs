@@ -60,8 +60,9 @@
             // newGameToolStripMenuItem
             // 
             this.newGameToolStripMenuItem.Name = "newGameToolStripMenuItem";
-            this.newGameToolStripMenuItem.Size = new System.Drawing.Size(132, 22);
+            this.newGameToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.newGameToolStripMenuItem.Text = "&New Game";
+            this.newGameToolStripMenuItem.Click += new System.EventHandler(this.newGameToolStripMenuItem_Click);
             // 
             // exitToolStripMenuItem
             // 
@@ -89,7 +90,8 @@
             this.GridCtrl.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 10F));
             this.GridCtrl.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 10F));
             this.GridCtrl.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 10F));
-            this.GridCtrl.Location = new System.Drawing.Point(12, 24);
+            this.GridCtrl.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.GridCtrl.Location = new System.Drawing.Point(0, 24);
             this.GridCtrl.Name = "GridCtrl";
             this.GridCtrl.RowCount = 10;
             this.GridCtrl.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
@@ -102,8 +104,9 @@
             this.GridCtrl.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
             this.GridCtrl.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
             this.GridCtrl.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
-            this.GridCtrl.Size = new System.Drawing.Size(460, 425);
+            this.GridCtrl.Size = new System.Drawing.Size(484, 437);
             this.GridCtrl.TabIndex = 2;
+            this.GridCtrl.CellPaint += new System.Windows.Forms.TableLayoutCellPaintEventHandler(this.GridCtrl_CellPaint);
             // 
             // FormMain
             // 
