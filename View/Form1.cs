@@ -7,19 +7,26 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Vsite.Oom.Battleship.Model;
 
 namespace View
 {
     public partial class FormMain : Form
     {
+
+        Shipwright sw;
+         
+
         public FormMain()
         {
             InitializeComponent();
+            this.FormBorderStyle = FormBorderStyle.FixedSingle;
 
             GridCtrl.CellBorderStyle = TableLayoutPanelCellBorderStyle.Inset;
             FormatLayoutTable(GridCtrl, 10);
             FillTableWithPanels(GridCtrl);
 
+            
         }
 
         // Helper methods //
@@ -97,7 +104,31 @@ namespace View
         }
         private void newGameToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            PaintTableCells(GridCtrl, Color.White);
+            NewGame();
+        }
+        private void NewGame()
+        {
+            try
+            {
+                PaintTableCells(GridCtrl, Color.White);
+                sw = new Shipwright(10, 10);
+                List<int> shipLengths = new List<int> { 5, 4, 4, 3, 3, 3, 2, 2, 2, 2 };
+                Fleet flt = sw.CreateFleet(shipLengths);
+
+                foreach (var ship in flt.Ships)
+                {
+                    foreach (Square square in ship.Squares)
+                    {
+                        PaintSingleTableCell(GridCtrl, Color.MidnightBlue, square.Column, square.Row);
+                    }
+                }
+
+            }
+            catch (ArgumentOutOfRangeException)
+            {
+                NewGame();
+            }
+
         }
     }
 }
