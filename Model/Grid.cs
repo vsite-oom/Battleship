@@ -32,8 +32,10 @@ namespace Vsite.Oom.Battleship.Model
             {
                 for (int c = 0; c < Columns; ++c)
                 {
-                    if (squares[r, c] != null) ;
-                    result.Add(new List<Square> { squares[r, c] });
+                    if (squares[r, c] != null)
+                    {
+                        result.Add(new List<Square> { squares[r, c] });
+                    }
                 }
             }
             return result;
