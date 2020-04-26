@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -28,7 +29,6 @@ namespace Vsite.Oom.Battleship.Model
                     return hit;
             }
             return Ship.HitResult.Missed;
-        }
-        
+        }       
     }
 }
