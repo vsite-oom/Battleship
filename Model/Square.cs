@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace Vsite.oom.Battleship.Model
 {
-    public class Square:IEquatable<Square>
+    public class Square : IEquatable<Square>
     {
-        public Square(int rows,int columns)
+        public Square(int rows, int columns)
         {
 
             Rows = rows;
@@ -20,7 +20,9 @@ namespace Vsite.oom.Battleship.Model
 
         public bool Equals(Square other)
         {
-            return Rows== other.Rows && Columns == other.Columns;
+            if (other == null)
+                return false;
+            return Rows == other.Rows && Columns == other.Columns;
         }
 
         public override bool Equals(object obj)
@@ -35,6 +37,16 @@ namespace Vsite.oom.Battleship.Model
         public override int GetHashCode()
         {
             return Rows ^ Columns;
+        }
+
+        public static bool operator ==(Square lhs, Square rhs)
+        {
+            return Equals(lhs, rhs);
+        }
+
+        public static bool operator !=(Square lhs, Square rhs)
+        {
+            return !(lhs == rhs);
         }
     }
 }
