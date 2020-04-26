@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(GameBoard));
             this.textBoxColumn = new System.Windows.Forms.TextBox();
             this.textBoxRow = new System.Windows.Forms.TextBox();
             this.labelColumn = new System.Windows.Forms.Label();
@@ -114,8 +115,9 @@
             this.createFleet.TabIndex = 6;
             this.createFleet.Text = "Create fleet";
             this.createFleet.UseVisualStyleBackColor = true;
+            this.createFleet.Click += new System.EventHandler(this.createFleet_Click);
             // 
-            // Form1
+            // GameBoard
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -127,7 +129,8 @@
             this.Controls.Add(this.labelColumn);
             this.Controls.Add(this.textBoxRow);
             this.Controls.Add(this.textBoxColumn);
-            this.Name = "Form1";
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Name = "GameBoard";
             this.Text = "Form1";
             this.Battlefield.ResumeLayout(false);
             this.Battlefield.PerformLayout();

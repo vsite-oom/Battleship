@@ -50,11 +50,5 @@
     <Compile Include="Square.cs" />
     <Compile Include="SquareTerminator.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Battleship.GameBoard.test\Battleship.GameBoard.test\Battleship.GameBoard.csproj">
-      <Project>{30fcc599-7912-48f0-939b-45f33bfbf147}</Project>
-      <Name>Battleship.GameBoard</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

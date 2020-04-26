@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Vsite.Oom.Battleship.Model;
 
 namespace Battleship.GameBoard
 {
@@ -21,11 +22,11 @@ namespace Battleship.GameBoard
         {
             try 
             {
-                GenerateTable(Int32.Parse(textBoxColumn.Text), Int32.Parse(textBoxRow.Text));
+                GenerateBattlefield(Int32.Parse(textBoxColumn.Text), Int32.Parse(textBoxRow.Text));
 
                 Battlefield.CellBorderStyle = TableLayoutPanelCellBorderStyle.Outset;
 
-                FillBattlefield(Int32.Parse(textBoxColumn.Text), Int32.Parse(textBoxRow.Text));
+               // FillBattlefield(Int32.Parse(textBoxColumn.Text), Int32.Parse(textBoxRow.Text));
             }
             catch (SystemException)
             {
@@ -33,19 +34,22 @@ namespace Battleship.GameBoard
             }
         }
 
-        private void GenerateTable(int columnCount, int rowCount)
+        private void createFleet_Click(object sender, EventArgs e)
         {
-            columnCount++;
-            rowCount++;
+            Battlefield.Controls.Clear();
+            CreateFleet(Int32.Parse(textBoxColumn.Text), Int32.Parse(textBoxRow.Text));
+        }
 
-            //generate new table layout
+        private void GenerateBattlefield(int columnCount, int rowCount)
+        {
+            //columnCount++;
+            //rowCount++;
+
             Battlefield.Controls.Clear();
 
-            //clear out the existing row and column styles
             Battlefield.ColumnStyles.Clear();
             Battlefield.RowStyles.Clear();
 
-            //set up the row and column counts first
             Battlefield.ColumnCount = columnCount;
             Battlefield.RowCount = rowCount;
 
@@ -58,7 +62,6 @@ namespace Battleship.GameBoard
 
                 for (int y = 0; y < rowCount; y++)
                 {
-                    //add a row
                     if (x == 0)
                     {
                         RowStyle rowStyle = new RowStyle(SizeType.Percent);
@@ -69,8 +72,13 @@ namespace Battleship.GameBoard
                 }
             }
         }
+        float CellPercentSize(int count)
+        {
+            return 100 / count;
+        }
 
-        public void FillBattlefield(int columnCount, int rowCount)
+        #region Battlefieled marks
+        public void MarkBattlefield(int columnCount, int rowCount)
         {
             columnCount++;
             rowCount++;
@@ -80,7 +88,7 @@ namespace Battleship.GameBoard
             {
                 Label columnLabel = new Label();
                 columnLabel.Text = letter++.ToString();
-                ColumnsAndRowsStyle(columnLabel);
+                LabelsStyle(columnLabel);
                 Battlefield.Controls.Add(columnLabel, x, 0);
             }
 
@@ -88,22 +96,12 @@ namespace Battleship.GameBoard
             {
                 Label rowLabel = new Label();
                 rowLabel.Text = y.ToString();
-                ColumnsAndRowsStyle(rowLabel);
+                LabelsStyle(rowLabel);
                 Battlefield.Controls.Add(rowLabel, 0, y);
             }
 
-            for (int x = 1; x < columnCount; x++)
-            {
-                for (int y = 1; y < rowCount; y++)
-                {
-                    Panel square = new Panel();
-                    //square.BackColor = Color.Red;
-                    Battlefield.Controls.Add(square, x, y);
-                }
-            }
-
         }
-        public void ColumnsAndRowsStyle(Label label)
+        public void LabelsStyle(Label label)
         {
             label.Anchor = AnchorStyles.Top;
             label.Anchor = AnchorStyles.Left;
@@ -111,10 +109,24 @@ namespace Battleship.GameBoard
             label.Anchor = AnchorStyles.Right;
             label.TextAlign = ContentAlignment.MiddleCenter;
         }
+        #endregion
 
-        float CellPercentSize(int count)
+        private void CreateFleet(int columnCount, int rowCount)
         {
-            return 100 / count;
+            List<int> ships = new List<int> { 2, 2, 2, 2, 3, 3, 3, 4, 4, 5 };
+            Shipwright shipWrighter = new Shipwright(columnCount, rowCount);
+ 
+            Fleet fleet = shipWrighter.CreateFleet(ships);
+
+                foreach (var ship in fleet.Ships)
+                {
+                    foreach (Square square in ship.Squares)
+                    {
+                               Panel sq = new Panel();
+                               sq.BackColor = Color.Navy;
+                               Battlefield.Controls.Add(sq, square.Column, square.Row);                    
+                    }
+                }   
         }
     }
 }
