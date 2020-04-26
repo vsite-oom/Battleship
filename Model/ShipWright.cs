@@ -30,11 +30,10 @@ namespace Vsite.oom.Battleship.Model
         private Fleet PlaceShips(IEnumerable<int> shipLengths)
         {
             List<int> lengths = new List<int>(shipLengths.OrderByDescending(x => x));
-
-            grid = new Grid(rows, columns);
+            Grid grid = new Grid(rows, columns);
             SquareTerminator terminator = new SquareTerminator(grid);
             Fleet fleet = new Fleet();
-
+            Random random = new Random();
 
             while (lengths.Count > 0)
             {
