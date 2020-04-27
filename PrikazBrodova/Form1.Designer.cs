@@ -59,16 +59,16 @@
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(560, 517);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(548, 517);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
             // resetbutton
             // 
-            this.resetbutton.Location = new System.Drawing.Point(629, 545);
+            this.resetbutton.Location = new System.Drawing.Point(521, 593);
             this.resetbutton.Name = "resetbutton";
             this.resetbutton.Size = new System.Drawing.Size(75, 23);
             this.resetbutton.TabIndex = 1;
-            this.resetbutton.Text = "New game";
+            this.resetbutton.Text = "Složi";
             this.resetbutton.UseVisualStyleBackColor = true;
             this.resetbutton.Click += new System.EventHandler(this.resetbutton_Click);
             // 
@@ -76,7 +76,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(721, 608);
+            this.ClientSize = new System.Drawing.Size(653, 637);
             this.Controls.Add(this.resetbutton);
             this.Controls.Add(this.tableLayoutPanel1);
             this.Name = "Form1";
