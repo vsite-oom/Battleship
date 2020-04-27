@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,36 +14,43 @@ namespace Vsite.Oom.Battleship.Model
             this.rows = rows;
             this.columns = columns;
         }
-
         public Fleet CreateFleet(IEnumerable<int> shipLengths)
         {
             for (int i = 0; i < 3; ++i)
             {
-                List<int> lengths = new List<int>(shipLengths.OrderByDescending(x => x));
 
-                grid = new Grid(rows, columns);
-                Fleet fleet = new Fleet();
-
-                while (lengths.Count > 0)
-                {
-                    var placements = grid.GetAvailablePlacements(lengths[0]);
-                    if (placements.Count() == 0)
-                        break;
-                    lengths.Remove(0);
-                    int index = random.Next(0, placements.Count());
-                    fleet.AddShip(placements.ElementAt(index));
-                    // 6. eliminate squares from grid
-
-                    if (lengths.Count == 0)
-                        return fleet;
-                }
-            } 
+                Fleet fleet = PlaceShips(shipLengths);
+                if (fleet != null)
+                    return fleet;
+            }
             throw new ArgumentOutOfRangeException();
         }
+       private Fleet PlaceShips(IEnumerable<int> shipLengths)
+        {
+        List<int> lengths = new List<int>(shipLengths.OrderByDescending(x => x));
 
+       Grid grid = new Grid(rows, columns); 
+        SquareTerminator terminator = new SquareTerminator(grid);
+        Fleet fleet = new Fleet(); 
+            Random random = new Random();
+            while (lengths.Count > 0)
+        {
+            var placements = grid.GetAvailablePlacements(lengths[0]); 
+            if (placements.Count() == 0)
+                return null;
+            lengths.RemoveAt(0);
+            int index = random.Next(0, placements.Count()); 
+            fleet.AddShip(placements.ElementAt(index));     
+            var toEliminate = terminator.ToEliminate(placements.ElementAt(index)); 
+            grid.EliminateSquares(toEliminate);
+        }
+                return fleet;
+        }
         private readonly int rows;
         private readonly int columns;
-        private Grid grid;
-        private Random random = new Random();
+   
+    
+        
+      
     }
 }

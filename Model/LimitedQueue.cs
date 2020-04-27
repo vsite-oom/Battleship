@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,16 +11,20 @@ namespace Vsite.Oom.Battleship.Model
     {
         public LimitedQueue(int length)
         {
+
             this.length = length;
         }
 
         public new void Enqueue(T item)
         {
             base.Enqueue(item);
-            while (Count > length)
-                Dequeue();
-        }
 
+            while (this.Count > length)
+            {
+                Dequeue();
+            }
+        }
         private readonly int length;
+
     }
 }

@@ -9,6 +9,7 @@ namespace Vsite.Oom.Battleship.Model.UnitTests
         [TestMethod]
         public void AddingItemsBehindLimitRemovesFirstIn()
         {
+
             LimitedQueue<int> q = new LimitedQueue<int>(3);
             Assert.AreEqual(0, q.Count);
             q.Enqueue(1);
@@ -19,6 +20,7 @@ namespace Vsite.Oom.Battleship.Model.UnitTests
             Assert.AreEqual(3, q.Count);
             q.Enqueue(4);
             Assert.AreEqual(3, q.Count);
+
             Assert.IsFalse(q.Contains(1));
         }
     }
