@@ -18,68 +18,30 @@ namespace Vsite.Oom.Battleship.Model.View
 
         private void CreateFleet_Click(object sender, EventArgs e)
         {
-            var rows = RowsTextBox.Text;
-            var columns = ColumnsTextBox.Text;
 
-            if (!string.IsNullOrEmpty(rows) && !string.IsNullOrEmpty(columns))
+            var shipwright = new Shipwright(10, 10);
+
+            var fleet = shipwright.CreateFleet(new List<int>
             {
-                if (int.TryParse(columns, out var columnValue) && int.TryParse(rows, out var rowsValue))
+                5, 4, 4, 3, 3, 3, 2, 2, 2, 2
+            });
+
+            if (fleet != null && fleet.Ships.Any())
+            {
+                var existingPanels = Controls.Find(layoutPanelName, false);
+                if (existingPanels.Any())
                 {
-                    List<int> shipLenghts = null;
-                    if (shipLenghts3.Checked)
+                    foreach (var panel in existingPanels)
                     {
-                        shipLenghts = new List<int> { 3, 2, 2, 1, 1, 1 };
-                    }
-                    else if (shipLenghts4.Checked)
-                    {
-                        shipLenghts = new List<int> { 4, 3, 3, 2, 2, 2, 1, 1, 1, 1 };
-                    }
-                    else if (shipLenghts5.Checked)
-                    {
-                        shipLenghts = new List<int> { 5, 4, 4, 3, 3, 3, 2, 2, 2, 2, 1, 1, 1, 1, 1 };
-
-                    }
-                    else if (shiplenghts6.Checked)
-                    {
-                        shipLenghts = new List<int> { 6, 5, 5, 4, 4, 4, 3, 3, 3, 3, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1 };
-                    }
-                    if (shipLenghts != null)
-                    {
-                        var shipwright = new Shipwright(rowsValue, columnValue);
-
-                        var fleet = shipwright.CreateFleet(shipLenghts);
-
-                        if (fleet != null && fleet.Ships.Any())
-                        {
-                            var existingPanels = Controls.Find(layoutPanelName, false);
-                            if (existingPanels.Any())
-                            {
-                                foreach (var panel in existingPanels)
-                                {
-                                    Controls.Remove(panel);
-                                }
-                            }
-
-                            InitializeFleetView(rowsValue, columnValue, fleet);
-                        }
-                        else
-                        {
-                            NoPlacementsAlert();
-                        }
-                    }
-                    else
-                    {
-                        SelectShipLenghtsAlert();
+                        Controls.Remove(panel);
                     }
                 }
-                else
-                {
-                    InvalidInputAlert();
-                }
+
+                InitializeFleetView(10, 10, fleet);
             }
             else
             {
-                InvalidInputAlert();
+                NoPlacementsAlert();
             }
         }
 
@@ -87,7 +49,7 @@ namespace Vsite.Oom.Battleship.Model.View
         {
             TableLayoutPanel gridLayoutPanel = new TableLayoutPanel();
             gridLayoutPanel.AutoSize = true;
-            gridLayoutPanel.Location = new Point(30, 160);
+            gridLayoutPanel.Location = new Point(30, 50);
             gridLayoutPanel.Name = layoutPanelName;
             gridLayoutPanel.CellBorderStyle = TableLayoutPanelCellBorderStyle.Single;
             gridLayoutPanel.ColumnCount = columnsCount + 1;
@@ -104,7 +66,7 @@ namespace Vsite.Oom.Battleship.Model.View
                     {
                         var label = new Label
                         {
-                            Size = new Size(30, 30),
+                            Size = new Size(40, 40),
                             Text = string.Empty,
                             Margin = new Padding(0)
                         };
@@ -114,7 +76,7 @@ namespace Vsite.Oom.Battleship.Model.View
                     {
                         var label = new Label
                         {
-                            Size = new Size(30, 30),
+                            Size = new Size(40, 40),
                             Text = labelTextNumber.ToString(),
                             TextAlign = ContentAlignment.MiddleCenter,
                             Margin = new Padding(0)
@@ -126,7 +88,7 @@ namespace Vsite.Oom.Battleship.Model.View
                     {
                         var label = new Label
                         {
-                            Size = new Size(30, 30),
+                            Size = new Size(40, 40),
                             Text = labelTextChar.ToString(),
                             TextAlign = ContentAlignment.MiddleCenter,
                             Margin = new Padding(0)
@@ -138,7 +100,7 @@ namespace Vsite.Oom.Battleship.Model.View
                     {
                         var btn = new Button
                         {
-                            Size = new Size(30, 30),
+                            Size = new Size(40, 40),
                             Name = $"btn_{c}_{r}"
                         };
                         gridLayoutPanel.Controls.Add(btn, c, r);
@@ -162,26 +124,10 @@ namespace Vsite.Oom.Battleship.Model.View
             Controls.Add(gridLayoutPanel);
         }
 
-        private void InvalidInputAlert()
-        {
-            string message = "Plese enter valid number for rows and columns.";
-            string caption = "Invalid input";
-            MessageBoxButtons buttons = MessageBoxButtons.OK;
-            MessageBox.Show(message, caption, buttons);
-        }
-
         private void NoPlacementsAlert()
         {
             string message = "No possible placements for this input.";
             string caption = "No placements";
-            MessageBoxButtons buttons = MessageBoxButtons.OK;
-            MessageBox.Show(message, caption, buttons);
-        }
-
-        private void SelectShipLenghtsAlert()
-        {
-            string message = "Select ship lenghts to get placements.";
-            string caption = "Select ship lenghts";
             MessageBoxButtons buttons = MessageBoxButtons.OK;
             MessageBox.Show(message, caption, buttons);
         }
