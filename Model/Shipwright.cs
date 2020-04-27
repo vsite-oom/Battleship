@@ -25,7 +25,7 @@ namespace Vsite.Oom.Battleship.Model
                     return fleet;
                   
             }
-            throw new ArgumentOutOfRangeException();
+            throw new ArgumentOutOfRangeException();            
         }
 
     private Fleet PlaceShips(IEnumerable<int> shipLengths)
@@ -41,23 +41,21 @@ namespace Vsite.Oom.Battleship.Model
 
             Random random = new Random();
             while (lengths.Count > 0)
-           {
-            var placements = grid.GetAvailablePlacements(lengths[0]);
-
-            if (placements.Count() == 0)
-                return null;
-            lengths.RemoveAt(0);
-            // 4. select one position
-            int index = random.Next(0, placements.Count());
-
-            // 5. forward position to fleet to create a ship
-            fleet.AddShip(placements.ElementAt(index));
-            // 6. eliminate squares from the grid
-
-            var toEliminate = terminator.ToEliminate(placements.ElementAt(index));
-            grid.EliminateSquares(toEliminate);
-
-              
+            {
+                var placements = grid.GetAvailablePlacements(lengths[0]);
+               
+                if (placements.Count() == 0)
+                    return null;
+                lengths.RemoveAt(0);
+                // 4. select one position
+                int index = random.Next(0, placements.Count());
+               
+                // 5. forward position to fleet to create a ship
+                fleet.AddShip(placements.ElementAt(index));
+                // 6. eliminate squares from the grid
+               
+                var toEliminate = terminator.ToEliminate(placements.ElementAt(index));
+                grid.EliminateSquares(toEliminate);         
             }
             return fleet;
         }

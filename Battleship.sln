@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Model", "Model\Model.csproj
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests", "UnitTests\UnitTests.csproj", "{C4258DB9-CB03-444D-9FE8-F5C30C5AF87B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Battleships_GUI", "Battleships_GUI\Battleships_GUI.csproj", "{564A5789-1240-48C3-8BD2-F70702410B9B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{C4258DB9-CB03-444D-9FE8-F5C30C5AF87B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C4258DB9-CB03-444D-9FE8-F5C30C5AF87B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C4258DB9-CB03-444D-9FE8-F5C30C5AF87B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{564A5789-1240-48C3-8BD2-F70702410B9B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{564A5789-1240-48C3-8BD2-F70702410B9B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{564A5789-1240-48C3-8BD2-F70702410B9B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{564A5789-1240-48C3-8BD2-F70702410B9B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
