@@ -18,6 +18,7 @@ namespace Vsite.Oom.Battleship.Model.BattleshipGUI
             int buttonSize = panel1.Height / columns;
             AddHorizontalLabels(buttonSize);
             AddVerticalLabels(buttonSize);
+            AddButtons(buttonSize);
         }
 
         void AddHorizontalLabels(int buttonSize)
@@ -58,9 +59,34 @@ namespace Vsite.Oom.Battleship.Model.BattleshipGUI
             }
         }
 
+        void AddButtons(int buttonSize)
+        {
+            buttons = new Button[rows, columns];
+            int top = panel1.Top - buttonSize;
+            for (int r = 0; r < rows; ++r)
+            {
+                int left = panel1.Left - buttonSize;
+                for (int c = 0; c < columns; ++c)
+                {
+                    Button button = new Button
+                    {
+                        Top = top,
+                        Left = left,
+                        Width = buttonSize,
+                        Height = buttonSize,
+                        Text = "test",
+                        TextAlign = ContentAlignment.MiddleCenter
+                    };
+                    panel1.Controls.Add(button);
+                    left += buttonSize;
+                }
+                top += buttonSize;
+            }
+        }
+
         int rows = 10;
         int columns = 10;
-
+        Button[,] buttons;
     }
 
 }

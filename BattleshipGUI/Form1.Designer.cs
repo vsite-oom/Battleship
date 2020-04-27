@@ -36,7 +36,6 @@ namespace Vsite.Oom.Battleship.Model.BattleshipGUI
             // 
             // panel1
             // 
-            this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panel1.Location = new System.Drawing.Point(35, 35);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(340, 340);
@@ -44,6 +43,8 @@ namespace Vsite.Oom.Battleship.Model.BattleshipGUI
             // 
             // button1
             // 
+            this.button1.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.button1.Location = new System.Drawing.Point(239, 381);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(136, 23);
