@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Vsite.Oom.Battleship.Model.BattleshipGUI.Properties {
+namespace Vsite.Oom.Battleship.Model.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]

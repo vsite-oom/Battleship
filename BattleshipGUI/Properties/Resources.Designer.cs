@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Vsite.Oom.Battleship.Model.BattleshipGUI.Properties {
+namespace Vsite.Oom.Battleship.Model.Properties {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace Vsite.Oom.Battleship.Model.BattleshipGUI.Properties {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Vsite.Oom.Battleship.Model.BattleshipGUI.Properties.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Vsite.Oom.Battleship.Model.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
