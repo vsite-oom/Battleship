@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Flota
+namespace Vsite.Oom.Battleship.Model
 {
     static class Program
     {

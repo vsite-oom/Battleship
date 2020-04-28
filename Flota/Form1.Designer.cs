@@ -1,4 +1,4 @@
-﻿namespace Flota
+﻿namespace Vsite.Oom.Battleship.Model
 {
     partial class Form1
     {
