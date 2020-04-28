@@ -52,8 +52,11 @@
     <Compile Include="FleetForm.Designer.cs">
       <DependentUpon>FleetForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="FleetGrid.cs">
+    <Compile Include="fleetGrid.cs">
       <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="fleetGrid.Designer.cs">
+      <DependentUpon>fleetGrid.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
