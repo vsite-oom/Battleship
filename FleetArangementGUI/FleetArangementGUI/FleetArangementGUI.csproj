@@ -51,11 +51,28 @@
     <Compile Include="BattleshipGUI.Designer.cs">
       <DependentUpon>BattleshipGUI.cs</DependentUpon>
     </Compile>
+    <Compile Include="FleetsGrid.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="FleetsGrid.Designer.cs">
+      <DependentUpon>FleetsGrid.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Model\Model.csproj">
+      <Project>{7609e958-a751-4b09-ac18-611fdeb4549f}</Project>
+      <Name>Model</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="BattleshipGUI.resx">
+      <DependentUpon>BattleshipGUI.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
