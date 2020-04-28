@@ -21,8 +21,8 @@ namespace Vsite.Oom.Battleship.Gui
         public void InitGrid()
         {
             //Testing drawing grid
-            int rows = 20;
-            int cols = 20;
+            int rows = 10;
+            int cols = 10;
 
             Shipwright sw = new Shipwright(rows, cols);
             IEnumerable<int> ships = new int[] { 2, 2, 2, 2, 3, 3, 3, 4, 4, 5 };
