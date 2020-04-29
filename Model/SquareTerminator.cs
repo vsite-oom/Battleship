@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Vsite.Oom.Battleship.Model
 {
-    public class SquareTerminator
+    public class SquareTerminator : ISquareTerminator
     {
         private readonly int rows;
         private readonly int columns;

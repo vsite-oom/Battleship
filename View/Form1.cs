@@ -135,7 +135,8 @@ namespace View
             try
             {
                 PaintTableCells(GridCtrl, Color.White);
-                sw = new Shipwright(10, 10);
+                var terminator = SquareTerminatorFactory.Create(ShipAdjoining.None, 10, 10);
+                sw = new Shipwright(10, 10, terminator);
                 List<int> shipLengths = new List<int> { 5, 4, 4, 3, 3, 3, 2, 2, 2, 2 };
                 Fleet flt = sw.CreateFleet(shipLengths);
 
