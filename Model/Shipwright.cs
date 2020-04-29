@@ -43,7 +43,6 @@ namespace Vsite.Oom.Battleship.Model
             List<int> lengths = new List<int>(shipLengths.OrderByDescending(x => x));
             // 1. create grid
             Grid grid = new Grid(rows, columns);
-            //SquareTerminator terminator = new SquareTerminator(rows, columns);
             // 2. create fleet
             Fleet fleet = new Fleet();
             while (lengths.Count > 0)
