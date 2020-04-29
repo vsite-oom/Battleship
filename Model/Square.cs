@@ -1,11 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Diagnostics;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Vsite.oom.Battleship.Model
 {
+
+    public enum SquareState
+    {
+        None,
+        Missed,
+        Hit,
+        Sunken
+    }
+
+
     public class Square : IEquatable<Square>
     {
         public Square(int rows, int columns)
@@ -14,11 +25,31 @@ namespace Vsite.oom.Battleship.Model
             Rows = rows;
             Columns = columns;
             Hit = false;
+
+            SquareState = SquareState.None;
         }
 
+        public void SetState(HitResult hitResult)
+        {
+            switch (hitResult)
+            {
+                case HitResult.Missed:
+                    SquareState = SquareState.Missed;
+                    break;
+                case HitResult.Hit:
+                    SquareState = SquareState.Hit;
+                    break;
+                case HitResult.Sunken:
+                    SquareState = SquareState.Sunken;
+                    break;
+                default:
+                    Debug.Assert(false);
+                    break;
+            }
+        }
         public readonly int Rows;
         public readonly int Columns;
-
+        public SquareState SquareState { get; private set; }
         public bool Equals(Square other)
         {
             if (other == null)
@@ -34,6 +65,8 @@ namespace Vsite.oom.Battleship.Model
                 return false;
             return Equals((Square)obj);
         }
+
+        
 
         public bool Hit
         { get; set; }
