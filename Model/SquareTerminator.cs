@@ -8,9 +8,10 @@ namespace Vsite.Oom.Battleship.Model
 {
 	public class SquareTerminator
 	{
-		public SquareTerminator(Grid grid)
+		public SquareTerminator(int rows, int cols)
 		{
-			this.grid = grid;
+			this.rows = rows;
+			this.cols = cols;
 		}
 		public IEnumerable<Square> ToEliminate(IEnumerable<Square> shipSquares)
 		{
@@ -21,10 +22,10 @@ namespace Vsite.Oom.Battleship.Model
 			if (top > 0)
 				--top;
 			int right = shipSquares.Last().Col + 1;
-			if (right < grid.Cols)
+			if (right < cols)
 				++right;
 			int bottom = shipSquares.Last().Row + 1;
-			if (bottom < grid.Rows)
+			if (bottom < rows)
 				++bottom;
 			List<Square> toEliminate = new List<Square>();
 			for ( int r = top; r < bottom; ++r)
@@ -38,6 +39,7 @@ namespace Vsite.Oom.Battleship.Model
 
 		}
 
-		private readonly Grid grid;
+		private readonly int rows;
+		private readonly int cols;
 	}
 }
