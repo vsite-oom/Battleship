@@ -6,13 +6,21 @@ using System.Threading.Tasks;
 
 namespace Vsite.Oom.Battleship.Model
 {
-   public class Shipwright
+    public class Shipwright
     {
-        
-        public Shipwright(int rows,int columns)
+
+        public Shipwright(int rows, int columns,ISquareTerminator terminator)
         {
-           this.rows= rows;
-           this.columns=columns;
+            this.rows = rows;
+            this.columns = columns;
+            this.terminator = terminator;
+
+        }
+        public Shipwright(int rows, int columns)
+        {
+            this.rows = rows;
+            this.columns = columns;
+            terminator = new SquareTerminator(rows, columns);
 
         }
         public Shipwright()
@@ -23,14 +31,14 @@ namespace Vsite.Oom.Battleship.Model
         }
         public Fleet CreateFleet(IEnumerable<int> shipLengths)
         {
-            for(int i = 0; i < 3; ++i)
+            for (int i = 0; i < 3; ++i)
             {
                 Fleet fleet = PlaceShips(shipLengths);
-                if(fleet!=null)
+                if (fleet != null)
                     return fleet;
             }
             throw new ArgumentOutOfRangeException();
-           
+
         }
         private Fleet PlaceShips(IEnumerable<int> shipLengths)
         {
@@ -38,15 +46,12 @@ namespace Vsite.Oom.Battleship.Model
             List<int> lengths = new List<int>(shipLengths.OrderByDescending(x => x));
 
             Grid grid = new Grid(rows, columns);
-            SquareTerminator terminator = new SquareTerminator(grid);
             Fleet fleet = new Fleet();
-            Random random = new Random();
-
 
             while (lengths.Count > 0)
             {
                 var placements = grid.GetAvailablePlacements(lengths[0]);
-                
+
                 if (placements.Count() == 0)
                     return null;
                 lengths.RemoveAt(0);
@@ -57,11 +62,13 @@ namespace Vsite.Oom.Battleship.Model
                 grid.EliminateSquares(toEliminate);
             }
             return fleet;
-        }    
-        
+        }
+
+        private Random random = new Random();
+        private readonly ISquareTerminator terminator;
         private readonly int rows;
-        private readonly int columns;  
-     
+        private readonly int columns;
+
 
     }
 }
