@@ -10,8 +10,7 @@ namespace Vsite.Oom.Battleship.Model.UnitTests
 		[TestMethod]
 		public void ToEliminateReturnsSquaresAroundTheShip4_3To4_6()
 		{
-			Grid grid = new Grid(10, 10);
-			SquareTerminator terminator = new SquareTerminator(grid);
+			SquareTerminator terminator = new SquareTerminator(10, 10);
 			var toEliminate = terminator.ToEliminate(new List<Square> { new Square(4,3),new Square(4,4),new Square(4,5),
 				new Square(4,6) });
 
