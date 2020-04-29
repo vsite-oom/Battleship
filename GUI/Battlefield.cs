@@ -22,7 +22,7 @@ namespace GUI
         {
             for (int i = 0; i < fleet.Ships.Count(); ++i)
             {
-                if (fleet.Ships.ElementAt(i).Squares.Contains(new Square(e.Column, e.Row)))
+                if (fleet.Ships.ElementAt(i).Squares.Contains(new Square(e.Row, e.Column)))
                 {
                     e.Graphics.FillRectangle(Brushes.Blue, e.CellBounds);
                     break;
