@@ -13,7 +13,7 @@ namespace Vsite.Oom.Battleship.Model.UnitTests
         {
 
             Grid grid = new Grid(10, 10);
-            SquareTerminator terminator = new SquareTerminator(grid);
+            SquareTerminator terminator = new SquareTerminator(10, 10);
             var toEliminate = terminator.ToEliminate(new List<Square> 
             { 
                 new Square(4, 3),
@@ -36,7 +36,7 @@ namespace Vsite.Oom.Battleship.Model.UnitTests
         {
 
             Grid grid = new Grid(10, 10);
-            SquareTerminator terminator = new SquareTerminator(grid);
+            SquareTerminator terminator = new SquareTerminator(10, 10);
             var toEliminate = terminator.ToEliminate(new List<Square>
             {
                 new Square(0, 3),
@@ -57,7 +57,7 @@ namespace Vsite.Oom.Battleship.Model.UnitTests
         {
 
             Grid grid = new Grid(10, 10);
-            SquareTerminator terminator = new SquareTerminator(grid);
+            SquareTerminator terminator = new SquareTerminator(10, 10);
             var toEliminate = terminator.ToEliminate(new List<Square>
             {
                 new Square(0, 0),
@@ -78,7 +78,7 @@ namespace Vsite.Oom.Battleship.Model.UnitTests
         {
 
             Grid grid = new Grid(10, 10);
-            SquareTerminator terminator = new SquareTerminator(grid);
+            SquareTerminator terminator = new SquareTerminator(10, 10);
             var toEliminate = terminator.ToEliminate(new List<Square>
             {
                 new Square(8, 9),
