@@ -20,13 +20,13 @@ namespace Battleship.GameBoard
 
         private void CreateBattlefield_Click(object sender, EventArgs e)
         {
-            try 
+            try
             {
                 GenerateBattlefield(Int32.Parse(textBoxColumn.Text), Int32.Parse(textBoxRow.Text));
 
                 Battlefield.CellBorderStyle = TableLayoutPanelCellBorderStyle.Outset;
 
-               // FillBattlefield(Int32.Parse(textBoxColumn.Text), Int32.Parse(textBoxRow.Text));
+                // FillBattlefield(Int32.Parse(textBoxColumn.Text), Int32.Parse(textBoxRow.Text));
             }
             catch (SystemException)
             {
@@ -66,7 +66,7 @@ namespace Battleship.GameBoard
                     {
                         RowStyle rowStyle = new RowStyle(SizeType.Percent);
                         rowStyle.Height = CellPercentSize(rowCount);
-                       
+
                         Battlefield.RowStyles.Add(rowStyle);
                     }
                 }
@@ -115,18 +115,18 @@ namespace Battleship.GameBoard
         {
             List<int> ships = new List<int> { 2, 2, 2, 2, 3, 3, 3, 4, 4, 5 };
             Shipwright shipWrighter = new Shipwright(columnCount, rowCount);
- 
+
             Fleet fleet = shipWrighter.CreateFleet(ships);
 
-                foreach (var ship in fleet.Ships)
+            foreach (var ship in fleet.Ships)
+            {
+                foreach (Square square in ship.Squares)
                 {
-                    foreach (Square square in ship.Squares)
-                    {
-                               Panel sq = new Panel();
-                               sq.BackColor = Color.Navy;
-                               Battlefield.Controls.Add(sq, square.Column, square.Row);                    
-                    }
-                }   
+                    Panel sq = new Panel();
+                    sq.BackColor = Color.Navy;
+                    Battlefield.Controls.Add(sq, square.Column, square.Row);
+                }
+            }
         }
     }
 }
