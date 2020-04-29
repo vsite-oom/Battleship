@@ -41,12 +41,12 @@ namespace Vsite.Oom.Battleship.Model
 
         // 1. create grid
         Grid grid = new Grid(rows, colums);
-        SquareTerminator terminator = new SquareTerminator(grid);
+        SquareTerminator terminator = new SquareTerminator(rows,colums);
         // 2. create fleet
         Fleet fleet = new Fleet();
             // 3. get available positions from grid for a given len
 
-            Random random = new Random();
+           
             while (lengths.Count > 0)
             {
                 var placements = grid.GetAvailablePlacements(lengths[0]);
@@ -67,6 +67,7 @@ namespace Vsite.Oom.Battleship.Model
             return fleet;
         }
 
+        Random random = new Random();
         private readonly int rows;
         private readonly int colums;
       
