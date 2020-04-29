@@ -8,10 +8,17 @@ namespace Vsite.Oom.Battleship.Model
 {
    public class Shipwright
     {
+        
         public Shipwright(int rows,int columns)
         {
            this.rows= rows;
            this.columns=columns;
+
+        }
+        public Shipwright()
+        {
+            rows = RulesSingleton.Instance.Rows;
+            columns = RulesSingleton.Instance.Columns;
 
         }
         public Fleet CreateFleet(IEnumerable<int> shipLengths)
