@@ -6,19 +6,19 @@ using System.Threading.Tasks;
 
 namespace Vsite.oom.Battleship.Model
 {
-    class  RulesSingleton
+    public class  RulesSingleton
     {
 
         private static readonly RulesSingleton instance = new RulesSingleton();
 
-        private RulesSingleton()
+        public RulesSingleton()
         {
             //read data from configuration file
             Rows = 10;
             Columns = 10;
             ShipLengths = new int[] { 5, 4, 4, 3, 3, 3, 2, 2, 2, 2 };
         }
-
+        public static RulesSingleton Instance { get { return instance; } }
         public readonly int Rows;
         public readonly int Columns;
         public readonly int[] ShipLengths;

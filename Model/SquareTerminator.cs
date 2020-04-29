@@ -10,11 +10,16 @@ namespace Vsite.oom.Battleship.Model
    
        
     
- public class SquareTerminator : ISquareTerminator    {
+ public class SquareTerminator    {
         public SquareTerminator(int rows, int columns)
         {
             this.rows = rows;
             this.columns = columns;
+        }
+
+        public SquareTerminator(Grid grid)
+        {
+            this.grid = grid;
         }
 
         public IEnumerable<Square> ToEliminate(IEnumerable<Square> shipSquares)
@@ -44,5 +49,6 @@ namespace Vsite.oom.Battleship.Model
 
         private readonly int rows;
         private readonly int columns;
+        private Grid grid;
     }
 }
