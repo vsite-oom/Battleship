@@ -1,18 +1,16 @@
-﻿using System;
+﻿
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace Vsite.Oom.Battleship.Model
 {
     public class SquareTerminator:ISquareTerminator
     {
         public SquareTerminator(int rows,int columns)
-        {
-            
+        {        
             this.rows = rows;
-            this.rows = columns;
+            this.columns = columns;
         }
         public IEnumerable<Square> ToEliminate(IEnumerable<Square> shipSquares)
         {
@@ -26,7 +24,7 @@ namespace Vsite.Oom.Battleship.Model
             if (right < columns)
                 ++right;
             int bottom = shipSquares.Last().Row+1;
-            if (bottom<rows)
+            if (bottom < rows)
                 ++bottom;
 
             List<Square> toEliminate = new List<Square>();

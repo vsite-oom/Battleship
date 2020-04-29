@@ -50,6 +50,7 @@
     <Compile Include="Ship.cs" />
     <Compile Include="Shipwright.cs" />
     <Compile Include="Square.cs" />
+    <Compile Include="SquareTerminatorFactory.cs" />
     <Compile Include="SquareTerminator.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

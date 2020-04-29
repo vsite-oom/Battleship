@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Vsite.Oom.Battleship.Model
 {
-    public class Shipwright
+    public class Shipwright 
     {
 
         public Shipwright(int rows, int columns,ISquareTerminator terminator)
@@ -47,7 +47,6 @@ namespace Vsite.Oom.Battleship.Model
 
             Grid grid = new Grid(rows, columns);
             Fleet fleet = new Fleet();
-
             while (lengths.Count > 0)
             {
                 var placements = grid.GetAvailablePlacements(lengths[0]);
