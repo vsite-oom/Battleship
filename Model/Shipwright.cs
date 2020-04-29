@@ -12,10 +12,10 @@ namespace Vsite.Oom.Battleship.Model
 		private readonly int columns;
 
 		private Grid grid;
-		public Shipwright(int rows, int columns)
+		public Shipwright()
 		{
-			this.rows = rows;
-			this.columns = columns;
+			rows = RulesSingleton.Instance.Rows;
+			columns = RulesSingleton.Instance.Columns;
 		}
 		public Fleet CreateFleet(IEnumerable<int> shipLengths)
 		{
