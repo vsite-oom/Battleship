@@ -193,7 +193,7 @@ namespace BattleshipGUI
                 //    }
                 //}
                 fl.addShip(squaresToAddAndElim);                                                     //dodaje u flotu sve shipove koji su random odabrani
-                modelNmspc.squareTerminator terminator = new modelNmspc.squareTerminator(gr);       //eliminira iz grida sve okolne pozicije odabranih shipova
+                modelNmspc.squareTerminator terminator = new modelNmspc.squareTerminator(gr.Rw,gr.Cl);       //eliminira iz grida sve okolne pozicije odabranih shipova
                 var toElim = terminator.ToEliminate(squaresToAddAndElim);
                 gr.eliminateSquares(toElim);                                                         //eliminira iz grida sve square-ove odabranih shipova
                 //Console.WriteLine("eliminirano "+toElim.Count());                                 //used for debugging
