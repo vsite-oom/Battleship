@@ -15,7 +15,6 @@ namespace View
     {
 
         Shipwright sw;
-         
 
         public FormMain()
         {
@@ -25,9 +24,8 @@ namespace View
             GridCtrl.CellBorderStyle = TableLayoutPanelCellBorderStyle.Inset;
             FormatLayoutTable(GridCtrl, 10);
             FillTableWithPanels(GridCtrl);
-
-            
         }
+
 
         // Helper methods //
 
