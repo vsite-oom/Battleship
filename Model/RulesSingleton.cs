@@ -8,7 +8,6 @@ namespace Vsite.Oom.Battleship.Model
 {
     public class RulesSingleton
     {
-        private static readonly RulesSingleton instance = new RulesSingleton();
         private RulesSingleton()
         {
             //e.g. read data from configuration file
@@ -16,7 +15,7 @@ namespace Vsite.Oom.Battleship.Model
             Columns = 10;
             ShipLengths = new int[] { 5, 4, 4, 3, 3, 3, 2, 2, 2, 2 };
         }
-        public static RulesSingleton Instance{ get { return instance; }}
+        public static RulesSingleton Instance { get; } = new RulesSingleton();
 
         public readonly int Rows;
         public readonly int Columns;
