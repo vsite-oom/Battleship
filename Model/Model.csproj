@@ -46,6 +46,7 @@
   <ItemGroup>
     <Compile Include="fleet.cs" />
     <Compile Include="grid.cs" />
+    <Compile Include="ISquareTerminator.cs" />
     <Compile Include="limitedQueue.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RulesSingleton.cs" />
