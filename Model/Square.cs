@@ -3,9 +3,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Diagnostics;
 
 namespace Vsite.Oom.Battleship.Model
 {
+
+    public enum SquareState
+    {
+        None,
+        Missed,
+        Hit,
+        Sunken
+    }
     public class Square : IEquatable<Square> //stavili smo public da možemo testirati iz drugog modula
     {
         public Square(int row, int column)
@@ -13,9 +22,30 @@ namespace Vsite.Oom.Battleship.Model
             Row = row;
             Column = column;
             Hit = false;
+            SquareState = SquareState.None;
+        }
+
+        public void SetState(HitResult hitResult)
+        {
+            switch (hitResult)
+            {
+                case HitResult.Missed:
+                    SquareState = SquareState.Missed;
+                    break;
+                case HitResult.Hit:
+                    SquareState = SquareState.Hit;
+                    break;
+                case HitResult.Sunken:
+                    SquareState = SquareState.Sunken;
+                    break;
+                default:
+                    Debug.Assert(false);
+                    break;
+            }
         }
         public readonly int Row;
         public readonly int Column;
+        public SquareState SquareState { get; private set; }
 
         public bool Equals(Square other)
         {
