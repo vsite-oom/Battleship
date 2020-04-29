@@ -18,25 +18,6 @@ namespace BattleshipForm
         public Form1()
         {
             InitializeComponent();
-
-            /*TableLayoutColumnStyleCollection ColumnStyles = BattleshipGrid.ColumnStyles;
-            foreach(ColumnStyle style in ColumnStyles)
-            {
-                style.SizeType = SizeType.Percent;
-                style.Width = 10;
-            }
-
-
-            TableLayoutRowStyleCollection RowStyles = BattleshipGrid.RowStyles;
-            foreach (RowStyle style in RowStyles)
-            {
-                style.SizeType = SizeType.Percent;
-                style.Height = 10;
-            }
-
-            shpWrt = new Shipwright(10, 10);
-            List<int> shipLenghts = new List<int> { 5, 4, 4, 3, 3, 3, 2, 2, 2, 2 };
-            flota = shpWrt.CreateFleet(shipLenghts);*/
         }
 
         private void tableLayoutPanel1_Paint(object sender, PaintEventArgs e)
