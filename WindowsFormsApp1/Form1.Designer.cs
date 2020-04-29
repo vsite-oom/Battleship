@@ -84,7 +84,7 @@
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "Form1";
-            this.Text = "Form1";
+            this.Text = "Flota";
             this.ResumeLayout(false);
             this.PerformLayout();
 
