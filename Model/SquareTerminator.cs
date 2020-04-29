@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Vsite.Oom.Battleship.Model
 {
-    public class SquareTerminator
+    public class SquareTerminator : ISquareTerminator
     {
         public SquareTerminator(int rows, int columns)
         {
@@ -25,11 +25,11 @@ namespace Vsite.Oom.Battleship.Model
                 --top;
 
             int right = shipSquares.Last().Column + 1;
-            if (right < grid.Columns)
+            if (right < columns)
                 ++right;
 
             int bottom = shipSquares.Last().Row + 1;
-            if (bottom < grid.Rows)
+            if (bottom < rows)
                 ++bottom;
 
             List<Square> toEliminate = new List<Square>();
