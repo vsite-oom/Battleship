@@ -41,8 +41,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="RulesSingleton.cs" />
     <Compile Include="Fleet.cs" />
     <Compile Include="Grid.cs" />
+    <Compile Include="ISquareTerminator.cs" />
     <Compile Include="LimitedQueue.cs" />
     <Compile Include="Ship.cs" />
     <Compile Include="ShipWright.cs" />

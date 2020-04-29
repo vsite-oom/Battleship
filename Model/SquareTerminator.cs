@@ -6,11 +6,15 @@ using System.Threading.Tasks;
 
 namespace Vsite.oom.Battleship.Model
 {
-    public class SquareTerminator
-    {
-        public SquareTerminator(Grid grid)
+
+   
+       
+    
+ public class SquareTerminator : ISquareTerminator    {
+        public SquareTerminator(int rows, int columns)
         {
-            this.grid = grid;
+            this.rows = rows;
+            this.columns = columns;
         }
 
         public IEnumerable<Square> ToEliminate(IEnumerable<Square> shipSquares)
@@ -23,10 +27,10 @@ namespace Vsite.oom.Battleship.Model
                 --top;
 
             int right = shipSquares.Last().Columns + 1;
-            if (right < grid.Columns)
+            if (right < columns)
                 ++right;
             int bottom = shipSquares.Last().Rows + 1;
-            if (bottom < grid.Rows)
+            if (bottom < rows)
                 ++bottom;
 
             List<Square> toEliminate = new List<Square>();
@@ -38,7 +42,7 @@ namespace Vsite.oom.Battleship.Model
             return toEliminate;
         }
 
-        private readonly Grid grid;
-
+        private readonly int rows;
+        private readonly int columns;
     }
 }
