@@ -17,11 +17,7 @@ namespace Vsite.oom.Battleship.Model
             this.columns = columns;
         }
 
-        public SquareTerminator(Grid grid)
-        {
-            this.grid = grid;
-        }
-
+       
         public IEnumerable<Square> ToEliminate(IEnumerable<Square> shipSquares)
         {
             int left = shipSquares.First().Columns;
@@ -49,6 +45,5 @@ namespace Vsite.oom.Battleship.Model
 
         private readonly int rows;
         private readonly int columns;
-        private Grid grid;
     }
 }
