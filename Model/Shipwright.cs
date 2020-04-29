@@ -23,7 +23,11 @@ namespace Vsite.Oom.Battleship.Model
             }
             throw new ArgumentOutOfRangeException();
         }
-
+        public Shipwright()
+        {
+            rows = RulesSingelton.Instance.Rows;
+            rows = RulesSingelton.Instance.Columns;
+        }
         private Fleet PlaceShips(IEnumerable<int> shipLengths)
         {
             List<int> lengths = new List<int>(shipLengths.OrderByDescending(x => x));
