@@ -27,6 +27,10 @@ namespace Vsite.Oom.Battleship.Model
             Squares.First(s => s == square).Hit = true;
             if(Squares.Count(s=> s.Hit) == Squares.Count())
             {
+                foreach(var s in Squares)
+                {
+                    s.SetState(HitResult.Sunken);
+                }
                 return HitResult.Sunken;
             }
             return HitResult.Hit;
