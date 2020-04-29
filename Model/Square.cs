@@ -30,10 +30,13 @@ namespace Vsite.Oom.Battleship.Model
             {
                 case HitResult.Missed:
                     SquareState = SquareState.Missed;
+                    break;
                 case HitResult.Hit:
                     SquareState = SquareState.Hit;
+                    break;
                 case HitResult.Sunken:
                     SquareState = SquareState.Sunken;
+                    break;
                 default:
                     Debug.Assert(false);
                         break;
