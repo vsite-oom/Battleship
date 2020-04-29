@@ -11,6 +11,7 @@ namespace Vsite.Oom.Battleship.Model
 
         private readonly int rows;
         private readonly int columns;
+        Random random = new Random();
         public Shipwright(int rows, int columns)
         {
             this.columns = columns;
@@ -40,9 +41,8 @@ namespace Vsite.Oom.Battleship.Model
         private Fleet TryPlaceShips(IEnumerable<int> shipLengths)
         {
             List<int> lengths = new List<int>(shipLengths.OrderByDescending(l => l));
-            Grid grid = new Grid(rows, columns);
-            Random random = new Random();
-            SquareTerminator terminator = new SquareTerminator(grid);
+            Grid grid = new Grid(rows, columns);            
+            SquareTerminator terminator = new SquareTerminator(rows, columns);
             Fleet fleet = new Fleet();
 
             while (lengths.Count > 0)
