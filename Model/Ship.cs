@@ -26,7 +26,11 @@ namespace Vsite.Oom.Battleship.Model
                 return HitResult.Missed;
             Squares.First(s => s == square).Hit = true;
             if (Squares.Count(s => s.Hit) == Squares.Count())
-                return HitResult.Sunk;
+            {
+                foreach (var s in Squares)
+                    s.SetState(HitResult.Sunk);
+                    return HitResult.Sunk;
+            }             
 
             return HitResult.Hit;
         }

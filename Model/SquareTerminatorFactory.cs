@@ -24,8 +24,7 @@ namespace Vsite.Oom.Battleship.Model
                     return null;
                 default:
                     Debug.Assert(false);
-                    return null;
-                    
+                    return null;                    
             }
         }
     }
