@@ -19,8 +19,11 @@ namespace Vsite.Oom.Battleship.Model.UnitTests
         public void WhenShipIsSunkenAllSquaresAreMarkedSunken()
         {
             Ship s = new Ship(new List<Square> { new Square(1, 1), new Square(1, 2), new Square(1, 3) });
-            
-            throw new NotImplementedException();
+            Assert.AreEqual(s.Hit(new Square(1, 1)), HitResult.Hit);
+            Assert.AreEqual(s.Hit(new Square(1, 2)), HitResult.Hit);
+            Assert.AreEqual(s.Hit(new Square(1, 3)), HitResult.Sunken);
+            foreach (var square in s.Squares)
+                Assert.AreEqual(square.SquareState, SquareState.Sunken);
         }
     }
 }
