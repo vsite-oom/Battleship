@@ -6,10 +6,22 @@ namespace Vsite.Oom.Battleship.Model
 {
     public class Shipwright
     {
+        private readonly int rows;
+        private readonly int columns;
+        private readonly ISquareTerminator terminator;
+
+        public Shipwright(int rows, int columns, ISquareTerminator terminator)
+        {
+            this.rows = rows;
+            this.columns = columns;
+            this.terminator = terminator;
+        }
+
         public Shipwright(int rows, int columns)
         {
             this.rows = rows;
             this.columns = columns;
+            terminator = new SquareTerminator(rows, columns);
         }
 
         public Shipwright()
@@ -36,7 +48,6 @@ namespace Vsite.Oom.Battleship.Model
         {
             var lenghts = new List<int>(shipLengths.OrderByDescending(s => s));
             var grid = new Grid(rows, columns);
-            var terminator = new SquareTerminator(rows, columns);
             var fleet = new Fleet();
 
             while (lenghts.Count > 0)
@@ -56,8 +67,5 @@ namespace Vsite.Oom.Battleship.Model
             }
             return fleet;
         }
-
-        private readonly int rows;
-        private readonly int columns;
     }
 }
