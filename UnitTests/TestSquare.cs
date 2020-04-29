@@ -17,9 +17,20 @@ namespace Vsite.Oom.Battleship.Model.UnitTests
         [TestMethod]
         public void WhenShipIsSunkenAllSquaresAreMarkedSunken()
         {
-            //napravi brod cca 3, gadjaj 123 polja kad je ship sunken, provjeri je li state sunken.
+            //kreacija broda s 3 Square-a (1,1 - 1,2 - 1,3)
+            Ship testShip = new Ship(new Square[] {
+                                                    new Square(1,1),
+                                                    new Square(1,2),
+                                                    new Square(1,3) });
 
-            throw new NotImplementedException();
+            //gadanje svakog polja broda
+            foreach (var square in testShip.Squares)
+                testShip.Hit(square);
+            //provjeravamo je li svakom square-u dodijeljen SquareState.Sunken
+            foreach (var square in testShip.Squares)
+                Assert.AreEqual(SquareState.Sunken, square.SquareState);
+
+
         }
     }
 }
