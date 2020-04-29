@@ -8,13 +8,18 @@ namespace Vsite.Oom.Battleship.Model
 {
     public class Shipwright
     {
-        public Shipwright(int rows, int colums)
+        public Shipwright(int rows, int colums, ISquareTerminator terminator)
         {
             this.rows=rows;
             this.colums=colums;
-
+            this.terminator = terminator;
         }
-
+        public Shipwright(int rows, int colums)  //da rade testovi
+        {
+            this.rows = rows;
+            this.colums = colums;
+            terminator = new SquareTerminator(rows, colums);
+        }
         public Shipwright()  
         {
             rows = RulesSingleton.Instance.Rows;
@@ -41,8 +46,8 @@ namespace Vsite.Oom.Battleship.Model
 
         // 1. create grid
         Grid grid = new Grid(rows, colums);
-        SquareTerminator terminator = new SquareTerminator(rows,colums);
-        // 2. create fleet
+       
+            // 2. create fleet
         Fleet fleet = new Fleet();
             // 3. get available positions from grid for a given len
 
@@ -67,9 +72,10 @@ namespace Vsite.Oom.Battleship.Model
             return fleet;
         }
 
-        Random random = new Random();
+        private Random random = new Random();
         private readonly int rows;
         private readonly int colums;
+        private readonly ISquareTerminator terminator;
       
     }
 }
