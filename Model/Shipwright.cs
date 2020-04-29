@@ -11,6 +11,11 @@ namespace Vsite.Oom.Battleship.Model
     {
         public Shipwright(int rows, int columns)
         {
+           rows= RulesSingleton.Instance.Rows ;
+            columns=RulesSingleton.Instance.Columns;
+        }
+        public Shipwright()
+        {
             this.rows = rows;
             this.columns = columns;
         }
