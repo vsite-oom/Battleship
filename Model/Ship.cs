@@ -10,7 +10,7 @@ namespace Vsite.Oom.Battleship.Model
     {
         Missed,
         Hit,
-        Sunk
+        Sunken
     }
     public class Ship
     {
@@ -23,11 +23,17 @@ namespace Vsite.Oom.Battleship.Model
         {
             if (!Squares.Contains(square))
                 return HitResult.Missed;
-
             Squares.First(s => s == square).Hit = true;
 
             if (Squares.Count( s=> s.Hit) == Squares.Count())
-                return HitResult.Sunk;
+            {
+                foreach (var s in Squares)
+                {
+                    s.SetState(HitResult.Sunken);
+                }
+                return HitResult.Sunken;
+            }
+                
             return HitResult.Hit;
         }
 
