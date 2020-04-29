@@ -10,8 +10,7 @@ namespace Vsite.Oom.Battleship.Model.UnitTests
         [TestMethod]
         public void ToEliminateReturns18SquaresAroundTheShip4_3to4_6()
         {
-            Grid grid = new Grid(10, 10);
-            SquareTerminator terminator = new SquareTerminator(grid);
+            SquareTerminator terminator = new SquareTerminator(10,10);
             var toEliminate = terminator.ToEliminate(new List<Square> { new Square(4,3), new Square (4,4),new Square(4,5), new Square(4,6)});
 
             Assert.AreEqual(18, toEliminate.Count());
@@ -25,8 +24,7 @@ namespace Vsite.Oom.Battleship.Model.UnitTests
         [TestMethod]
         public void ToEliminateReturns8SquaresAroundTheShip0_3to0_4()
         {
-            Grid grid = new Grid(10, 10);
-            SquareTerminator terminator = new SquareTerminator(grid);
+            SquareTerminator terminator = new SquareTerminator(10,10);
             var toEliminate = terminator.ToEliminate(new List<Square> { new Square(0,3), new Square (0,4)
             });
 
@@ -40,8 +38,7 @@ namespace Vsite.Oom.Battleship.Model.UnitTests
         [TestMethod]
         public void ToEliminateReturns6SquaresAroundTheShip0_0to0_1()
         {
-            Grid grid = new Grid(10, 10);
-            SquareTerminator terminator = new SquareTerminator(grid);
+            SquareTerminator terminator = new SquareTerminator(10,10);
             var toEliminate = terminator.ToEliminate(new List<Square> { new Square(0,0), new Square (0,1)
             });
 
@@ -55,8 +52,7 @@ namespace Vsite.Oom.Battleship.Model.UnitTests
         [TestMethod]
         public void ToEliminateReturns6SquaresAroundTheShip8_9to9_9()
         {
-            Grid grid = new Grid(10, 10);
-            SquareTerminator terminator = new SquareTerminator(grid);
+            SquareTerminator terminator = new SquareTerminator(10,10);
             var toEliminate = terminator.ToEliminate(new List<Square> { new Square(8,9), new Square (9,9)
             });
 
