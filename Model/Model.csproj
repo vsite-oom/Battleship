@@ -52,6 +52,7 @@
     <Compile Include="ShipHitResult.cs" />
     <Compile Include="Shipwright.cs" />
     <Compile Include="Square.cs" />
+    <Compile Include="SquareState.cs" />
     <Compile Include="SquareTerminator.cs" />
     <Compile Include="SquareTerminatorFactory.cs" />
   </ItemGroup>
