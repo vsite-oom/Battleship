@@ -25,12 +25,19 @@ namespace Vsite.Oom.BattleShip.Model
         public HitResult IsHit(Square square)
         {
             if (!Squares.Contains(square))
+            {
+                
                 return HitResult.Missed;
+            }
             Squares.First(s => s == square).Hit = true;
             if (Squares.Count(s => s.Hit) == Squares.Count())
+            {
+                foreach (var s in Squares)
+                    s.SetState(HitResult.Sunk);
                 return HitResult.Sunk;
-            else
-                return HitResult.Hit;
+            }
+            
+            return HitResult.Hit;
             
         }
     }
