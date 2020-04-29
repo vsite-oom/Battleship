@@ -32,23 +32,23 @@ namespace Vsite.Oom.Battleship.Model.UnitTests
             fleet.AddShip(new List<Square>{new Square(4,5),new Square(5,5)});
 
             var hit = fleet.Hit(new Square(1, 4));
-            Assert.AreEqual(Ship.HitResult.Hit,hit);
+            Assert.AreEqual(HitResult.Hit,hit);
 
             hit = fleet.Hit(new Square(1, 5));
-            Assert.AreEqual(Ship.HitResult.Hit,hit);
+            Assert.AreEqual(HitResult.Hit,hit);
 
             hit = fleet.Hit(new Square(1, 6));
-            Assert.AreEqual(Ship.HitResult.Sunken,hit);
+            Assert.AreEqual(HitResult.Sunken,hit);
 
 
             hit = fleet.Hit(new Square(1, 9));
-            Assert.AreEqual(Ship.HitResult.Missed,hit);
+            Assert.AreEqual(HitResult.Missed,hit);
 
             hit = fleet.Hit(new Square(4, 5));
-            Assert.AreEqual(Ship.HitResult.Hit,hit);
+            Assert.AreEqual(HitResult.Hit,hit);
 
             hit = fleet.Hit(new Square(5, 5));
-            Assert.AreEqual(Ship.HitResult.Sunken,hit);
+            Assert.AreEqual(HitResult.Sunken,hit);
         }
     }
 }

@@ -23,19 +23,19 @@ namespace Vsite.Oom.Battleship.Model.UnitTests
             {
                 Ship ship = new Ship(new List<Square> {new Square(1, 4), new Square(1, 5), new Square(1, 6)});
                 var result = ship.Hit(new Square(1, 5));
-                Assert.AreEqual(Ship.HitResult.Hit, result);
+                Assert.AreEqual(HitResult.Hit, result);
             }
 
             {
                 Ship ship = new Ship(new List<Square> {new Square(1, 4), new Square(1, 5), new Square(1, 6)});
                 var result = ship.Hit(new Square(1, 4));
-                Assert.AreEqual(Ship.HitResult.Hit, result);
+                Assert.AreEqual(HitResult.Hit, result);
             }
 
             {
                 Ship ship = new Ship(new List<Square> {new Square(1, 4), new Square(1, 5), new Square(1, 6)});
                 var result = ship.Hit(new Square(1, 6));
-                Assert.AreEqual(Ship.HitResult.Hit, result);
+                Assert.AreEqual(HitResult.Hit, result);
             }
         } 
         
@@ -44,7 +44,7 @@ namespace Vsite.Oom.Battleship.Model.UnitTests
         {
             Ship ship = new Ship(new List<Square> {new Square(1, 4), new Square(1, 5), new Square(1, 6)});
             var result = ship.Hit(new Square(2, 5));
-            Assert.AreEqual(Ship.HitResult.Missed, result);
+            Assert.AreEqual(HitResult.Missed, result);
         }
 
         [TestMethod]
@@ -54,7 +54,7 @@ namespace Vsite.Oom.Battleship.Model.UnitTests
             var result = ship.Hit(new Square(1, 5));
             result = ship.Hit(new Square(1, 4));
             result = ship.Hit(new Square(1, 6));
-            Assert.AreEqual(Ship.HitResult.Sunken, result);
+            Assert.AreEqual(HitResult.Sunken, result);
         }
     }
 }
