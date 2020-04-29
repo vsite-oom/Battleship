@@ -23,6 +23,7 @@ namespace Vsite.Oom.Battleship.Model
         {
             if (!Squares.Contains(square))
             {
+
                 return HitResult.Missed;
             }
 
@@ -30,6 +31,10 @@ namespace Vsite.Oom.Battleship.Model
 
            if (Squares.Count(s => s.Hit) == Squares.Count())
             {
+                foreach(var s in Squares)
+                {
+                    s.SetState(HitResult.Sunken);
+                }
                 return HitResult.Sunken;
             }
 

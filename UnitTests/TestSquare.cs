@@ -13,5 +13,12 @@ namespace Vsite.Oom.Battleship.Model
             Assert.AreEqual(1, s.Row);
             Assert.AreEqual(8, s.Column);
         }
+        
+        [TestMethod]
+        public void WhenShipIsSunkenAllSquaresAremarkedSunken()
+        {
+            //Ship ship = new Ship(); Ship 3 polja, pogoditi, i provjera je su li svi squarovi u stanju sunken
+            throw new NotImplementedException();
+        }
     }
 }
