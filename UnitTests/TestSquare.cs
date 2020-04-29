@@ -10,8 +10,16 @@ namespace Vsite.Oom.Battleship.Model.UnitTests
         public void SquareConstructorCreatesSquareWithGivenPosition()
         {
             Square s = new Square(1, 8);
-            Assert.AreEqual(1,s.Row);
+            Assert.AreEqual(1, s.Row);
             Assert.AreEqual(8, s.Column);
+        }
+
+        [TestMethod]
+        public void WhenShipIsSunkenAllSquaresAreMarkedSunken()
+        {
+            //napravi brod cca 3, gadjaj 123 polja kad je ship sunken, provjeri je li state sunken.
+
+            throw new NotImplementedException();
         }
     }
 }
