@@ -20,24 +20,24 @@ namespace Vsite.Oom.Battleship.Model
 
         public Fleet CreateFleet(IEnumerable<int> shipLengths)
         {
-            for( int i = 0; i < 3; ++i)
+            var random = new Random();
+            for ( int i = 0; i < 3; ++i)
             {
-                var fleet = TryPlaceShips(shipLengths);
+                var fleet = TryPlaceShips(shipLengths, random);
                 if (fleet != null)
                 {
                     return fleet;
                 }
             }
-            throw new ArgumentOutOfRangeException(); ;
+            throw new ArgumentOutOfRangeException();
         }
 
-        private Fleet TryPlaceShips(IEnumerable<int> shipLengths)
+        private Fleet TryPlaceShips(IEnumerable<int> shipLengths, Random random)
         {
             var lenghts = new List<int>(shipLengths.OrderByDescending(s => s));
             var grid = new Grid(rows, columns);
-            var terminator = new SquareTerminator(grid);
+            var terminator = new SquareTerminator(rows, columns);
             var fleet = new Fleet();
-            var random = new Random();
 
             while (lenghts.Count > 0)
             {
