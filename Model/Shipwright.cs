@@ -8,10 +8,24 @@ namespace Vsite.Oom.BattleShip.Model
 {
     public class Shipwright
     {
+        public Shipwright(int rows, int columns, ISquareTerminator terminator)
+        {
+            this.rows = rows;
+            this.columns = columns;
+            this.terminator = terminator;
+        }
+
         public Shipwright(int rows, int columns)
         {
-            rows = RulesSingleton.Instance.Rows; ;
-            columns = RulesSingleton.Instance.Columns;
+            this.rows = rows;
+            this.columns = columns;
+            this.terminator = new SquareTerminator(rows, columns);
+        }
+
+        public Shipwright()
+        {
+            this.rows = RulesSingleton.Instance.Rows;
+            this.columns = RulesSingleton.Instance.Columns;
         }
 
         public Fleet CreateFleet(IEnumerable<int> shipLengths)
@@ -58,5 +72,6 @@ namespace Vsite.Oom.BattleShip.Model
         Random random = new Random();
         private readonly int rows;
         private readonly int columns;
+        private readonly ISquareTerminator terminator;
     }
 }

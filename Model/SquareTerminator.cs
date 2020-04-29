@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace Vsite.Oom.BattleShip.Model
 {
-    public class SquareTerminator
+    public class SquareTerminator : ISquareTerminator
     {
         public SquareTerminator(int rows, int columns)
         {
-            this.rows = rows;
-            this.columns = columns;
+            this.rows = RulesSingleton.Instance.Rows;
+            this.columns = RulesSingleton.Instance.Columns;
         }
 
         public IEnumerable<Square> toEliminate(IEnumerable<Square> shipSquares)
