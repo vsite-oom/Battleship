@@ -10,7 +10,7 @@ namespace Vsite.oom.Battleship.Model
    
        
     
- public class SquareTerminator    {
+ public class SquareTerminator :ISquareTerminator   {
         public SquareTerminator(int rows, int columns)
         {
             this.rows = rows;

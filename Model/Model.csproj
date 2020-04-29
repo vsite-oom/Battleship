@@ -41,6 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Interface1.cs" />
     <Compile Include="RulesSingleton.cs" />
     <Compile Include="Fleet.cs" />
     <Compile Include="Grid.cs" />
