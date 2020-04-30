@@ -23,7 +23,9 @@ namespace Vsite.Oom.Battleship.Model
         {
             if (!Squares.Contains(square))
                 return HitResult.Missed;
+
             Squares.First(s => s == square).Hit = true;
+
             if (Squares.Count(s => s.Hit) == Squares.Count())
             {
                 foreach (var s in Squares)
