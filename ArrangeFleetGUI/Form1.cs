@@ -15,82 +15,80 @@ namespace ArrangeFleetGUI
 {
     public partial class Battleship : Form
     {
+        CheckBox[,] buttons;
+        int rows = 10;
+        int columns = 10;
+        Color buttonColor = SystemColors.ControlLight;
+        Color shipColor = Color.Brown;
+        Fleet fleet = new Fleet();
         public Battleship()
         {
             InitializeComponent();
-            this.MaximizeBox = false;
-            this.MinimizeBox = false;
+
+           CreateButtons();
+         
 
         }
 
-       
+        private int CreateButtons()
+        {
+            buttons = new CheckBox[rows, columns];
+            int buttonSize = Math.Min(panel1.Width / columns, panel1.Height / rows);
 
+            int x0 = (panel1.Width - columns * buttonSize) / 2;
+            int y = (panel1.Height - rows * buttonSize) / 2;
+            for (int r = 0; r < rows; ++r)
+            {
+                int x = x0;
+                for (int c = 0; c < columns; ++c)
+                {
+                    CheckBox button = new CheckBox
+                    {
+                        Top = y,
+                        Left = x,
+                        Width = buttonSize,
+                        Height = buttonSize,
+                        Appearance = Appearance.Button
+                    };
+
+                    buttons[r, c] = button;
+                    panel1.Controls.Add(button);
+                  
+                    x += buttonSize;
+                }
+                y += buttonSize;
+            }
+            return buttonSize;
+        }
+        private void ResetButtons()
+        {
+            for (int r = 0; r < rows; ++r)
+            {
+                for (int c = 0; c < columns; ++c)
+                {
+                    buttons[r, c].Checked = false;
+                    buttons[r, c].BackColor = buttonColor;
+                }
+            }
+            List<Ship> ships = new List<Ship>(fleet.Ships);
+            ships.Sort((s1, s2) => s2.Squares.Count());
+            for (int i = 0; i < ships.Count(); i ++)
+            {
+                foreach (var square in ships[i].Squares)
+                {
+                    var button = buttons[square.Row, square.Column];
+                  
+                    button.BackColor = shipColor;
+                }
+            }
+        }
         private void button101_Click(object sender, EventArgs e)
         {
-            
-
-            String buttonname;
-            List<Button> listofbuttons = this.Controls.OfType<Button>()
-                 .Concat(this.panel1.Controls.OfType<Button>())
-                 .ToList();
-            List<Button> buttonsclicked = new List<Button>();
-            Shipwright shipwright = new Shipwright(10, 10);
-            var fleet = shipwright.CreateFleet(new int[] { 5, 4, 4, 3, 3, 3, 2, 2, 2, 2 });
-            var flag = 0; 
-           
-            var listofships = fleet.Ships.ToList();
-            var rowlist = new List<int>();
-            var collist = new List<int>();
-
-            foreach (var a in listofships)
-            {
-                var squares = a.Squares;
-                foreach (var b in squares)
-                {
-                    var r = b.Row;
-                    var c = b.Column;
-
-                    for (int i = 0; i < 10; ++i)
-                    {
-                        for (int j = 0; j < 10; j++)
-                        {
-                            if (i == c && r == j)
-                            {
-                                buttonname = "row" + i + "col" + j;
-                                foreach (var but in listofbuttons)
-                                {
-                                    if (but.Name == buttonname)
-                                    {
-                                        but.BackColor = SystemColors.ControlDarkDark;
-                                 
-                                        
-                                    }
-                                }
-                            }
-                        }
-                    }
-
-                }
-                flag = 1;
-            }
 
 
-            if (flag == 1)
-            {
-                button101.Enabled = false;
-               
-                DialogResult dialogResult = MessageBox.Show("Do you want to arrange fleet again?", "No", MessageBoxButtons.YesNo);
-                if (dialogResult == DialogResult.Yes)
-                {
-                
-                    Battleship form = new Battleship();
-                    form.Show();
-                }
-            
-               
-                
-            }   
-
+            Shipwright sw = new Shipwright(rows, columns);
+            fleet = sw.CreateFleet(new int[] { 5, 4, 4, 3, 3, 3, 2, 2, 2, 2 });
+            ResetButtons();
         }
     }
 }
