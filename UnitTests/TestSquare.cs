@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Collections.Generic;
 
 namespace Vsite.Oom.Battleship.Model.UnitTests
 {
@@ -17,7 +18,27 @@ namespace Vsite.Oom.Battleship.Model.UnitTests
         [TestMethod]
         public void WhenShipIsSunkenAllSquaresAreMarkedSunken()
         {
-            throw new NotImplementedException();
+            List<Square> squares = new List<Square>()
+            {
+                new Square(1,0),
+                new Square(2,0),
+                new Square(3,0)
+            };
+
+            Ship ship = new Ship(squares);
+
+            foreach (Square square in ship.Squares)
+            {
+                square.SetState(HitResult.Sunken);
+            }
+
+
+            foreach (Square square in ship.Squares)
+            {
+                Assert.AreEqual(SquareState.Sunken, square.SquareState);
+            }
+
+
         }
 
     }

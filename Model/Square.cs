@@ -14,8 +14,14 @@ namespace Vsite.Oom.Battleship.Model
         Hit,
         Sunken
     }
+
+
     public class Square : IEquatable<Square>
     {
+
+        public readonly int Row;
+        public readonly int Column;
+
         public Square(int row, int column)
         {
             Row = row;
@@ -43,10 +49,12 @@ namespace Vsite.Oom.Battleship.Model
             }
         }
 
-        public readonly int Row;
-        public readonly int Column;
         
-        public SquareState SquareState { get; private set; }
+        public SquareState SquareState 
+        {
+            get;
+            private set;
+        }
 
         public bool Equals(Square other)
         {
