@@ -25,7 +25,6 @@ namespace Vsite.Oom.Battleship.Model
 
         public IEnumerable<Placement> GetAvailablePlacements(int Length)
         {
-
             return GetAvailableHorizontalPlacements(Length).Concat(GetAvailableVerticalPlacements(Length));
         }
 
@@ -100,7 +99,14 @@ namespace Vsite.Oom.Battleship.Model
             }
             return result;
         }
+
+        private bool IsAvailable(int row, int column)
+        {
+            return squares[row, column] != null && squares[row, column].SquareState == SquareState.None;
+        }
+
         public readonly int Rows;
+
         public readonly int Columns;
 
         private Square[,] squares;
