@@ -51,7 +51,7 @@ namespace Vsite.oom.Battleship.Model
 
         }
 
-        public void MarkHitResult(Square square, HitResult hitresult)
+        public void MarkHitResult(Square square, HitResult hitResult)
         {
 
         }
