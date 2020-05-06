@@ -26,6 +26,7 @@ namespace Vsite.Oom.Battleship.Model
 
         public void MarkHitResult(Square lastTarget, ShipHitResult hitResult)
         {
+            squares[lastTarget.Row, lastTarget.Column].SetState(hitResult);
         }
 
         public IEnumerable<Placement> GetAvailablePlacements(int length)
@@ -48,7 +49,7 @@ namespace Vsite.Oom.Battleship.Model
             return GeAvailableHorizontalPlacements(length).Concat(GetAvailableVerticalPlacements(length));
         }
 
-        public void EliminateSqure(Placement toEliminate)
+        public void EliminateSquares(Placement toEliminate)
         {
             foreach (var item in toEliminate)
             {

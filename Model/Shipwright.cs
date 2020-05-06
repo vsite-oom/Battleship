@@ -61,7 +61,7 @@ namespace Vsite.Oom.Battleship.Model
                 fleet.AddShip(placements.ElementAt(index));
 
                 var toEliminate = terminator.ToEliminate(placements.ElementAt(index));
-                grid.EliminateSqure(toEliminate);
+                grid.EliminateSquares(toEliminate);
 
                 if (lenghts.Count() == 0) return fleet;
             }

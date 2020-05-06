@@ -7,16 +7,19 @@ namespace Vsite.Oom.Battleship.Model
 {
     public class Gunner
     {
-        private Square lastTarget;
-        private readonly Grid evidenceGrid;
-        private List<int> shipsToShoot;
         private readonly Random random = new Random();
+        private readonly Grid evidenceGrid;
+        private readonly ISquareTerminator squareTerminator;
+        private Square lastTarget;
+        private List<int> shipsToShoot;
+        private List<Square> squaresHit = new List<Square>();
 
         public Gunner(int rows, int columns, IEnumerable<int> shipLenghts)
         {
             evidenceGrid = new Grid(rows, columns);
             shipsToShoot = shipLenghts.OrderByDescending(s => s).ToList();
             ShootingTactics = ShootingTactics.Random;
+            this.squareTerminator = new SquareTerminator(rows, columns);
         }
 
         public ShootingTactics ShootingTactics { get; private set; }
@@ -48,6 +51,22 @@ namespace Vsite.Oom.Battleship.Model
                             return;
                     }
                 case ShipHitResult.Sunken:
+                    squaresHit.Add(lastTarget);
+                    squaresHit.OrderBy(s => s.Row + s.Column);
+                    var toEliminate = squareTerminator.ToEliminate(squaresHit);
+                    foreach (var sq in toEliminate)
+                    {
+                        evidenceGrid.MarkHitResult(sq, ShipHitResult.Missed);
+                    }
+
+                    foreach (var sq in squaresHit)
+                    {
+                        evidenceGrid.MarkHitResult(sq, ShipHitResult.Sunken);
+                    }
+
+                    var length = squaresHit.Count;
+                    shipsToShoot.Remove(length);
+                    squaresHit.Clear();
                     ShootingTactics = ShootingTactics.Random;
                     return;
                 default:
