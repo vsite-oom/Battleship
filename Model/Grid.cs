@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -32,7 +33,7 @@ namespace Vsite.Oom.Battleship.Model
             {
                 for (int c = 0; c < Columns; ++c)
                 {
-                    if (squares[r, c] != null)
+                    if (IsAveliable(r, c))
                         result.Add(new List<Square> { squares[r, c] });
                 }
             }
@@ -57,7 +58,7 @@ namespace Vsite.Oom.Battleship.Model
                 LimitedQueue<Square> passed = new LimitedQueue<Square>(length);
                 for (int c = 0; c < Columns; ++c)
                 {
-                    if (squares[r, c] != null)
+                    if (IsAveliable(r, c))
                         passed.Enqueue(squares[r, c]);
                     else
                         passed.Clear();
@@ -78,7 +79,7 @@ namespace Vsite.Oom.Battleship.Model
                 LimitedQueue<Square> passed = new LimitedQueue<Square>(length);
                 for (int r = 0; r < Rows; ++r)
                 {
-                    if (squares[r, c] != null)
+                    if (IsAveliable(r, c))
                         passed.Enqueue(squares[r, c]);
                     else
                         passed.Clear();
@@ -89,6 +90,11 @@ namespace Vsite.Oom.Battleship.Model
                 }
             }
             return result;
+        }
+
+        private bool IsAveliable(int row, int column)
+        {
+            return squares[row, column] != null && squares[row, column].SquareState == SquareState.None;
         }
 
         public readonly int Rows;
