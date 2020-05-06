@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Diagnostics;
 
 namespace Vsite.Oom.Battleship.Model
 {
@@ -24,7 +25,7 @@ namespace Vsite.Oom.Battleship.Model
         public Square NextTarget()
         {
             // TODO: implement correctly!
-            lastTarget = new Square(0, 0);
+            lastTarget = SelectTarget();
             return lastTarget;
         }
 
@@ -53,9 +54,39 @@ namespace Vsite.Oom.Battleship.Model
                             return;
                     }
                     break;
-                   
             }
 
+        }
+        private Square SelectTarget()
+        {
+            switch (ShootingTactics)
+            {
+                case ShootingTactics.Random:
+                    return SelectRandomly();
+                case ShootingTactics.Surrounding:
+                    return SelectFromArround();
+                case ShootingTactics.Inline:
+                    return SelectInline();
+                default:
+                    Debug.Assert(false);
+                    return null;
+            }
+        }
+
+        private Square SelectRandomly()
+        {
+            var placement = evidenceGrid.GetAvailablePlacements(shipsToShoot[0]);
+            var allCandidates = placement.SelectMany(seq => seq);
+            int index = random.Next(0, allCandidates.Count());
+            return allCandidates.ElementAt(index);
+        }
+        private Square SelectFromArround()
+        {
+            throw new NotImplementedException();
+        }
+        private Square SelectInline()
+        {
+            throw new NotImplementedException();
         }
 
         private Square lastTarget;
@@ -63,6 +94,8 @@ namespace Vsite.Oom.Battleship.Model
         private Grid evidenceGrid;
 
         private List<int> shipsToShoot;
+
+        private Random random = new Random();
         public ShootingTactics ShootingTactics { get; private set; }
     }
 }
