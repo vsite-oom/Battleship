@@ -24,10 +24,6 @@ namespace Vsite.Oom.BattleShip.Model
             }
         }
 
-        public void MarkHitResult(Square square, HitResult hitResult)
-        {
-
-        }
 
         public IEnumerable<IEnumerable<Square>> GetAvailablePlacements(int length)
         {
@@ -62,6 +58,11 @@ namespace Vsite.Oom.BattleShip.Model
 
             
             
+        }
+
+        public void MarkHitResult(Square square, HitResult hitResult)
+        {
+            squares[square.row, square.column].SetState(hitResult);
         }
 
         private IEnumerable<Placement> GetAvailableVerticalPlacement(int length)
