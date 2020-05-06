@@ -24,6 +24,11 @@ namespace Vsite.Oom.BattleShip.Model
             }
         }
 
+        public void MarkHitResult(Square square, HitResult hitResult)
+        {
+
+        }
+
         public IEnumerable<IEnumerable<Square>> GetAvailablePlacements(int length)
         {
             if(length != 1)
