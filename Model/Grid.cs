@@ -24,6 +24,10 @@ namespace Vsite.Oom.Battleship.Model
             }
         }
 
+        public void MarkHitResult(Square lastTarget, ShipHitResult hitResult)
+        {
+        }
+
         public readonly int Rows;
         public readonly int Columns;
 

@@ -43,6 +43,7 @@
   <ItemGroup>
     <Compile Include="Fleet.cs" />
     <Compile Include="Grid.cs" />
+    <Compile Include="Gunner.cs" />
     <Compile Include="ISquareTerminator.cs" />
     <Compile Include="LimitedQueue.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -51,6 +52,7 @@
     <Compile Include="ShipAdjoining.cs" />
     <Compile Include="ShipHitResult.cs" />
     <Compile Include="Shipwright.cs" />
+    <Compile Include="ShootingTactics.cs" />
     <Compile Include="Square.cs" />
     <Compile Include="SquareState.cs" />
     <Compile Include="SquareTerminator.cs" />
