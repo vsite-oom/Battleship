@@ -34,7 +34,7 @@ namespace Vsite.Oom.Battleship.Model
             foreach (var square in toEliminate)
                 squares[square.Row, square.Column] = null;
         }
-
+        
         public IEnumerable<Placement> GetAvailablePlacements(int length)
         {
             if (length != 1)
@@ -103,7 +103,7 @@ namespace Vsite.Oom.Battleship.Model
 
         public void MarkHitResult(Square square, HitResult hitResult)
         {
-
+            squares[square.Row, square.Column].SetState(hitResult);
         }
     }
 }
