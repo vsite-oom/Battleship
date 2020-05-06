@@ -44,6 +44,7 @@
     <Compile Include="Class1.cs" />
     <Compile Include="Fleet.cs" />
     <Compile Include="Grid.cs" />
+    <Compile Include="Gunner.cs" />
     <Compile Include="ISquareTerminator.cs" />
     <Compile Include="LimitedQueue.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
