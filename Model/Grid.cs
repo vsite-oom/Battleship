@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace Vsite.Oom.Battleship.Model
 {
+    using static Vsite.Oom.Battleship.Model.Ship;
     using Placement = IEnumerable<Square>;
     public class Grid
     {
@@ -93,6 +94,11 @@ namespace Vsite.Oom.Battleship.Model
                 }
             }
             return result;
+        }
+
+        public void MarkHitResult(Square square, HitResult hitResult)
+        {
+
         }
     }
 }
