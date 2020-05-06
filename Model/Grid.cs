@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,7 +13,7 @@ namespace Vsite.Oom.Battleship.Model
         {
             Rows = rows;
             Columns = columns;
-            squares = new Square[rows, columns];
+            squares = new Square[Rows, Columns];
             for (int r = 0; r < Rows; ++r)
             {
                 for (int c = 0; c < Columns; ++c)
@@ -28,12 +27,13 @@ namespace Vsite.Oom.Battleship.Model
             {
                 return GetAvailableHorizontalPlacements(length).Concat(GetAvailableVerticalPlacements(length));
             }
+
             List<List<Square>> result = new List<List<Square>>();
             for (int r = 0; r < Rows; ++r)
             {
                 for (int c = 0; c < Columns; ++c)
                 {
-                    if (IsAveliable(r, c))
+                    if (IsAvailaible(r, c))
                         result.Add(new List<Square> { squares[r, c] });
                 }
             }
@@ -45,11 +45,11 @@ namespace Vsite.Oom.Battleship.Model
             foreach (var square in toEliminate)
                 squares[square.Row, square.Column] = null;
         }
-
         public void MarkHitResult(Square square, HitResult hitResult)
         {
-
+            squares[square.Row, square.Column].SetState(hitResult);
         }
+
         private IEnumerable<Placement> GetAvailableHorizontalPlacements(int length)
         {
             var result = new List<List<Square>>();
@@ -58,14 +58,12 @@ namespace Vsite.Oom.Battleship.Model
                 LimitedQueue<Square> passed = new LimitedQueue<Square>(length);
                 for (int c = 0; c < Columns; ++c)
                 {
-                    if (IsAveliable(r, c))
+                    if (IsAvailaible(r, c))
                         passed.Enqueue(squares[r, c]);
                     else
                         passed.Clear();
                     if (passed.Count == length)
-                    {
                         result.Add(passed.ToList());
-                    }
                 }
             }
             return result;
@@ -79,20 +77,17 @@ namespace Vsite.Oom.Battleship.Model
                 LimitedQueue<Square> passed = new LimitedQueue<Square>(length);
                 for (int r = 0; r < Rows; ++r)
                 {
-                    if (IsAveliable(r, c))
+                    if (IsAvailaible(r, c))
                         passed.Enqueue(squares[r, c]);
                     else
                         passed.Clear();
                     if (passed.Count == length)
-                    {
                         result.Add(passed.ToList());
-                    }
                 }
             }
             return result;
         }
-
-        private bool IsAveliable(int row, int column)
+        private bool IsAvailaible(int row, int column)
         {
             return squares[row, column] != null && squares[row, column].SquareState == SquareState.None;
         }
@@ -100,6 +95,6 @@ namespace Vsite.Oom.Battleship.Model
         public readonly int Rows;
         public readonly int Columns;
 
-        private Square[,] squares; //dvodimenzionalno polje
+        private Square[,] squares;
     }
 }
