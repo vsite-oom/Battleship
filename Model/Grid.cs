@@ -7,6 +7,7 @@ using Vsite.Oom.Battleship.Model;
 
 namespace Model
 {
+    using static Vsite.Oom.Battleship.Model.Ship;
     using Placment = IEnumerable<Square>;
     public class Grid
     {
@@ -48,7 +49,10 @@ namespace Model
                 squares[square.Row, square.Column] = null;
 
         }
+        public void MarkHitResult(Square square,HitResult hitResult)
+        {
 
+        }
         private IEnumerable<Placment> GetAvailableHorizontalPlacement(int length)
         {
             var result = new List<List<Square>>();
