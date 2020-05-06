@@ -39,12 +39,17 @@ namespace Vsite.Oom.Battleship.Model
 			{
 				for (int c = 0; c < Columns; c++)
 				{
-					if (squares[r, c] != null)
+					if (isAvailable(r,c))
 						result.Add(new List<Square> { squares[r, c] });
 				}
 			}
 
 			return result;
+		}
+
+		private bool isAvailable(int row, int column)
+		{
+			return squares[row, column] != null && squares[row, column].SquareState == SquareState.None;
 		}
 
 		public void EliminateSquares(Placement toEliminate)
@@ -70,7 +75,7 @@ namespace Vsite.Oom.Battleship.Model
 
 				for (int c = 0; c < Columns; c++)
 				{
-					if (squares[r, c] != null)
+					if (isAvailable(r,c))
 						passed.Enqueue(squares[r, c]);
 					else
 						passed.Clear();
@@ -95,7 +100,7 @@ namespace Vsite.Oom.Battleship.Model
 
 				for (int r = 0; r < Rows; r++)
 				{
-					if (squares[r, c] != null)
+					if (isAvailable(r,c))
 						passed.Enqueue(squares[r, c]);
 					else
 						passed.Clear();
