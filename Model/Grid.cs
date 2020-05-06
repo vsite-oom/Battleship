@@ -34,7 +34,7 @@ namespace Model
             {
                 for (int c = 0; c < Columns; ++c)
                 {
-                    if (squares[r, c] != null)
+                    if (IsAvailable(r, c))
                         result.Add(new List<Square> { squares[r, c] });
                 }
             }
@@ -61,7 +61,7 @@ namespace Model
                 LimitedQueue<Square> passed = new LimitedQueue<Square>(length);
                 for (int c = 0; c < Columns; ++c)
                 {
-                    if (squares[r, c] != null)
+                    if (IsAvailable(r, c))
                         passed.Enqueue(squares[r, c]);
                     else
                         passed.Clear();
@@ -83,7 +83,7 @@ namespace Model
                 LimitedQueue<Square> passed = new LimitedQueue<Square>(length);
                 for (int r = 0; r < Rows; ++r)
                 {
-                    if (squares[r, c] != null)
+                    if (IsAvailable(r,c))
                         passed.Enqueue(squares[r, c]);
                     else
                         passed.Clear();
@@ -96,7 +96,11 @@ namespace Model
             }
             return result;
         }
+        private bool IsAvailable(int row,int column)
+        {
+            return squares[row, column] != null && squares[row, column].SquareState == SquareState.None;
 
+        }
         public readonly int Rows;
         public readonly int Columns;
         private Square[,] squares;
