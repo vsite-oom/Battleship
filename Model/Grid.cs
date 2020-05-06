@@ -22,11 +22,13 @@ namespace Vsite.Oom.Battleship.Model
                 }
             }
         }
+
         public IEnumerable<Placement> GetAvailablePlacements(int Length)
         {
 
             return GetAvailableHorizontalPlacements(Length).Concat(GetAvailableVerticalPlacements(Length));
         }
+
         public void EliminateSquares(Placement toEliminate)
         {
             foreach (var square in toEliminate)
@@ -34,6 +36,12 @@ namespace Vsite.Oom.Battleship.Model
                 squares[square.Row, square.Column] = null;
             }
         }
+
+        public void MarkHitResult(Square square, HitResult hitResult)
+        {
+
+        }
+
         private IEnumerable<Placement> GetAvailableHorizontalPlacements(int Length)
         {
             var result = new List<List<Square>>();
