@@ -106,12 +106,12 @@ namespace Vsite.Oom.Battleship.Model
 
         private Square SelectFromArround()
         {
-
+            throw new NotImplementedException();
         }
 
         private Square SelectInline()
         {
-
+            throw new NotImplementedException();
         }
 
         private Square lastTarget;
