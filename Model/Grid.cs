@@ -43,6 +43,10 @@ namespace Vsite.Oom.Battleship.Model
                 squares[square.Row, square.Column] = null;
             }
         }
+        public void MarkHitResult(Square square, HitResult hitResult)
+        {
+
+        }
         private IEnumerable<Placement> GetAvailableHorizontalPlacements(int length)
         {
             var result = new List<List<Square>>();
@@ -83,6 +87,7 @@ namespace Vsite.Oom.Battleship.Model
             }
             return result;
         }
+
 
         public readonly int Rows;
         public readonly int Columns;
