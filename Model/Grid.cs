@@ -3,11 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
- 
 
 namespace Vsite.Oom.Battleship.Model
 {
-
     using Placement = IEnumerable<Square>;
     public class Grid
     {
@@ -45,64 +43,49 @@ namespace Vsite.Oom.Battleship.Model
         public void EliminateSquares(Placement toEliminate)
         {
             foreach (var square in toEliminate)
-            {
                 squares[square.Row, square.Column] = null;
-            }
+        }
+        public void MarkHitResult(Square square, HitResult hitResult)
+        {
+
         }
 
         private IEnumerable<Placement> GetAvailableHorizontalPlacements(int length)
         {
             var result = new List<List<Square>>();
-            for (int r = 0; r < Rows; r++)
+            for (int r = 0; r < Rows; ++r)
             {
-                LimitedQueue<Square> q = new LimitedQueue<Square>(length);
-                for (int c = 0; c < Columns; c++)
+                LimitedQueue<Square> passed = new LimitedQueue<Square>(length);
+                for (int c = 0; c < Columns; ++c)
                 {
                     if (squares[r, c] != null)
-                    {
-                        q.Enqueue(squares[r, c]);
-                    }
+                        passed.Enqueue(squares[r, c]);
                     else
-                    {
-                        q.Clear();
-                    }
-                    if(q.Count == length)
-                    {
-                        result.Add(q.ToList());
-                    }
+                        passed.Clear();
+                    if (passed.Count == length)
+                        result.Add(passed.ToList());
                 }
             }
-
             return result;
         }
 
         private IEnumerable<Placement> GetAvailableVerticalPlacements(int length)
         {
-
             var result = new List<List<Square>>();
-            for (int c = 0; c < Columns; c++)
+            for (int c = 0; c < Columns; ++c)
             {
-                LimitedQueue<Square> q = new LimitedQueue<Square>(length);
-                for (int r = 0; r < Rows; r++)
+                LimitedQueue<Square> passed = new LimitedQueue<Square>(length);
+                for (int r = 0; r < Rows; ++r)
                 {
                     if (squares[r, c] != null)
-                    {
-                        q.Enqueue(squares[r, c]);
-                    }
+                        passed.Enqueue(squares[r, c]);
                     else
-                    {
-                        q.Clear();
-                    }
-                    if (q.Count == length)
-                    {
-                        result.Add(q.ToList());
-                    }
+                        passed.Clear();
+                    if (passed.Count == length)
+                        result.Add(passed.ToList());
                 }
             }
-
             return result;
-
-
         }
 
         public readonly int Rows;
