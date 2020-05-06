@@ -29,7 +29,7 @@ namespace Vsite.Oom.Battleship.Model
             for (int r = 0; r < Rows; ++r)
             {
                 for (int c = 0; c < Cols; ++c)
-                    if (squares[r, c] != null)
+                    if (IsAvailable(r, c))
                         result.Add(new List<Square> { squares[r, c] });
             }
             return result;
@@ -55,7 +55,7 @@ namespace Vsite.Oom.Battleship.Model
                 LimitedQueue<Square> passed = new LimitedQueue<Square>(length);
                 for (int c = 0; c < Cols; ++c)
                 {
-                    if (squares[r, c] != null)
+                    if (IsAvailable(r, c))
                         passed.Enqueue(squares[r, c]);
                     else
                         passed.Clear();
@@ -76,7 +76,7 @@ namespace Vsite.Oom.Battleship.Model
                 int counter = 0;
                 for (int r = 0; r < Rows; ++r)
                 {
-                    if (squares[r, c] != null)
+                    if (IsAvailable(r, c))
                     {
                         ++counter;
                     }
@@ -98,6 +98,10 @@ namespace Vsite.Oom.Battleship.Model
             return result;
         }
 
+        private bool IsAvailable(int row, int col)
+        {
+            return squares[row, col] != null && squares[row, col].SquareState == SquareState.None;
+        }
 
         public readonly int Rows;
         public readonly int Cols;
