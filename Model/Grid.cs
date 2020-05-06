@@ -45,9 +45,11 @@ namespace Vsite.Oom.Battleship.Model
             foreach (var square in toEliminate)
                 squares[square.Row, square.Column] = null;
         }
+
+
         public void MarkHitResult(Square square, HitResult hitResult)
         {
-
+            squares[square.Row, square.Column].SetState(hitResult);
         }
 
         private IEnumerable<Placement> GetAvailableHorizontalPlacements(int length)
