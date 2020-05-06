@@ -27,7 +27,7 @@ namespace Vsite.Oom.Battleship.Model.UnitTests
             ship.Hit(new Square(1, 6));
 
             foreach (var s in ship.Squares)
-                Assert.AreEqual(SquareState.Sunken, s.SquareState);
+                Assert.AreEqual(SquareState.Sunken, s.SquareState); 
         }
     }
 }
