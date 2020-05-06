@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,7 +23,8 @@ namespace Vsite.Oom.Battleship.Model
         }
         public Square NextTarget() {
             //TODO: implement
-            lastTarget = new Square(0, 0);
+
+            lastTarget = SelectTarget();
             return lastTarget;
         }
 
@@ -51,15 +53,46 @@ namespace Vsite.Oom.Battleship.Model
                     }
                     break;
             }
-            // modify shooting tactics:
-            // - if missed - no change
-            // - if first - change to surrounding
-            // - if second hit - change to inline
-            // - if sunken - change to random
+          
         }
+        private Square SelectTarget()
+        {
+            switch (ShootingTactics) {
+                case ShootingTactics.Random:
+                    return SelectRandomly();
+                case ShootingTactics.Surrounding:
+                    return SelectFromAround();
+                case ShootingTactics.Inline:
+                    return SelectInline();
+                default:
+                    Debug.Assert(false);
+                    return null;
+            }
+               
+        }
+        private Square SelectRandomly()
+        {
+            var placements = evidenceGrid.GetAvailablePlacements(shipsToShoot[0]);
+            var allCandidates = placements.SelectMany(seq => seq);
+            int index = random.Next(0, allCandidates.Count());
+            return allCandidates.ElementAt(index);
+        }
+        private Square SelectInline()
+        {
+            throw new NotImplementedException();
+        }
+        private Square SelectFromAround()
+        {
+            throw new NotImplementedException();
+        }
+
+
+
         private Square lastTarget;
 
         private Grid evidenceGrid;
+
+        private Random random = new Random();
 
         private List<int> shipsToShoot;
         public ShootingTactics ShootingTactics { get; private set; }
