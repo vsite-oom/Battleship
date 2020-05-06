@@ -7,6 +7,7 @@ using Vsite.Oom.Battleship.Model;
 
 namespace Model
 {
+    using static Vsite.Oom.Battleship.Model.Ship;
     using Placment = IEnumerable<Square>;
     public class Grid
     {
@@ -26,7 +27,8 @@ namespace Model
         public IEnumerable<Placment> GetAvailablePlacements(int length)
         {
             if (length != 1)
-                return GetAvailableHorizontalPlacement(length).Concat(GetAvailableVerticalPlacement(length));
+                return
+                GetAvailableHorizontalPlacement(length).Concat(GetAvailableVerticalPlacement(length));
 
             List<List<Square>> result = new List<List<Square>>();
             for (int r = 0; r < Rows; ++r)
@@ -48,13 +50,18 @@ namespace Model
                 squares[square.Row, square.Column] = null;
 
         }
+        public void MarkHitResult(Square square, HitResult hitResult)
+        {
 
-        private IEnumerable<Placment> GetAvailableHorizontalPlacement(int length)
+        }
+        private IEnumerable<Placment> GetAvailableHorizontalPlacement(int
+        length)
         {
             var result = new List<List<Square>>();
             for (int r = 0; r < Rows; ++r)
             {
-                LimitedQueue<Square> passed = new LimitedQueue<Square>(length);
+                LimitedQueue<Square> passed = new
+                LimitedQueue<Square>(length);
                 for (int c = 0; c < Columns; ++c)
                 {
                     if (squares[r, c] != null)
@@ -71,12 +78,14 @@ namespace Model
             return result;
 
         }
-        private IEnumerable<Placment> GetAvailableVerticalPlacement(int length)
+        private IEnumerable<Placment> GetAvailableVerticalPlacement(int
+        length)
         {
             var result = new List<List<Square>>();
             for (int c = 0; c < Columns; ++c)
             {
-                LimitedQueue<Square> passed = new LimitedQueue<Square>(length);
+                LimitedQueue<Square> passed = new
+                LimitedQueue<Square>(length);
                 for (int r = 0; r < Rows; ++r)
                 {
                     if (squares[r, c] != null)
@@ -98,6 +107,5 @@ namespace Model
         private Square[,] squares;
     }
 }
-
 
 
