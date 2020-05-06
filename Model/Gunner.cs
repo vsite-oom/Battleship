@@ -21,6 +21,7 @@ namespace Vsite.Oom.Battleship.Model
             evidenceGrid = new Grid(rows, columns);
             shipsToShoot = new List<int>(shipLengths.OrderByDescending(l => l));
             ShootingTactics = ShootingTactics.Random;
+            squareTerminator = new SquareTerminator(rows, columns);
         }
 
         public Square NextTarget()
@@ -39,10 +40,22 @@ namespace Vsite.Oom.Battleship.Model
                 case HitResult.Missed:
                     return;
                 case HitResult.Sunken:
-                    // eliminate squares around the ship
+                    squaresHit.Add(lastTarget);
+                    squaresHit.OrderBy(s => s.Row + s.Column);
+                    var toEliminate = squareTerminator.ToEliminate(squaresHit);
+                    foreach (var sq in toEliminate)
+                        evidenceGrid.MarkHitResult(sq, HitResult.Missed);
+                    foreach (var sq in squaresHit)
+                        evidenceGrid.MarkHitResult(sq, HitResult.Sunken);
+                    evidenceGrid.EliminateSquares(toEliminate);
+                    int length = squaresHit.Count();
+                    shipsToShoot.Remove(length);
+                    squaresHit.Clear();
                     ShootingTactics = ShootingTactics.Random;
                     return;
                 case HitResult.Hit:
+                    squaresHit.Add(lastTarget);
+                    squaresHit.OrderBy(s => s.Row + s.Column);
                     switch (ShootingTactics)
                     {
                         case ShootingTactics.Random:
@@ -91,12 +104,12 @@ namespace Vsite.Oom.Battleship.Model
             return allCandidates.ElementAt(index);
         }
 
-        private Square SelectInline()
+        private Square SelectFromArround()
         {
 
         }
 
-        private Square SelectFromArround()
+        private Square SelectInline()
         {
 
         }
@@ -104,6 +117,8 @@ namespace Vsite.Oom.Battleship.Model
         private Square lastTarget;
         private Grid evidenceGrid;
         private List<int> shipsToShoot;
+        private List<Square> squaresHit = new List<Square>();
+        private ISquareTerminator squareTerminator;
         private Random random = new Random();
         public ShootingTactics ShootingTactics { get; private set; }
     }
