@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -25,7 +26,7 @@ namespace Vsite.Oom.Battleship.Model
         {
             // TODO: Implement correctly!
             // return lastTarget;
-            lastTarget = new Square(0, 0);
+            lastTarget = SelectTarget();
             return lastTarget;
         }
 
@@ -64,11 +65,49 @@ namespace Vsite.Oom.Battleship.Model
             // if sunken - change to random
         }
 
+        private Square SelectTarget()
+        {
+            switch (ShootingTactics)
+            {
+                case ShootingTactics.Random:
+                    return SelectRandomly();
+                case ShootingTactics.Surrounding:
+                    return SelectFromArround();
+                case ShootingTactics.Inline:
+                    return SelectInline();
+                default:
+                    Debug.Assert(false);
+                    return null;
+            }
+        }
+
+        private Square SelectRandomly()
+        {
+            var placements = evidenceGrid.GetAvailablePlacements(shipsToShoot[0]);
+            var allCandidates = placements.SelectMany(seq => seq);
+            int index = random.Next(0, allCandidates.Count());
+            return allCandidates.ElementAt(index);
+        }
+
+        private Square SelectInline()
+        {
+            throw new NotImplementedException();
+        }
+
+        private Square SelectFromArround()
+        {
+            throw new NotImplementedException();
+        }
+
+       
         private Square lastTarget;
 
         private Grid evidenceGrid;
 
         private List<int> shipsToShoot;
+
+        public Random random = new Random();
+
         public ShootingTactics ShootingTactics { get; private set; }
     }
 }
