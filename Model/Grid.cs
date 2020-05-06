@@ -41,7 +41,7 @@ namespace Vsite.Oom.BattleShip.Model
             {
                 for (int c = 0; c < this.Columns; ++c)
                 {
-                  if(squares[r, c] != null)
+                  if(IsAvailable(r,c))
                   {
                      result.Add(new List<Square> { squares[r, c] });
                   }
@@ -72,7 +72,7 @@ namespace Vsite.Oom.BattleShip.Model
                 LimitedQueue<Square> passed = new LimitedQueue<Square>(length);
                 for (int r = 0; r < Rows; ++r)
                 {
-                    if (squares[r, c] != null)
+                    if (IsAvailable(r, c))
                     {
                         passed.Enqueue(squares[r, c]);
                     }
@@ -90,6 +90,11 @@ namespace Vsite.Oom.BattleShip.Model
             return result;
         }
 
+        private bool IsAvailable(int row, int column)
+        {
+            return squares[row, column] != null && squares[row, column].SquareState == SquareState.None;
+        }
+
         private IEnumerable<Placement> GetAvailableHorizontalPlacement(int length)
         {
             var result = new List<List<Square>>();
@@ -98,7 +103,7 @@ namespace Vsite.Oom.BattleShip.Model
                 LimitedQueue<Square> passed = new LimitedQueue<Square>(length); 
                 for(int c = 0; c < Columns; ++c)
                 {
-                    if(squares[r, c] != null)
+                    if(IsAvailable(r,c))
                     {
                         passed.Enqueue(squares[r, c]);
                     }
