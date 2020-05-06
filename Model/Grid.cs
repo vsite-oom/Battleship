@@ -49,9 +49,10 @@ namespace Model
                 squares[square.Row, square.Column] = null;
 
         }
+    
         public void MarkHitResult(Square square,HitResult hitResult)
         {
-
+            squares[square.Row, square.Column].SetState(hitResult);
         }
         private IEnumerable<Placment> GetAvailableHorizontalPlacement(int length)
         {
