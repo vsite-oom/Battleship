@@ -13,12 +13,12 @@ namespace Vsite.Oom.Battleship.Model
         {
             Rows = rows;
             Columns = columns;
-            
+
             squares = new Square[Rows, Columns];
-            for(int r=0; r< Rows; ++r)
+            for (int r = 0; r < Rows; ++r)
             {
-                for(int c = 0; c < Columns; ++c)              
-                    squares[r, c] = new Square(r, c);               
+                for (int c = 0; c < Columns; ++c)
+                    squares[r, c] = new Square(r, c);
             }
         }
         public IEnumerable<Placement> GetAvailablePlacements(int length)
@@ -30,7 +30,7 @@ namespace Vsite.Oom.Battleship.Model
             {
                 for (int c = 0; c < Columns; ++c)
                 {
-                    if (squares[r, c] != null)
+                    if (IsAvailable(r, c))
                         result.Add(new List<Square> { squares[r, c] });
                 }
             }
@@ -38,7 +38,7 @@ namespace Vsite.Oom.Battleship.Model
         }
         public void EliminateSquares(Placement toEliminate)
         {
-            foreach(var square in toEliminate)
+            foreach (var square in toEliminate)
             {
                 squares[square.Row, square.Column] = null;
             }
@@ -50,12 +50,12 @@ namespace Vsite.Oom.Battleship.Model
         private IEnumerable<Placement> GetAvailableHorizontalPlacements(int length)
         {
             var result = new List<List<Square>>();
-            for(int r = 0; r < Rows; ++r)
+            for (int r = 0; r < Rows; ++r)
             {
                 LimitedQueue<Square> passed = new LimitedQueue<Square>(length);
-                for(int c = 0; c < Columns; ++c)
+                for (int c = 0; c < Columns; ++c)
                 {
-                    if (squares[r, c] != null)
+                    if (IsAvailable(r, c))
                         passed.Enqueue(squares[r, c]);
                     else
                         passed.Clear();
@@ -75,7 +75,7 @@ namespace Vsite.Oom.Battleship.Model
                 LimitedQueue<Square> passed = new LimitedQueue<Square>(length);
                 for (int r = 0; r < Rows; ++r)
                 {
-                    if (squares[r, c] != null)
+                    if (IsAvailable(r,c))
                         passed.Enqueue(squares[r, c]);
                     else
                         passed.Clear();
@@ -86,6 +86,10 @@ namespace Vsite.Oom.Battleship.Model
                 }
             }
             return result;
+        }
+        private bool IsAvailable(int row, int column)
+        {
+            return squares[row, column] != null && squares[row, column].SquareState == SquareState.None;
         }
 
 

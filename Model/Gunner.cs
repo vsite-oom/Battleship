@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,13 +18,13 @@ namespace Vsite.Oom.Battleship.Model
         public Gunner(int rows, int columns, IEnumerable<int> shipLengths)
         {
             evidenceGrid = new Grid(rows, columns);
-            shipsToShoot= new List<int>(shipLengths.OrderByDescending(l => l));
+            shipsToShoot = new List<int>(shipLengths.OrderByDescending(l => l));
             ShootingTactics = ShootingTactics.Random;
         }
         public Square NextTarget()
         {
             //TODO: implement correctly!
-            lastTarget = new Square(0, 0);
+            lastTarget = SelectTarget();
             return lastTarget;
         }
         public void ProcessHitResult(HitResult hitResult)
@@ -54,11 +55,45 @@ namespace Vsite.Oom.Battleship.Model
             }
 
         }
+        private Square SelectTarget()
+        {
+            switch (ShootingTactics)
+            {
+                case ShootingTactics.Random:
+                    return SelectRandomly();
+                case ShootingTactics.Surrounding:
+                    return SelectFromArround();
+                case ShootingTactics.Inline:
+                    return SelectInline();
+                default:
+                    Debug.Assert(false);
+                    return null;
+            }
+        }
+
+        private Square SelectRandomly()
+        {
+            var placements = evidenceGrid.GetAvailablePlacements(shipsToShoot[0]);
+            var allCandidates = placements.SelectMany(seq => seq);
+            int index = random.Next(0, allCandidates.Count());
+            return allCandidates.ElementAt(index);
+
+        }
+        private Square SelectInline()
+        {
+            throw new NotImplementedException();
+        }
+
+        private Square SelectFromArround()
+        {
+            throw new NotImplementedException();
+        }
 
         private Square lastTarget;
         private Grid evidenceGrid;
         private List<int> shipsToShoot;
         public ShootingTactics ShootingTactics { get; private set; }
+        private Random random = new Random();
 
     }
 }
