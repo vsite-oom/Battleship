@@ -66,6 +66,10 @@ namespace Vsite.Oom.Battleship.Model
             }
             return result;
         }
+        public void MarkHitResult(Square square, HitResult hitResult)
+        {
+
+        }
         private IEnumerable<Placement> GetAvailableVerticalPlacements(int length)
         {
             var result = new List<List<Square>>();
