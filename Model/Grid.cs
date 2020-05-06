@@ -48,6 +48,11 @@ namespace Vsite.Oom.Battleship.Model
           
         }
 
+
+        public void MarkHitResult(Square square, HitResult hitResult) { 
+            
+        }
+
         private IEnumerable<Placement> GetAvailableHorizontalPlacments(int lenght) {
             var result = new List<List<Square>>();
             for (int r = 0; r < Rows; ++r) {
