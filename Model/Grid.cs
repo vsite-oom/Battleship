@@ -29,9 +29,9 @@ namespace Vsite.Oom.Battleship.Model
             }
 
             List<List<Square>> result = new List<List<Square>>();
-            for (int r=0; r<Rows; ++r)
+            for (int r = 0; r < Rows; ++r)
             {
-                for (int c=0; c< Columns; ++c)
+                for (int c = 0; c < Columns; ++c)
                 {
                     if (IsAvailable(r, c))
                         result.Add(new List<Square> { squares[r, c] });
@@ -46,9 +46,9 @@ namespace Vsite.Oom.Battleship.Model
                 squares[square.Row, square.Column] = null;
         }
 
-        public void MarkHitResult(Square square, HitResult hitresult)
+        public void MarkHitResult(Square square, HitResult hitResult)
         {
-
+            squares[square.Row, square.Column].SetState(hitResult);
         }
 
         private IEnumerable<Placement> GetAvailableHorizontalPlacements(int length)
