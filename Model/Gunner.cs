@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 namespace Vsite.Oom.Battleship.Model
@@ -9,6 +10,7 @@ namespace Vsite.Oom.Battleship.Model
         private Square lastTarget;
         private readonly Grid evidenceGrid;
         private List<int> shipsToShoot;
+        private readonly Random random = new Random();
 
         public Gunner(int rows, int columns, IEnumerable<int> shipLenghts)
         {
@@ -21,8 +23,7 @@ namespace Vsite.Oom.Battleship.Model
 
         public Square NextTarget()
         {
-            lastTarget = new Square(0, 0);
-            return lastTarget;
+            return SelectTarget();
         }
 
         public void ProcessHitResult(ShipHitResult hitResult)
@@ -52,11 +53,39 @@ namespace Vsite.Oom.Battleship.Model
                 default:
                     return;
             }
-            // modify shooting tactics
-            // - if missed - no change
-            // - if first hit - change to surrounding
-            // - if second - change to inline
-            // - if sunken - change to random 
+        }
+
+        private Square SelectTarget()
+        {
+            switch (ShootingTactics)
+            {
+                case ShootingTactics.Random:
+                    return SelectRandomly();
+                case ShootingTactics.Surrounding:
+                    return SelectFromAround();
+                case ShootingTactics.Inline:
+                    return SelectInline();
+                default:
+                    Debug.Assert(false);
+                    return null;
+            }
+        }
+
+        private Square SelectInline()
+        {
+            throw new NotImplementedException();
+        }
+
+        private Square SelectFromAround()
+        {
+            throw new NotImplementedException();
+        }
+
+        private Square SelectRandomly()
+        {
+            var allCandidates = evidenceGrid.GetAvailablePlacements(shipsToShoot.First()).SelectMany(s => s).ToList();
+            var index = random.Next(0, allCandidates.Count());
+            return allCandidates.ElementAt(index);
         }
     }
 }
