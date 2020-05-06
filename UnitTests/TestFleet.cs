@@ -35,7 +35,7 @@ namespace Vsite.Oom.Battleship.Model.UnitTests
             Assert.AreEqual(HitResult.Hit, hit);
 
             hit = fleet.Hit(new Square(1, 6));
-            Assert.AreEqual(HitResult.Sunk, hit);
+            Assert.AreEqual(HitResult.Sunken, hit);
 
             hit = fleet.Hit(new Square(1, 9));
             Assert.AreEqual(HitResult.Missed, hit);
@@ -44,7 +44,7 @@ namespace Vsite.Oom.Battleship.Model.UnitTests
             Assert.AreEqual(HitResult.Hit, hit);
 
             hit = fleet.Hit(new Square(5, 5));
-            Assert.AreEqual(HitResult.Sunk, hit);
+            Assert.AreEqual(HitResult.Sunken, hit);
         }
     }
 }

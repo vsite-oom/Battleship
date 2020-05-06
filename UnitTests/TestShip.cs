@@ -53,7 +53,7 @@ namespace Vsite.Oom.Battleship.Model.UnitTests
                 var result = ship.Hit(new Square(1, 5));
                 result = ship.Hit(new Square(1, 4));
                 result = ship.Hit(new Square(1, 6));
-                Assert.AreEqual(HitResult.Sunk, result);
+                Assert.AreEqual(HitResult.Sunken, result);
             }
         }
 
