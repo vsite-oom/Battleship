@@ -14,15 +14,10 @@ namespace BattleshipForm
     public partial class Form1 : Form
     {
         Shipwright shpWrt;
-        Fleet flota;
+        Fleet flota = new Fleet();
         public Form1()
         {
             InitializeComponent();
-        }
-
-        private void tableLayoutPanel1_Paint(object sender, PaintEventArgs e)
-        {
-
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -34,6 +29,7 @@ namespace BattleshipForm
         {
             NewGame();
         }
+
         private void NewGame()
         {
             try
@@ -50,17 +46,15 @@ namespace BattleshipForm
             }
         }
 
-        private void GridFieldsPaint(object sender, TableLayoutCellPaintEventArgs e)
+        private void BattleshipGrid_CellPaint(object sender, TableLayoutCellPaintEventArgs e)
         {
-            for (int i = 0; i < flota.Ships.Count(); ++i)
+            foreach (var s in flota.Ships)
             {
-                if (flota.Ships.ElementAt(i).Squares.Contains(new Square(e.Column, e.Row)))
+                if (s.Squares.Contains(new Square(e.Row, e.Column)))
                 {
                     e.Graphics.FillRectangle(Brushes.Green, e.CellBounds);
                     break;
                 }
-                else
-                    e.Graphics.FillRectangle(Brushes.Red, e.CellBounds);
             }
         }
     }

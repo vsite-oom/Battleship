@@ -64,7 +64,7 @@
             this.BattleshipGrid.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
             this.BattleshipGrid.Size = new System.Drawing.Size(393, 366);
             this.BattleshipGrid.TabIndex = 0;
-            this.BattleshipGrid.Paint += new System.Windows.Forms.PaintEventHandler(this.tableLayoutPanel1_Paint);
+            this.BattleshipGrid.CellPaint += new System.Windows.Forms.TableLayoutCellPaintEventHandler(this.BattleshipGrid_CellPaint);
             // 
             // TitlePanel
             // 
