@@ -26,7 +26,8 @@ namespace Vsite.Oom.Battleship.Model
 
         public Square NextTarget()
         {
-            return SelectTarget();
+            lastTarget = SelectTarget();
+            return lastTarget;
         }
 
         public void ProcessHitResult(ShipHitResult hitResult)
