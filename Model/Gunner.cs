@@ -87,7 +87,7 @@ namespace Vsite.Oom.Battleship.Model
                 case ShootingTactics.Random:
                     return SelectRandomly();
                 case ShootingTactics.Surrounding:
-                    return SelectFromArround();
+                    return SelectFromAround();
                 case ShootingTactics.Inline:
                     return SelectInline();
                 default:
@@ -127,6 +127,7 @@ namespace Vsite.Oom.Battleship.Model
                 return l.ElementAt(0).First();
 
             // TODO: improve selection so that only largest lists are taken as candidates
+            //l.OrderByDescending(ls => ls.Count());
             int index = random.Next(0, l.Count());
             return l.ElementAt(index).First();
         }
