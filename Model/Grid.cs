@@ -95,7 +95,7 @@ namespace Vsite.Oom.Battleship.Model
                     break;
             }
 
-            for (int i = 0; i < maxCount && IsAvailable(row,column); ++i)
+            for (int i = 0; i < maxCount && IsAvailable(row, column); ++i)
             {
                 result.Add(squares[row, column]);
                 row += deltaRow;
@@ -104,6 +104,36 @@ namespace Vsite.Oom.Battleship.Model
 
             return result;
         }
+
+        public IEnumerable<IEnumerable<Square>> GetSquaresInLine(IEnumerable<Square> squaresHit)
+        {
+            List<Placement> result = new List<Placement>();
+            //for horizontal ship
+            if (squaresHit.First().Row == squaresHit.Last().Row)
+            {
+                var l = GetSquaresNextTo(squaresHit.First(), Direction.Left);
+                if (l.Count() > 0)
+                    result.Add(l);
+                l = GetSquaresNextTo(squaresHit.First(), Direction.Right);
+                if (l.Count() > 0)
+                    result.Add(l);
+            }
+            //for vertical ship
+            else if (squaresHit.First().Column == squaresHit.Last().Column)
+            {
+                var l = GetSquaresNextTo(squaresHit.First(), Direction.Up);
+                if (l.Count() > 0)
+                    result.Add(l);
+                l = GetSquaresNextTo(squaresHit.First(), Direction.Down);
+                if (l.Count() > 0)
+                    result.Add(l);
+            }
+            else{
+                Debug.Assert(false);
+            }
+            return result;
+        }
+        
 
         private IEnumerable<Placement> GetAvaiableHorizontalPlacements(int length)
         {
