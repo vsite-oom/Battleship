@@ -24,7 +24,6 @@ namespace Vsite.Oom.Battleship.Model
         }
         public Square NextTarget() 
         {
-            //TODO: implement correctly
             lastTarget = NextTarget();
 
             return lastTarget;
@@ -33,8 +32,6 @@ namespace Vsite.Oom.Battleship.Model
         public void ProcessHitResult(HitResult hitResult)
         {
             evidenceGrid.MarkHitResult(lastTarget, hitResult);
-            /*record on evidence grid
-            */
             switch (hitResult)
             {
                 case HitResult.Missed:
