@@ -84,6 +84,23 @@ namespace Vsite.Oom.Battleship.Model
             }
         }
 
+        private Square SelectFromArround()
+        {
+            List<IEnumerable<Square>> around = new List<IEnumerable<Square>>();
+            foreach(Direction direction in Enum.GetValues(typeof(Direction)))
+            {
+                var l = evidenceGrid.GetSquaresNextTo(lastTarget, direction);
+                if (l.Count() > 0)
+                    around.Add(l);
+            }
+            if (around.Count == 1)
+                return around[0].First();
+            //TODO: improve selection so that only largest lists are taken as candidates
+            int index = random.Next(0,around.Count);
+            return around[index].First();
+        }
+
+
         private Square SelectRandomly()
         {
             var placement = evidenceGrid.GetAvailablePlacements(shipsToShoot[0]);
@@ -91,13 +108,16 @@ namespace Vsite.Oom.Battleship.Model
             int index = random.Next(0, allCandidates.Count());
             return allCandidates.ElementAt(index);
         }
-        private Square SelectFromArround()
-        {
-            throw new NotImplementedException();
-        }
+
         private Square SelectInline()
         {
-            throw new NotImplementedException();
+            var l = evidenceGrid.GetSquaresInline(squaresHit);
+            if (l.Count() == 1)
+                return l.ElementAt(0).First();
+
+            //TODO: improve selection so that only largest lists are taken as candidates
+            int index = random.Next(0, l.Count());
+            return l.ElementAt(index).First();
         }
 
         private Square lastTarget;
