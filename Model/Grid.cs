@@ -80,6 +80,36 @@ namespace Vsite.Oom.BattleShip.Model
             return result;
         }
 
+        public IEnumerable<IEnumerable<Square>> GetSquaresInline(IEnumerable<Square> squaresHit)
+        {
+            List<Placement> result = new List<Placement>();
+            //for horizontal ship 
+            if (squaresHit.First().row == squaresHit.Last().row)
+            {
+                var l = GetSquaresNextTo(squaresHit.First(), Direction.Left);
+                if (l.Count() > 0)
+                    result.Add(l);
+                l = GetSquaresNextTo(squaresHit.Last(), Direction.Right);
+                if (l.Count() > 0)
+                    result.Add(l);
+            }
+            //for vertical ship
+            else if (squaresHit.First().column == squaresHit.Last().column)
+            {
+                var l = GetSquaresNextTo(squaresHit.First(), Direction.Up);
+                if (l.Count() > 0)
+                    result.Add(l);
+                l = GetSquaresNextTo(squaresHit.Last(), Direction.Down);
+                if (l.Count() > 0)
+                    result.Add(l);
+            }
+            else
+            {
+                Debug.Assert(false);
+            }
+            return result;
+        }
+
         public IEnumerable<IEnumerable<Square>> GetAvailablePlacements(int length)
         {
             if(length != 1)
