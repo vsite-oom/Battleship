@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,6 +10,15 @@ namespace Model
 {
     using static Vsite.Oom.Battleship.Model.Ship;
     using Placment = IEnumerable<Square>;
+
+    public enum Direction
+    {
+        Up,
+        Right,
+        Down,
+        Left
+    }
+
     public class Grid
     {
         public Grid(int rows, int columns)
@@ -55,6 +65,53 @@ namespace Model
         public void MarkHitResult(Square square, HitResult hitResult)
         {
             squares[square.Row, square.Column].SetState(hitResult);
+        }
+
+        public IEnumerable<Square> GetSquaresNextTo(Square square,Direction direction)
+        {
+            List<Square> result = new List<Square>();
+            int row = square.Row;
+            int column = square.Column;
+            int deltaRow = 0;
+            int deltaColumn = 0;
+            int maxCount = 0;
+
+            switch (direction)
+            {
+                case Direction.Right:
+                    ++column;
+                    deltaColumn = +1;
+                    maxCount = Columns - column;
+                    break;
+                case Direction.Down:
+                    ++row;
+                    deltaRow = +1;
+                    maxCount = Rows - row;
+                    break;
+                case Direction.Left:
+                    maxCount = column;
+                    --column;
+                    deltaColumn = -1;
+                    break;
+                case Direction.Up:
+                    maxCount = row;
+                    --row;
+                    deltaRow = -1;
+                    break;
+                default:
+                    Debug.Assert(false);
+                    break;
+
+            }
+
+            for(int i = 0; i < maxCount && IsAvailable(row, column); ++i)
+            {
+                result.Add(squares[row, column]);
+                row += deltaRow;
+                column += deltaColumn;
+            }
+
+            return result;
         }
 
 
