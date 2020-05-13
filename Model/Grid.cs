@@ -3,10 +3,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Diagnostics;
 
 namespace Vsite.Oom.Battleship.Model
 {
     using Placement = IEnumerable<Square>;
+    public enum Direction
+    {
+        Up,
+        Right,
+        Down,
+        Left
+    }
     public class Grid
     {
         public Grid(int rows, int cols)
@@ -40,8 +48,54 @@ namespace Vsite.Oom.Battleship.Model
         {
             foreach (var square in toEliminate)
                 squares[square.Row, square.Col] = null;
+        }
+        public IEnumerable<Square> GetSquaresNextTo(Square square, Direction direction)
+        {
+            List<Square> result = new List<Square>();
+            int row = square.Row;
+            int column = square.Col;
+            int deltaRow = 0;
+            int deltaCol = 0;
+            int maxCount = 0;
+            switch (direction)
+            {
+                case Direction.Right:
+                    ++column;
+                    deltaCol = +1;
+                    maxCount = Cols - column;
+                    break;
 
+                case Direction.Down:
+                    ++row;
+                    deltaRow = +1;
+                    maxCount = Rows - column;
+                    break;
 
+                case Direction.Left:
+                    maxCount = column;
+                    --column;
+                    deltaCol = -1;
+                    break;
+
+                case Direction.Up:
+                    maxCount = row;
+                    --row;
+                    deltaRow = -1;
+                    break;
+
+                default:
+                    Debug.Assert(false);
+                    break;
+
+            }
+
+            for (int i = 0; i < maxCount && IsAvailable(row, column); ++i)
+            {
+                result.Add(squares[row, column]);
+                row += deltaRow;
+                column += deltaCol;
+            }
+            return result;
         }
         public void MarkHitResult(Square square, HitResult hitResult)
         {
