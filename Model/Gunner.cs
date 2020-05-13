@@ -25,7 +25,6 @@ namespace Vsite.Oom.Battleship.Model
         }
         public Square NextTarget()
         {
-            // TODO: implement correctly!
             lastTarget = SelectTarget();
             return lastTarget;
         }
@@ -88,7 +87,7 @@ namespace Vsite.Oom.Battleship.Model
         private Square SelectRandomly()
         {
             var placement = evidenceGrid.GetAvailablePlacements(shipsToShoot[0]);
-            var allCandidates = placement.SelectMany(seq => seq);
+            var allCandidates = placement.SelectMany(seq => seq); 
             int index = random.Next(0, allCandidates.Count());
             return allCandidates.ElementAt(index);
         }
