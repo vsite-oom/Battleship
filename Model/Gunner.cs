@@ -82,7 +82,7 @@ namespace Vsite.Oom.Battleship.Model
                 case ShootingTactics.Random:
                     return SelectRandomly();
                 case ShootingTactics.Surrounding:
-                    return SelectFromAround();
+                    return SelectFromArround();
                 case ShootingTactics.Inline:
                     return SelectInline();
                 default:
@@ -100,16 +100,41 @@ namespace Vsite.Oom.Battleship.Model
             int index = random.Next(0, allCandidates.Count());
             return allCandidates.ElementAt(index);
         }
+        private Square SelectFromArround()
+        {
+            List<IEnumerable<Square>> arround = new List<IEnumerable<Square>>();
+            foreach(Direction direction in Enum.GetValues(typeof(Direction)))
+            {
+                var l = evidenceGrid.GetSquaresNextTo(lastTarget, direction);
+                if(l.Count() > 0)
+                    arround.Add(l);
+
+
+            }
+            if(arround.Count == 1)
+            {
+                return arround[0].First();
+            }
+            //TODO: improve selection so that only largest lists are taken as candidates
+            int index = random.Next(0,arround.Count());
+            return arround[index].First();
+
+
+        }
 
         private Square SelectInline()
         {
-            throw new NotImplementedException();
+            var l = evidenceGrid.GetSquaresInLine(squaresHit);
+            if (l.Count() == 1)
+                return l.ElementAt(0).First();
+
+            //TODO: improve selection so that only largest lists are taken as candidates
+            int index = random.Next(0, l.Count());
+            return l.ElementAt(index).First();
+
+
         }
 
-        private Square SelectFromAround()
-        {
-            throw new NotImplementedException();
-        }
 
         private Square lastTarget;
         private Grid evidenceGrid;
