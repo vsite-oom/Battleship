@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -7,6 +8,14 @@ using System.Threading.Tasks;
 namespace Vsite.Oom.BattleShip.Model
 {
     using Placement = IEnumerable<Square>;
+
+    public enum Direction
+    {
+        Up,
+        Down,
+        Right,
+        Left
+    }
 
    public class Grid
     {
@@ -24,6 +33,52 @@ namespace Vsite.Oom.BattleShip.Model
             }
         }
 
+        public IEnumerable<Square> GetSquaresNextTo(Square square, Direction direction)
+        {
+            List<Square> result = new List<Square>();
+            int row = square.row;
+            int column = square.column;
+
+            int deltaRow = 0;
+            int deltaColumn = 0;
+            int maxCount = 0;
+
+            switch (direction)
+            {
+                case Direction.Right:
+                    ++column;
+                    deltaColumn = 1;
+                    maxCount = Columns - column;
+                    break;
+                case Direction.Down:
+                    ++row;
+                    deltaRow = 1;
+                    maxCount = Rows - row;
+                    break;
+                case Direction.Left:
+                    maxCount = column;
+                    --column;
+                    deltaColumn = -1;
+                    break;
+                case Direction.Up:
+                    maxCount = row;
+                    --row;
+                    deltaRow = -1;
+                    break;
+                default:
+                    Debug.Assert(false);
+                    break;
+            }
+
+            for(int i = 0; i < maxCount && IsAvailable(row, column); ++i)
+            {
+                result.Add(squares[row, column]);
+                row += deltaRow;
+                column += deltaColumn;
+            }
+
+            return result;
+        }
 
         public IEnumerable<IEnumerable<Square>> GetAvailablePlacements(int length)
         {
