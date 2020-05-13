@@ -37,9 +37,9 @@ namespace Vsite.Oom.Battleship.Model
                     return;
                 case HitResult.Sunken:
                     squaresHit.Add(lastTarget);
-                    squaresHit.OrderBy(s => s.Row+ s.Column);
+                    squaresHit.OrderBy(s => s.Row + s.Column);
                     var toEliminate = squareTerminator.ToEliminate(squaresHit);
-                    foreach(var sq in toEliminate)
+                    foreach (var sq in toEliminate)
                         evidenceGrid.MarkHitResult(sq, HitResult.Missed);
                     foreach (var sq in squaresHit)
                         evidenceGrid.MarkHitResult(sq, HitResult.Sunken);
@@ -91,15 +91,33 @@ namespace Vsite.Oom.Battleship.Model
             return allCandidates.ElementAt(index);
 
         }
-        private Square SelectInline()
-        {
-            throw new NotImplementedException();
-        }
-
         private Square SelectFromArround()
         {
-            throw new NotImplementedException();
+            List<IEnumerable<Square>> arround = new List<IEnumerable<Square>>();
+            foreach (Direction direction in Enum.GetValues(typeof(Direction)))
+            {
+                var l = evidenceGrid.GetSquaresNextTo(lastTarget, direction);
+                if (l.Count() > 0)
+                    arround.Add(l);
+            }
+            if (arround.Count == 1)
+                return arround[0].First();
+            //TODO: improve selection so that only largest lists are taken as candidates
+            int index = random.Next(0, arround.Count);
+            return arround[index].First();
+
         }
+        private Square SelectInline()
+        {
+            var l = evidenceGrid.GetSquaresInline(squaresHit);
+            if (l.Count() == 1)
+                return l.ElementAt(0).First();
+            //TODO: improve selection so that only largest lists are taken as candidates
+            //check for lists (sort it before) with most candidates and pick her!
+            int index = random.Next(0, l.Count());
+            return l.ElementAt(index).First();
+        }
+
 
         private Square lastTarget;
         private Grid evidenceGrid;

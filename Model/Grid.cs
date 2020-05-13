@@ -56,6 +56,36 @@ namespace Vsite.Oom.Battleship.Model
         {
             squares[square.Row, square.Column].SetState(hitResult);
         }
+        public IEnumerable<IEnumerable<Square>> GetSquaresInline(IEnumerable<Square> squaresHit)
+        {
+            List<IEnumerable<Square>> result = new List<Placement>();
+            //for horizontal ship
+            if (squaresHit.First().Row == squaresHit.Last().Row)
+            {
+                var l = GetSquaresNextTo(squaresHit.First(), Direction.Left);
+                if (l.Count() > 0)
+                    result.Add(l);
+                l = GetSquaresNextTo(squaresHit.Last(), Direction.Right);
+                if (l.Count() > 0)
+                    result.Add(l);
+            }
+            //for vertical ship
+            else if (squaresHit.First().Column == squaresHit.Last().Column)
+            {
+                var l = GetSquaresNextTo(squaresHit.First(), Direction.Up);
+                if (l.Count() > 0)
+                    result.Add(l);
+                l = GetSquaresNextTo(squaresHit.Last(), Direction.Down);
+                if (l.Count() > 0)
+                    result.Add(l);
+            }
+            else
+            {
+                Debug.Assert(false);
+            }
+            return result;
+
+        }
         public IEnumerable<Square> GetSquaresNextTo(Square square, Direction direction)
         {
             List<Square> result = new List<Square>();
