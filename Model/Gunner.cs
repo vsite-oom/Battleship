@@ -95,14 +95,30 @@ namespace Vsite.Oom.Battleship.Model
             throw new NotImplementedException();
         }
 
-        private Square SelectInline()
-        {
-            throw new NotImplementedException();
-        }
-
         private Square SelectFromAround()
         {
-            throw new NotImplementedException();
+            List<IEnumerable<Square>> arround = new List<IEnumerable<Square>>();
+
+            foreach(Direction direction in Enum.GetValues(typeof(Direction)))
+            {
+                var l = evidenceGrid.GetSquaresNextTo(lastTarget, direction);
+                if (l.Count() > 0)
+                    arround.Add(l);
+            }
+            if (arround.Count == 1)
+                return arround[0].First();
+            int index = random.Next(0, arround.Count);
+            return arround[index].First();      
+        }
+
+        private Square SelectInline()
+        {
+            var l = evidenceGrid.GetSquaresInline(squaresHit);
+            if (l.Count() == 1)
+                return l.ElementAt(0).First();
+            int index = random.Next(0, l.Count());
+            return l.ElementAt(index).First();
+
         }
 
         private Square lastTarget;
