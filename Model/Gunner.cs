@@ -4,6 +4,7 @@ using System.Data.SqlClient;
 using System.Diagnostics;
 using System.Dynamic;
 using System.Linq;
+using System.Runtime.ExceptionServices;
 using System.Runtime.Remoting.Messaging;
 using System.Text;
 using System.Threading.Tasks;
@@ -82,17 +83,34 @@ namespace Vsite.Oom.Battleship.Model
                     return null;
             }
         }
+        private Square SelectFromAround()
+        {
+            List<IEnumerable<Square>> arround = new List<IEnumerable<Square>>();
+            foreach(Direction direction in Enum.GetValues(typeof(Direction)))
+            {
+                var l = evidenceGrid.GetSquaresNextTo(lastTarget, direction);
+                if (l.Count() > 0)
+                {
+                    arround.Add(l);
+                }
+            }
+            if (arround.Count == 1)
+                return arround[0].First();
+            int index = random.Next(0, arround.Count);
+            return arround[index].First();
+        }
 
         private Square SelectInLine()
         {
-            throw new NotImplementedException();
+            var l = evidenceGrid.GetSquaresInLine(squaresHit);
+            if (l.Count() == 1)
+                return l.ElementAt(0).First();
+            int index = random.Next(0, l.Count());
+            return l.ElementAt(index).First();
+        
         }
 
-        private Square SelectFromAround()
-        {
-            throw new NotImplementedException();
-        }
-
+       
         private Square SelectRandomly()
         {
             var placements = evidenceGrid.GetAvailablePlacements(shipsToShoot[0]);
