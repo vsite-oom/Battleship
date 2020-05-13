@@ -79,6 +79,8 @@ namespace Vsite.Oom.Battleship.Model
 
         }
 
+    
+
         private Square SelectTarget()
         {
             switch (ShootingTactics)
@@ -97,12 +99,31 @@ namespace Vsite.Oom.Battleship.Model
 
         private Square SelectInline()
         {
-            throw new NotImplementedException();
+            var l = evidenceGrid.GetSquaresInLine(squaresHit);
+            if (l.Count() == 1)
+                return l.ElementAt(0).First();
+           
+                var index = random.Next(0, l.Count());
+                return l.ElementAt(index).First();  
         }
 
         private Square SelectFromArround()
         {
-            throw new NotImplementedException();
+            List<IEnumerable<Square>> around = new List<IEnumerable<Square>>();
+
+            foreach(Direction direction in Enum.GetValues(typeof(Direction)))
+            {
+                var l = evidenceGrid.GetSquaresNextTo(lastTarget, direction);
+                if (l.Count() > 0)
+                    around.Add(l);
+            }
+            if (around.Count() == 1)
+                return around[0].First();
+
+            //TODO: improve list selection to take only largest list
+            var index = random.Next(0, around.Count());
+
+            return around[index].First();
         }
 
         private Square SelectRandomly()
