@@ -77,7 +77,7 @@ namespace Vsite.Oom.Battleship.Model.UnitTests
         [TestMethod]
         public void GetSquaresNextToReturns0SquaresForGrid1x5AboveAndBelowToSquare0x1()
         {
-            Grid g = new Grid(5, 1);
+            Grid g = new Grid(1, 5);
             var result = g.GetSquaresNextTo(new Square(0, 1), Direction.Up);
 
             Assert.AreEqual(0, result.Count());

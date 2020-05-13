@@ -59,14 +59,12 @@ namespace Vsite.Oom.Battleship.Model
 
         public IEnumerable<Square> GetSquaresNextTo(Square square, Direction direction)
         {
-            List<Square> result = new List<Square>();
+           List<Square> result = new List<Square>();
             int row = square.Row;
             int column = square.Column;
-
             int deltaRow = 0;
             int deltaColumn = 0;
             int maxCount = 0;
-
             switch (direction)
             {
                 case Direction.Right:
@@ -93,14 +91,14 @@ namespace Vsite.Oom.Battleship.Model
                     Debug.Assert(false);
                     break;
             }
-
-            for(int i=0;i<maxCount && IsAvaliable(row, column); ++i)
+            for(int i = 0; i < maxCount && IsAvaliable(row, column); ++i)
             {
                 result.Add(squares[row, column]);
                 row += deltaRow;
                 column += deltaColumn;
             }
             return result;
+           
         }
 
         public IEnumerable<IEnumerable<Square>> GetSquaresInLine(IEnumerable<Square> squaresHit)
@@ -112,17 +110,17 @@ namespace Vsite.Oom.Battleship.Model
                 var l = GetSquaresNextTo(squaresHit.First(), Direction.Left);
                 if (l.Count() > 0)
                     result.Add(l);
-                l = GetSquaresNextTo(squaresHit.First(), Direction.Right);
+                l = GetSquaresNextTo(squaresHit.Last(), Direction.Right);
                 if (l.Count() > 0)
                     result.Add(l);
             }
-            //vertical ship
-            if (squaresHit.First().Column == squaresHit.Last().Column)
+            // for verrical ship
+            else if (squaresHit.First().Column == squaresHit.Last().Column)
             {
                 var l = GetSquaresNextTo(squaresHit.First(), Direction.Up);
                 if (l.Count() > 0)
                     result.Add(l);
-                l = GetSquaresNextTo(squaresHit.First(), Direction.Down);
+                l = GetSquaresNextTo(squaresHit.Last(), Direction.Down);
                 if (l.Count() > 0)
                     result.Add(l);
             }

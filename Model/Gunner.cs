@@ -125,6 +125,9 @@ namespace Battleships_GUI
             if (l.Count() == 1)
                 return l.ElementAt(0).First();
             //TODO koja od listi ima najviše članova ako ima neka najdulja onda se odabere ona 
+
+            // l.OrderByDescending(ls => ls.Count()); //sort po duljinama 
+            
             int index = random.Next(0, l.Count());
             return l.ElementAt(index).First();
         }
