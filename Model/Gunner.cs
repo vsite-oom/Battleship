@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Vsite.Oom.Battleship.Model;
+using static Vsite.Oom.Battleship.Model.Grid;
 
 namespace Battleships_GUI
 {
@@ -77,6 +78,7 @@ namespace Battleships_GUI
             // - if second hit -> change to inline
             // - if sunken -> change to random
         }
+       
 
         private Square SelectTarget()
         {
@@ -100,17 +102,34 @@ namespace Battleships_GUI
             int index=random.Next(0, allCandidates.Count());
             return allCandidates.ElementAt(index);
         }
-        private Square SelectInline()
-        {
-            throw new NotImplementedException();
-        }
 
         private Square SelectFromAround()
         {
-            throw new NotImplementedException();
+            List<IEnumerable<Square>> around = new List<IEnumerable<Square>>();
+            foreach (Direction direction in Enum.GetValues(typeof(Direction)))
+            {
+                var l = evidenceGrid.GetSquaresNextTo(lastTarget, direction);
+                if (l.Count() > 0)
+                    around.Add(l);
+            }
+
+            if (around.Count == 1)
+                return around[0].First();
+            //TODO: improve selection so that only largest lists are taken into account
+            int index = random.Next(0, around.Count);
+            return around[index].First();
+        }
+        private Square SelectInline()
+        {
+            var l=evidenceGrid.GetSquaresInLine(squaresHit);
+            if (l.Count() == 1)
+                return l.ElementAt(0).First();
+            //TODO koja od listi ima najviše članova ako ima neka najdulja onda se odabere ona 
+            int index = random.Next(0, l.Count());
+            return l.ElementAt(index).First();
         }
 
-
+   
         private Square lastTarget;
 
         private Grid evidenceGrid;

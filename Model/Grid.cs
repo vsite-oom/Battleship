@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,6 +11,14 @@ namespace Vsite.Oom.Battleship.Model
     using Placement = IEnumerable<Square>;  //uklanja unutarnji enumerable
     public class Grid
     {
+        public enum Direction
+        {
+            Right,
+            Left,
+            Down,
+            Up
+
+        }
         public Grid(int rows,int columns)
         {
             Rows = rows;
@@ -48,7 +57,81 @@ namespace Vsite.Oom.Battleship.Model
             }
         }
 
+        public IEnumerable<Square> GetSquaresNextTo(Square square, Direction direction)
+        {
+            List<Square> result = new List<Square>();
+            int row = square.Row;
+            int column = square.Column;
 
+            int deltaRow = 0;
+            int deltaColumn = 0;
+            int maxCount = 0;
+
+            switch (direction)
+            {
+                case Direction.Right:
+                    ++column;
+                    deltaColumn = +1;
+                    maxCount = Columns - column;
+                    break;
+                case Direction.Down:
+                    ++row;
+                    deltaRow = +1;
+                    maxCount = Rows - row;
+                    break;
+                case Direction.Left:
+                    maxCount = column;
+                    --column;
+                    deltaColumn = -1;
+                    break;
+                case Direction.Up:
+                    maxCount = row;
+                    --row;
+                    deltaRow = -1;
+                    break;
+                default:
+                    Debug.Assert(false);
+                    break;
+            }
+
+            for(int i=0;i<maxCount && IsAvaliable(row, column); ++i)
+            {
+                result.Add(squares[row, column]);
+                row += deltaRow;
+                column += deltaColumn;
+            }
+            return result;
+        }
+
+        public IEnumerable<IEnumerable<Square>> GetSquaresInLine(IEnumerable<Square> squaresHit)
+        {
+            List<Placement> result = new List<Placement>();
+            //for horizontal ship
+            if (squaresHit.First().Row == squaresHit.Last().Row)
+            {
+                var l = GetSquaresNextTo(squaresHit.First(), Direction.Left);
+                if (l.Count() > 0)
+                    result.Add(l);
+                l = GetSquaresNextTo(squaresHit.First(), Direction.Right);
+                if (l.Count() > 0)
+                    result.Add(l);
+            }
+            //vertical ship
+            if (squaresHit.First().Column == squaresHit.Last().Column)
+            {
+                var l = GetSquaresNextTo(squaresHit.First(), Direction.Up);
+                if (l.Count() > 0)
+                    result.Add(l);
+                l = GetSquaresNextTo(squaresHit.First(), Direction.Down);
+                if (l.Count() > 0)
+                    result.Add(l);
+            }
+            else
+            {
+                Debug.Assert(false);
+            }
+            return result;
+        }
         public void MarkHitResult(Square square,HitResult hitResult)
         {
             squares[square.Row, square.Column].SetState(hitResult);
