@@ -37,6 +37,10 @@ namespace Vsite.Oom.Battleship.Model
             evidenceGrid.MarkHitResult(lastTarget, hitResult);
 
             // modify shooting tactics
+            // if missed - no change
+            // if first - change to surrounding
+            // if second hit - change to inline
+            // if sunken - change to random
             switch (hitResult)
             {
                 case HitResult.Missed:
@@ -71,11 +75,6 @@ namespace Vsite.Oom.Battleship.Model
                     }
                     break;
             }
-            
-            // if missed - no change
-            // if first - change to surrounding
-            // if second hit - change to inline
-            // if sunken - change to random
         }
 
         private Square SelectTarget()
