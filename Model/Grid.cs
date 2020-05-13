@@ -1,11 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Vsite.Oom.Battleship.Model
 { using Placement = IEnumerable<Square>;
+	public enum Direction
+	{
+		Up,
+		Right,
+		Left,
+		Down
+	}
 	public class Grid
 	{
 		public Grid(int rows, int cols)
@@ -96,6 +104,48 @@ namespace Vsite.Oom.Battleship.Model
 		public void MarkHitResult(Square square, HitResult hitResult)
 		{
 			squares[square.Row, square.Col].SetState(hitResult);
+		}
+		public IEnumerable<Square> GetSquaresNextTo(Square square, Direction direction)
+		{
+			List<Square> result = new List<Square>();
+			int row = square.Row;
+			int col = square.Col;
+			int deltaRow = 0;
+			int deltaCol = 0;
+			int maxCount = 0;
+			switch (direction)
+			{
+				case Direction.Right:
+					++col;
+					deltaCol = 1;
+					maxCount = Cols - col;
+					break;
+				case Direction.Down:
+					++row;
+					deltaRow = 1;
+					maxCount = Rows - row;
+					break;
+				case Direction.Left:
+					--col;
+					deltaCol = -1;
+					maxCount = col + 1;
+					break;
+				case Direction.Up:
+					--row;
+					deltaRow = -1;
+					maxCount = row + 1;
+					break;
+				default:
+					Debug.Assert(false);
+					break;
+			}
+			for ( int i = 0; i < maxCount && IsAvailable(row,col); ++i)
+			{
+				result.Add(squares[row, col]);
+				row += deltaRow;
+				col += deltaCol;
+			}
+			return result;
 		}
 		private bool IsAvailable(int row, int col)
 		{
