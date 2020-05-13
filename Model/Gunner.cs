@@ -89,20 +89,41 @@ namespace Vsite.Oom.Battleship.Model
 
         private Square SelectInline()
         {
-            var placements = evidenceGrid.GetAvailablePlacements(shipsToShoot[0]);
-            var allCandidates = placements.SelectMany(seq=>seq);
-            int index = random.Next(0,allCandidates.Count());
-            return allCandidates.ElementAt(index);
+            var l = evidenceGrid.GetSquaresInline(SquaresHit);
+            if (l.Count() == 1)
+                return l.ElementAt(0).First();
+
+            var index = random.Next(0, l.Count());
+            return l.ElementAt(index).First();
         }
 
         private Square SelectFromAround()
         {
-            throw new NotImplementedException();
+            List<IEnumerable<Square>> around = new List<IEnumerable<Square>>();
+            foreach(Direction direction in Enum.GetValues(typeof(Direction)))
+            {
+                var l = evidenceGrid.GetSquaresNextTo(lastTarget, direction);
+                if (l.Count() > 0)
+                {
+                    around.Add(l);
+                }
+              
+            }
+            if (around.Count == 1)
+            {
+                return around[0].First();
+            }
+            int index = random.Next(0, around.Count());
+            return around[index].First();
+
         }
 
         private Square SelectRandomly()
         {
-            throw new NotImplementedException();
+            var placements = evidenceGrid.GetAvailablePlacements(shipsToShoot[0]);
+            var allCandidates = placements.SelectMany(seq => seq);
+            int index = random.Next(0, allCandidates.Count());
+            return allCandidates.ElementAt(index);
         }
 
         private Square lastTarget;

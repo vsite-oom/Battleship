@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -7,6 +8,13 @@ using System.Threading.Tasks;
 namespace Vsite.Oom.Battleship.Model
 {
     using placement = IEnumerable<Square>;
+    public enum Direction
+    {
+        Up,
+        Right,
+        Down,
+        Left
+    }
     public class Grid
     {
         public Grid(int rw, int cl)
@@ -52,6 +60,81 @@ namespace Vsite.Oom.Battleship.Model
         public void MarkHitResult(Square square,HitResult hitResult)
         {
             squares[square.row, square.column].SetState(hitResult);
+
+        }
+        public IEnumerable<Square> GetSquaresNextTo(Square square,Direction direction)
+        {
+            List<Square> result = new List<Square>();
+            int row = square.row;
+            int column = square.column;
+            int deltaRow = 0;
+            int deltaColumn = 0;
+            int maxCount = 0;
+
+            switch (direction)
+            {
+                case Direction.Right:
+                    ++column;
+                    ++deltaColumn;
+                    maxCount = Cl - column;
+                    break;
+                case Direction.Down:
+                    ++row;
+                    ++deltaRow;
+                    maxCount = Rw - row;
+                    break;
+               case Direction.Left:
+                    maxCount = column;
+                    --column;
+                    --deltaColumn;
+                    break;
+                case Direction.Up:
+                    maxCount = row;
+                    --row;
+                    --deltaRow;
+                    break;
+                default:
+                    Debug.Assert(false);
+                    break;
+            }
+             for(int i = 0;i < maxCount && IsAvailable(row, column); ++i)
+            {
+                result.Add(squares[row, column]);
+                row += deltaRow;
+                column += deltaColumn;
+            }
+            return result;
+        }
+        public IEnumerable<IEnumerable<Square>> GetSquaresInline(IEnumerable<Square> squaresHit)
+        {
+            List<IEnumerable<Square>> result = new List<placement>();
+
+            //for horizontal ship
+            if (squaresHit.First().row == squaresHit.Last().row)
+            {
+                var l = GetSquaresNextTo(squaresHit.First(), Direction.Left);
+                if (l.Count() > 0)
+                    result.Add(l);
+
+                l = GetSquaresNextTo(squaresHit.Last(), Direction.Right);
+                if (l.Count() > 0)
+                    result.Add(l);
+            }
+            //for vertical
+            else if (squaresHit.First().column == squaresHit.Last().column)
+            {
+                var l = GetSquaresNextTo(squaresHit.First(), Direction.Up);
+                if (l.Count() > 0)
+                    result.Add(l);
+
+                l = GetSquaresNextTo(squaresHit.Last(), Direction.Down);
+                if (l.Count() > 0)
+                    result.Add(l);
+            }
+            else
+                Debug.Assert(false);
+
+            return result;
 
         }
         private IEnumerable<placement> GetAvailableHorizontalPlacements(int len)
@@ -110,6 +193,7 @@ namespace Vsite.Oom.Battleship.Model
         private Square[,] squares;
         public readonly int Rw;
         public readonly int Cl;
+       
 
     }
 }
