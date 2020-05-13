@@ -55,5 +55,67 @@ namespace Vsite.Oom.Battleship.Model.UnitTests
                 Assert.AreEqual(2, sequence.Count());
             }
         }
+
+
+        [TestMethod]
+        public void GetSquaresNextToReturns3SquaresForGrid1x5RightToSquare0x1()
+        {
+            var g = new Grid(1, 5);
+            var result = g.GetSquaresNextTo(new Square(0, 1), Direction.Right);
+            Assert.AreEqual(3, result.Count());
+            
+        }
+
+        [TestMethod]
+        public void GetSquaresNextToReturns3SquaresForGrid1x5LeftToSquare0x1()
+        {
+            var g = new Grid(1, 5);
+            var result = g.GetSquaresNextTo(new Square(0, 1), Direction.Left);
+            Assert.AreEqual(1, result.Count());
+
+        }
+
+        [TestMethod]
+        public void GetSquaresNextToReturns3SquaresForGrid1x5AboveAndBelowToSquare0x1()
+        {
+            var g = new Grid(1, 5);
+            var result = g.GetSquaresNextTo(new Square(0, 1), Direction.Up);
+            Assert.AreEqual(0, result.Count());
+
+            result = g.GetSquaresNextTo(new Square(0, 1), Direction.Down);
+            Assert.AreEqual(0, result.Count());
+
+        }
+
+        [TestMethod]
+        public void GetSquaresNextToReturns3SquaresForGrid5x1BelowToSquare1x0()
+        {
+            var g = new Grid(5, 1);
+            var result = g.GetSquaresNextTo(new Square(1, 0), Direction.Down);
+            Assert.AreEqual(3, result.Count());
+
+        }
+
+        [TestMethod]
+        public void GetSquaresNextToReturns3SquaresForGrid5x1AboweToSquare1x0()
+        {
+            var g = new Grid(5,1);
+            var result = g.GetSquaresNextTo(new Square(1,0), Direction.Up);
+            Assert.AreEqual(1, result.Count());
+
+        }
+
+        [TestMethod]
+        public void GetSquaresNextToReturns3SquaresForGrid5x1LeftAndRightToSquare1x0()
+        {
+            var g = new Grid(5,1);
+            var result = g.GetSquaresNextTo(new Square(1, 0), Direction.Left);
+            Assert.AreEqual(0, result.Count());
+
+            result = g.GetSquaresNextTo(new Square(1, 0), Direction.Right);
+            Assert.AreEqual(0, result.Count());
+
+        }
+
     }
 }

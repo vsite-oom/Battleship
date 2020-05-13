@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,6 +9,15 @@ namespace Vsite.Oom.Battleship.Model
 {
     using static Vsite.Oom.Battleship.Model.Ship;
     using Placement = IEnumerable<Square>;
+    public enum Direction
+    {
+        Up,
+        Right,
+        Down,
+        Left
+    }
+
+    
     public class Grid
     {
         public readonly int Rows;
@@ -104,6 +114,53 @@ namespace Vsite.Oom.Battleship.Model
         public void MarkHitResult(Square square, HitResult hitResult)
         {
             squares[square.Row, square.Column].SetState(hitResult);
+        }
+
+        public IEnumerable<Square> GetSquaresNextTo(Square square,Direction direction )
+        {
+            var result = new List<Square>();
+
+            var row = square.Row;
+            var column = square.Column;
+            var deltRow = 0;
+            var deltaCol = 0;
+            var maxCount = 0;
+
+            switch(direction)
+            {
+                case Direction.Right:
+                    ++column;
+                    deltaCol = +1;
+                    maxCount = Columns - column;
+                    break;
+                case Direction.Down:
+                    ++row;
+                    deltRow = +1;
+                    maxCount = Rows - row;
+                    break;
+                case Direction.Left:
+                    maxCount = column;
+                    --column;
+                    deltaCol = -1;                    
+                    break;
+                case Direction.Up:
+                    maxCount = row;
+                    --row;
+                    deltRow = -1;
+                    break;
+                default:
+                    Debug.Assert(false);
+                        break;
+            }
+
+            for(int i = 0; i < maxCount && IsAviable(row, column); ++i)
+            {
+                result.Add(squares[row, column]);
+                row += deltRow;
+                column += deltaCol;                
+            }
+
+            return result;
         }
     }
 }
