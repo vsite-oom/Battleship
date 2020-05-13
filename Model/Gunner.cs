@@ -17,10 +17,10 @@ namespace Vsite.Oom.Battleship.Model
     {
         public Gunner(int rows, int columns, IEnumerable<int> shipLengths)
         {
-            evidenceGrid = new Grid(rows,columns);
+            evidenceGrid = new Grid(rows, columns);
             shipsToShoot = new List<int>(shipLengths.OrderByDescending(l => l));
             ShootingTactics = ShootingTactics.Random;
-            squareTerminator = new SquareTerminator(rows,columns);
+            squareTerminator = new SquareTerminator(rows, columns);
         }
 
         public Square NextTarget()
@@ -42,11 +42,11 @@ namespace Vsite.Oom.Battleship.Model
                     var toEliminate = squareTerminator.ToEliminate(squaresHit);
                     foreach (var sq in toEliminate)
                     {
-                        evidenceGrid.MarkHitResult(sq,HitResult.Missed);
-                    }                   
+                        evidenceGrid.MarkHitResult(sq, HitResult.Missed);
+                    }
                     foreach (var sq in squaresHit)
                     {
-                        evidenceGrid.MarkHitResult(sq,HitResult.Sunken);
+                        evidenceGrid.MarkHitResult(sq, HitResult.Sunken);
                     }
                     int length = squaresHit.Count();
                     shipsToShoot.Remove(length);
@@ -90,19 +90,40 @@ namespace Vsite.Oom.Battleship.Model
         }
         private Square SelectRandomly()
         {
-            var placements= evidenceGrid.GetAvailablePlacements(shipsToShoot[0]);
+            var placements = evidenceGrid.GetAvailablePlacements(shipsToShoot[0]);
             var allCandidates = placements.SelectMany(seq => seq);
             int index = random.Next(0, allCandidates.Count());
             return allCandidates.ElementAt(index);
         }
         private Square SelectFromAround()
         {
-            throw new NotImplementedException();
+            List<IEnumerable<Square>> arround = new List<IEnumerable<Square>>();
+            foreach (Direction direction in Enum.GetValues(typeof(Direction)))
+            {
+                var l = evidenceGrid.GetSquaresNextTo(lastTarget, direction);
+
+                if (l.Count() > 0)
+                    arround.Add(l);
+            }
+
+            if (arround.Count() == 1)
+                return arround[0].First();
+
+            //TODO: Improve selection so that only largest lists are taken as candidates
+
+            int index = random.Next(0, arround.Count());
+
+            return arround[index].First();
         }
 
         private Square SelectInline()
         {
-            throw new NotImplementedException();
+            var l = evidenceGrid.GetSquaresInline(squaresHit);
+            if (l.Count() == 1)
+                return l.ElementAt(0).First();
+
+            int index = random.Next(0, l.Count());
+            return l.ElementAt(index).First();
         }
 
 
