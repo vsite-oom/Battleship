@@ -110,6 +110,36 @@ namespace Vsite.Oom.Battleship.Model
 
         }
 
+        public IEnumerable<IEnumerable<Square>> GetSquaresInLine(IEnumerable<Square> squaresHit) {
+            
+            List<IEnumerable<Square>> result = new List<Placement>();
+            //for horizontal
+            if (squaresHit.First().Row == squaresHit.Last().Row) {
+                var l = GetSquaresNextTo(squaresHit.First(), Direction.Left);
+                if (l.Count() > 0)
+                    result.Add(l);
+                l = GetSquaresNextTo(squaresHit.Last(), Direction.Right);
+                if (l.Count() > 0)
+                    result.Add(l);
+
+            }
+
+            if (squaresHit.First().Column == squaresHit.Last().Column)
+            {
+                var l = GetSquaresNextTo(squaresHit.First(), Direction.Up);
+                if (l.Count() > 0)
+                    result.Add(l);
+                l = GetSquaresNextTo(squaresHit.Last(), Direction.Down);
+                if (l.Count() > 0)
+                    result.Add(l);
+
+            }
+            else {
+                Debug.Assert(false);
+            }
+            return result;
+        }
+
         private IEnumerable<Placement> GetAvailableHorizontalPlacments(int lenght) {
             var result = new List<List<Square>>();
             for (int r = 0; r < Rows; ++r) {
