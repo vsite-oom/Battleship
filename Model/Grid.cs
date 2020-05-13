@@ -1,12 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Vsite.Oom.Battleship.Model
 {
+
     using Placement = IEnumerable<Square>;
+    public enum Direction
+    {
+        Up,
+        Right,
+        Down,
+        Left
+    }
     public class Grid
     {
         public Grid(int rows,int columns)
@@ -103,6 +112,48 @@ namespace Vsite.Oom.Battleship.Model
         public void MarkHitResult(Square square,HitResult hitResult)
         {
             squares[square.Row, square.Column].SetState(hitResult);
+        }
+        public IEnumerable<Square> GetSquaresNextTo(Square square,Direction direction)
+        {
+            List<Square> result = new List<Square>();
+            int row = square.Row;
+            int column = square.Column;
+            int deltaRow = 0;
+            int deltaColumn = 0;
+            int maxCount = 0;
+            switch (direction)
+            {
+                case Direction.Down:
+                    ++row;
+                    deltaRow++;
+                    maxCount = Rows - row;
+                    break;
+                case Direction.Up:
+                    maxCount = row;
+                    --row;
+                    deltaRow--;
+                    break;
+                case Direction.Left:
+                    maxCount = column;
+                    --column;
+                    deltaColumn--;
+                    break;
+                case Direction.Right:
+                    ++column;
+                    deltaColumn++;
+                    maxCount = Columns - column;
+                    break;
+                default:
+                    Debug.Assert(false);
+                    break;
+            }
+            for(int i = 0; i < maxCount && IsAvailable(row, column); ++i)
+            {
+                result.Add(squares[row, column]);
+                row += deltaRow;
+                column += deltaColumn;
+            }
+            return result;
         }
         public readonly int Rows;
         public readonly int Columns;
