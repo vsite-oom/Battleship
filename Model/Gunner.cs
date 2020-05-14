@@ -38,7 +38,7 @@ namespace Vsite.Oom.Battleship.Model
                     return;
                 case HitResult.Sunken:
                     SquaresHit.Add(lastTarget);
-                    SquaresHit.OrderBy(s => s.row + s.column);
+                    SquaresHit = SquaresHit.OrderBy(s => s.row + s.column).ToList();
                     var toElim = squareTerminator.ToEliminate(SquaresHit);
                     foreach(var sq in toElim)
                     {
@@ -55,7 +55,7 @@ namespace Vsite.Oom.Battleship.Model
                     return;
                 case HitResult.Hit:
                     SquaresHit.Add(lastTarget);
-                    SquaresHit.OrderBy(s => s.row + s.column);
+                    SquaresHit = SquaresHit.OrderBy(s => s.row + s.column).ToList();
                     switch (ShootingTactics)
                     {
                         case ShootingTactics.Random:
