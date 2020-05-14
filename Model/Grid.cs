@@ -124,7 +124,7 @@ namespace Vsite.Oom.Battleship.Model
 
             }
 
-            if (squaresHit.First().Column == squaresHit.Last().Column)
+            else if (squaresHit.First().Column == squaresHit.Last().Column)
             {
                 var l = GetSquaresNextTo(squaresHit.First(), Direction.Up);
                 if (l.Count() > 0)
