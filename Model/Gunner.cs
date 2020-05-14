@@ -48,7 +48,7 @@ namespace Vsite.Oom.Battleship.Model
                 case HitResult.Sunken:
                     // eliminate squares around the ship
                     squaresHit.Add(lastTarget);
-                    squaresHit.OrderBy(s => s.Row + s.Column);
+                    squaresHit = squaresHit.OrderBy(s => s.Row + s.Column).ToList();
                     var toEliminate = squareTerminator.ToEliminate(squaresHit);
                     foreach(var sq in toEliminate)
                         evidenceGrid.MarkHitResult(sq,HitResult.Missed);
@@ -61,7 +61,7 @@ namespace Vsite.Oom.Battleship.Model
                     return;
                 case HitResult.Hit:
                     squaresHit.Add(lastTarget);
-                    squaresHit.OrderBy(s => s.Row + s.Column);
+                    squaresHit = squaresHit.OrderBy(s => s.Row + s.Column).ToList();
                     switch (ShootingTactics)
                     {
                         case ShootingTactics.Random:
