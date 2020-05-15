@@ -37,7 +37,7 @@ namespace Vsite.Oom.Battleship.Model
 					return;
 				case HitResult.Sunken:
 					squaresHit.Add(lastTarget);
-					squaresHit.OrderBy(s => s.Row + s.Col);
+					squaresHit = squaresHit.OrderBy(s => s.Row + s.Col).ToList();
 					var toEliminate = squareTerminator.ToEliminate(squaresHit);
 					foreach (var sq in toEliminate)
 						evidenceGrid.MarkHitResult(sq, HitResult.Missed);
@@ -50,7 +50,7 @@ namespace Vsite.Oom.Battleship.Model
 					return;
 				case HitResult.Hit:
 					squaresHit.Add(lastTarget);
-					squaresHit.OrderBy(s => s.Row + s.Col);
+					squaresHit = squaresHit.OrderBy(s => s.Row + s.Col).ToList();
 					switch (ShootingTactics)
 					{
 						case ShootingTactics.Random:
@@ -110,6 +110,7 @@ namespace Vsite.Oom.Battleship.Model
 			if (l.Count() == 1)
 				return l.ElementAt(0).First();
 			//TODO: improve selection so that only largest lists are taken as candidates 
+			//l.OrderByDescending(ls => ls.Count());
 			int index = random.Next(0, l.Count());
 			return l.ElementAt(index).First();
 
