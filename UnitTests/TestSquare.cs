@@ -22,8 +22,6 @@ namespace Vsite.Oom.Battleship.Model.UnitTests
             Assert.AreEqual(s.Hit(new Square(1, 1)), HitResult.Hit);
             Assert.AreEqual(s.Hit(new Square(1, 2)), HitResult.Hit);
             Assert.AreEqual(s.Hit(new Square(1, 3)), HitResult.Sunken);
-            foreach (var square in s.Squares)
-                Assert.AreEqual(square.SquareState, SquareState.Sunken);
         }
     }
 }
