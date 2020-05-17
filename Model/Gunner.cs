@@ -106,9 +106,9 @@ namespace Vsite.Oom.Battleship.Model
             }
             if (around.Count == 1)
                 return around[0].First();
-            //TODO: improve selection so thath only largest list are taken as candidates DOMCACA ZADACA
-            int index = random.Next(0, around.Count);
-            return around[index].First();
+
+            around = around.OrderByDescending(o => o.Count()).ToList<IEnumerable<Square>>();
+            return around[0].First();
         }
 
         private Square SelectInline()
@@ -116,12 +116,11 @@ namespace Vsite.Oom.Battleship.Model
             var l = evidenceGrid.GetSquaresInline(squaresHit);
             if (l.Count() == 1)
                 return l.ElementAt(0).First();
-
-            //TODO: improve selection so thath only largest list are taken as candidates DOMACA ZADACA
-            int index = random.Next(0, l.Count());
-            return l.ElementAt(index).First();
+            
+            l = l.OrderByDescending(o => o.Count()).ToList<IEnumerable<Square>>();
+            return l.ElementAt(0).First();
         }
-        
+
         private Square lastTarget;
 
         private Grid evidenceGrid;
