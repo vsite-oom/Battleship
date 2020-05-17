@@ -44,6 +44,8 @@ namespace Battleships_GUI
                     //eliminate squares around the ship
                     squaresHit.Add(lastTarget);
                     squaresHit.OrderBy(s=>s.Row + s.Column);
+
+                    squaresHit = squaresHit.OrderBy(s => s.Row + s.Column).ToList();
                     var toEliminate=squareTerminator.ToEliminate(squaresHit);
                     foreach(var sq in toEliminate)
                         evidenceGrid.MarkHitResult(sq,HitResult.Missed);
@@ -58,6 +60,8 @@ namespace Battleships_GUI
                 case HitResult.Hit:
                     squaresHit.Add(lastTarget);
                     squaresHit.OrderBy(s => s.Row + s.Column);
+                    squaresHit = squaresHit.OrderBy(s => s.Row + s.Column).ToList();
+
 
                     switch (ShootingTactics)
                     {
