@@ -95,8 +95,9 @@ namespace Vsite.Oom.Battleship.Model
             }
             if (around.Count == 1)
                 return around[0].First();
-            //TODO: improve selection so that only largest lists are taken as candidates
-            int index = random.Next(0,around.Count);
+
+            around = around.Where(x => x.Count()>1).OrderByDescending(x=>x.Count()).ToList();
+            int index = random.Next(1,around.Count);
             return around[index].First();
         }
 
