@@ -100,19 +100,32 @@ namespace Vsite.Oom.Battleship.Model
 			}
 			if (arround.Count == 1)
 				return arround[0].First();
-			//TODO: improve selection so that only largest lists are taken as candidates 
-			int index = random.Next(0, arround.Count);
+			//TODO: improve selection so that only largest lists are taken as candidates
+			arround = arround.OrderByDescending(l => l.Count()).ToList();
+			shipToShoot.Sort((a, b) => b.CompareTo(a));//sort by size desc.
+			int longestShipToShoot = shipToShoot.First();
+			int i = 0;
+			for (i = 0; arround[i].Count() >= longestShipToShoot - squaresHit.Count(); ++i)
+			{
+			}
+			int index = random.Next(0, i - 1);
 			return arround[index].First();
 		}
 
 		private Square SelectInline()
-		{
+		  {
 			var l = evidenceGrid.GetSquaresInline(squaresHit);
 			if (l.Count() == 1)
 				return l.ElementAt(0).First();
 			//TODO: improve selection only largest lists are taken as candidates
-			//l.OrderByDescending(ls => l.Count());//sortirati po duljini, najdulja na dole i izabrati najdulje
-			int index = random.Next(0, l.Count());
+			l = l.OrderByDescending(li => li.Count()).ToList();
+			shipToShoot.Sort((a, b) => b.CompareTo(a));//sort by size desc.
+			int longestShipToShoot = shipToShoot.First();
+			int i = 0;
+			for (i = 0; l.ElementAt(i).Count() >= longestShipToShoot - squaresHit.Count(); ++i)
+			{
+			}
+			int index = random.Next(0, i - 1);
 			return l.ElementAt(index).First();
 
 		}
