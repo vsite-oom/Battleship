@@ -109,11 +109,12 @@ namespace Vsite.Oom.Battleship.Model
             if (arround.Count() == 1)
                 return arround[0].First();
 
-            //TODO: Improve selection so that only largest lists are taken as candidates
+            shipsToShoot.Sort((a, b) => a.CompareTo(b));
+            int longestShip = shipsToShoot.FirstOrDefault();
+            arround = arround.OrderByDescending(s => s.Count()).ToList();
+            arround.RemoveAll(s => s.Count() < longestShip - squaresHit.Count);
 
-            int index = random.Next(0, arround.Count());
-
-            return arround[index].First();
+            return arround[random.Next(0,arround.Count)].First();
         }
 
         private Square SelectInline()
@@ -122,8 +123,9 @@ namespace Vsite.Oom.Battleship.Model
             if (l.Count() == 1)
                 return l.ElementAt(0).First();
 
-            int index = random.Next(0, l.Count());
-            return l.ElementAt(index).First();
+            l = l.OrderByDescending(s => s.Count()).ToList();
+
+            return l.First().First();
         }
 
 
