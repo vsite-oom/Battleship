@@ -123,7 +123,7 @@ namespace Vsite.Oom.Battleship.Model
             if (l.Count() == 1)
                 return l.ElementAt(0).First();
 
-            l = l.OrderByDescending(s => s.Count()).ToList();
+            l = l.OrderByDescending(s => s.Count());
 
             return l.First().First();
         }
