@@ -39,7 +39,7 @@ namespace Vsite.Oom.Battleship.Model
                     return;
                 case HitResult.Sunken:
                     squaresHit.Add(lastTarget);
-                    squaresHit.OrderBy(s => s.Row + s.Column);
+                    squaresHit = squaresHit.OrderBy(s => s.Row + s.Column).ToList();
                     var toEliminate = squareTerminator.ToEliminate(squaresHit);
 
                     foreach (var sq in toEliminate)
@@ -48,7 +48,6 @@ namespace Vsite.Oom.Battleship.Model
                     foreach (var sq in squaresHit)
                         evidenceGrid.MarkHitResult(sq, HitResult.Sunken);
 
-                    evidenceGrid.EliminateSquares(toEliminate);
                     int length = squaresHit.Count();
                     shipsToShoot.Remove(length);
                     squaresHit.Clear();
@@ -56,7 +55,7 @@ namespace Vsite.Oom.Battleship.Model
                     return;
                 case HitResult.Hit:
                     squaresHit.Add(lastTarget);
-                    squaresHit.OrderBy(s => s.Row + s.Column);
+                    squaresHit = squaresHit.OrderBy(s => s.Row + s.Column).ToList();
                     switch (ShootingTactics)
                     {
                         case ShootingTactics.Random:
@@ -107,7 +106,7 @@ namespace Vsite.Oom.Battleship.Model
             }
             if (around.Count == 1)
                 return around[0].First();
-            //TODO: improve selection so thath only largest list are taken as candidates
+            //TODO: improve selection so thath only largest list are taken as candidates DOMCACA ZADACA
             int index = random.Next(0, around.Count);
             return around[index].First();
         }
@@ -118,7 +117,7 @@ namespace Vsite.Oom.Battleship.Model
             if (l.Count() == 1)
                 return l.ElementAt(0).First();
 
-            //TODO: improve selection so thath only largest list are taken as candidates
+            //TODO: improve selection so thath only largest list are taken as candidates DOMACA ZADACA
             int index = random.Next(0, l.Count());
             return l.ElementAt(index).First();
         }

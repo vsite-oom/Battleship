@@ -37,7 +37,7 @@ namespace Vsite.Oom.Battleship.Model.UnitTests
         }
 
         [TestMethod]
-        public void ShootingTacticsChangesFromRandomToSurroundingAfterSecondSquareIsHit()
+        public void ShootingTacticsChangesFromSurroundingToInlineAfterSecondSquareIsHit()
         {
 
             int[] shipLengths = new int[] { 1, 2, 3 };
@@ -47,14 +47,6 @@ namespace Vsite.Oom.Battleship.Model.UnitTests
             g.NextTarget();
             g.ProcessHitResult(HitResult.Hit);
             Assert.AreEqual(ShootingTactics.Surrounding, g.ShootingTactics);
-
-            g.NextTarget();
-            g.ProcessHitResult(HitResult.Hit);
-            Assert.AreEqual(ShootingTactics.Inline, g.ShootingTactics);
-
-            g.NextTarget();
-            g.ProcessHitResult(HitResult.Missed);
-            Assert.AreEqual(ShootingTactics.Inline, g.ShootingTactics);
 
             g.NextTarget();
             g.ProcessHitResult(HitResult.Hit);
