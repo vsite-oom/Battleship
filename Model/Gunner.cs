@@ -110,22 +110,18 @@ namespace Vsite.Oom.Battleship.Model
                 if (l.Count() > 0)
                     arround.Add(l);
             }
-            if (arround.Count == 1)
-                return arround[0].First();
             //TODO: improve selection so that only largest lists are taken as candidates
-            int index = random.Next(0, arround.Count);
-            return arround[index].First();
-
+            if (arround.Count > 1)
+                arround = arround.OrderByDescending(ls => ls.Count()).ToList();
+            return arround[0].First();
         }
         private Square SelectInline()
         {
             var l = evidenceGrid.GetSquaresInLine(squaresHit);
-            if (l.Count() == 1)
-                return l.ElementAt(0).First();
-
             //TODO: improve selection so that only largest lists are taken as candidates
-            int index = random.Next(0, l.Count());
-            return l.ElementAt(index).First();
+            if (l.Count() > 1)
+                l = l.OrderByDescending(ls => ls.Count()).ToList();
+            return l.ElementAt(0).First();
         }
 
         
