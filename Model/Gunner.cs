@@ -42,7 +42,7 @@ namespace Vsite.Oom.Battleship.Model
                 case HitResult.Sunken:
                     // Eliminate squares around the ship
                     squaresHit.Add(lastTarget);
-                    squaresHit.OrderBy(s => s.Row + s.Column);
+                    squaresHit = squaresHit.OrderBy(s => s.Row + s.Column).ToList();
                     var toEliminate = squareTerminator.ToEliminate(squaresHit);
                     foreach (var sq in toEliminate)
                     {
