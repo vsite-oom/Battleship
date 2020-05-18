@@ -60,6 +60,7 @@ namespace Vsite.Oom.Battleship.Model
                     return;
                 case HitResult.Hit:
                     squaresHit.Add(lastTarget);
+                    squaresHit = squaresHit.OrderBy(s => s.Row + s.Column).ToList();
                     switch (ShootingTactics)
                     {
                         case ShootingTactics.Random:
