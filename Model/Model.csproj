@@ -53,6 +53,7 @@
     <Compile Include="RulesSingleton.cs" />
     <Compile Include="ship.cs" />
     <Compile Include="shipwright.cs" />
+    <Compile Include="SortedSquares.cs" />
     <Compile Include="square.cs" />
     <Compile Include="squareTerminator.cs" />
     <Compile Include="SquareTerminatorFactory.cs" />
