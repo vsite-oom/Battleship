@@ -42,14 +42,14 @@ namespace Vsite.Oom.Battleship.Model
                     return;
                 case HitResult.Sunken:
                     squaresHit.Add(lastTarget);
-                    squaresHit.OrderBy(s => s.Row + s.Column);
+                   
                     var toEliminate = squareTerminator.ToEliminate(squaresHit);
                     foreach (var sq in toEliminate)
                         evidenceGrid.MarkHitResult(sq, HitResult.Missed);
                     foreach (var sq in squaresHit)
                         evidenceGrid.MarkHitResult(sq, HitResult.Sunken);
                     evidenceGrid.EliminateSquares(toEliminate);
-                    int length = squaresHit.Count();
+                    int length = squaresHit.Length;
                     shipsToShoot.Remove(length);
                     squaresHit.Clear();
                     ShootingTactics = ShootingTactics.Random;
@@ -57,7 +57,7 @@ namespace Vsite.Oom.Battleship.Model
                     return;
                 case HitResult.Hit:
                     squaresHit.Add(lastTarget);
-                    squaresHit.OrderBy(s => s.Row + s.Column);
+              
                     switch (ShootingTactics)
                     {
                         case ShootingTactics.Random:
@@ -96,6 +96,13 @@ namespace Vsite.Oom.Battleship.Model
         {
             var placements = evidenceGrid.GetAvailablePlacements(shipsToShoot[0]);
             var allCandidates = placements.SelectMany(seq => seq);
+            var groups = allCandidates.GroupBy(sq => sq);
+            var maxCount = groups.Max(g => g.Count());
+            var largestGroup = groups.Where(g => g.Count() == maxCount);
+
+            var mostCommon = largestGroup.Select(g => g.Key);
+            if (mostCommon.Count() == 1)
+                return mostCommon.First();
             int index = random.Next(0, allCandidates.Count());
             return allCandidates.ElementAt(index);
         }
@@ -105,7 +112,7 @@ namespace Vsite.Oom.Battleship.Model
             List<IEnumerable<Square>> arround = new List<IEnumerable<Square>>();
             foreach(Direction direction in Enum.GetValues(typeof(Direction)))
             {
-                var l = evidenceGrid.GetSquaresNextTo(lastTarget, direction);
+                var l = evidenceGrid.GetSquaresNextTo(squaresHit.First(), direction);
                 if (l.Count() > 0)
                     arround.Add(l);
             }
@@ -113,6 +120,13 @@ namespace Vsite.Oom.Battleship.Model
                 return arround[0].First();
 
             //TODO: improve selection so thath only largest list are taken ad candidates
+
+            var ordered = arround.OrderByDescending(ls => ls.Count());
+            int maxLen = ordered.First().Count();
+            if (maxLen > shipsToShoot[0] - 1)
+                maxLen = shipsToShoot[0] - 1;
+
+            var longest = ordered.Where(ls => ls.Count() >= maxLen);
 
             int index = random.Next(0, arround.Count);
             return arround[index].First();
@@ -142,7 +156,7 @@ namespace Vsite.Oom.Battleship.Model
 
         private List<int> shipsToShoot;
 
-        private List<Square> squaresHit = new List<Square>();
+        private SortedSquares squaresHit = new SortedSquares();
 
         private ISquareTerminator squareTerminator;
 
