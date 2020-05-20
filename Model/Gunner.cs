@@ -38,45 +38,53 @@ namespace Vsite.Oom.Battleship.Model
             // - if missed no change
             // - if first hit change to line shooting
             // - if second hit change to inline
-            // - if sunk change to random
-            switch (hitResult)
+            // - if sunk change to random           
+
+            if (hitResult == HitResult.Missed)
+                return;
+            squaresHit.Add(lastTarget);
+
+            if (hitResult == HitResult.Sunk)
             {
-                case HitResult.Missed:
-                    return;
-                case HitResult.Sunk:
-                    squaresHit.Add(lastTarget);                   
-                    foreach (var sq in squareTerminator.ToEliminate(squaresHit))
-                    {
-                        evidenceGrid.MarkHitResult(sq, HitResult.Missed);
-                    }
-                    foreach (var sq in squaresHit)
-                    {
-                        evidenceGrid.MarkHitResult(sq, HitResult.Hit);
-                    }
-                    shipsToShoot.Remove(squaresHit.Length);
-                    squaresHit.Clear();
-                    ShootingTactics = ShootingTactics.Random;
-                    return;
-                case HitResult.Hit:
-                    squaresHit.Add(lastTarget);                    
-                    switch (ShootingTactics)
-                    {
-                        case ShootingTactics.Random:
-                            ShootingTactics = ShootingTactics.Surrounding;
-                            return;
-                        case ShootingTactics.Surrounding:
-                            ShootingTactics = ShootingTactics.Inline;
-                            return;
-                        case ShootingTactics.Inline:
-                            return;
-
-                    }
-                    break;
+                squaresHit.Add(lastTarget);
+                foreach (var sq in squareTerminator.ToEliminate(squaresHit))
+                {
+                    evidenceGrid.MarkHitResult(sq, HitResult.Missed);
+                }
+                foreach (var sq in squaresHit)
+                {
+                    evidenceGrid.MarkHitResult(sq, HitResult.Hit);
+                }
+                shipsToShoot.Remove(squaresHit.Length);
+                squaresHit.Clear();
+                return;
             }
-
+            ChangeTactics(hitResult);
         }
 
-    
+        private void ChangeTactics(HitResult hitResult)
+        {
+            if (hitResult == HitResult.Sunk)
+            {
+                ShootingTactics = ShootingTactics.Random;
+                return;
+            }
+
+            if (hitResult == HitResult.Hit)
+            {
+                switch (ShootingTactics)
+                {
+                    case ShootingTactics.Random:
+                        ShootingTactics = ShootingTactics.Surrounding;
+                        return;
+                    case ShootingTactics.Surrounding:
+                        ShootingTactics = ShootingTactics.Inline;
+                        return;
+                    case ShootingTactics.Inline:
+                        return;
+                }
+            }
+        }
 
         private Square SelectTarget()
         {
@@ -99,16 +107,16 @@ namespace Vsite.Oom.Battleship.Model
             var l = evidenceGrid.GetSquaresInLine(squaresHit);
             if (l.Count() == 1)
                 return l.ElementAt(0).First();
-           
-                var index = random.Next(0, l.Count());
-                return l.ElementAt(index).First();  
+
+            var index = random.Next(0, l.Count());
+            return l.ElementAt(index).First();
         }
 
         private Square SelectFromArround()
         {
             List<IEnumerable<Square>> around = new List<IEnumerable<Square>>();
 
-            foreach(Direction direction in Enum.GetValues(typeof(Direction)))
+            foreach (Direction direction in Enum.GetValues(typeof(Direction)))
             {
                 var l = evidenceGrid.GetSquaresNextTo(squaresHit.First(), direction);
                 if (l.Count() > 0)
@@ -126,13 +134,13 @@ namespace Vsite.Oom.Battleship.Model
 
         private Square SelectRandomly()
         {
-            var placements = evidenceGrid.GetAvailablePlacements(shipsToShoot[0]).SelectMany(s=> s);           
+            var placements = evidenceGrid.GetAvailablePlacements(shipsToShoot[0]).SelectMany(s => s);
             var index = random.Next(0, placements.Count());
             return placements.ElementAt(index);
-            
+
 
         }
-               
+
         private Random random = new Random();
         private Square lastTarget;
         private Grid evidenceGrid;
