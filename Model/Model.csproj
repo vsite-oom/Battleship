@@ -42,7 +42,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Gunner.cs" />
+    <Compile Include="InlineShooting.cs" />
     <Compile Include="Interface1.cs" />
+    <Compile Include="ITargetSelect.cs" />
+    <Compile Include="RandomShooting.cs" />
     <Compile Include="RulesSingleton.cs" />
     <Compile Include="Fleet.cs" />
     <Compile Include="Grid.cs" />
@@ -54,6 +57,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SquareTerminator.cs" />
     <Compile Include="SquareTerminatorFactory.cs" />
+    <Compile Include="SurroundShooting.cs" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Connected Services\" />
