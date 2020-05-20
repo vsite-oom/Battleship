@@ -44,8 +44,7 @@ namespace Vsite.Oom.Battleship.Model
                 case HitResult.Missed:
                     return;
                 case HitResult.Sunk:
-                    squaresHit.Add(lastTarget);
-                    squaresHit.OrderBy(s => s.Row + s.Column);
+                    squaresHit.Add(lastTarget);                   
                     foreach (var sq in squareTerminator.ToEliminate(squaresHit))
                     {
                         evidenceGrid.MarkHitResult(sq, HitResult.Missed);
@@ -54,19 +53,17 @@ namespace Vsite.Oom.Battleship.Model
                     {
                         evidenceGrid.MarkHitResult(sq, HitResult.Hit);
                     }
-                    shipsToShoot.Remove(squaresHit.Count());
+                    shipsToShoot.Remove(squaresHit.Length);
                     squaresHit.Clear();
                     ShootingTactics = ShootingTactics.Random;
                     return;
                 case HitResult.Hit:
-                    squaresHit.Add(lastTarget);
-                    squaresHit.OrderBy(s => s.Row + s.Column);
+                    squaresHit.Add(lastTarget);                    
                     switch (ShootingTactics)
                     {
                         case ShootingTactics.Random:
                             ShootingTactics = ShootingTactics.Surrounding;
                             return;
-
                         case ShootingTactics.Surrounding:
                             ShootingTactics = ShootingTactics.Inline;
                             return;
@@ -113,13 +110,14 @@ namespace Vsite.Oom.Battleship.Model
 
             foreach(Direction direction in Enum.GetValues(typeof(Direction)))
             {
-                var l = evidenceGrid.GetSquaresNextTo(lastTarget, direction);
+                var l = evidenceGrid.GetSquaresNextTo(squaresHit.First(), direction);
                 if (l.Count() > 0)
                     around.Add(l);
             }
             if (around.Count() == 1)
                 return around[0].First();
 
+            //around.OrderByDescending(arounnd => around.Count());
             //TODO: improve list selection to take only largest list
             var index = random.Next(0, around.Count());
 
@@ -139,7 +137,7 @@ namespace Vsite.Oom.Battleship.Model
         private Square lastTarget;
         private Grid evidenceGrid;
         private List<int> shipsToShoot;
-        private List<Square> squaresHit = new List<Square>();
+        private SortedSquares squaresHit = new SortedSquares();
         private ISquareTerminator squareTerminator;
         public ShootingTactics ShootingTactics { get; private set; }
     }
