@@ -36,42 +36,46 @@ namespace Vsite.Oom.Battleship.Model
             // record on evidence grid
             evidenceGrid.MarkHitResult(lastTarget, hitResult);
 
-            // modify shooting tactics
-            // if missed - no change
-            // if first - change to surrounding
-            // if second hit - change to inline
-            // if sunken - change to random
-            switch (hitResult)
+            if (hitResult == HitResult.Missed)
+                return;
+            squaresHit.Add(lastTarget);
+            if (hitResult == HitResult.Sunken)
             {
-                case HitResult.Missed:
-                    return;
-                case HitResult.Sunken:
-                    // eliminate squares around the ship
-                    squaresHit.Add(lastTarget);
-                    var toEliminate = squareTerminator.ToEliminate(squaresHit);
-                    foreach(var sq in toEliminate)
-                        evidenceGrid.MarkHitResult(sq,HitResult.Missed);
-                    foreach (var sq in squaresHit)
-                        evidenceGrid.MarkHitResult(sq, HitResult.Sunken);
-                    int length = squaresHit.Length;
-                    shipsToShoot.Remove(length);
-                    squaresHit.Clear();
-                    ShootingTactics = ShootingTactics.Random;
-                    return;
-                case HitResult.Hit:
-                    squaresHit.Add(lastTarget);
-                    switch (ShootingTactics)
-                    {
-                        case ShootingTactics.Random:
-                            ShootingTactics = ShootingTactics.Surrounding;
-                            return;
-                        case ShootingTactics.Surrounding:
-                            ShootingTactics = ShootingTactics.Inline;
-                            return;
-                        case ShootingTactics.Inline:
-                            return;
-                    }
-                    break;
+                var toEliminate = squareTerminator.ToEliminate(squaresHit);
+                foreach (var sq in toEliminate)
+                    evidenceGrid.MarkHitResult(sq, HitResult.Missed);
+                foreach (var sq in squaresHit)
+                    evidenceGrid.MarkHitResult(sq, HitResult.Sunken);
+                int length = squaresHit.Length;
+                shipsToShoot.Remove(length);
+                squaresHit.Clear();
+            }
+
+            ChangeTactics(hitResult);
+           
+        }
+
+        private void ChangeTactics(HitResult hitResult)
+        {
+            if (hitResult == HitResult.Sunken)
+            {
+                ShootingTactics = ShootingTactics.Random;
+                return;
+            }
+
+            if (hitResult == HitResult.Hit)
+            {
+                switch (ShootingTactics)
+                {
+                    case ShootingTactics.Random:
+                        ShootingTactics = ShootingTactics.Surrounding;
+                        return;
+                    case ShootingTactics.Surrounding:
+                        ShootingTactics = ShootingTactics.Inline;
+                        return;
+                    case ShootingTactics.Inline:
+                        return;
+                }
             }
         }
 
