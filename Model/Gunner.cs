@@ -19,7 +19,7 @@ namespace Vsite.Oom.Battleship.Model
 		public Gunner(int rows, int cols, IEnumerable<int> shipLengths)
 		{
 			evidenceGrid = new Grid(rows, cols);
-			shipsToShoot = new List<int>(shipLengths.OrderByDescending(l => l));
+			shipToShoot = new List<int>(shipLengths.OrderByDescending(l => l));
 			ShootingTactics = ShootingTactics.Random;
 			squareTerminator = new SquareTerminator(rows, cols);
 		}
@@ -55,9 +55,9 @@ namespace Vsite.Oom.Battleship.Model
                     switch (ShootingTactics)                    
                     {
                         case ShootingTactics.Random:
-                            ShootingTactics = ShootingTactics.Surrounding;
+                            ShootingTactics = ShootingTactics.Sorrounding;
                             return;
-                        case ShootingTactics.Surrounding:
+                        case ShootingTactics.Sorrounding:
                             ShootingTactics = ShootingTactics.Inline;
                             return;
                         case ShootingTactics.Inline:
@@ -80,7 +80,7 @@ namespace Vsite.Oom.Battleship.Model
             {
                 case ShootingTactics.Random:
                     return SelectRandomly();
-                case ShootingTactics.Surrounding:
+                case ShootingTactics.Sorrounding:
                     return SelectFromArround();
                 case ShootingTactics.Inline:
                     return SelectInline();
