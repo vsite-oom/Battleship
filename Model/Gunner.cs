@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading;
 
 namespace Vsite.Oom.Battleship.Model
 {
@@ -33,43 +34,57 @@ namespace Vsite.Oom.Battleship.Model
         public void ProcessHitResult(ShipHitResult hitResult)
         {
             evidenceGrid.MarkHitResult(lastTarget, hitResult);
-            switch (hitResult)
+            if (hitResult == ShipHitResult.Missed)
             {
-                case ShipHitResult.Missed:
-                    return;
-                case ShipHitResult.Hit:
-                    squaresHit.Add(lastTarget);
-                    switch (ShootingTactics)
-                    {
-                        case ShootingTactics.Random:
-                            ShootingTactics = ShootingTactics.Surrounding;
-                            return;
-                        case ShootingTactics.Surrounding:
-                            ShootingTactics = ShootingTactics.Inline;
-                            return;
-                        case ShootingTactics.Inline:
-                            return;
-                        default:
-                            return;
-                    }
-                case ShipHitResult.Sunken:
-                    squaresHit.Add(lastTarget);
-                    var toEliminate = squareTerminator.ToEliminate(squaresHit);
-                    foreach (var sq in toEliminate)
-                    {
-                        evidenceGrid.MarkHitResult(sq, ShipHitResult.Missed);
-                    }
-                    foreach (var sq in squaresHit)
-                    {
-                        evidenceGrid.MarkHitResult(sq, ShipHitResult.Sunken);
-                    }
-                    var length = squaresHit.Count;
-                    shipsToShoot.Remove(length);
-                    squaresHit.Clear();
-                    ShootingTactics = ShootingTactics.Random;
-                    return;
-                default:
-                    return;
+                return;
+            }
+            squaresHit.Add(lastTarget);
+
+            if (hitResult == ShipHitResult.Sunken)
+            {
+                squaresHit.Add(lastTarget);
+                var toEliminate = squareTerminator.ToEliminate(squaresHit);
+                foreach (var sq in toEliminate)
+                {
+                    evidenceGrid.MarkHitResult(sq, ShipHitResult.Missed);
+                }
+
+                foreach (var sq in squaresHit)
+                {
+                    evidenceGrid.MarkHitResult(sq, ShipHitResult.Sunken);
+                }
+
+                var length = squaresHit.Count;
+                shipsToShoot.Remove(length);
+                squaresHit.Clear();
+            }
+
+            ChangeTactics(hitResult);
+        }
+
+        private void ChangeTactics(ShipHitResult hitResult)
+        {
+            if (hitResult == ShipHitResult.Sunken)
+            {
+                ShootingTactics = ShootingTactics.Random;
+                return;
+            }
+
+            if (hitResult == ShipHitResult.Hit)
+            {
+                switch (ShootingTactics)
+                {
+                    case ShootingTactics.Random:
+                        ShootingTactics = ShootingTactics.Surrounding;
+                        return;
+                    case ShootingTactics.Surrounding:
+                        ShootingTactics = ShootingTactics.Inline;
+                        return;
+                    case ShootingTactics.Inline:
+                        return;
+                    default:
+                        return;
+                }
             }
         }
 
