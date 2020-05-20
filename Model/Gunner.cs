@@ -43,26 +43,20 @@ namespace Battleships_GUI
                 case HitResult.Sunken:
                     //eliminate squares around the ship
                     squaresHit.Add(lastTarget);
-                    squaresHit.OrderBy(s=>s.Row + s.Column);
 
-                    squaresHit = squaresHit.OrderBy(s => s.Row + s.Column).ToList();
                     var toEliminate=squareTerminator.ToEliminate(squaresHit);
                     foreach(var sq in toEliminate)
                         evidenceGrid.MarkHitResult(sq,HitResult.Missed);
                     foreach (var sq in squaresHit)
                         evidenceGrid.MarkHitResult(sq, HitResult.Sunken);
-                    int length = squaresHit.Count();
+                    int length = squaresHit.Length;
                     shipsToShoot.Remove(length);
                     squaresHit.Clear();
 
                     ShootingTactics = ShootingTactics.Random;
                     return;
                 case HitResult.Hit:
-                    squaresHit.Add(lastTarget);
-                    squaresHit.OrderBy(s => s.Row + s.Column);
-                    squaresHit = squaresHit.OrderBy(s => s.Row + s.Column).ToList();
-
-
+                    squaresHit.Add(lastTarget);                
                     switch (ShootingTactics)
                     {
                         case ShootingTactics.Random:
@@ -102,7 +96,18 @@ namespace Battleships_GUI
         private Square SelectRandomly()
         {
             var placements = evidenceGrid.GetAvailablePlacements(shipsToShoot[0]);
+            //create simple array of sq from arr of arr
             var allCandidates = placements.SelectMany(seq => seq);
+            //create groups with individual sq
+            var groups=allCandidates.GroupBy(sq => sq);
+            //find the number of sq in largest group
+            var maxCount = groups.Max(g => g.Count());
+            //filter only grouzps that have maxcount elements
+            var largestGroups = groups.Where(g => g.Count() == maxCount);
+            //fetch keys from each group(i.e. sq that represent the group
+            var mostCommon = largestGroups.Select(g => g.Key);
+            if (mostCommon.Count() == 1)
+                return mostCommon.First();
             int index=random.Next(0, allCandidates.Count());
             return allCandidates.ElementAt(index);
         }
@@ -112,7 +117,7 @@ namespace Battleships_GUI
             List<IEnumerable<Square>> around = new List<IEnumerable<Square>>();
             foreach (Direction direction in Enum.GetValues(typeof(Direction)))
             {
-                var l = evidenceGrid.GetSquaresNextTo(lastTarget, direction);
+                var l = evidenceGrid.GetSquaresNextTo(squaresHit.First(), direction);
                 if (l.Count() > 0)
                     around.Add(l);
             }
@@ -120,6 +125,12 @@ namespace Battleships_GUI
             if (around.Count == 1)
                 return around[0].First();
             //TODO: improve selection so that only largest lists are taken into account
+            var ordered = around.OrderByDescending(ls => ls.Count());
+            int maxLen = ordered.First().Count();
+            if (maxLen > shipsToShoot[0] - 1)
+                maxLen = shipsToShoot[0] - 1;
+            var longest = ordered.Where(ls => ls.Count() >= maxLen);
+
             int index = random.Next(0, around.Count);
             return around[index].First();
         }
@@ -143,7 +154,7 @@ namespace Battleships_GUI
 
         private List<int> shipsToShoot;
 
-        private List<Square> squaresHit = new List<Square>();
+        private SortedSquares squaresHit = new SortedSquares();
 
         private Random random = new Random();
 
