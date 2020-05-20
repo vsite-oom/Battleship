@@ -20,9 +20,13 @@ namespace Vsite.Oom.Battleship.Model
             {
                 return l.ElementAt(0).First();
             }
-            //l.OrderByDescending(ls => ls.Count());
-            int index = random.Next(0, l.Count());
-            return l.ElementAt(index).First();
+            var ordered = l.OrderByDescending(ls => ls.Count());
+            int maxLen = ordered.First().Count();
+            if (maxLen > shipLength - squaresHit.Count())
+                maxLen = shipLength - squaresHit.Count();
+            var longest = ordered.Where(ls => ls.Count() >= maxLen);
+            int index = random.Next(0, longest.Count());
+            return longest.ElementAt(index).First();
         }
         private Random random =new Random();
         private readonly Grid evidenceGrid;
