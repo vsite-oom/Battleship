@@ -39,7 +39,6 @@ namespace Vsite.Oom.Battleship.Model
                     return;
                 case HitResult.Sunken:
                     squaresHit.Add(lastTarget);
-                    squaresHit = squaresHit.OrderBy(s => s.Row + s.Column).ToList();
                     var toEliminate = squareTerminator.ToEliminate(squaresHit);
 
                     foreach (var sq in toEliminate)
@@ -48,14 +47,13 @@ namespace Vsite.Oom.Battleship.Model
                     foreach (var sq in squaresHit)
                         evidenceGrid.MarkHitResult(sq, HitResult.Sunken);
 
-                    int length = squaresHit.Count();
+                    int length = squaresHit.Length;
                     shipsToShoot.Remove(length);
                     squaresHit.Clear();
                     ShootingTactics = ShootingTactics.Random;
                     return;
                 case HitResult.Hit:
                     squaresHit.Add(lastTarget);
-                    squaresHit = squaresHit.OrderBy(s => s.Row + s.Column).ToList();
                     switch (ShootingTactics)
                     {
                         case ShootingTactics.Random:
@@ -135,8 +133,8 @@ namespace Vsite.Oom.Battleship.Model
             
             var ordered = l.OrderByDescending(ls => ls.Count());
             int maxLen = ordered.First().Count();
-            if (maxLen > shipsToShoot[0] - squaresHit.Count())
-                maxLen = shipsToShoot[0] - squaresHit.Count();
+            if (maxLen > shipsToShoot[0] - squaresHit.Length)
+                maxLen = shipsToShoot[0] - squaresHit.Length;
             var longest = ordered.Where(ls => ls.Count() >= maxLen);
             int index = random.Next(0, longest.Count());
             return longest.ElementAt(index).First();
@@ -148,7 +146,7 @@ namespace Vsite.Oom.Battleship.Model
 
         private List<int> shipsToShoot;
 
-        private List<Square> squaresHit = new List<Square>();
+        private SortedSquares squaresHit = new SortedSquares();
 
         private Random random = new Random();
 
