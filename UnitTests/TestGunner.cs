@@ -8,8 +8,7 @@ namespace Vsite.Oom.Battleship.Model.UnitTests
     public class TestGunner
     {
         [TestMethod]
-        public void
-        InitiallyShootingTacticsIsRandomAsLongAsFirstSquareIsHit()
+        public void InitiallyShootingTacticsIsRandomAsLongAsFirstSquareIsHit()
         {
             int[] shipLengths = new int[] { 1, 2, 3 };
             Gunner g = new Gunner(6, 6, shipLengths);
@@ -19,68 +18,48 @@ namespace Vsite.Oom.Battleship.Model.UnitTests
             Assert.AreEqual(ShootingTactics.Random, g.ShootingTactics);
         }
         [TestMethod]
-        public void
-        ShootingTacticsChangesFromRandomToSurroundingAfterFirstSquareIsHit()
+        public void ShootingTacticsChangesFromRandomToSurroundingAfterFirstSquareIsHit()
         {
             int[] shipLengths = new int[] { 1, 2, 3 };
             Gunner g = new Gunner(6, 6, shipLengths);
             Assert.AreEqual(ShootingTactics.Random, g.ShootingTactics);
-            g.NextTarget();
-            g.ProcessHitResult(HitResult.Hit);
-            Assert.AreEqual(ShootingTactics.Surrounding,
-            g.ShootingTactics);
-            g.NextTarget();
-            g.ProcessHitResult(HitResult.Missed);
-            Assert.AreEqual(ShootingTactics.Surrounding,
-            g.ShootingTactics);
-        }
-
-        [TestMethod]
-        public void
-            ShootingTacticsChangesFromRandomToSurroundingToInlineAfterSecondSquareIsHit()
-        {
-            int[] shipLengths = new int[] { 1, 2, 3 };
-            Gunner g = new Gunner(6, 6, shipLengths);
-            Assert.AreEqual(ShootingTactics.Random, g.ShootingTactics);
-
-            g.NextTarget();
-            g.ProcessHitResult(HitResult.Hit);
-            Assert.AreEqual(ShootingTactics.Surrounding,g.ShootingTactics);
-
-            g.NextTarget();
-            g.ProcessHitResult(HitResult.Hit);
-            Assert.AreEqual(ShootingTactics.Inline, g.ShootingTactics);
-
-            g.NextTarget();
-            g.ProcessHitResult(HitResult.Hit);
-            Assert.AreEqual(ShootingTactics.Inline, g.ShootingTactics);
-
-            g.NextTarget();
-            g.ProcessHitResult(HitResult.Hit);
-            Assert.AreEqual(ShootingTactics.Inline, g.ShootingTactics);
-        }
-
-        [TestMethod]
-        public void
-            ShootingTacticsChangesFromInlineToRandomAfterShipIsSUnken()
-        {
-            int[] shipLengths = new int[] { 1, 2, 3 };
-            Gunner g = new Gunner(6, 6, shipLengths);
-            Assert.AreEqual(ShootingTactics.Random, g.ShootingTactics);
-
             g.NextTarget();
             g.ProcessHitResult(HitResult.Hit);
             Assert.AreEqual(ShootingTactics.Surrounding, g.ShootingTactics);
-
+            g.NextTarget();
+            g.ProcessHitResult(HitResult.Missed);
+            Assert.AreEqual(ShootingTactics.Surrounding, g.ShootingTactics);
+        }
+        [TestMethod]
+        public void ShootingTacticsChangesFromSurrondingToInlineAfterSecondSquareIsHit()
+        {
+            int[] shipLengths = new int[] { 1, 2, 3 };
+            Gunner g = new Gunner(6, 6, shipLengths);
+            Assert.AreEqual(ShootingTactics.Random, g.ShootingTactics);
+            g.NextTarget();
+            g.ProcessHitResult(HitResult.Hit);
+            Assert.AreEqual(ShootingTactics.Surrounding, g.ShootingTactics);
             g.NextTarget();
             g.ProcessHitResult(HitResult.Hit);
             Assert.AreEqual(ShootingTactics.Inline, g.ShootingTactics);
 
+        }
+        [TestMethod]
+        public void ShootingTacticsChangesFromInineToRandomAfterShipIsSunk()
+        {
+            int[] shipLengths = new int[] { 1, 2, 3 };
+            Gunner g = new Gunner(6, 6, shipLengths);
+            Assert.AreEqual(ShootingTactics.Random, g.ShootingTactics);
+            g.NextTarget();
+            g.ProcessHitResult(HitResult.Hit);
+            Assert.AreEqual(ShootingTactics.Surrounding, g.ShootingTactics);
+            g.NextTarget();
+            g.ProcessHitResult(HitResult.Hit);
+            Assert.AreEqual(ShootingTactics.Inline, g.ShootingTactics);
             g.NextTarget();
             g.ProcessHitResult(HitResult.Sunken);
             Assert.AreEqual(ShootingTactics.Random, g.ShootingTactics);
 
-    
         }
     }
 }
