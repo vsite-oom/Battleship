@@ -1,0 +1,118 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Vsite.Oom.Battleship.Model.Fleet" Collapsed="true">
+    <Position X="0.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAQAAAAEAIQAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Fleet.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Vsite.Oom.Battleship.Model.Grid" Collapsed="true">
+    <Position X="2.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIAEAAAAAAAAAEACAAAAAAEAAEIEAAAAAAAIAIgAAAA=</HashCode>
+      <FileName>Grid.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Vsite.Oom.Battleship.Model.Gunner" Collapsed="true">
+    <Position X="4" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAQAAACAAAQAAAAAAJAgAIAAAIEIAAAAQAAQAAAAA=</HashCode>
+      <FileName>Gunner.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Vsite.Oom.Battleship.Model.LimitedQueue&lt;T&gt;" Collapsed="true">
+    <Position X="5.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>LimitedQueue.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Vsite.Oom.Battleship.Model.RulesSingleton" Collapsed="true">
+    <Position X="0.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAEAAAAAAAAAAAAAAAIAAQAAAAAgAAAA=</HashCode>
+      <FileName>RulesSingleton.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Vsite.Oom.Battleship.Model.Ship" Collapsed="true">
+    <Position X="2.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAABAAAAAAAAAA=</HashCode>
+      <FileName>Ship.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Vsite.Oom.Battleship.Model.Shipwright" Collapsed="true">
+    <Position X="4" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAAAAAAAAAAAAAAAABAAAAAAAAAACAASAQAAAAAAAA=</HashCode>
+      <FileName>Shipwright.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Vsite.Oom.Battleship.Model.Square" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="5.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAABAAAAAAIAAAAgAJAAAAAAAAAAoAAAAAAAAAAAiA=</HashCode>
+      <FileName>Square.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Vsite.Oom.Battleship.Model.SquareTerminator" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="0.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAQAAAABAAAAAAAAAAAAACAAAAAAAAAA=</HashCode>
+      <FileName>SquareTerminator.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Vsite.Oom.Battleship.Model.SquareTerminatorFactory" Collapsed="true">
+    <Position X="2.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAA=</HashCode>
+      <FileName>SquareTerminatorFactory.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Interface Name="Vsite.Oom.Battleship.Model.ISquareTerminator" Collapsed="true">
+    <Position X="0.5" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ISquareTerminator.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Enum Name="Vsite.Oom.Battleship.Model.Direction" Collapsed="true">
+    <Position X="0.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAACACAAAAAAAI=</HashCode>
+      <FileName>Grid.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Vsite.Oom.Battleship.Model.ShootingTactics" Collapsed="true">
+    <Position X="5.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAEAAAAAAAAAAAAAAAAAABAEAAAAAAAAAAAA=</HashCode>
+      <FileName>Gunner.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Vsite.Oom.Battleship.Model.HitResult" Collapsed="true">
+    <Position X="2.25" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAEAAAAAAAIAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Ship.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Vsite.Oom.Battleship.Model.SquareState" Collapsed="true">
+    <Position X="0.5" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAEAAAAAAAIAAAAAAAAAAAAEAAAAAAEAAAA=</HashCode>
+      <FileName>Square.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Vsite.Oom.Battleship.Model.ShipAdjoining" Collapsed="true">
+    <Position X="4" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAEAAAA=</HashCode>
+      <FileName>SquareTerminatorFactory.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
