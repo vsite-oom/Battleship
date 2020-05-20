@@ -101,7 +101,7 @@ namespace Vsite.Oom.Battleship.Model
            
         }
 
-        public IEnumerable<IEnumerable<Square>> GetSquaresInLine(IEnumerable<Square> squaresHit)
+        public IEnumerable<IEnumerable<Square>> GetSquaresInline(IEnumerable<Square> squaresHit)
         {
             List<Placement> result = new List<Placement>();
             //for horizontal ship

@@ -28,7 +28,7 @@ namespace Battleships_GUI
         public Square NextTarget()
         {
             //TODO: implement correctly
-            lastTarget= targetSelect.NextTarget(shipsToShoot[0]);
+            lastTarget = targetSelect.NextTarget(shipsToShoot[0]);
             return lastTarget;
         }
 
