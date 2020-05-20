@@ -37,20 +37,18 @@ namespace Vsite.Oom.Battleship.Model
 					return;
 				case HitResult.Sunken:
 					squaresHit.Add(lastTarget);
-					squaresHit = squaresHit.OrderBy(s => s.Row + s.Col).ToList();
 					var toEliminate = squareTerminator.ToEliminate(squaresHit);
 					foreach (var sq in toEliminate)
 						evidenceGrid.MarkHitResult(sq, HitResult.Missed);
 					foreach (var sq in squaresHit)
 						evidenceGrid.MarkHitResult(sq, HitResult.Sunken);
-					int length = squaresHit.Count();
+					int length = squaresHit.Length;
 					shipToShoot.Remove(length);
 					squaresHit.Clear();
 					ShootingTactics = ShootingTactics.Random;
 					return;
 				case HitResult.Hit:
 					squaresHit.Add(lastTarget);
-					squaresHit = squaresHit.OrderBy(s => s.Row + s.Col).ToList();
 					switch (ShootingTactics)
 					{
 						case ShootingTactics.Random:
@@ -120,7 +118,7 @@ namespace Vsite.Oom.Battleship.Model
 		private Grid evidenceGrid;
 		private List<int> shipToShoot;
 		private Random random = new Random();
-		private List<Square> squaresHit = new List<Square>();
+		private SortedSquares squaresHit = new SortedSquares();
 		private ISquareTerminator squareTerminator;
 		public ShootingTactics ShootingTactics { get; private set; }
 	}
