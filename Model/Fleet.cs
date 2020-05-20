@@ -16,7 +16,7 @@ public class Fleet
 
         public IEnumerable<Ship> Ships
         {
-            get { return Ships; }
+            get { return ships; }
         }
 
         public HitResult Hit(Square square)
@@ -32,6 +32,6 @@ public class Fleet
 
 
 
-        private List<Ship>ships=new List<Ship>();
+        private List<Ship> ships=new List<Ship>();
     }
 }
