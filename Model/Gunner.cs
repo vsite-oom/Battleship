@@ -37,21 +37,19 @@ namespace Vsite.Oom.Battleship.Model
                     return;
                 case HitResult.Sunken:
                     squaresHit.Add(lastTarget);
-                    squaresHit.OrderBy(s => s.Row + s.Column);
                     var toEliminate = squareTerminator.ToEliminate(squaresHit);
                     foreach (var sq in toEliminate)
                         evidenceGrid.MarkHitResult(sq, HitResult.Missed);
                     foreach (var sq in squaresHit)
                         evidenceGrid.MarkHitResult(sq, HitResult.Sunken);
 
-                    int length = squaresHit.Count();
+                    int length = squaresHit.Length;
                     shipsToShoot.Remove(length);
                     squaresHit.Clear();
                     ShootingTactics = ShootingTactics.Random;
                     return;
                 case HitResult.Hit:
                     squaresHit.Add(lastTarget);
-                    squaresHit.OrderBy(s => s.Row + s.Column);
                     switch (ShootingTactics)
                     {
                         case ShootingTactics.Random:
@@ -128,8 +126,8 @@ namespace Vsite.Oom.Battleship.Model
                 return l.ElementAt(0).First();
             var ordered = l.OrderByDescending(ls => ls.Count());
             int maxLen = ordered.First().Count();
-            if (maxLen > shipsToShoot[0] - squaresHit.Count())
-                maxLen = shipsToShoot[0] - squaresHit.Count();
+            if (maxLen > shipsToShoot[0] - squaresHit.Length)
+                maxLen = shipsToShoot[0] - squaresHit.Length;
             var longest = ordered.Where(ls => ls.Count() >= maxLen);
             int index = random.Next(0, longest.Count());
             return longest.ElementAt(index).First();
@@ -139,7 +137,7 @@ namespace Vsite.Oom.Battleship.Model
         private Square lastTarget;
         private Grid evidenceGrid;
         private List<int> shipsToShoot;
-        private List<Square> squaresHit = new List<Square>();
+        private SortedSquares squaresHit = new SortedSquares();
         public ShootingTactics ShootingTactics { get; private set; }
         private Random random = new Random();
         private ISquareTerminator squareTerminator;
