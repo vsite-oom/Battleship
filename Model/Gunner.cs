@@ -24,7 +24,7 @@ namespace Vsite.Oom.Battleship.Model
         }
         public Square NextTarget()
         {
-            //TODO: implement correctly!
+           
             lastTarget = SelectTarget();
             return lastTarget;
         }
@@ -86,9 +86,20 @@ namespace Vsite.Oom.Battleship.Model
         private Square SelectRandomly()
         {
             var placements = evidenceGrid.GetAvailablePlacements(shipsToShoot[0]);
+            // create simple array of sqaures from arrays of arrays
             var allCandidates = placements.SelectMany(seq => seq);
-            int index = random.Next(0, allCandidates.Count());
-            return allCandidates.ElementAt(index);
+            // create groups with individual squares
+            var groups = allCandidates.GroupBy(sq => sq);
+            // find the number of squares in largest group
+            var maxCount = groups.Max(g => g.Count());
+            // filter only froups that have maxCount elements
+            var largestGroups = groups.Where(g => g.Count() == maxCount);
+            // fetch keys from each group (i.e. square that represents the group)
+            var mostCommon = largestGroups.Select(g => g.Key);
+            if (mostCommon.Count() == 1)
+                return mostCommon.First();
+            int index = random.Next(0, mostCommon.Count());
+            return mostCommon.ElementAt(index);
 
         }
         private Square SelectFromArround()
@@ -96,27 +107,32 @@ namespace Vsite.Oom.Battleship.Model
             List<IEnumerable<Square>> arround = new List<IEnumerable<Square>>();
             foreach (Direction direction in Enum.GetValues(typeof(Direction)))
             {
-                var l = evidenceGrid.GetSquaresNextTo(lastTarget, direction);
+                var l = evidenceGrid.GetSquaresNextTo(squaresHit.First(), direction);
                 if (l.Count() > 0)
                     arround.Add(l);
             }
             if (arround.Count == 1)
                 return arround[0].First();
-            //TODO: improve selection so that only largest lists are taken as candidates
-            int index = random.Next(0, arround.Count);
-            return arround[index].First();
-
+            var ordered = arround.OrderByDescending(ls => ls.Count());
+            int maxLen = ordered.First().Count();
+            if (maxLen > shipsToShoot[0] - 1)
+                maxLen = shipsToShoot[0] - 1;
+            var longest = ordered.Where(ls => ls.Count() >= maxLen);
+            int index = random.Next(0, longest.Count());
+            return longest.ElementAt(index).First();
         }
         private Square SelectInline()
         {
             var l = evidenceGrid.GetSquaresInline(squaresHit);
             if (l.Count() == 1)
                 return l.ElementAt(0).First();
-            //TODO: improve selection so that only largest lists are taken as candidates
-            //check for lists (sort it before) with most candidates and pick her!
-            //l.OrderByDescending(ls => ls.Count() ) // pick 
-            int index = random.Next(0, l.Count());
-            return l.ElementAt(index).First();
+            var ordered = l.OrderByDescending(ls => ls.Count());
+            int maxLen = ordered.First().Count();
+            if (maxLen > shipsToShoot[0] - squaresHit.Count())
+                maxLen = shipsToShoot[0] - squaresHit.Count();
+            var longest = ordered.Where(ls => ls.Count() >= maxLen);
+            int index = random.Next(0, longest.Count());
+            return longest.ElementAt(index).First();
         }
 
 
