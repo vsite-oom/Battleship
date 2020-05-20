@@ -29,7 +29,7 @@ namespace Vsite.Oom.Battleship.Model
             lastTarget = SelectTarget();
             return lastTarget;
         }
-
+        
         public void ProcessHitResult(ShipHitResult hitResult)
         {
             evidenceGrid.MarkHitResult(lastTarget, hitResult);
@@ -38,6 +38,9 @@ namespace Vsite.Oom.Battleship.Model
                 case ShipHitResult.Missed:
                     return;
                 case ShipHitResult.Hit:
+                    squaresHit.Add(lastTarget);
+                    squaresHit.OrderBy(s => s.Row + s.Column);
+                    squaresHit = squaresHit.OrderBy(s => s.Row + s.Column).ToList();
                     switch (ShootingTactics)
                     {
                         case ShootingTactics.Random:
@@ -53,19 +56,18 @@ namespace Vsite.Oom.Battleship.Model
                     }
                 case ShipHitResult.Sunken:
                     squaresHit.Add(lastTarget);
+                    squaresHit = squaresHit.OrderBy(s => s.Row + s.Column).ToList();
                     squaresHit.OrderBy(s => s.Row + s.Column);
                     var toEliminate = squareTerminator.ToEliminate(squaresHit);
                     foreach (var sq in toEliminate)
                     {
                         evidenceGrid.MarkHitResult(sq, ShipHitResult.Missed);
                     }
-
                     foreach (var sq in squaresHit)
                     {
                         evidenceGrid.MarkHitResult(sq, ShipHitResult.Sunken);
                     }
-
-                    var length = squaresHit.Count;
+                    var length = squaresHit.Count();
                     shipsToShoot.Remove(length);
                     squaresHit.Clear();
                     ShootingTactics = ShootingTactics.Random;
@@ -93,12 +95,25 @@ namespace Vsite.Oom.Battleship.Model
 
         private Square SelectInline()
         {
-            throw new NotImplementedException();
+            var l = evidenceGrid.GetSquaresInline(squaresHit);
+            if (l.Count() > 1)
+                l = l.OrderByDescending(ls => ls.Count()).ToList();
+            return l.ElementAt(0).First();
         }
 
         private Square SelectFromAround()
         {
-            throw new NotImplementedException();
+            var arround = new List<IEnumerable<Square>>();
+            foreach (Direction direction in Enum.GetValues(typeof(Direction)))
+            {
+                var l = evidenceGrid.GetSquaresNextTo(squaresHit.First(), direction);
+                if (l.Count() > 0)
+                    arround.Add(l);
+            }
+
+            if (arround.Count > 1)
+                arround = arround.OrderByDescending(ls => ls.Count()).ToList();
+            return arround[0].First();
         }
 
         private Square SelectRandomly()

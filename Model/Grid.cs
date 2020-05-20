@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 namespace Vsite.Oom.Battleship.Model
@@ -55,6 +56,88 @@ namespace Vsite.Oom.Battleship.Model
             {
                 squares[item.Row, item.Column] = null;
             }
+        }
+
+        public IEnumerable<Square> GetSquaresNextTo(Square square, Direction direction)
+        {
+            List<Square> result = new List<Square>();
+            int row = square.Row;
+            int column = square.Column;
+            int deltaRow = 0;
+            int deltaCol = 0;
+            int maxCount = 0;
+            switch (direction)
+            {
+                case Direction.Right:
+                    ++column;
+                    deltaCol = +1;
+                    maxCount = Columns - column;
+                    break;
+
+                case Direction.Down:
+                    ++row;
+                    deltaRow = +1;
+                    maxCount = Rows - row;
+                    break;
+
+                case Direction.Left:
+                    maxCount = column;
+                    --column;
+                    deltaCol = -1;
+                    break;
+
+                case Direction.Up:
+                    maxCount = row;
+                    --row;
+                    deltaRow = -1;
+                    break;
+
+                default:
+                    Debug.Assert(false);
+                    break;
+
+            }
+
+            for (int i = 0; i < maxCount && IsAvailable(row, column); ++i)
+            {
+                result.Add(squares[row, column]);
+                row += deltaRow;
+                column += deltaCol;
+            }
+            return result;
+        }
+
+        public IEnumerable<IEnumerable<Square>> GetSquaresInline(IEnumerable<Square> squaresHit)
+        {
+            List<Placement> result = new List<Placement>();
+            //Horizontal
+            if (squaresHit.First().Row == squaresHit.Last().Row)
+            {
+                var l = GetSquaresNextTo(squaresHit.First(), Direction.Left);
+                if (l.Count() > 0)
+                    result.Add(l);
+
+                l = GetSquaresNextTo(squaresHit.Last(), Direction.Right);
+                if (l.Count() > 0)
+                    result.Add(l);
+            }
+            //Vertical
+            else if (squaresHit.First().Column == squaresHit.Last().Column)
+            {
+                var l = GetSquaresNextTo(squaresHit.First(), Direction.Up);
+                if (l.Count() > 0)
+                    result.Add(l);
+
+                l = GetSquaresNextTo(squaresHit.Last(), Direction.Down);
+                if (l.Count() > 0)
+                    result.Add(l);
+            }
+            else
+            {
+                Debug.Assert(false);
+            }
+
+            return result;
         }
 
         private IEnumerable<Placement> GeAvailableHorizontalPlacements(int length)
