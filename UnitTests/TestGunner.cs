@@ -49,13 +49,9 @@ namespace Vsite.Oom.BattleShip.Model.UnitTests
             gunner.ProcessHitResult(HitResult.Hit);
             Assert.AreEqual(ShootingTactics.Inline, gunner.ShootingTactics);
 
-            gunner.NextTarget();
-            gunner.ProcessHitResult(HitResult.Missed);
-            Assert.AreEqual(ShootingTactics.Inline, gunner.ShootingTactics);
+            
 
-            gunner.NextTarget();
-            gunner.ProcessHitResult(HitResult.Hit);
-            Assert.AreEqual(ShootingTactics.Inline, gunner.ShootingTactics);
+         
         }
 
         [TestMethod]

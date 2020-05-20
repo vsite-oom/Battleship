@@ -38,13 +38,13 @@ namespace Vsite.Oom.BattleShip.Model
                     return;
                 case HitResult.Sunk:
                     squaresHit.Add(lastTarget);
-                    squaresHit.OrderBy(s => s.row + s.column);
+                    
                     var toEliminate = squareTerminator.toEliminate(squaresHit);
                     foreach (var sq in toEliminate)
                         evidenceGrid.MarkHitResult(sq, HitResult.Missed);
                     foreach (var sq in squaresHit)
                         evidenceGrid.MarkHitResult(sq, HitResult.Sunk);
-                    int length = squaresHit.Count();
+                    int length = squaresHit.Length;
                     shipsToShoot.Remove(length);
                     squaresHit.Clear();
                     ShootingTactics = ShootingTactics.Random;
@@ -96,7 +96,7 @@ namespace Vsite.Oom.BattleShip.Model
             List<IEnumerable<Square>> around = new List<IEnumerable<Square>>();
             foreach(Direction direction in Enum.GetValues(typeof(Direction)))
             {
-                var l = evidenceGrid.GetSquaresNextTo(lastTarget, direction);
+                var l = evidenceGrid.GetSquaresNextTo(squaresHit.First(), direction);
                 if (l.Count() > 0)
                 {
                     around.Add(l);
@@ -119,6 +119,8 @@ namespace Vsite.Oom.BattleShip.Model
             {
                 return l.ElementAt(0).First();
             }
+            //TODO: improve selection so that only largest lists are taken as candidates
+            l.OrderByDescending(ls => ls.Count());
             int index = random.Next(0, l.Count());
             return l.ElementAt(index).First();
         }
@@ -131,7 +133,7 @@ namespace Vsite.Oom.BattleShip.Model
         private Grid evidenceGrid;
         private List<int> shipsToShoot;
         private Random random = new Random();
-        private List<Square> squaresHit = new List<Square>();
+        private SortedSquares squaresHit = new SortedSquares();
         private ISquareTerminator squareTerminator;
 
         public ShootingTactics ShootingTactics
