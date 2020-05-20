@@ -58,6 +58,7 @@
     <Compile Include="TestSquareTerminator.cs" />
     <Compile Include="TestShipwright.cs" />
     <Compile Include="TestGunner.cs" />
+    <Compile Include="TestSortedSquares.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Model\Model.csproj">
