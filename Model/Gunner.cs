@@ -21,11 +21,12 @@ namespace Vsite.Oom.BattleShip.Model
             shipsToShoot = new List<int>(shipLengths.OrderByDescending(l => l));
             ShootingTactics = ShootingTactics.Random;
             squareTerminator = new SquareTerminator(rows, columns);
+            targetSelect = new RandomShooting(evidenceGrid);
         }
         public Square NextTarget()
         {
             //TODO: implement correctly!
-            lastTarget = SelectTarget();
+            lastTarget = targetSelect.NextTarget(shipsToShoot[0]);
             return lastTarget;
         }
 
@@ -58,6 +59,7 @@ namespace Vsite.Oom.BattleShip.Model
             if(hitResult == HitResult.Sunk)
             {
                 ShootingTactics = ShootingTactics.Random;
+                targetSelect = new RandomShooting(evidenceGrid);
                 return;
             }
             if(hitResult == HitResult.Hit)
@@ -66,9 +68,11 @@ namespace Vsite.Oom.BattleShip.Model
                 {
                     case ShootingTactics.Random:
                         ShootingTactics = ShootingTactics.Surrounding;
+                        targetSelect = new SurroundingShooting(evidenceGrid, squaresHit);
                         return;
                     case ShootingTactics.Surrounding:
                         ShootingTactics = ShootingTactics.Inline;
+                        targetSelect = new InlineShooting(evidenceGrid, squaresHit);
                         return;
                     case ShootingTactics.Inline:
                         return;
@@ -76,69 +80,10 @@ namespace Vsite.Oom.BattleShip.Model
                 
             }
         }
-
-        private Square SelectTarget()
-        {
-            switch (ShootingTactics)
-            {
-                case ShootingTactics.Random:
-                    return SelectRandomly();
-                case ShootingTactics.Surrounding:
-                    return SelectFromAround();
-                case ShootingTactics.Inline:
-                    return SelectInline();
-                default:
-                    Debug.Assert(false);
-                    return null;
-            }
-        }
-        private Square SelectRandomly()
-        {
-            var placements = evidenceGrid.GetAvailablePlacements(shipsToShoot[0]);
-            var allCandidates = placements.SelectMany(seq => seq);
-            int index = random.Next(0, allCandidates.Count());
-            return allCandidates.ElementAt(index);
-        }
-                
-        private Square SelectFromAround()
-        {
-            List<IEnumerable<Square>> around = new List<IEnumerable<Square>>();
-            foreach(Direction direction in Enum.GetValues(typeof(Direction)))
-            {
-                var l = evidenceGrid.GetSquaresNextTo(squaresHit.First(), direction);
-                if (l.Count() > 0)
-                {
-                    around.Add(l);
-                }
-            }
-
-            if (around.Count() == 1)
-            {
-                return around[0].First();
-            }
-            //TODO: improve selection so that only largest lists are taken as candidates
-            int index = random.Next(0, around.Count);
-            return around[index].First();
-        }
-
-        private Square SelectInline()
-        {
-            var l = evidenceGrid.GetSquaresInline(squaresHit);
-            if(l.Count() == 1)
-            {
-                return l.ElementAt(0).First();
-            }
-            //TODO: improve selection so that only largest lists are taken as candidates
-            l.OrderByDescending(ls => ls.Count());
-            int index = random.Next(0, l.Count());
-            return l.ElementAt(index).First();
-        }
-
-        
-        
+ 
 
         private Square lastTarget;
-
+        private ITargetSelect targetSelect;
         private Grid evidenceGrid;
         private List<int> shipsToShoot;
         private Random random = new Random();
