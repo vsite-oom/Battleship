@@ -39,7 +39,7 @@ namespace Vsite.Oom.Battleship.Model
                     return;
                 case HitResult.Sunken:
                     squaresHit.Add(lastTarget);
-                    squaresHit = squaresHit.OrderBy(s => s.Row + s.Column).ToList();
+                    
                     var toEliminate = squareTerminator.ToEliminate(squaresHit);
                     foreach(var sq in toEliminate)
                     {
@@ -50,14 +50,13 @@ namespace Vsite.Oom.Battleship.Model
                         evidenceGrid.MarkHitResult(sq, HitResult.Sunken);
                     }
 
-                    int lenght = squaresHit.Count();
+                    int lenght = squaresHit.Lenght;
                     shipsToShoot.Remove(lenght);
                     squaresHit.Clear();
                     ShootingTactics = ShootingTactics.Random;
                     return;
                 case HitResult.Hit:
                     squaresHit.Add(lastTarget);
-                    squaresHit = squaresHit.OrderBy(s => s.Row + s.Column).ToList();
                     switch (ShootingTactics)
                     {
                         case ShootingTactics.Random:
@@ -92,8 +91,14 @@ namespace Vsite.Oom.Battleship.Model
         {
             var placements = evidenceGrid.GetAvailablePlacements(shipsToShoot[0]);
             var allCandidates = placements.SelectMany(seq => seq);
-            int index = random.Next(0, allCandidates.Count());
-            return allCandidates.ElementAt(index);
+            var groups = allCandidates.GroupBy(sq => sq);
+            var maxCount = groups.Max(g => g.Count());
+            var largestGroups = groups.Where(g => g.Count() == maxCount);
+            var mostCommon = largestGroups.Select(g => g.Key);
+            if (mostCommon.Count() == 1)
+                return mostCommon.First();
+            int index = random.Next(0, mostCommon.Count());
+            return mostCommon.ElementAt(index);
         }
         private Square SelectInline()
         {
@@ -110,7 +115,7 @@ namespace Vsite.Oom.Battleship.Model
         {
             List<IEnumerable<Square>> around = new List<IEnumerable<Square>>();
             foreach (Direction direction in Enum.GetValues(typeof(Direction))) {
-                var l = evidenceGrid.GetSquaresNextTo(lastTarget, direction);
+                var l = evidenceGrid.GetSquaresNextTo(squaresHit.First(), direction);
                 if (l.Count() > 0)
                     around.Add(l);
             }
@@ -131,7 +136,7 @@ namespace Vsite.Oom.Battleship.Model
 
         private List<int> shipsToShoot;
 
-        private List<Square> squaresHit = new List<Square>();
+        private SortedSquares squaresHit = new SortedSquares();
 
         private ISquareTerminator squareTerminator;
         public ShootingTactics ShootingTactics { get; private set; }
