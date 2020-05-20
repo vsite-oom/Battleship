@@ -110,9 +110,8 @@ namespace Vsite.oom.Battleship.Model
             }
             if (around.Count == 1)
                 return around[0].First();
-            //TODO: improve selection so thath only largest list are taken as candidates
-            int index = random.Next(0, around.Count);
-            return around[index].First();
+            around = around.OrderByDescending(o => o.Count()).ToList<IEnumerable<Square>>();
+            return around[0].First();
         }
 
         private Square SelectInline()
@@ -121,9 +120,8 @@ namespace Vsite.oom.Battleship.Model
             if (l.Count() == 1)
                 return l.ElementAt(0).First();
 
-            //TODO: improve selection so thath only largest list are taken as candidates
-            int index = random.Next(0, l.Count());
-            return l.ElementAt(index).First();
+            l = l.OrderByDescending(o => o.Count()).ToList<IEnumerable<Square>>();
+            return l.ElementAt(0).First();
         }
 
         private Square lastTarget;
