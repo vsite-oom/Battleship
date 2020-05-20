@@ -18,8 +18,9 @@ namespace Vsite.Oom.Battleship.Model.UnitTests
             Assert.AreEqual(3, result.First().Count());
             Assert.AreEqual(3, result.Last().Count());
         }
+
         [TestMethod]
-        public void GetAvailablePlacementsForShipReturns2PlacementsForShipOfLength3InVerticallGrid5x1()
+        public void GetAvailablePlacementsForShipReturns3PlacementsForShipOfLength3InVerticalGrid5x1()
         {
             Grid g = new Grid(5, 1);
             var result = g.GetAvailablePlacements(3);
@@ -36,13 +37,10 @@ namespace Vsite.Oom.Battleship.Model.UnitTests
             g.EliminateSquares(new List<Square> { new Square(0, 2) });
             var result = g.GetAvailablePlacements(2);
             Assert.AreEqual(3, result.Count());
-
-            foreach (var sequence in result)
-                Assert.AreEqual(2, sequence.Count());
         }
 
         [TestMethod]
-        public void GetAvailablePlacementsForShipReturns2PlacementsForShipOfLength2InVerticallGrid5x1AfterSquareIsEliminated()
+        public void GetAvailablePlacementsForShipReturns2PlacementsForShipOfLength2InVerticalGrid5x1AfterSquareIsEliminated()
         {
             Grid g = new Grid(5, 1);
             g.EliminateSquares(new List<Square> { new Square(1, 0) });
@@ -54,23 +52,23 @@ namespace Vsite.Oom.Battleship.Model.UnitTests
         }
 
         [TestMethod]
-        public void GetSquaresNextToReturns3SquaresForGrid1x5ToRightSquare0x1()
+        public void GetSquaresNextToReturns3SquaresForGrid1x5RightToSquare0x1()
         {
             Grid g = new Grid(1, 5);
             var result = g.GetSquaresNextTo(new Square(0, 1), Direction.Right);
             Assert.AreEqual(3, result.Count());
-
         }
+
         [TestMethod]
         public void GetSquaresNextToReturns1SquaresForGrid1x5LeftToSquare0x1()
         {
             Grid g = new Grid(1, 5);
             var result = g.GetSquaresNextTo(new Square(0, 1), Direction.Left);
             Assert.AreEqual(1, result.Count());
-
         }
+
         [TestMethod]
-        public void GetSquaresNextToReturns0SquaresForGrid1x5AboveAndBeloweToSquare0x1()
+        public void GetSquaresNextToReturns0SquaresForGrid1x5AboveAndBelowSquare0x1()
         {
             Grid g = new Grid(1, 5);
             var result = g.GetSquaresNextTo(new Square(0, 1), Direction.Up);
@@ -78,25 +76,24 @@ namespace Vsite.Oom.Battleship.Model.UnitTests
 
             result = g.GetSquaresNextTo(new Square(0, 1), Direction.Down);
             Assert.AreEqual(0, result.Count());
-
         }
 
         [TestMethod]
-        public void GetSquaresNextToReturns3SquaresForGrid5x1ToBelowSquare1x0()
+        public void GetSquaresNextToReturns3SquaresForGrid5x1BelowSquare1x0()
         {
             Grid g = new Grid(5, 1);
             var result = g.GetSquaresNextTo(new Square(1, 0), Direction.Down);
             Assert.AreEqual(3, result.Count());
-
         }
+
         [TestMethod]
-        public void GetSquaresNextToReturns1SquaresForGrid5x1AboveToSquare1x0()
+        public void GetSquaresNextToReturns1SquaresForGrid5x1AboveSquare1x0()
         {
             Grid g = new Grid(5, 1);
             var result = g.GetSquaresNextTo(new Square(1, 0), Direction.Up);
             Assert.AreEqual(1, result.Count());
-
         }
+
         [TestMethod]
         public void GetSquaresNextToReturns0SquaresForGrid5x1RightAndLeftToSquare1x0()
         {
@@ -106,8 +103,6 @@ namespace Vsite.Oom.Battleship.Model.UnitTests
 
             result = g.GetSquaresNextTo(new Square(1, 0), Direction.Left);
             Assert.AreEqual(0, result.Count());
-
         }
-
     }
 }

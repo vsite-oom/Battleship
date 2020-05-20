@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 namespace Vsite.Oom.Battleship.Model
 {
     using Placement = IEnumerable<Square>;
+
     public enum Direction
     {
         Up,
@@ -15,6 +16,7 @@ namespace Vsite.Oom.Battleship.Model
         Down,
         Left
     }
+
     public class Grid
     {
         public Grid(int rows, int columns)
@@ -32,10 +34,7 @@ namespace Vsite.Oom.Battleship.Model
         public IEnumerable<Placement> GetAvailablePlacements(int length)
         {
             if (length != 1)
-            {
                 return GetAvailableHorizontalPlacements(length).Concat(GetAvailableVerticalPlacements(length));
-            }
-
             List<List<Square>> result = new List<List<Square>>();
             for (int r = 0; r < Rows; ++r)
             {
@@ -53,6 +52,7 @@ namespace Vsite.Oom.Battleship.Model
             foreach (var square in toEliminate)
                 squares[square.Row, square.Column] = null;
         }
+
         public void MarkHitResult(Square square, HitResult hitResult)
         {
             squares[square.Row, square.Column].SetState(hitResult);
@@ -101,6 +101,36 @@ namespace Vsite.Oom.Battleship.Model
             return result;
         }
 
+        public IEnumerable<IEnumerable<Square>> GetSquaresInline(IEnumerable<Square> squaresHit)
+        {
+            List<Placement> result = new List<Placement>();
+            // for horizontal ship
+            if (squaresHit.First().Row == squaresHit.Last().Row)
+            {
+                var l = GetSquaresNextTo(squaresHit.First(), Direction.Left);
+                if (l.Count() > 0)
+                    result.Add(l);
+                l = GetSquaresNextTo(squaresHit.Last(), Direction.Right);
+                if (l.Count() > 0)
+                    result.Add(l);
+            }
+            // for vertical ship
+            else if (squaresHit.First().Column == squaresHit.Last().Column)
+            {
+                var l = GetSquaresNextTo(squaresHit.First(), Direction.Up);
+                if (l.Count() > 0)
+                    result.Add(l);
+                l = GetSquaresNextTo(squaresHit.Last(), Direction.Down);
+                if (l.Count() > 0)
+                    result.Add(l);
+            }
+            else
+            {
+                Debug.Assert(false);
+            }
+            return result;
+        }
+
         private IEnumerable<Placement> GetAvailableHorizontalPlacements(int length)
         {
             var result = new List<List<Square>>();
@@ -138,6 +168,7 @@ namespace Vsite.Oom.Battleship.Model
             }
             return result;
         }
+
         private bool IsAvailable(int row, int column)
         {
             return squares[row, column] != null && squares[row, column].SquareState == SquareState.None;
