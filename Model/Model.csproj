@@ -49,10 +49,14 @@
     <Compile Include="LimitedQueue.cs" />
     <Compile Include="Ship.cs" />
     <Compile Include="ShipWright.cs" />
+    <Compile Include="SortedSquares.cs" />
     <Compile Include="Square.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SquareTerminator.cs" />
     <Compile Include="SquareTerminatorFactory.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
