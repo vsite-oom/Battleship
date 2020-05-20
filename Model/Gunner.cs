@@ -21,11 +21,12 @@ namespace Vsite.Oom.Battleship.Model
             shipsToShoot = new List<int>(shipLengths.OrderByDescending(l => l));
             ShootingTactics = ShootingTactics.Random;
             squareTerminator = new SquareTerminator(rows, columns);
+            targetSelect = new RandomShooting(evidenceGrid);
         }
 
         public Square NextTarget()
         {
-            lastTarget = SelectTarget();
+            lastTarget = targetSelect.NextTarget(shipsToShoot[0]);
             return lastTarget;
         }
 
@@ -61,6 +62,7 @@ namespace Vsite.Oom.Battleship.Model
             if (hitResult == HitResult.Sunken)
             {
                 ShootingTactics = ShootingTactics.Random;
+                targetSelect = new RandomShooting(evidenceGrid);
                 return;
             }
 
@@ -70,76 +72,17 @@ namespace Vsite.Oom.Battleship.Model
                 {
                     case ShootingTactics.Random:
                         ShootingTactics = ShootingTactics.Surrounding;
+                        targetSelect = new SurroundShooting(squaresHit,evidenceGrid);
                         return;
                     case ShootingTactics.Surrounding:
                         ShootingTactics = ShootingTactics.Inline;
+                        targetSelect = new InlineShooting(squaresHit,evidenceGrid);
                         return;
                     case ShootingTactics.Inline:
                         return;
                 }
             }
 
-        }
-
-        private Square SelectTarget()
-        {
-            switch (ShootingTactics)
-            {
-                case ShootingTactics.Random:
-                    return SelectRandomly();
-                case ShootingTactics.Surrounding:
-                    return SelectFromAround();
-                case ShootingTactics.Inline:
-                    return SelectInline();
-                default:
-                    Debug.Assert(false);
-                    return null;
-            }
-        }
-        private Square SelectRandomly()
-        {
-            var placements = evidenceGrid.GetAvailablePlacements(shipsToShoot[0]);
-            var allCandidates = placements.SelectMany(seq => seq);
-            var groups = allCandidates.GroupBy(sq => sq);
-            var maxCount = groups.Max(g => g.Count());
-            var largestGroups = groups.Where(g => g.Count() == maxCount);
-            var mostCommon = largestGroups.Select(g => g.Key);
-            if (mostCommon.Count() == 1)
-                return mostCommon.First();
-            int index = random.Next(0, mostCommon.Count());
-            return mostCommon.ElementAt(index);
-        }
-        private Square SelectFromAround()
-        {
-            List<IEnumerable<Square>> arround = new List<IEnumerable<Square>>();
-            foreach (Direction direction in Enum.GetValues(typeof(Direction)))
-            {
-                var l = evidenceGrid.GetSquaresNextTo(squaresHit.First(), direction);
-
-                if (l.Count() > 0)
-                    arround.Add(l);
-            }
-
-            if (arround.Count() == 1)
-                return arround[0].First();
-
-            shipsToShoot.Sort((a, b) => a.CompareTo(b));
-            int longestShip = shipsToShoot.FirstOrDefault();
-            arround = arround.OrderByDescending(s => s.Count()).ToList();
-            arround.RemoveAll(s => s.Count() < longestShip - squaresHit.Length);
-
-            return arround[random.Next(0,arround.Count)].First();
-        }
-
-        private Square SelectInline()
-        {
-            var l = evidenceGrid.GetSquaresInline(squaresHit);
-            if (l.Count() == 1)
-                return l.ElementAt(0).First();
-
-            l = l.OrderByDescending(s => s.Count());
-
-            return l.First().First();
         }
 
 
@@ -149,7 +92,7 @@ namespace Vsite.Oom.Battleship.Model
         private SortedSquares squaresHit = new SortedSquares();
         private Random random = new Random();
         private ISquareTerminator squareTerminator;
-
+        private  ITargetSelect targetSelect;
         public ShootingTactics ShootingTactics { get; private set; }
     }
 }
