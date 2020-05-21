@@ -38,7 +38,6 @@ namespace Vsite.Oom.Battleship.Model
                     return;
                 case HitResult.Sunken:
                     squaresHit.Add(lastTarget);
-                    squaresHit.OrderBy(s => s.Row + s.Column);
                     var toEliminate = squareTerminator.ToEliminate(squaresHit);
                     foreach(var sq in toEliminate)
                     {
@@ -54,6 +53,7 @@ namespace Vsite.Oom.Battleship.Model
                     squaresHit.Clear();
                     ShootingTactics = ShootingTactics.Random;
                     return;
+
                 case HitResult.Hit:
                     squaresHit.Add(lastTarget);
                     squaresHit.OrderBy(s => s.Row + s.Column);
@@ -101,7 +101,7 @@ namespace Vsite.Oom.Battleship.Model
 
             foreach(Direction direction in Enum.GetValues(typeof(Direction)))
             {
-                var l = evidenceGrid.GetSquaresNextTo(lastTarget, direction);
+                var l = evidenceGrid.GetSquaresNextTo(squaresHit.First(), direction);
                 if (l.Count() > 0)
                     arround.Add(l);
             }
@@ -124,7 +124,7 @@ namespace Vsite.Oom.Battleship.Model
         private Square lastTarget;
         private Grid evidenceGrid;
         private List<int> shipsToShoot;
-        private List<Square> squaresHit = new List<Square>();
+        private SortedSquares squaresHit = new SortedSquares();
         private Random random = new Random();
         private ISquareTerminator squareTerminator;
         public ShootingTactics ShootingTactics { get; private set; }
