@@ -13,28 +13,23 @@ namespace Vsite.Oom.Battleship.Model
             this.evidenceGrid = evidenceGrid;
             this.shipsToShoot = shipsToShoot;
         }
-
         public Square NextTarget()
         {
             int shipLength = shipsToShoot[0];
-            var placements = evidenceGrid.GetAvailablePlacements(shipLength);
-            var allCandidates = placements.SelectMany(seq => seq);
+            var placement = evidenceGrid.GetAvailablePlacements(shipLength);
+            var allCandidates = placement.SelectMany(seq => seq);
             var groups = allCandidates.GroupBy(sq => sq);
             var maxCount = groups.Max(g => g.Count());
-            var largestGroups = groups.Where(g => g.Count() == maxCount);
-            var mostCommon = largestGroups.Select(g => g.Key);
+            var largestGroup = groups.Where(g => g.Count() == maxCount);
+            var mostCommon = largestGroup.Select(g => g.Key);
             if (mostCommon.Count() == 1)
-            {
                 return mostCommon.First();
-            }
             int index = random.Next(0, mostCommon.Count());
             return mostCommon.ElementAt(index);
         }
-
         private Random random = new Random();
-
         private readonly Grid evidenceGrid;
-
         private readonly List<int> shipsToShoot;
+
     }
 }

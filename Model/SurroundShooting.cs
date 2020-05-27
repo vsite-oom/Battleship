@@ -14,7 +14,6 @@ namespace Vsite.Oom.Battleship.Model
             this.evidenceGrid = evidenceGrid;
             this.shipsToShoot = shipsToShoot;
         }
-
         public Square NextTarget()
         {
             int shipLength = shipsToShoot[0];
@@ -23,31 +22,23 @@ namespace Vsite.Oom.Battleship.Model
             {
                 var l = evidenceGrid.GetSquaresNextTo(squaresHit.First(), direction);
                 if (l.Count() > 0)
-                {
                     around.Add(l);
-                }
             }
             if (around.Count == 1)
-            {
                 return around[0].First();
-            }
+
             var ordered = around.OrderByDescending(ls => ls.Count());
             int maxLen = ordered.First().Count();
             if (maxLen > shipLength - 1)
-            {
                 maxLen = shipLength - 1;
-            }
             var longest = ordered.Where(ls => ls.Count() >= maxLen);
-            int index = random.Next(0, longest.Count());
+            int index = random.Next(1, longest.Count());
             return longest.ElementAt(index).First();
         }
-
         private Random random = new Random();
-
         private readonly Grid evidenceGrid;
-
         private readonly SortedSquares squaresHit;
-
         private readonly List<int> shipsToShoot;
+
     }
 }

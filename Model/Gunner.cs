@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Diagnostics;
 
 namespace Vsite.Oom.Battleship.Model
 {
@@ -13,18 +13,17 @@ namespace Vsite.Oom.Battleship.Model
         Surrounding,
         Inline
     }
-
     public class Gunner
     {
         public Gunner(int rows, int columns, IEnumerable<int> shipLengths)
         {
             evidenceGrid = new Grid(rows, columns);
-            shipsToShoot = new List<int> (shipLengths.OrderByDescending(l => l));
+            shipsToShoot = new List<int>(shipLengths.OrderByDescending(l => l));
             ShootingTactics = ShootingTactics.Random;
             squareTerminator = new SquareTerminator(rows, columns);
-            targetSelect = new RandomShooting(evidenceGrid, shipsToShoot);
+            shootingTacticsFactory = new ShootingTacticsFactory(evidenceGrid, squaresHit, shipsToShoot);
+            targetSelect = shootingTacticsFactory.GetTactics(ShootingTactics.Random);
         }
-
         public Square NextTarget()
         {
             lastTarget = targetSelect.NextTarget();
@@ -34,34 +33,21 @@ namespace Vsite.Oom.Battleship.Model
         public void ProcessHitResult(HitResult hitResult)
         {
             evidenceGrid.MarkHitResult(lastTarget, hitResult);
-
             if (hitResult == HitResult.Missed)
-            {
                 return;
-            }
-
             squaresHit.Add(lastTarget);
-
             if (hitResult == HitResult.Sunken)
             {
                 var toEliminate = squareTerminator.ToEliminate(squaresHit);
                 foreach (var sq in toEliminate)
-                {
                     evidenceGrid.MarkHitResult(sq, HitResult.Missed);
-                }
-
                 foreach (var sq in squaresHit)
-                {
                     evidenceGrid.MarkHitResult(sq, HitResult.Sunken);
-                }
-
-                evidenceGrid.EliminateSquares(toEliminate);
                 int length = squaresHit.Length;
                 shipsToShoot.Remove(length);
                 squaresHit.Clear();
             }
-
-            ChangeTactics(hitResult); 
+            ChangeTactics(hitResult);
         }
 
         private void ChangeTactics(HitResult hitResult)
@@ -69,42 +55,33 @@ namespace Vsite.Oom.Battleship.Model
             if (hitResult == HitResult.Sunken)
             {
                 ShootingTactics = ShootingTactics.Random;
-                targetSelect = new RandomShooting(evidenceGrid, shipsToShoot);
-                return;
             }
-            
             if (hitResult == HitResult.Hit)
             {
                 switch (ShootingTactics)
                 {
                     case ShootingTactics.Random:
                         ShootingTactics = ShootingTactics.Surrounding;
-                        targetSelect = new SurroundShooting(evidenceGrid, squaresHit, shipsToShoot);
-                        return;
+                        break;
                     case ShootingTactics.Surrounding:
                         ShootingTactics = ShootingTactics.Inline;
-                        targetSelect = new InlineShooting(evidenceGrid, squaresHit, shipsToShoot);
-                        return;
+                        break;
                     case ShootingTactics.Inline:
                         return;
                 }
             }
+            targetSelect = shootingTacticsFactory.GetTactics(ShootingTactics);
+
         }
 
         private Square lastTarget;
-
         private Grid evidenceGrid;
-
-        private SortedSquares squaresHit = new SortedSquares();
-
         private List<int> shipsToShoot;
-
+        private SortedSquares squaresHit = new SortedSquares();
         private Random random = new Random();
-
-        private ISquareTerminator squareTerminator;
-
         private ITargetSelect targetSelect;
-
+        private ISquareTerminator squareTerminator;
         public ShootingTactics ShootingTactics { get; private set; }
+        private ShootingTacticsFactory shootingTacticsFactory;
     }
 }
