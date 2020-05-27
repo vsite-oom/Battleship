@@ -24,7 +24,7 @@ namespace Vsite.Oom.Battleship.Model
             {
                 return mostCommon.First();
             }
-            int index = random.Next(0, allcandidates.Count());
+            int index = random.Next(0, mostCommon.Count());
             return mostCommon.ElementAt(index);
         }
         private readonly Grid evidenceGrid;

@@ -39,6 +39,6 @@ namespace Vsite.Oom.Battleship.Model
         }
         private Random random = new Random();
         private readonly Grid evidenceGrid;
-        private readonly SortedSquares squaresHit = new SortedSquares();
+        private readonly SortedSquares squaresHit;
     }
 }
