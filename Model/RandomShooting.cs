@@ -22,7 +22,7 @@ namespace Vsite.Oom.Battleship.Model
             var largestGroup = groups.Where(g => g.Count() == maxCount);
             var mostCommon = largestGroup.Select(g => g.Key);
             int shipLength = shipsToShoot[0];
-           if (mostCommon.Count() == 1)
+            if (mostCommon.Count() == 1)
                 return mostCommon.First();
             int index = random.Next(0, mostCommon.Count());
             return mostCommon.ElementAt(index);
