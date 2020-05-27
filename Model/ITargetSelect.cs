@@ -8,6 +8,6 @@ namespace Vsite.Oom.BattleShip.Model
 {
     public interface ITargetSelect
     {
-        Square NextTarget(int shipLength);
+        Square NextTarget();
     }
 }

@@ -8,14 +8,16 @@ namespace Vsite.Oom.BattleShip.Model
 {
     public class InlineShooting : ITargetSelect
     {
-        public InlineShooting(Grid evidenceGrid, SortedSquares squaresHit)
+        public InlineShooting(Grid evidenceGrid, SortedSquares squaresHit, List<int> shipsToShoot)
         {
             this.squaresHit = squaresHit;
             this.evidenceGrid = evidenceGrid;
-        }
+            this.shipsToShoot = shipsToShoot;
+    }
 
-        public Square NextTarget(int shipLength)
+        public Square NextTarget()
         {
+            int shipLength = shipsToShoot[0];
             var l = evidenceGrid.GetSquaresInline(squaresHit);
             if (l.Count() == 1)
             {
@@ -27,6 +29,7 @@ namespace Vsite.Oom.BattleShip.Model
             return l.ElementAt(index).First();
         }
 
+        private readonly List<int> shipsToShoot;
         private readonly Grid evidenceGrid;
         private Random random = new Random();
         private readonly SortedSquares squaresHit;
