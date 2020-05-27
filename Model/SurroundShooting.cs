@@ -12,15 +12,18 @@ namespace Vsite.Oom.Battleship.Model
 		Random random = new Random();
 		readonly SortedSquares squaresHit = new SortedSquares();
 		readonly Grid evidenceGrid;
+		private readonly List<int> shipsToShoot;
 
-		public SurroundShooting(Grid evidenceGrid, SortedSquares squaresHit)
+		public SurroundShooting(Grid evidenceGrid, SortedSquares squaresHit, List<int> shipsToShoot)
 		{
 			this.squaresHit = squaresHit;
 			this.evidenceGrid = evidenceGrid;
+			this.shipsToShoot = shipsToShoot;
 
 		}
-		public Square NextTarget(int shipLenght)
+		public Square NextTarget()
 		{
+			int shipLenght = shipsToShoot[0];
 			List<IEnumerable<Square>> around = new List<IEnumerable<Square>>();
 
 			foreach (Direction direction in Enum.GetValues(typeof(Direction)))

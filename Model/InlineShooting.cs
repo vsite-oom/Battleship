@@ -12,14 +12,17 @@ namespace Vsite.Oom.Battleship.Model
 		Random random = new Random();
 		readonly SortedSquares squaresHit = new SortedSquares();
 		readonly Grid evidenceGrid;
+		private readonly List<int> shipsToShoot;
 
-		public InlineShooting(Grid evidenceGrid, SortedSquares squaresHit)
+		public InlineShooting(Grid evidenceGrid, SortedSquares squaresHit, List<int> shipsToShoot)
 		{
 			this.squaresHit = squaresHit;
 			this.evidenceGrid = evidenceGrid;
+			this.shipsToShoot = shipsToShoot;
 		}
-		public Square NextTarget(int shipLenght)
+		public Square NextTarget()
 		{
+			int shipLenght = shipsToShoot[0];
 			var l = evidenceGrid.GetSquaresInLine(squaresHit);
 			if (l.Count() == 1)
 				return l.ElementAt(0).First();
