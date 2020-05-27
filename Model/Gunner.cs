@@ -16,10 +16,9 @@ namespace Vsite.Oom.Battleship.Model
 
     public class Gunner
     {
-        public Gunner(int rows,int columns,IEnumerable<int> shipLengths)
+        public Gunner(int rows, int columns, IEnumerable<int> shipLengths)
         {
             evidenceGrid = new Grid(rows, columns);
-            shipLengths.OrderByDescending(l=>l);
             shipsToShoot = new List<int>(shipLengths.OrderByDescending(l => l));
             ShootingTactics = ShootingTactics.Random;
             squareTerminator = new squareTerminator(rows, columns);
@@ -37,7 +36,7 @@ namespace Vsite.Oom.Battleship.Model
             if (hitResult == HitResult.Missed)
                 return;
             SquaresHit.Add(lastTarget);
-            if(hitResult == HitResult.Sunken)
+            if (hitResult == HitResult.Sunken)
             {
                 var toElim = squareTerminator.ToEliminate(SquaresHit);
                 foreach (var sq in toElim)
@@ -57,12 +56,11 @@ namespace Vsite.Oom.Battleship.Model
 
         private void ChangeTactics(HitResult hitResult)
         {
-            if(hitResult == HitResult.Sunken)
+            if (hitResult == HitResult.Sunken)
             {
                 ShootingTactics = ShootingTactics.Random;
-
             }
-            if(hitResult == HitResult.Hit)
+            if (hitResult == HitResult.Hit)
             {
                 switch (ShootingTactics)
                 {
@@ -77,29 +75,12 @@ namespace Vsite.Oom.Battleship.Model
                 }
             }
             targetSelect = ShootingTacticsFactory.GetTactics(ShootingTactics);
-            switch (hitResult)
-            {
-                case HitResult.Sunken:
-                case HitResult.Hit:
-                    switch (ShootingTactics)
-                    {
-                        case ShootingTactics.Random:
-                            ShootingTactics = ShootingTactics.Surrounding;
-                            return;
-                        case ShootingTactics.Surrounding:
-                            ShootingTactics = ShootingTactics.Inline;
-                            return;
-                        case ShootingTactics.Inline:
-                            return;
-                    }
-                    break;
-            }
         }
 
         private Square lastTarget;
         private Grid evidenceGrid;
         private List<int> shipsToShoot;
-        public ShootingTactics ShootingTactics{get; private set;}
+        public ShootingTactics ShootingTactics { get; private set; }
         private Random random = new Random();
         private SortedSquares SquaresHit = new SortedSquares();
         private ISquareTerminator squareTerminator;
