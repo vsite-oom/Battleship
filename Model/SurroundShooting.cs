@@ -8,7 +8,7 @@ namespace Vsite.Oom.Battleship.Model
 {
     public class SurroundShooting : ITargetSelect
     {
-        public SurroundShooting(Grid evidenceGrid, SortedSquares squaresHit)
+        public SurroundShooting(Grid evidenceGrid, SortedSquares squaresHit, List<int> shipsToShoot)
         {
             this.squaresHit = squaresHit;
             this.evidenceGrid = evidenceGrid;

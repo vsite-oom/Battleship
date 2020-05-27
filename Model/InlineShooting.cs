@@ -8,7 +8,7 @@ namespace Vsite.Oom.Battleship.Model
 {
     public class InlineShooting : ITargetSelect
     {
-        public InlineShooting(Grid evidenceGrid, SortedSquares squaresHit)
+        public InlineShooting(Grid evidenceGrid, SortedSquares squaresHit, List<int> shipsToShoot)
         {
             this.squaresHit = squaresHit;
             this.evidenceGrid = evidenceGrid;
