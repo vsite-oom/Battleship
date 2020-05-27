@@ -2,21 +2,21 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Vsite.Oom.Battleship.Model
 {
     using Placement = IEnumerable<Square>;
-    
-    public enum Direction {
+
+    public enum Direction
+    {
         Up,
         Right,
         Down,
         Left
     }
-    
+
     public class Grid
     {
         public Grid(int rows, int columns)
@@ -24,12 +24,10 @@ namespace Vsite.Oom.Battleship.Model
             Rows = rows;
             Columns = columns;
             squares = new Square[Rows, Columns];
-            for(int r = 0; r < Rows; ++r)
+            for (int r = 0; r < Rows; ++r)
             {
-                for(int c = 0; c < Columns; ++c)
-                {
+                for (int c = 0; c < Columns; ++c)
                     squares[r, c] = new Square(r, c);
-                }
             }
         }
 
@@ -48,7 +46,8 @@ namespace Vsite.Oom.Battleship.Model
             }
             return result;
         }
-        public void EleminateSquares(Placement toEliminate)
+
+        public void EliminateSquares(Placement toEliminate)
         {
             foreach (var square in toEliminate)
                 squares[square.Row, square.Column] = null;
@@ -93,7 +92,7 @@ namespace Vsite.Oom.Battleship.Model
                     Debug.Assert(false);
                     break;
             }
-            for(int i = 0; i < maxCount && IsAvailable(row,column);++i)
+            for (int i = 0; i < maxCount && IsAvailable(row, column); ++i)
             {
                 result.Add(squares[row, column]);
                 row += deltaRow;
@@ -102,21 +101,21 @@ namespace Vsite.Oom.Battleship.Model
             return result;
         }
 
-        public IEnumerable<IEnumerable<Square>> GetSquaresInLine(IEnumerable<Square> squaresHit)
+        public IEnumerable<IEnumerable<Square>> GetSquaresInline(IEnumerable<Square> squaresHit)
         {
             List<Placement> result = new List<Placement>();
-            //for horizontal ships
+            // for horizontal ship
             if (squaresHit.First().Row == squaresHit.Last().Row)
             {
-               var l = GetSquaresNextTo(squaresHit.First(),Direction.Left);
+                var l = GetSquaresNextTo(squaresHit.First(), Direction.Left);
                 if (l.Count() > 0)
                     result.Add(l);
                 l = GetSquaresNextTo(squaresHit.Last(), Direction.Right);
                 if (l.Count() > 0)
                     result.Add(l);
             }
-            //for verical ships
-            if (squaresHit.First().Column == squaresHit.Last().Column)
+            // for vertical ship
+            else if (squaresHit.First().Column == squaresHit.Last().Column)
             {
                 var l = GetSquaresNextTo(squaresHit.First(), Direction.Up);
                 if (l.Count() > 0)
@@ -127,31 +126,30 @@ namespace Vsite.Oom.Battleship.Model
             }
             else
             {
-                Debug.Assert(false); 
+                Debug.Assert(false);
             }
             return result;
-
         }
+
         private IEnumerable<Placement> GetAvailableHorizontalPlacements(int length)
         {
             var result = new List<List<Square>>();
             for (int r = 0; r < Rows; ++r)
             {
                 LimitedQueue<Square> passed = new LimitedQueue<Square>(length);
-                    for (int c = 0; c < Columns; ++c)
+                for (int c = 0; c < Columns; ++c)
                 {
                     if (IsAvailable(r, c))
                         passed.Enqueue(squares[r, c]);
                     else
                         passed.Clear();
                     if (passed.Count == length)
-                    {
                         result.Add(passed.ToList());
-                    }
                 }
             }
             return result;
         }
+
         private IEnumerable<Placement> GetAvailableVerticalPlacements(int length)
         {
             var result = new List<List<Square>>();
@@ -164,7 +162,6 @@ namespace Vsite.Oom.Battleship.Model
                         passed.Enqueue(squares[r, c]);
                     else
                         passed.Clear();
-
                     if (passed.Count == length)
                         result.Add(passed.ToList());
                 }
@@ -176,11 +173,10 @@ namespace Vsite.Oom.Battleship.Model
         {
             return squares[row, column] != null && squares[row, column].SquareState == SquareState.None;
         }
+
         public readonly int Rows;
         public readonly int Columns;
 
         private Square[,] squares;
-
     }
-    
 }

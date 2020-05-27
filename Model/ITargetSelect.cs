@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace Vsite.Oom.Battleship.Model
 {
-    interface ITargetSelect
+    public interface ITargetSelect
     {
-        Square NextTarget(int shipLength);
-
+        Square NextTarget();
     }
 }
