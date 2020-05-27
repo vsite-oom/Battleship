@@ -21,7 +21,8 @@ namespace Vsite.Oom.BattleShip.Model
             shipsToShoot = new List<int>(shipLengths.OrderByDescending(l => l));
             ShootingTactics = ShootingTactics.Random;
             squareTerminator = new SquareTerminator(rows, columns);
-            targetSelect = new RandomShooting(evidenceGrid, shipsToShoot);
+            shootingTacticsFactory = new ShootingTacticsFactory(evidenceGrid, squaresHit, shipsToShoot);
+            targetSelect = shootingTacticsFactory.GetTactics(ShootingTactics.Random);
         }
         public Square NextTarget()
         {
@@ -59,8 +60,6 @@ namespace Vsite.Oom.BattleShip.Model
             if(hitResult == HitResult.Sunk)
             {
                 ShootingTactics = ShootingTactics.Random;
-                targetSelect = new RandomShooting(evidenceGrid, shipsToShoot);
-                return;
             }
             if(hitResult == HitResult.Hit)
             {
@@ -68,17 +67,17 @@ namespace Vsite.Oom.BattleShip.Model
                 {
                     case ShootingTactics.Random:
                         ShootingTactics = ShootingTactics.Surrounding;
-                        targetSelect = new SurroundingShooting(evidenceGrid, squaresHit, shipsToShoot);
-                        return;
+                        break;
                     case ShootingTactics.Surrounding:
                         ShootingTactics = ShootingTactics.Inline;
-                        targetSelect = new InlineShooting(evidenceGrid, squaresHit, shipsToShoot);
-                        return;
+                        break;
                     case ShootingTactics.Inline:
                         return;
                 }
                 
+
             }
+            targetSelect = shootingTacticsFactory.GetTactics(ShootingTactics.Random);
         }
  
 
@@ -89,7 +88,7 @@ namespace Vsite.Oom.BattleShip.Model
         private Random random = new Random();
         private SortedSquares squaresHit = new SortedSquares();
         private ISquareTerminator squareTerminator;
-
+        private ShootingTacticsFactory shootingTacticsFactory;
         public ShootingTactics ShootingTactics
         {
             get;
