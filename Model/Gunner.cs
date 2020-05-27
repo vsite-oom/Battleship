@@ -22,11 +22,12 @@ namespace Vsite.Oom.Battleship.Model
             shipLengths.OrderByDescending(l => l);
             ShootingTactics = ShootingTactics.Random;
             squareTerminator = new SquareTerminator(rows, columns);
-            targetSelect = new RandomShooting(evidenceGrid);
+            targetSelect = new RandomShooting(evidenceGrid, shipsToShoot);
         }
         public Square NextTarget()
         {
-            lastTarget = targetSelect.NextTarget(shipsToShoot[0]);
+            int shipLength = shipsToShoot[0];
+            lastTarget = targetSelect.NextTarget();
             return lastTarget;
         }
         public void ProcessHitResult(HitResult hitResult)
@@ -55,7 +56,7 @@ namespace Vsite.Oom.Battleship.Model
             if (hitResult == HitResult.Sunken)
             {
                 ShootingTactics = ShootingTactics.Random;
-                targetSelect = new RandomShooting(evidenceGrid);
+                targetSelect = new RandomShooting(evidenceGrid, shipsToShoot);
                 return;
             }
             if (hitResult == HitResult.Hit)
@@ -64,11 +65,11 @@ namespace Vsite.Oom.Battleship.Model
                 {
                     case ShootingTactics.Random:
                         ShootingTactics = ShootingTactics.Surrounding;
-                        targetSelect = new SurroundShooting(evidenceGrid, squaresHit);
+                        targetSelect = new SurroundShooting(evidenceGrid, squaresHit, shipsToShoot);
                         return;
                     case ShootingTactics.Surrounding:
                         ShootingTactics = ShootingTactics.Inline;
-                        targetSelect = new InlineShooting(evidenceGrid, squaresHit);
+                        targetSelect = new InlineShooting(evidenceGrid, squaresHit, shipsToShoot);
                         return;
                     case ShootingTactics.Inline:
                         return;

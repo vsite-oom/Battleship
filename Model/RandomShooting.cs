@@ -8,12 +8,14 @@ namespace Vsite.Oom.Battleship.Model
 {
     public class RandomShooting : ITargetSelect
     {
-        public RandomShooting (Grid evidenceGrid)
+        public RandomShooting (Grid evidenceGrid, shipsToShoot)
         {
             this.evidenceGrid = evidenceGrid;
+            this.shipsToShoot = ;
         }
         public Square NextTarget(int shipLength)
         {
+            int shipLength = shipsToShoot[0];
             var placements = evidenceGrid.GetAvailablePlacements(shipLength);
             var allCandidates = placements.SelectMany(seq => seq);
             var groups = allCandidates.GroupBy(sq => sq);
@@ -27,5 +29,6 @@ namespace Vsite.Oom.Battleship.Model
         }
         private readonly Grid evidenceGrid;
         private Random random = new Random();
+        private readonly List<int> shipsToShoot;
     }
 }
