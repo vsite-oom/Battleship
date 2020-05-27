@@ -22,12 +22,13 @@ namespace Vsite.Oom.Battleship.Model
             shipsToShoot = new List<int>(shipLengths.OrderByDescending(l => l));
             ShootingTactics = ShootingTactics.Random;
             squareTerminator = new SquareTerminator(rows, columns);
-            targetSelect = new RandomShooting(evidenceGrid, shipsToShoot);
+            shootingTacticsFactory = new ShootingTacticsFactory(evidenceGrid, squaresHit, shipsToShoot);
+            targetSelect = shootingTacticsFactory.GetTactics(ShootingTactics.Random);
         }
 
         public Square NextTarget()
         {
-            lastTarget =targetSelect.NextTarget();
+            lastTarget = targetSelect.NextTarget();
             return lastTarget;
         }
 
@@ -61,7 +62,6 @@ namespace Vsite.Oom.Battleship.Model
             if(hitResult == HitResult.Sunken)
             {
                 ShootingTactics = ShootingTactics.Random;
-                targetSelect = new RandomShooting(evidenceGrid, shipsToShoot);
                 return;
             }
             if(hitResult == HitResult.Hit)
@@ -70,16 +70,15 @@ namespace Vsite.Oom.Battleship.Model
                 {
                     case ShootingTactics.Random:
                         ShootingTactics = ShootingTactics.Surrounding;
-                        targetSelect = new SurroundShooting(evidenceGrid, squaresHit, shipsToShoot);
-                        return;
+                        break;
                     case ShootingTactics.Surrounding:
                         ShootingTactics = ShootingTactics.Inline;
-                        targetSelect = new InlineShooting(evidenceGrid, squaresHit, shipsToShoot);
-                        return;
+                        break;
                     case ShootingTactics.Inline:
                         return;
                 }
             }
+            targetSelect = shootingTacticsFactory.GetTactics(ShootingTactics);
         }
 
         private Square lastTarget;
@@ -97,5 +96,7 @@ namespace Vsite.Oom.Battleship.Model
         private ITargetSelect targetSelect;
 
         public ShootingTactics ShootingTactics { get; private set; }
+
+        private ShootingTacticsFactory shootingTacticsFactory;
     }
 }
