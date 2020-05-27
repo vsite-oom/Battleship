@@ -8,13 +8,15 @@ namespace Vsite.Oom.Battleship.Model
 {
     public class SurroundingShooting : ITargetSelect
     {
-        public SurroundingShooting(Grid evidenceGrid,SortedSquares squaresHit)
+        public SurroundingShooting(Grid evidenceGrid,SortedSquares squaresHit, List<int> shipsToShoot)
         {
             this.squaresHit = squaresHit;
             this.evidenceGrid = evidenceGrid;
+            this.shipsToShoot = shipsToShoot;
         }
-        public Square NextTarget(int shipLength)
+        public Square NextTarget()
         {
+            int shipLength = shipsToShoot[0];
             List<IEnumerable<Square>> around = new List<IEnumerable<Square>>();
             foreach (Direction direction in Enum.GetValues(typeof(Direction)))
             {
@@ -40,5 +42,7 @@ namespace Vsite.Oom.Battleship.Model
         private Random random = new Random();
         private readonly SortedSquares squaresHit;
         private readonly Grid evidenceGrid;
+        private readonly List<int> shipsToShoot;
+
     }
 }
