@@ -13,7 +13,7 @@ namespace Vsite.Oom.Battleship.Model
             this.evidenceGrid = evidenceGrid;
             this.shipsToShoot = shipsToShoot;
         }
-        public Square NextTarget(int shipLength)
+        public Square NextTarget()
         {
             int shipLength = shipsToShoot[0];
             var placements = evidenceGrid.GetAvailablePlacements(shipLength);
