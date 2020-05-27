@@ -9,10 +9,11 @@ namespace Vsite.Oom.Battleship.Model
 {
     public class SurroundingShooting : ITargetSelect
     {
-        public SurroundingShooting(Grid evidenceGrid,SortedSquares squaresHit)
+        public SurroundingShooting(Grid evidenceGrid,SortedSquares squaresHit, List<int> shipsToShoot)
         {
             this.squaresHit = squaresHit;
             this.evidenceGrid = evidenceGrid;
+            this.shipsToShoot = shipsToShoot;
         }
         public Square NextTarget(int shipLength)
         {
@@ -35,6 +36,7 @@ namespace Vsite.Oom.Battleship.Model
         private Random random = new Random();
         private readonly Grid evidenceGrid;
         private readonly SortedSquares squaresHit;
+        private readonly List<int> shipsToShoot;
     }
 
 }

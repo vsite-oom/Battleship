@@ -9,9 +9,10 @@ namespace Vsite.Oom.Battleship.Model
 {
     public class RandomShooting : ITargetSelect
     {
-        public RandomShooting(Grid evidenceGrid)
+        public RandomShooting(Grid evidenceGrid, List<int> shipsToShoot)
         {
             this.evidenceGrid = evidenceGrid;
+            this.shipsToShoot = shipsToShoot;
         }
         public Square NextTarget(int shipLength)
         {
@@ -22,5 +23,6 @@ namespace Vsite.Oom.Battleship.Model
         }
         private Random random = new Random();
         private readonly Grid evidenceGrid;
+        private readonly List<int> shipsToShoot;
     }
 }
