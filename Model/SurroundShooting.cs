@@ -9,12 +9,13 @@ namespace Vsite.oom.Battleship.Model
 {
     public class SurroundShooting : ITargetSelect
     {
-        public SurroundShooting(Grid evidenceGrid, SortedSquares squaresHit)
+        public SurroundShooting(Grid evidenceGrid, SortedSquares squaresHit, List<int> shipsToShoot)
         {
             this.squaresHit = squaresHit;
             this.evidenceGrid = evidenceGrid;
+            this.shipsToShoot = shipsToShoot;
         }
-        public Square NextTarget(int shipLength)
+        public Square NextTarget()
         {
             List<IEnumerable<Square>> around = new List<IEnumerable<Square>>();
             foreach (Direction direction in Enum.GetValues(typeof(Direction)))
@@ -28,6 +29,7 @@ namespace Vsite.oom.Battleship.Model
 
             var ordered = around.OrderByDescending(ls => ls.Count());
             int maxLen = ordered.First().Count();
+            int shipLength = shipsToShoot[0];
             if (maxLen > shipLength - 1)
                 maxLen = shipLength - 1;
             var longest = ordered.Where(ls => ls.Count() >= maxLen);
@@ -38,5 +40,6 @@ namespace Vsite.oom.Battleship.Model
         private Random random = new Random();
         private readonly Grid evidenceGrid;
         private readonly SortedSquares squaresHit;
+        private readonly List<int> shipsToShoot;
     }
 }
