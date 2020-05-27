@@ -23,7 +23,8 @@ namespace Vsite.Oom.Battleship.Model
             shipsToShoot = new List<int>(shipLengths.OrderByDescending(l => l));
             ShootingTactics = ShootingTactics.Random;
             squareTerminator = new squareTerminator(rows, columns);
-            targetSelect = new RandomShooting(evidenceGrid, shipsToShoot);
+            ShootingTacticsFactory = new ShootingTacticsFactory(evidenceGrid, SquaresHit, shipsToShoot);
+            targetSelect = ShootingTacticsFactory.GetTactics(ShootingTactics.Random);
         }
         public Square NextTarget()
         {
@@ -59,8 +60,7 @@ namespace Vsite.Oom.Battleship.Model
             if(hitResult == HitResult.Sunken)
             {
                 ShootingTactics = ShootingTactics.Random;
-                targetSelect = new RandomShooting(evidenceGrid,shipsToShoot);
-                return;
+
             }
             if(hitResult == HitResult.Hit)
             {
@@ -68,16 +68,15 @@ namespace Vsite.Oom.Battleship.Model
                 {
                     case ShootingTactics.Random:
                         ShootingTactics = ShootingTactics.Surrounding;
-                        targetSelect = new SurroundingShooting(evidenceGrid, SquaresHit, shipsToShoot);
-                        return;
+                        break;
                     case ShootingTactics.Surrounding:
                         ShootingTactics = ShootingTactics.Inline;
-                        targetSelect = new InlineShooting(evidenceGrid, SquaresHit, shipsToShoot); 
-                        return;
+                        break;
                     case ShootingTactics.Inline:
                         return;
                 }
             }
+            targetSelect = ShootingTacticsFactory.GetTactics(ShootingTactics);
             switch (hitResult)
             {
                 case HitResult.Sunken:
@@ -105,5 +104,6 @@ namespace Vsite.Oom.Battleship.Model
         private SortedSquares SquaresHit = new SortedSquares();
         private ISquareTerminator squareTerminator;
         private ITargetSelect targetSelect;
+        private ShootingTacticsFactory ShootingTacticsFactory;
     }
 }
