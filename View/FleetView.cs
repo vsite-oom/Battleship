@@ -175,6 +175,12 @@ namespace Vsite.Oom.Battleship.Model.View
                         var btn = (Button)PlayerPanel.GetControlFromPosition(sunkenSquare.Column + 1, sunkenSquare.Row + 1);
                         btn.BackColor = Color.DarkRed;
                     }
+
+                    if (!PlayerFleet.Ships.SelectMany(s => s.Squares).Any(s => s.SquareState != SquareState.Sunken))
+                    {
+                        WinnerAlert("Computer");
+                        break;
+                    }
                     await ComputersTurnAsync();
                     break;
                 default:
@@ -204,6 +210,10 @@ namespace Vsite.Oom.Battleship.Model.View
                         btn.BackColor = Color.DarkRed;
                         btn.Refresh();
 
+                        if (!ComputerFleet.Ships.SelectMany(s => s.Squares).Any(s => s.SquareState != SquareState.Sunken))
+                        {
+                            WinnerAlert("You");
+                        }
                     }
                     break;
                 default:
@@ -242,6 +252,7 @@ namespace Vsite.Oom.Battleship.Model.View
         private void ShowPlayerFleet(Color color, Fleet fleet)
         {
             ClearFleet(PlayerPanel);
+            ClearFleet(ComputerPanel);
 
             foreach (var ship in fleet.Ships)
             {
@@ -269,6 +280,18 @@ namespace Vsite.Oom.Battleship.Model.View
         {
             string message = "No possible placements.";
             string caption = "No placements";
+            MessageBoxButtons buttons = MessageBoxButtons.OK;
+            MessageBox.Show(message, caption, buttons);
+        }
+
+        private void WinnerAlert(string winner)
+        {
+            endGame.Visible = false;
+            play.Visible = false;
+            CreateFleet.Enabled = true;
+
+            string message = $"{winner} won!";
+            string caption = "Game over";
             MessageBoxButtons buttons = MessageBoxButtons.OK;
             MessageBox.Show(message, caption, buttons);
         }

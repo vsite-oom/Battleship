@@ -25,6 +25,10 @@ namespace Vsite.Oom.Battleship.Model
             // create groups with individual squares
             var groups = allCandidates.GroupBy(sq => sq);
             // find the number of squares in largest group
+            if (groups.Count() == 0)
+            {
+                var test = 1;
+            }
             var maxCount = groups.Max(g => g.Count());
             // filter only froups that have maxCount elements
             var largestGroups = groups.Where(g => g.Count() == maxCount);

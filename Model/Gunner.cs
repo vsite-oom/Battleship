@@ -31,7 +31,8 @@ namespace Vsite.Oom.Battleship.Model
             shipsToShoot = shipLenghts.OrderByDescending(s => s).ToList();
             ShootingTactics = ShootingTactics.Random;
             squareTerminator = new SquareTerminator(rows, columns);
-            targetSelect = new RandomShooting(evidenceGrid, shipsToShoot);
+            shootingTacticsFactory = new ShootingTacticsFactory(evidenceGrid, squaresHit, shipsToShoot);
+            targetSelect = shootingTacticsFactory.GetTactics(ShootingTactics.Random);
         }
 
         public ShootingTactics ShootingTactics { get; private set; }
@@ -53,7 +54,6 @@ namespace Vsite.Oom.Battleship.Model
 
             if (hitResult == ShipHitResult.Sunken)
             {
-                squaresHit.Add(lastTarget);
                 var toEliminate = squareTerminator.ToEliminate(squaresHit);
                 foreach (var sq in toEliminate)
                 {
