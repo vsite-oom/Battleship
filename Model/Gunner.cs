@@ -13,6 +13,15 @@ namespace Vsite.Oom.Battleship.Model
         private SortedSquares squaresHit = new SortedSquares();
         private ITargetSelect targetSelect;
 
+        public Gunner()
+        {
+            evidenceGrid = new Grid(RulesSingleton.Instance.Rows, RulesSingleton.Instance.Columns);
+            shipsToShoot = RulesSingleton.Instance.ShipLengths.OrderByDescending(s => s).ToList();
+            ShootingTactics = ShootingTactics.Random;
+            squareTerminator = new SquareTerminator(RulesSingleton.Instance.Rows, RulesSingleton.Instance.Columns);
+            targetSelect = new RandomShooting(evidenceGrid);
+        }
+
         public Gunner(int rows, int columns, IEnumerable<int> shipLenghts)
         {
             evidenceGrid = new Grid(rows, columns);

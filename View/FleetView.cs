@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Vsite.Oom.Battleship.Model.View
@@ -13,6 +14,7 @@ namespace Vsite.Oom.Battleship.Model.View
         private readonly int columnsCount = RulesSingleton.Instance.Columns;
         private readonly int rowsCount = RulesSingleton.Instance.Rows;
         private readonly Shipwright shipwright = new Shipwright();
+        private readonly Gunner gunner = new Gunner();
 
         public FleetView()
         {
@@ -21,7 +23,7 @@ namespace Vsite.Oom.Battleship.Model.View
             InitializeComputerFleet();
             AutoSize = true;
         }
-
+      
         public TableLayoutPanel PlayerPanel { get; set; }
         public TableLayoutPanel ComputerPanel { get; set; }
         public Fleet ComputerFleet { get; set; }
@@ -34,7 +36,9 @@ namespace Vsite.Oom.Battleship.Model.View
 
             if (fleet != null && fleet.Ships.Any())
             {
+                PlayerFleet = fleet;
                 ShowPlayerFleet(Color.MidnightBlue, fleet);
+                EnableDisableControls(false);
                 play.Visible = true;
                 play.Enabled = true;
             }
@@ -119,7 +123,7 @@ namespace Vsite.Oom.Battleship.Model.View
                         btn.Margin = new Padding(0);
                         if (isComputerPanel)
                         {
-                            btn.Click += new EventHandler(PanelButton_Click);
+                            btn.Click += new EventHandler(PanelButton_ClickAsync);
                         }
                     }
                 }
@@ -129,9 +133,57 @@ namespace Vsite.Oom.Battleship.Model.View
             return panel;
         }
 
-        private void PanelButton_Click(object sender, EventArgs e)
+        private async void PanelButton_ClickAsync(object sender, EventArgs e)
         {
+            EnableDisableControls(false);
+
             var senderBtn = sender as PositionedButton;
+            if (ProccessPlayersHit(senderBtn) == ShipHitResult.Missed)
+            {
+                label1.Text = "Computer's turn!";
+                label1.Refresh();
+                await ComputersTurnAsync();
+            }
+
+            EnableDisableControls(true);
+            label1.Text = "Your turn!";
+            label1.Refresh();
+        }
+
+        private async Task ComputersTurnAsync()
+        {
+            await Task.Delay(500);
+
+            var target = gunner.NextTarget();
+            var computerHitResult = PlayerFleet.Hit(target);
+            gunner.ProcessHitResult(computerHitResult);
+
+            var targetBtn = (Button)PlayerPanel.GetControlFromPosition(target.Column + 1, target.Row + 1);
+
+            switch (computerHitResult)
+            {
+                case ShipHitResult.Missed:
+                    targetBtn.BackColor = Color.Gray;
+                    break;
+                case ShipHitResult.Hit:
+                    targetBtn.BackColor = Color.Red;
+                    await ComputersTurnAsync();
+                    break;
+                case ShipHitResult.Sunken:
+                    foreach (var sunkenSquare in PlayerFleet.Ships.Where(s => s.Squares.Contains(target)).SelectMany(s => s.Squares))
+                    {
+                        var btn = (Button)PlayerPanel.GetControlFromPosition(sunkenSquare.Column + 1, sunkenSquare.Row + 1);
+                        btn.BackColor = Color.DarkRed;
+                    }
+                    await ComputersTurnAsync();
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        private ShipHitResult ProccessPlayersHit(PositionedButton senderBtn)
+        {
             var square = new Square(senderBtn.Row - 1, senderBtn.Column - 1);
             var hitResult = ComputerFleet.Hit(square);
 
@@ -139,20 +191,38 @@ namespace Vsite.Oom.Battleship.Model.View
             {
                 case ShipHitResult.Missed:
                     senderBtn.BackColor = Color.Gray;
+                    senderBtn.Refresh();
                     break;
                 case ShipHitResult.Hit:
                     senderBtn.BackColor = Color.Red;
+                    senderBtn.Refresh();
                     break;
                 case ShipHitResult.Sunken:
                     foreach (var sunkenSquare in ComputerFleet.Ships.Where(s => s.Squares.Contains(square)).SelectMany(s => s.Squares))
                     {
                         var btn = (Button)ComputerPanel.GetControlFromPosition(sunkenSquare.Column + 1, sunkenSquare.Row + 1);
                         btn.BackColor = Color.DarkRed;
+                        btn.Refresh();
+
                     }
                     break;
                 default:
                     Debug.Assert(false);
                     break;
+            }
+
+            return hitResult;
+        }
+
+        private void EnableDisableControls(bool isEnabled)
+        {
+            foreach (var item in ComputerPanel.Controls)
+            {
+                if (item.GetType() == typeof(PositionedButton))
+                {
+                    var controlBtn = item as Button;
+                    controlBtn.Enabled = isEnabled;
+                }
             }
         }
 
@@ -208,6 +278,8 @@ namespace Vsite.Oom.Battleship.Model.View
             CreateFleet.Enabled = false;
             play.Enabled = false;
             endGame.Visible = true;
+            label1.Visible = true;
+            EnableDisableControls(true);
         }
 
         private void endGame_Click(object sender, EventArgs e)
@@ -217,6 +289,7 @@ namespace Vsite.Oom.Battleship.Model.View
             endGame.Visible = false;
             ClearFleet(PlayerPanel);
             ClearFleet(ComputerPanel);
+            label1.Visible = false;
         }
     }
 }
