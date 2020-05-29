@@ -28,6 +28,12 @@ namespace Vsite.Oom.Battleship.Model
         {
             rows = RulesSingleton.Instance.Rows;
             columns = RulesSingleton.Instance.Columns;
+            terminator = new SquareTerminator(rows, columns);
+        }
+
+        public Fleet CreateFleet()
+        {
+            return CreateFleet(RulesSingleton.Instance.ShipLengths);
         }
 
         public Fleet CreateFleet(IEnumerable<int> shipLengths)

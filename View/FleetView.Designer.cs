@@ -33,21 +33,22 @@
             // 
             // CreateFleet
             // 
+            this.CreateFleet.BackColor = System.Drawing.Color.LemonChiffon;
             this.CreateFleet.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.CreateFleet.Location = new System.Drawing.Point(34, 12);
             this.CreateFleet.Name = "CreateFleet";
             this.CreateFleet.Size = new System.Drawing.Size(80, 28);
             this.CreateFleet.TabIndex = 0;
             this.CreateFleet.Text = "Create fleet";
-            this.CreateFleet.UseVisualStyleBackColor = true;
+            this.CreateFleet.UseVisualStyleBackColor = false;
             this.CreateFleet.Click += new System.EventHandler(this.CreateFleet_Click);
             // 
             // FleetView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.SystemColors.Info;
-            this.ClientSize = new System.Drawing.Size(635, 624);
+            this.BackColor = System.Drawing.Color.Pink;
+            this.ClientSize = new System.Drawing.Size(1087, 539);
             this.Controls.Add(this.CreateFleet);
             this.Name = "FleetView";
             this.Text = "FleetView";
