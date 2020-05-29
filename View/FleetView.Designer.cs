@@ -57,7 +57,7 @@
             this.play.Text = "Play";
             this.play.UseVisualStyleBackColor = false;
             this.play.Visible = false;
-            this.play.Click += new System.EventHandler(this.play_Click);
+            this.play.Click += new System.EventHandler(this.play_ClickAsync);
             // 
             // endGame
             // 
@@ -78,9 +78,8 @@
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.label1.Location = new System.Drawing.Point(452, 19);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(70, 17);
+            this.label1.Size = new System.Drawing.Size(0, 17);
             this.label1.TabIndex = 3;
-            this.label1.Text = "Your turn!";
             this.label1.Visible = false;
             // 
             // FleetView

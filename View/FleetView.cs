@@ -14,13 +14,13 @@ namespace Vsite.Oom.Battleship.Model.View
         private readonly int columnsCount = RulesSingleton.Instance.Columns;
         private readonly int rowsCount = RulesSingleton.Instance.Rows;
         private readonly Shipwright shipwright = new Shipwright();
-        private readonly Gunner gunner = new Gunner();
+        private Gunner gunner;
+        private bool computerTurn = false;
 
         public FleetView()
         {
             InitializeComponent();
             InitializePanels();
-            InitializeComputerFleet();
             AutoSize = true;
         }
       
@@ -141,13 +141,11 @@ namespace Vsite.Oom.Battleship.Model.View
             if (ProccessPlayersHit(senderBtn) == ShipHitResult.Missed)
             {
                 label1.Text = "Computer's turn!";
-                label1.Refresh();
                 await ComputersTurnAsync();
             }
 
             EnableDisableControls(true);
             label1.Text = "Your turn!";
-            label1.Refresh();
         }
 
         private async Task ComputersTurnAsync()
@@ -166,14 +164,14 @@ namespace Vsite.Oom.Battleship.Model.View
                     targetBtn.BackColor = Color.Gray;
                     break;
                 case ShipHitResult.Hit:
-                    targetBtn.BackColor = Color.Red;
+                    targetBtn.BackColor = Color.DeepPink;
                     await ComputersTurnAsync();
                     break;
                 case ShipHitResult.Sunken:
                     foreach (var sunkenSquare in PlayerFleet.Ships.Where(s => s.Squares.Contains(target)).SelectMany(s => s.Squares))
                     {
                         var btn = (Button)PlayerPanel.GetControlFromPosition(sunkenSquare.Column + 1, sunkenSquare.Row + 1);
-                        btn.BackColor = Color.DarkRed;
+                        btn.BackColor = Color.DarkMagenta;
                     }
 
                     if (!PlayerFleet.Ships.SelectMany(s => s.Squares).Any(s => s.SquareState != SquareState.Sunken))
@@ -209,11 +207,10 @@ namespace Vsite.Oom.Battleship.Model.View
                         var btn = (Button)ComputerPanel.GetControlFromPosition(sunkenSquare.Column + 1, sunkenSquare.Row + 1);
                         btn.BackColor = Color.DarkRed;
                         btn.Refresh();
-
-                        if (!ComputerFleet.Ships.SelectMany(s => s.Squares).Any(s => s.SquareState != SquareState.Sunken))
-                        {
-                            WinnerAlert("You");
-                        }
+                    }
+                    if (!ComputerFleet.Ships.SelectMany(s => s.Squares).Any(s => s.SquareState != SquareState.Sunken))
+                    {
+                        WinnerAlert("You");
                     }
                     break;
                 default:
@@ -289,6 +286,8 @@ namespace Vsite.Oom.Battleship.Model.View
             endGame.Visible = false;
             play.Visible = false;
             CreateFleet.Enabled = true;
+            EnableDisableControls(false);
+            label1.Text = $"Game over. {winner} won!";
 
             string message = $"{winner} won!";
             string caption = "Game over";
@@ -296,13 +295,24 @@ namespace Vsite.Oom.Battleship.Model.View
             MessageBox.Show(message, caption, buttons);
         }
 
-        private void play_Click(object sender, EventArgs e)
+        private async void play_ClickAsync(object sender, EventArgs e)
         {
             CreateFleet.Enabled = false;
             play.Enabled = false;
             endGame.Visible = true;
+            label1.Text = computerTurn ? "Computer's turn!" : "Your turn!";
             label1.Visible = true;
+            gunner = new Gunner();
+            InitializeComputerFleet();
             EnableDisableControls(true);
+
+            if (computerTurn)
+            {
+                await ComputersTurnAsync();
+                label1.Text = "Your turn!";
+            }
+
+            computerTurn = !computerTurn;
         }
 
         private void endGame_Click(object sender, EventArgs e)
