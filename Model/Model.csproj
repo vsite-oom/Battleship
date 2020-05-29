@@ -57,6 +57,7 @@
     <Compile Include="ShipHitResult.cs" />
     <Compile Include="Shipwright.cs" />
     <Compile Include="ShootingTactics.cs" />
+    <Compile Include="ShootingTacticsFactory.cs" />
     <Compile Include="SortedSquares.cs" />
     <Compile Include="Square.cs" />
     <Compile Include="SquareState.cs" />

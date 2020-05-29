@@ -8,16 +8,19 @@ namespace Vsite.Oom.Battleship.Model
     {
         private Grid evidenceGrid;
         private readonly SortedSquares squaresHit;
+        private List<int> shipsToShoot;
         private Random random = new Random();
 
-        public SurroundShooting(Grid grid, SortedSquares squares)
+        public SurroundShooting(Grid grid, SortedSquares squares, List<int> shipsToShoot)
         {
             squaresHit = squares;
             evidenceGrid = grid;
+            this.shipsToShoot = shipsToShoot;
         }
 
-        public Square NextTarget(int shipLength)
+        public Square NextTarget()
         {
+            var shipLength = shipsToShoot[0];
             List<IEnumerable<Square>> arround = new List<IEnumerable<Square>>();
             foreach (Direction direction in Enum.GetValues(typeof(Direction)))
             {

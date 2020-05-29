@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Vsite.Oom.Battleship.Model
@@ -8,15 +9,18 @@ namespace Vsite.Oom.Battleship.Model
         private readonly SortedSquares squaresHit;
         private Random random = new Random();
         private Grid evidenceGrid;
+        private List<int> shipsToShoot;
 
-        public InlineShooting(Grid grid, SortedSquares squares)
+        public InlineShooting(Grid grid, SortedSquares squares, List<int> shipsToShoot)
         {
             squaresHit = squares;
             evidenceGrid = grid;
+            this.shipsToShoot = shipsToShoot;
         }
 
-        public Square NextTarget(int shipLength)
+        public Square NextTarget()
         {
+            var shipLength = shipsToShoot[0];
             var l = evidenceGrid.GetSquaresInline(squaresHit);
             if (l.Count() == 1)
                 return l.ElementAt(0).First();

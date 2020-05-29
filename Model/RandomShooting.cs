@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Vsite.Oom.Battleship.Model
@@ -6,15 +7,18 @@ namespace Vsite.Oom.Battleship.Model
     public class RandomShooting : ITargetSelect
     {
         private Grid evidenceGrid;
-        private Random random = new Random();
+        private List<int> shipsToShoot;
+        private readonly Random random = new Random();
 
-        public RandomShooting(Grid grid)
+        public RandomShooting(Grid grid, List<int> shipsToShoot)
         {
             evidenceGrid = grid;
+            this.shipsToShoot = shipsToShoot;
         }
 
-        public Square NextTarget(int shipLength)
+        public Square NextTarget()
         {
+            int shipLength = shipsToShoot[0];
             var placements = evidenceGrid.GetAvailablePlacements(shipLength);
             // create simple array of sqaures from arrays of arrays
             var allCandidates = placements.SelectMany(seq => seq);
