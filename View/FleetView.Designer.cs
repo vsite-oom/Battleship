@@ -29,6 +29,8 @@
         private void InitializeComponent()
         {
             this.CreateFleet = new System.Windows.Forms.Button();
+            this.play = new System.Windows.Forms.Button();
+            this.endGame = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // CreateFleet
@@ -43,12 +45,40 @@
             this.CreateFleet.UseVisualStyleBackColor = false;
             this.CreateFleet.Click += new System.EventHandler(this.CreateFleet_Click);
             // 
+            // play
+            // 
+            this.play.BackColor = System.Drawing.Color.LemonChiffon;
+            this.play.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.play.Location = new System.Drawing.Point(147, 12);
+            this.play.Name = "play";
+            this.play.Size = new System.Drawing.Size(80, 28);
+            this.play.TabIndex = 1;
+            this.play.Text = "Play";
+            this.play.UseVisualStyleBackColor = false;
+            this.play.Visible = false;
+            this.play.Click += new System.EventHandler(this.play_Click);
+            // 
+            // endGame
+            // 
+            this.endGame.BackColor = System.Drawing.Color.LemonChiffon;
+            this.endGame.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.endGame.Location = new System.Drawing.Point(259, 12);
+            this.endGame.Name = "endGame";
+            this.endGame.Size = new System.Drawing.Size(80, 28);
+            this.endGame.TabIndex = 2;
+            this.endGame.Text = "End game";
+            this.endGame.UseVisualStyleBackColor = false;
+            this.endGame.Visible = false;
+            this.endGame.Click += new System.EventHandler(this.endGame_Click);
+            // 
             // FleetView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Pink;
             this.ClientSize = new System.Drawing.Size(1087, 539);
+            this.Controls.Add(this.endGame);
+            this.Controls.Add(this.play);
             this.Controls.Add(this.CreateFleet);
             this.Name = "FleetView";
             this.Text = "FleetView";
@@ -59,5 +89,7 @@
         #endregion
 
         private System.Windows.Forms.Button CreateFleet;
+        private System.Windows.Forms.Button play;
+        private System.Windows.Forms.Button endGame;
     }
 }

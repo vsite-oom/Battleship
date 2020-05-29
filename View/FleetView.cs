@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
@@ -24,6 +25,7 @@ namespace Vsite.Oom.Battleship.Model.View
         public TableLayoutPanel PlayerPanel { get; set; }
         public TableLayoutPanel ComputerPanel { get; set; }
         public Fleet ComputerFleet { get; set; }
+        public Fleet PlayerFleet { get; set; }
 
         private void CreateFleet_Click(object sender, EventArgs e)
         {
@@ -32,7 +34,9 @@ namespace Vsite.Oom.Battleship.Model.View
 
             if (fleet != null && fleet.Ships.Any())
             {
-                ShowFleet(PlayerPanel, Color.MidnightBlue, fleet);
+                ShowPlayerFleet(Color.MidnightBlue, fleet);
+                play.Visible = true;
+                play.Enabled = true;
             }
             else
             {
@@ -42,11 +46,11 @@ namespace Vsite.Oom.Battleship.Model.View
 
         private void InitializePanels()
         {
-            PlayerPanel = InitializePanel(rowsCount, columnsCount, new Point(30, 50), panelNamePlayer);
-            ComputerPanel = InitializePanel(rowsCount, columnsCount, new Point(600, 50), panelNameComputer);
+            PlayerPanel = InitializePanel(rowsCount, columnsCount, new Point(30, 50), panelNamePlayer, false);
+            ComputerPanel = InitializePanel(rowsCount, columnsCount, new Point(600, 50), panelNameComputer, true);
         }
 
-        private TableLayoutPanel InitializePanel(int rowsCount, int columnsCount, Point location, string panelName)
+        private TableLayoutPanel InitializePanel(int rowsCount, int columnsCount, Point location, string panelName, bool isComputerPanel)
         {
             TableLayoutPanel panel = new TableLayoutPanel
             {
@@ -101,22 +105,55 @@ namespace Vsite.Oom.Battleship.Model.View
                     }
                     else
                     {
-                        var btn = new Button
+                        var btn = new PositionedButton
                         {
                             Size = new Size(40, 40),
-                            Name = $"btn_{c}_{r}"
+                            Name = $"btn_{c}_{r}",
+                            Row = r,
+                            Column = c,
                         };
                         panel.Controls.Add(btn, c, r);
                         btn.TabStop = false;
                         btn.FlatStyle = FlatStyle.Flat;
                         btn.FlatAppearance.BorderSize = 0;
                         btn.Margin = new Padding(0);
+                        if (isComputerPanel)
+                        {
+                            btn.Click += new EventHandler(PanelButton_Click);
+                        }
                     }
                 }
             }
 
             Controls.Add(panel);
             return panel;
+        }
+
+        private void PanelButton_Click(object sender, EventArgs e)
+        {
+            var senderBtn = sender as PositionedButton;
+            var square = new Square(senderBtn.Row - 1, senderBtn.Column - 1);
+            var hitResult = ComputerFleet.Hit(square);
+
+            switch (hitResult)
+            {
+                case ShipHitResult.Missed:
+                    senderBtn.BackColor = Color.Gray;
+                    break;
+                case ShipHitResult.Hit:
+                    senderBtn.BackColor = Color.Red;
+                    break;
+                case ShipHitResult.Sunken:
+                    foreach (var sunkenSquare in ComputerFleet.Ships.Where(s => s.Squares.Contains(square)).SelectMany(s => s.Squares))
+                    {
+                        var btn = (Button)ComputerPanel.GetControlFromPosition(sunkenSquare.Column + 1, sunkenSquare.Row + 1);
+                        btn.BackColor = Color.DarkRed;
+                    }
+                    break;
+                default:
+                    Debug.Assert(false);
+                    break;
+            }
         }
 
         private void InitializeComputerFleet()
@@ -132,23 +169,28 @@ namespace Vsite.Oom.Battleship.Model.View
             }
         }
        
-        private void ShowFleet(TableLayoutPanel panel, Color color, Fleet fleet)
+        private void ShowPlayerFleet(Color color, Fleet fleet)
         {
-            foreach (var control in panel.Controls)
-            {
-                if (control.GetType() == typeof(Button))
-                {
-                    var btn = control as Button;
-                    btn.BackColor = Color.Transparent;
-                }
-            }
+            ClearFleet(PlayerPanel);
 
             foreach (var ship in fleet.Ships)
             {
                 foreach (var square in ship.Squares)
                 {
-                    var btn = (Button)panel.GetControlFromPosition(square.Column + 1, square.Row + 1);
+                    var btn = (Button)PlayerPanel.GetControlFromPosition(square.Column + 1, square.Row + 1);
                     btn.BackColor = color;
+                }
+            }
+        }
+
+        private void ClearFleet(TableLayoutPanel panel)
+        {
+            foreach (var control in panel.Controls)
+            {
+                if (control.GetType() == typeof(PositionedButton))
+                {
+                    var btn = control as Button;
+                    btn.BackColor = Color.Transparent;
                 }
             }
         }
@@ -159,6 +201,22 @@ namespace Vsite.Oom.Battleship.Model.View
             string caption = "No placements";
             MessageBoxButtons buttons = MessageBoxButtons.OK;
             MessageBox.Show(message, caption, buttons);
+        }
+
+        private void play_Click(object sender, EventArgs e)
+        {
+            CreateFleet.Enabled = false;
+            play.Enabled = false;
+            endGame.Visible = true;
+        }
+
+        private void endGame_Click(object sender, EventArgs e)
+        {
+            CreateFleet.Enabled = true;
+            play.Visible = false;
+            endGame.Visible = false;
+            ClearFleet(PlayerPanel);
+            ClearFleet(ComputerPanel);
         }
     }
 }
