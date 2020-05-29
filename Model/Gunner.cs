@@ -79,14 +79,10 @@ namespace Vsite.Oom.Battleship.Model
 
 		private void ChangeTactics(HitResult hitResult)
 		{
-
 			if (hitResult == HitResult.Sunk)
 			{
 				ShootingTactics = ShootingTactics.Random;
-				
-				return;
 			}
-
 			if (hitResult == HitResult.Hit)
 			{
 				switch (ShootingTactics)
@@ -94,17 +90,13 @@ namespace Vsite.Oom.Battleship.Model
 					case ShootingTactics.Random:
 						ShootingTactics = ShootingTactics.Surrounding;
 						break;
-
 					case ShootingTactics.Surrounding:
 						ShootingTactics = ShootingTactics.Inline;
 						break;
-
 					case ShootingTactics.Inline:
 						return;
-
 				}
 			}
-
 			targetSelect = shootingTacticFactory.GetTactics(ShootingTactics);
 		}
 	}
