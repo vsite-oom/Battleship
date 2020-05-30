@@ -16,6 +16,7 @@ namespace Vsite.Oom.Battleship.Model.View
         private readonly Shipwright shipwright = new Shipwright();
         private Gunner gunner;
         private bool computerTurn = false;
+        private bool gameOver = false;
 
         public FleetView()
         {
@@ -31,7 +32,6 @@ namespace Vsite.Oom.Battleship.Model.View
 
         private void CreateFleet_Click(object sender, EventArgs e)
         {
-            var shipwright = new Shipwright();
             var fleet = shipwright.CreateFleet();
 
             if (fleet != null && fleet.Ships.Any())
@@ -52,6 +52,7 @@ namespace Vsite.Oom.Battleship.Model.View
         {
             PlayerPanel = InitializePanel(rowsCount, columnsCount, new Point(30, 50), panelNamePlayer, false);
             ComputerPanel = InitializePanel(rowsCount, columnsCount, new Point(600, 50), panelNameComputer, true);
+            EnableDisableControls(false);
         }
 
         private TableLayoutPanel InitializePanel(int rowsCount, int columnsCount, Point location, string panelName, bool isComputerPanel)
@@ -143,9 +144,12 @@ namespace Vsite.Oom.Battleship.Model.View
                 label1.Text = "Computer's turn!";
                 await ComputersTurnAsync();
             }
-
-            EnableDisableControls(true);
-            label1.Text = "Your turn!";
+            
+            if (!gameOver)
+            {
+                EnableDisableControls(true);
+                label1.Text = "Your turn!";
+            }
         }
 
         private async Task ComputersTurnAsync()
@@ -285,9 +289,11 @@ namespace Vsite.Oom.Battleship.Model.View
         {
             endGame.Visible = false;
             play.Visible = false;
-            CreateFleet.Enabled = true;
-            EnableDisableControls(false);
+            CreateFleet.Visible = false;
+            newGame.Visible = true;
             label1.Text = $"Game over. {winner} won!";
+            EnableDisableControls(false);
+            gameOver = true;
 
             string message = $"{winner} won!";
             string caption = "Game over";
@@ -305,6 +311,7 @@ namespace Vsite.Oom.Battleship.Model.View
             gunner = new Gunner();
             InitializeComputerFleet();
             EnableDisableControls(true);
+            gameOver = false;
 
             if (computerTurn)
             {
@@ -323,6 +330,16 @@ namespace Vsite.Oom.Battleship.Model.View
             ClearFleet(PlayerPanel);
             ClearFleet(ComputerPanel);
             label1.Visible = false;
+            EnableDisableControls(false);
+        }
+
+        private void newGame_Click(object sender, EventArgs e)
+        {
+            newGame.Visible = false;
+            CreateFleet.Enabled = true;
+            CreateFleet.Visible = true;
+            ClearFleet(PlayerPanel);
+            ClearFleet(ComputerPanel);
         }
     }
 }

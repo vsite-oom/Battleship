@@ -32,6 +32,7 @@
             this.play = new System.Windows.Forms.Button();
             this.endGame = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
+            this.newGame = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // CreateFleet
@@ -82,12 +83,26 @@
             this.label1.TabIndex = 3;
             this.label1.Visible = false;
             // 
+            // newGame
+            // 
+            this.newGame.BackColor = System.Drawing.Color.LemonChiffon;
+            this.newGame.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.newGame.Location = new System.Drawing.Point(34, 12);
+            this.newGame.Name = "newGame";
+            this.newGame.Size = new System.Drawing.Size(80, 28);
+            this.newGame.TabIndex = 4;
+            this.newGame.Text = "New game";
+            this.newGame.UseVisualStyleBackColor = false;
+            this.newGame.Visible = false;
+            this.newGame.Click += new System.EventHandler(this.newGame_Click);
+            // 
             // FleetView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Pink;
             this.ClientSize = new System.Drawing.Size(1087, 539);
+            this.Controls.Add(this.newGame);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.endGame);
             this.Controls.Add(this.play);
@@ -105,5 +120,6 @@
         private System.Windows.Forms.Button play;
         private System.Windows.Forms.Button endGame;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Button newGame;
     }
 }
