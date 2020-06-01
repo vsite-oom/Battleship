@@ -52,7 +52,6 @@
 			this.PlayerGameBoard.Size = new System.Drawing.Size(424, 413);
 			this.PlayerGameBoard.TabIndex = 1;
 			this.PlayerGameBoard.Click += new System.EventHandler(this.PlayerGameBoard_Click);
-			this.PlayerGameBoard.Paint += new System.Windows.Forms.PaintEventHandler(this.DrawSquares);
 			// 
 			// panel1
 			// 
