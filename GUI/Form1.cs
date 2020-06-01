@@ -13,14 +13,14 @@ namespace GUI
 {
 	public partial class Form1 : Form
 	{
-		Rectangle[,] allFields;
-		Graphics graphics;
+		Rectangle[,] playerGrid = new Rectangle[10, 10];
+		Rectangle[,] enemyGrid = new Rectangle[10, 10];
+		Graphics playerGraphics;
 
 		public Form1()
 		{
 			InitializeComponent();
-			allFields = new Rectangle[10, 10];
-			graphics = GameBoard.CreateGraphics();
+			playerGraphics = PlayerGameBoard.CreateGraphics();
 		}
 
 		private void CreateFleetButton_Click(object sender, EventArgs e)
@@ -45,11 +45,11 @@ namespace GUI
 					{
 						if (ship.Squares.Contains(new Square(r, c)))
 						{
-							Rectangle fillRectangle = allFields[r, c];
+							Rectangle fillRectangle = playerGrid[r, c];
 							fillRectangle.Size = fillSize;
 							fillRectangle.X += 1;
 							fillRectangle.Y += 1;
-							graphics.FillRectangle(new SolidBrush(Color.DarkBlue), fillRectangle);
+							playerGraphics.FillRectangle(new SolidBrush(Color.DarkBlue), fillRectangle);
 
 						}
 					}
@@ -72,11 +72,11 @@ namespace GUI
 				{
 					for (int c = 0; c < 10; c++)
 					{
-						allFields[r, c] = new Rectangle(new Point((r * 40) + 10, (c * 40) + 5), squareSize);
-						graphics.DrawRectangle(pen, allFields[r, c]);
+						playerGrid[r, c] = new Rectangle(new Point((r * 40) + 10, (c * 40) + 5), squareSize);
+						playerGraphics.DrawRectangle(pen, playerGrid[r, c]);
 
 						Rectangle fillRectangle = new Rectangle(new Point((r * 40) + 10 + 1, (c * 40) + 5 + 1), fillSize);
-						graphics.FillRectangle(new SolidBrush(Color.White), fillRectangle);
+						playerGraphics.FillRectangle(new SolidBrush(Color.White), fillRectangle);
 					}
 				}
 
@@ -91,13 +91,19 @@ namespace GUI
 			{
 				for (int c = 0; c < 10; c++)
 				{
-					Rectangle fillRectangle = allFields[r, c];
+					Rectangle fillRectangle = playerGrid[r, c];
 					fillRectangle.Size = fillSize;
 					fillRectangle.X += 1;
 					fillRectangle.Y += 1;
-					graphics.FillRectangle(new SolidBrush(Color.White), fillRectangle);
+					playerGraphics.FillRectangle(new SolidBrush(Color.White), fillRectangle);
 				}
 			}
+		}
+
+		private void PlayerGameBoard_Click(object sender, EventArgs e)
+		{
+			MouseEventArgs e2 = (MouseEventArgs)e;
+			//label1.Text = e2.
 		}
 	}
 }
