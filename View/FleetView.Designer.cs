@@ -58,7 +58,7 @@
             this.play.Text = "Play";
             this.play.UseVisualStyleBackColor = false;
             this.play.Visible = false;
-            this.play.Click += new System.EventHandler(this.play_ClickAsync);
+            this.play.Click += new System.EventHandler(this.Play_ClickAsync);
             // 
             // endGame
             // 
@@ -71,7 +71,7 @@
             this.endGame.Text = "End game";
             this.endGame.UseVisualStyleBackColor = false;
             this.endGame.Visible = false;
-            this.endGame.Click += new System.EventHandler(this.endGame_Click);
+            this.endGame.Click += new System.EventHandler(this.EndGame_Click);
             // 
             // label1
             // 
@@ -94,7 +94,7 @@
             this.newGame.Text = "New game";
             this.newGame.UseVisualStyleBackColor = false;
             this.newGame.Visible = false;
-            this.newGame.Click += new System.EventHandler(this.newGame_Click);
+            this.newGame.Click += new System.EventHandler(this.NewGame_Click);
             // 
             // FleetView
             // 

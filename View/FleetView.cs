@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
@@ -17,6 +18,7 @@ namespace Vsite.Oom.Battleship.Model.View
         private Gunner gunner;
         private bool computerTurn = false;
         private bool gameOver = false;
+        private List<Button> hitSquares = new List<Button>();
 
         public FleetView()
         {
@@ -24,10 +26,13 @@ namespace Vsite.Oom.Battleship.Model.View
             InitializePanels();
             AutoSize = true;
         }
-      
+
         public TableLayoutPanel PlayerPanel { get; set; }
+
         public TableLayoutPanel ComputerPanel { get; set; }
+
         public Fleet ComputerFleet { get; set; }
+
         public Fleet PlayerFleet { get; set; }
 
         private void CreateFleet_Click(object sender, EventArgs e)
@@ -64,7 +69,7 @@ namespace Vsite.Oom.Battleship.Model.View
                 Name = panelName,
                 CellBorderStyle = TableLayoutPanelCellBorderStyle.Single,
                 ColumnCount = columnsCount + 1,
-                RowCount = rowsCount + 1
+                RowCount = rowsCount + 1,
             };
 
             var labelTextChar = 'A';
@@ -80,7 +85,7 @@ namespace Vsite.Oom.Battleship.Model.View
                         {
                             Size = new Size(40, 40),
                             Text = string.Empty,
-                            Margin = new Padding(0)
+                            Margin = new Padding(0),
                         };
                         panel.Controls.Add(label, c, r);
                     }
@@ -91,7 +96,7 @@ namespace Vsite.Oom.Battleship.Model.View
                             Size = new Size(40, 40),
                             Text = labelTextNumber.ToString(),
                             TextAlign = ContentAlignment.MiddleCenter,
-                            Margin = new Padding(0)
+                            Margin = new Padding(0),
                         };
                         panel.Controls.Add(label, c, r);
                         ++labelTextNumber;
@@ -103,7 +108,7 @@ namespace Vsite.Oom.Battleship.Model.View
                             Size = new Size(40, 40),
                             Text = labelTextChar.ToString(),
                             TextAlign = ContentAlignment.MiddleCenter,
-                            Margin = new Padding(0)
+                            Margin = new Padding(0),
                         };
                         panel.Controls.Add(label, c, r);
                         ++labelTextChar;
@@ -144,7 +149,7 @@ namespace Vsite.Oom.Battleship.Model.View
                 label1.Text = "Computer's turn!";
                 await ComputersTurnAsync();
             }
-            
+
             if (!gameOver)
             {
                 EnableDisableControls(true);
@@ -183,6 +188,7 @@ namespace Vsite.Oom.Battleship.Model.View
                         WinnerAlert("Computer");
                         break;
                     }
+
                     await ComputersTurnAsync();
                     break;
                 default:
@@ -192,6 +198,7 @@ namespace Vsite.Oom.Battleship.Model.View
 
         private ShipHitResult ProccessPlayersHit(PositionedButton senderBtn)
         {
+            hitSquares.Add(senderBtn);
             var square = new Square(senderBtn.Row - 1, senderBtn.Column - 1);
             var hitResult = ComputerFleet.Hit(square);
 
@@ -212,13 +219,15 @@ namespace Vsite.Oom.Battleship.Model.View
                         btn.BackColor = Color.DarkRed;
                         btn.Refresh();
                     }
+
                     if (!ComputerFleet.Ships.SelectMany(s => s.Squares).Any(s => s.SquareState != SquareState.Sunken))
                     {
                         WinnerAlert("You");
                     }
+
                     break;
                 default:
-                    Debug.Assert(false);
+                    Debug.Assert(false, "Fell through switch statement to Ship hit result - default");
                     break;
             }
 
@@ -232,7 +241,7 @@ namespace Vsite.Oom.Battleship.Model.View
                 if (item.GetType() == typeof(PositionedButton))
                 {
                     var controlBtn = item as Button;
-                    controlBtn.Enabled = isEnabled;
+                    controlBtn.Enabled = hitSquares.Contains(controlBtn) ? false : isEnabled;
                 }
             }
         }
@@ -249,7 +258,7 @@ namespace Vsite.Oom.Battleship.Model.View
                 NoPlacementsAlert();
             }
         }
-       
+
         private void ShowPlayerFleet(Color color, Fleet fleet)
         {
             ClearFleet(PlayerPanel);
@@ -292,6 +301,7 @@ namespace Vsite.Oom.Battleship.Model.View
             CreateFleet.Visible = false;
             newGame.Visible = true;
             label1.Text = $"Game over. {winner} won!";
+            hitSquares.Clear();
             EnableDisableControls(false);
             gameOver = true;
 
@@ -301,7 +311,7 @@ namespace Vsite.Oom.Battleship.Model.View
             MessageBox.Show(message, caption, buttons);
         }
 
-        private async void play_ClickAsync(object sender, EventArgs e)
+        private async void Play_ClickAsync(object sender, EventArgs e)
         {
             CreateFleet.Enabled = false;
             play.Enabled = false;
@@ -322,7 +332,7 @@ namespace Vsite.Oom.Battleship.Model.View
             computerTurn = !computerTurn;
         }
 
-        private void endGame_Click(object sender, EventArgs e)
+        private void EndGame_Click(object sender, EventArgs e)
         {
             CreateFleet.Enabled = true;
             play.Visible = false;
@@ -330,14 +340,16 @@ namespace Vsite.Oom.Battleship.Model.View
             ClearFleet(PlayerPanel);
             ClearFleet(ComputerPanel);
             label1.Visible = false;
+            hitSquares.Clear();
             EnableDisableControls(false);
         }
 
-        private void newGame_Click(object sender, EventArgs e)
+        private void NewGame_Click(object sender, EventArgs e)
         {
             newGame.Visible = false;
             CreateFleet.Enabled = true;
             CreateFleet.Visible = true;
+            label1.Text = string.Empty;
             ClearFleet(PlayerPanel);
             ClearFleet(ComputerPanel);
         }
