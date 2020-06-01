@@ -43,7 +43,6 @@ namespace Vsite.Oom.Battleship.Model.View
             {
                 PlayerFleet = fleet;
                 ShowPlayerFleet(Color.MidnightBlue, fleet);
-                EnableDisableControls(false);
                 play.Visible = true;
                 play.Enabled = true;
             }
@@ -186,6 +185,17 @@ namespace Vsite.Oom.Battleship.Model.View
                     if (!PlayerFleet.Ships.SelectMany(s => s.Squares).Any(s => s.SquareState != SquareState.Sunken))
                     {
                         WinnerAlert("Computer");
+
+                        // show ships
+                        foreach (var ship in ComputerFleet.Ships)
+                        {
+                            foreach (var square in ship.Squares)
+                            {
+                                var btn = (Button)ComputerPanel.GetControlFromPosition(square.Column + 1, square.Row + 1);
+                                if (btn.BackColor == Color.Transparent)
+                                    btn.BackColor = Color.MidnightBlue;
+                            }
+                        }
                         break;
                     }
 
