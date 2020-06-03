@@ -7,26 +7,32 @@ using System.Threading.Tasks;
 
 namespace Vsite.Oom.Battleship.Model
 {
+    public enum ShipAdjoining
+    {
+        None,
+        Corners,
+        SomethingThird
+    }
+
     public static class SquareTerminatorFactory
     {
-        public enum ShipAdJoininig
+        public static ISquareTerminator Create(ShipAdjoining adjoining, int rows, int columns)
         {
-            None,
-            Corners
-        }
-        public static ISquareTerminator Create(ShipAdJoininig adjoininig, int rows, int columns)
-        {
-            switch (adjoininig)
+            switch (adjoining)
             {
-                case ShipAdJoininig.None:
+                case ShipAdjoining.None:
                     return new SquareTerminator(rows, columns);
-                case ShipAdJoininig.Corners:
+                case ShipAdjoining.Corners:
                     return null;
                 default:
                     Debug.Assert(false);
                     return null;
             }
+        }
 
+        public static object Create(object none, int v1, int v2)
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -11,6 +11,7 @@ namespace Vsite.Oom.Battleship.Model
         private static readonly RulesSingleton instance = new RulesSingleton();
         private RulesSingleton()
         {
+            // e.g. read data from configuration file
             Rows = 10;
             Columns = 10;
             ShipLengths = new int[] { 5, 4, 4, 3, 3, 3, 2, 2, 2, 2 };

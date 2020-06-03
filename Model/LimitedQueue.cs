@@ -12,10 +12,11 @@ namespace Vsite.Oom.Battleship.Model
         {
             this.length = length;
         }
+
         public new void Enqueue(T item)
         {
             base.Enqueue(item);
-            while (this.Count > length)
+            while (Count > length)
                 Dequeue();
         }
 

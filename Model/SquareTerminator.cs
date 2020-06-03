@@ -22,6 +22,7 @@ namespace Vsite.Oom.Battleship.Model
             int top = shipSquares.First().Row;
             if (top > 0)
                 --top;
+
             int right = shipSquares.Last().Column + 1;
             if (right < columns)
                 ++right;
@@ -37,7 +38,7 @@ namespace Vsite.Oom.Battleship.Model
             }
             return toEliminate;
         }
-        private readonly Grid grid;
+
         private readonly int rows;
         private readonly int columns;
     }

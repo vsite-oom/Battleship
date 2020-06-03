@@ -10,10 +10,11 @@ namespace Vsite.Oom.Battleship.Model
     public enum SquareState
     {
         None,
-        Misseed,
+        Missed,
         Hit,
         Sunken
     }
+
     public class Square : IEquatable<Square>
     {
         public Square(int row, int column)
@@ -29,7 +30,7 @@ namespace Vsite.Oom.Battleship.Model
             switch (hitResult)
             {
                 case HitResult.Missed:
-                    SquareState = SquareState.Misseed;
+                    SquareState = SquareState.Missed;
                     break;
                 case HitResult.Hit:
                     SquareState = SquareState.Hit;
@@ -45,32 +46,27 @@ namespace Vsite.Oom.Battleship.Model
 
         public readonly int Row;
         public readonly int Column;
-
         public SquareState SquareState { get; private set; }
 
         public bool Equals(Square other)
         {
             if (other == null)
-            {
                 return false;
-            }
             return Row == other.Row && Column == other.Column;
         }
 
-        public bool Hit
-        {
-            get; set;
-        }
         public override bool Equals(object obj)
         {
             if (obj == null)
                 return false;
-
             if (obj.GetType() != GetType())
                 return false;
-
             return Equals((Square)obj);
         }
+
+        public bool Hit
+        { get; set; }
+
         public override int GetHashCode()
         {
             return Row ^ Column;
