@@ -1,4 +1,6 @@
-﻿namespace GUI
+﻿using System.Windows.Forms;
+
+namespace GUI
 {
 	partial class Form1
 	{
@@ -28,6 +30,7 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
+			this.components = new System.ComponentModel.Container();
 			this.CreateFleetButton = new System.Windows.Forms.Button();
 			this.PlayerGameBoard = new System.Windows.Forms.Panel();
 			this.EnemyGameBoard = new System.Windows.Forms.Panel();
@@ -74,6 +77,8 @@
 			this.label39 = new System.Windows.Forms.Label();
 			this.label40 = new System.Windows.Forms.Label();
 			this.label41 = new System.Windows.Forms.Label();
+			this.InfoBoardTextBox = new System.Windows.Forms.TextBox();
+			this.EnemyAI = new System.Windows.Forms.Timer(this.components);
 			this.SuspendLayout();
 			// 
 			// CreateFleetButton
@@ -532,11 +537,29 @@
 			this.label41.Text = "1";
 			this.label41.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
 			// 
+			// InfoBoardTextBox
+			// 
+			this.InfoBoardTextBox.BackColor = System.Drawing.Color.Black;
+			this.InfoBoardTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.InfoBoardTextBox.ForeColor = System.Drawing.Color.White;
+			this.InfoBoardTextBox.Location = new System.Drawing.Point(401, 477);
+			this.InfoBoardTextBox.Multiline = true;
+			this.InfoBoardTextBox.Name = "InfoBoardTextBox";
+			this.InfoBoardTextBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+			this.InfoBoardTextBox.Size = new System.Drawing.Size(357, 150);
+			this.InfoBoardTextBox.TabIndex = 46;
+			// 
+			// EnemyAI
+			// 
+			this.EnemyAI.Interval = 2000;
+			this.EnemyAI.Tick += new System.EventHandler(this.EnemyAI_Tick);
+			// 
 			// Form1
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(1184, 761);
+			this.Controls.Add(this.InfoBoardTextBox);
 			this.Controls.Add(this.label32);
 			this.Controls.Add(this.label33);
 			this.Controls.Add(this.label34);
@@ -588,6 +611,7 @@
 			this.Name = "Form1";
 			this.Text = "Flota";
 			this.ResumeLayout(false);
+			this.PerformLayout();
 
 		}
 
@@ -639,6 +663,8 @@
 		private System.Windows.Forms.Label label39;
 		private System.Windows.Forms.Label label40;
 		private System.Windows.Forms.Label label41;
+		private System.Windows.Forms.TextBox InfoBoardTextBox;
+		private Timer EnemyAI;
 	}
 }
 
