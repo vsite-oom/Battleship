@@ -5,7 +5,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{0B084C39-811A-4055-A600-B75A8F8F0F37}</ProjectGuid>
-    <OutputType>WinExe</OutputType>
+    <OutputType>Exe</OutputType>
     <RootNamespace>FleetView</RootNamespace>
     <AssemblyName>FleetView</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>

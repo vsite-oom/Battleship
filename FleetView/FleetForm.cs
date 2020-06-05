@@ -17,7 +17,6 @@ namespace FleetView
     {
         User,
         PC,
-        Tie,
         None
     };
 
@@ -85,6 +84,7 @@ namespace FleetView
         sunkedShipsHoomanFleet = new ShipsSunked[10] { new ShipsSunked(5, false, "five1h"), new ShipsSunked(4, false, "four1h"), new ShipsSunked(4, false, "four2h"), new ShipsSunked(3, false, "three1h"), new ShipsSunked(3, false, "three2h"), new ShipsSunked(3, false, "three3h"), new ShipsSunked(2, false, "two1h"), new ShipsSunked(2, false, "two2h"), new ShipsSunked(2, false, "two3h"), new ShipsSunked(2, false, "two4h") };
         sunkedShipsPcFleet = new ShipsSunked[10] { new ShipsSunked(5, false, "five1pc"), new ShipsSunked(4, false, "four1pc"), new ShipsSunked(4, false, "four2pc"), new ShipsSunked(3, false, "three1pc"), new ShipsSunked(3, false, "three2pc"), new ShipsSunked(3, false, "three3pc"), new ShipsSunked(2, false, "two1pc"), new ShipsSunked(2, false, "two2pc"), new ShipsSunked(2, false, "two3pc"), new ShipsSunked(2, false, "two4pc") };
             ChangeColorOfSunkedShipPc(Color.White,"");
+            winnerLabel.Text = "WINNER : ";
             ChangeColorOfSunkedShipHooman(Color.White,"");
             running = false;
             whoPlays = Turn.User;
@@ -113,7 +113,7 @@ namespace FleetView
                 }
             }
 
-            foreach (Ship ships in fleetPc.Ships)
+            foreach (Ship ships in pcFleet.Ships)
             {
                 foreach (Square field in ships.Squares)
                 {
@@ -164,12 +164,13 @@ namespace FleetView
                             }
                     }
                 }
-                var result = IsGameOver();
-                if(result != Winner.None)
-                {
-                    winnerLabel.Text = "WINNER : " + result.ToString();
-                    EnableButtons(pcPanel, false);
-                }
+            }
+            var result = IsGameOver();
+            if (result != Winner.None)
+            {
+                Console.WriteLine(result);
+                winnerLabel.Text = "WINNER : " + result.ToString();
+                EnableButtons(pcPanel, false);
             }
         }
 
@@ -183,15 +184,11 @@ namespace FleetView
                 running = false;
                 winner = Winner.User;
             }
+
             else if (!userFleetSunked)
             {
                 running = false;
                 winner = Winner.PC;
-            }
-            else if(!pcFleetSunked && !userFleetSunked)
-            {
-                running = false;
-                winner = Winner.Tie;
             }
             else
             {
