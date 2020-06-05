@@ -112,14 +112,6 @@ namespace FleetView
                     userPanel[field.Row, field.Col].BackColor = Color.FromArgb(0, 96, 255);
                 }
             }
-
-            foreach (Ship ships in pcFleet.Ships)
-            {
-                foreach (Square field in ships.Squares)
-                {
-                    pcPanel[field.Row, field.Col].BackColor = Color.FromArgb(0, 96, 255);
-                }
-            }
         }
         private void ResetButtons(Button[,] panel)
         {
