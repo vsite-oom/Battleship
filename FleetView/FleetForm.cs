@@ -218,7 +218,7 @@ namespace FleetView
                         }
                     case HitResult.Missed:
                         {
-                            button.BackColor = Color.Red;
+                            button.BackColor = Color.DarkGray;
                             whoPlays = Turn.PC;
                         playerTurnButton.BackColor = Color.Red;
                         pcTurnButton.BackColor = Color.LawnGreen;
@@ -255,7 +255,7 @@ namespace FleetView
                     }
                 case HitResult.Missed:
                     {
-                        userPanel[square.Row, square.Col].BackColor = Color.Red;
+                        userPanel[square.Row, square.Col].BackColor = Color.DarkGray;
                         whoPlays = Turn.User;
                         playerTurnButton.BackColor = Color.LawnGreen;
                         pcTurnButton.BackColor = Color.Red;
