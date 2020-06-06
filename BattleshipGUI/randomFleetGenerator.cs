@@ -12,12 +12,12 @@ using modelNmspc = Vsite.Oom.Battleship.Model;
 
 namespace BattleshipGUI
 {   
-    public partial class Form1 : Form
+    public partial class randomFleetGenerator : Form
     {
         private modelNmspc.Grid gr = new modelNmspc.Grid(10, 10);
         private modelNmspc.fleet fl = new modelNmspc.fleet();
         private Random random = new Random();
-        public Form1()
+        public randomFleetGenerator()
         {
             InitializeComponent();
         }
