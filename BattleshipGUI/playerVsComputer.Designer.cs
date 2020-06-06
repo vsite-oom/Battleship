@@ -60,7 +60,7 @@
             this.button1.TabIndex = 2;
             this.button1.Text = "Reset my fleet";
             this.button1.UseVisualStyleBackColor = true;
-            this.button1.Visible = false;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // button2
             // 
@@ -70,20 +70,19 @@
             this.button2.TabIndex = 3;
             this.button2.Text = "Confirm fleet";
             this.button2.UseVisualStyleBackColor = true;
-            this.button2.Visible = false;
             // 
             // playerVsComputer
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1184, 687);
+            this.ClientSize = new System.Drawing.Size(1184, 611);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.MaximizeBox = false;
-            this.MaximumSize = new System.Drawing.Size(1200, 726);
-            this.MinimumSize = new System.Drawing.Size(1200, 726);
+            this.MaximumSize = new System.Drawing.Size(1200, 650);
+            this.MinimumSize = new System.Drawing.Size(1200, 650);
             this.Name = "playerVsComputer";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Battleship (PlayerVsComputer)";

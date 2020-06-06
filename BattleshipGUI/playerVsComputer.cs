@@ -171,6 +171,10 @@ namespace BattleshipGUI
                 }
                 currentShipMaking.Clear();
                 changeLabel();
+                if (fl.getNumberOfShips() == 10)
+                {
+                    button2.Enabled = true;
+                }
 
             }
         }
@@ -210,8 +214,6 @@ namespace BattleshipGUI
                         label2.Hide();
                         label1.Text = "All ship placed ... waiting for player 2";
                         label1.Hide();
-                        button1.Show();
-                        button2.Show();
                         break;
                 }
             }
@@ -227,7 +229,7 @@ namespace BattleshipGUI
             {
                 foreach (var button in list)
                 {
-                     if (button.BackColor == Color.Green)
+                    if (button.BackColor == Color.Green)
                     {
                         button.BackColor = Color.Gray;
                         button.Enabled = false;
@@ -406,6 +408,39 @@ namespace BattleshipGUI
                 val = int.Parse(temp);
 
             currentPlacingShipLength = val;
+        }
+
+        private void button1_Click(object sender, EventArgs e) //reset fleet button
+        {
+            resetButtonsColor();
+            gr = new modelNmspc.Grid(10, 10);
+            fl = new modelNmspc.fleet();
+            currentShipMaking = new List<modelNmspc.Square>();
+            currentPlacingShipLength = 0;
+            shipHead = null;
+            terminator = new modelNmspc.squareTerminator(10, 10);
+            resetLabels();
+
+        }
+
+        private void resetLabels()
+        {
+            label2.Text = "1 ship(s) to place...";
+            label1.Text = "Place the ship of length(5)...";
+            label1.Show();
+            label2.Show();
+        }
+
+        private void resetButtonsColor()
+        {
+            foreach (var item in playerButtons)
+            {
+                foreach (var button in item)
+                {
+                    button.BackColor = Color.Green;
+                    button.Enabled = true;
+                }
+            }
         }
     }
 }

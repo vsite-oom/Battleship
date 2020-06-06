@@ -29,6 +29,10 @@ namespace Vsite.Oom.Battleship.Model
             }
             return HitResult.Missed;
         }
+        public int getNumberOfShips()
+        {
+            return Ships.Count();
+        }
         private List<ship> ships = new List<ship>();
     }
 }
