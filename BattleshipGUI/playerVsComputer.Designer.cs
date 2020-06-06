@@ -28,58 +28,96 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.button_WOC2 = new ePOSOne.btnProduct.Button_WOC();
+            this.button_WOC1 = new ePOSOne.btnProduct.Button_WOC();
             this.SuspendLayout();
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(240, 30);
+            this.label1.BackColor = System.Drawing.Color.Transparent;
+            this.label1.Font = new System.Drawing.Font("Ink Free", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.ForeColor = System.Drawing.Color.White;
+            this.label1.Location = new System.Drawing.Point(212, 25);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(145, 13);
+            this.label1.Size = new System.Drawing.Size(250, 23);
             this.label1.TabIndex = 0;
             this.label1.Text = "Place the ship of length (5) ...";
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(260, 17);
+            this.label2.BackColor = System.Drawing.Color.Transparent;
+            this.label2.Font = new System.Drawing.Font("Ink Free", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.ForeColor = System.Drawing.Color.White;
+            this.label2.Location = new System.Drawing.Point(251, 46);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(88, 13);
+            this.label2.Size = new System.Drawing.Size(140, 23);
             this.label2.TabIndex = 1;
             this.label2.Text = "1 ship to place ...";
             // 
-            // button1
+            // timer1
             // 
-            this.button1.Location = new System.Drawing.Point(39, 17);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(106, 23);
-            this.button1.TabIndex = 2;
-            this.button1.Text = "Reset my fleet";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
-            // button2
+            // button_WOC2
             // 
-            this.button2.Enabled = false;
-            this.button2.Location = new System.Drawing.Point(50, 46);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(75, 23);
-            this.button2.TabIndex = 3;
-            this.button2.Text = "Confirm fleet";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            this.button_WOC2.BackColor = System.Drawing.Color.Transparent;
+            this.button_WOC2.BorderColor = System.Drawing.Color.DarkRed;
+            this.button_WOC2.ButtonColor = System.Drawing.Color.DarkRed;
+            this.button_WOC2.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.button_WOC2.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
+            this.button_WOC2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button_WOC2.Font = new System.Drawing.Font("Ink Free", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button_WOC2.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.button_WOC2.Location = new System.Drawing.Point(41, 18);
+            this.button_WOC2.Name = "button_WOC2";
+            this.button_WOC2.OnHoverBorderColor = System.Drawing.Color.Black;
+            this.button_WOC2.OnHoverButtonColor = System.Drawing.Color.Black;
+            this.button_WOC2.OnHoverTextColor = System.Drawing.Color.Purple;
+            this.button_WOC2.Size = new System.Drawing.Size(88, 23);
+            this.button_WOC2.TabIndex = 5;
+            this.button_WOC2.Text = "Reset fleet";
+            this.button_WOC2.TextColor = System.Drawing.Color.White;
+            this.button_WOC2.UseVisualStyleBackColor = false;
+            this.button_WOC2.Click += new System.EventHandler(this.button_WOC2_Click);
+            // 
+            // button_WOC1
+            // 
+            this.button_WOC1.BackColor = System.Drawing.Color.Transparent;
+            this.button_WOC1.BorderColor = System.Drawing.Color.Black;
+            this.button_WOC1.ButtonColor = System.Drawing.Color.Black;
+            this.button_WOC1.Enabled = false;
+            this.button_WOC1.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.button_WOC1.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
+            this.button_WOC1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button_WOC1.Font = new System.Drawing.Font("Ink Free", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button_WOC1.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.button_WOC1.Location = new System.Drawing.Point(41, 47);
+            this.button_WOC1.Name = "button_WOC1";
+            this.button_WOC1.OnHoverBorderColor = System.Drawing.Color.Black;
+            this.button_WOC1.OnHoverButtonColor = System.Drawing.Color.Black;
+            this.button_WOC1.OnHoverTextColor = System.Drawing.Color.Purple;
+            this.button_WOC1.Size = new System.Drawing.Size(88, 23);
+            this.button_WOC1.TabIndex = 4;
+            this.button_WOC1.Text = "Confirm";
+            this.button_WOC1.TextColor = System.Drawing.Color.White;
+            this.button_WOC1.UseVisualStyleBackColor = false;
+            this.button_WOC1.Click += new System.EventHandler(this.button_WOC1_Click);
             // 
             // playerVsComputer
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackgroundImage = global::BattleshipGUI.Properties.Resources.bckg_battleshipEdited;
+            this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.ClientSize = new System.Drawing.Size(1184, 611);
-            this.Controls.Add(this.button2);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.button_WOC2);
+            this.Controls.Add(this.button_WOC1);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.MaximizeBox = false;
@@ -98,7 +136,8 @@
 
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Timer timer1;
+        private ePOSOne.btnProduct.Button_WOC button_WOC1;
+        private ePOSOne.btnProduct.Button_WOC button_WOC2;
     }
 }

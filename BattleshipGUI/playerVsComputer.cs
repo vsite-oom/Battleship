@@ -15,6 +15,7 @@ namespace BattleshipGUI
 {
     public partial class playerVsComputer : Form
     {
+        private int color = 1;
         private List<List<Button>> playerButtons = new List<List<Button>>();
         private modelNmspc.Grid gr = new modelNmspc.Grid(10, 10);
         private modelNmspc.fleet fl = new modelNmspc.fleet();
@@ -28,10 +29,11 @@ namespace BattleshipGUI
         }
 
         private void playerVsComputer_Load(object sender, EventArgs e)
-        {   //playerStuff
+        {   //playerStuff       
+            timer1.Interval = 500;
+            timer1.Start();
+            timer1.Enabled = true;
             DrawButtonPlayerGrid();
-
-
             //computerStuff
             //DrawButtonComputerGrid();
         }
@@ -174,7 +176,8 @@ namespace BattleshipGUI
                 changeLabel();
                 if (fl.getNumberOfShips() == 10)
                 {
-                    button2.Enabled = true;
+                    button_WOC1.Enabled = true;
+
                 }
             }
         }
@@ -212,14 +215,13 @@ namespace BattleshipGUI
                     default:
                         changeColorOfRemainingSquares();
                         label2.Hide();
-                        label1.Text = "All ship placed ... waiting for player 2";
-                        label1.Hide();
+                        label1.Text = "All ships placed, waiting for confirmation ...";
                         break;
                 }
             }
             else
             {
-                label2.Text = (val - 1) + " ship to place ...";
+                label2.Text = (val - 1) + " ship(s) to place ...";
             }
         }
 
@@ -410,7 +412,7 @@ namespace BattleshipGUI
             currentPlacingShipLength = val;
         }
 
-        private void button1_Click(object sender, EventArgs e) //reset fleet button
+        private void button_WOC2_Click(object sender, EventArgs e) //reset fleet button
         {
             resetButtonsColor();
             gr = new modelNmspc.Grid(10, 10);
@@ -420,7 +422,7 @@ namespace BattleshipGUI
             shipHead = null;
             terminator = new modelNmspc.squareTerminator(10, 10);
             resetLabels();
-            button2.Enabled = false;
+            button_WOC1.Enabled = false;
 
         }
 
@@ -443,10 +445,30 @@ namespace BattleshipGUI
                 }
             }
         }
-        private void button2_Click(object sender, EventArgs e)
+        private void button_WOC1_Click(object sender, EventArgs e)
         {
-            button2.Hide();
-            button1.Hide();
+            button_WOC1.Hide();
+            button_WOC2.Hide();
+        }
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            if (color % 2 == 0)
+            {
+                if (button_WOC1.Enabled)
+                {
+                    button_WOC1.BorderColor = Color.DarkGreen;
+                    color--;
+                }
+            }
+            else
+            {
+                if (button_WOC1.Enabled)
+                {
+                    button_WOC1.BorderColor = Color.LightGreen;
+                    color++;
+                }
+            }
         }
     }
 }
