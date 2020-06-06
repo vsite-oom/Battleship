@@ -177,6 +177,7 @@ namespace BattleshipGUI
                 if (fl.getNumberOfShips() == 10)
                 {
                     button_WOC1.Enabled = true;
+                    button_WOC1.ButtonColor = Color.DarkRed;
 
                 }
             }
@@ -423,6 +424,8 @@ namespace BattleshipGUI
             terminator = new modelNmspc.squareTerminator(10, 10);
             resetLabels();
             button_WOC1.Enabled = false;
+            button_WOC1.ButtonColor = Color.Black;
+
 
         }
 

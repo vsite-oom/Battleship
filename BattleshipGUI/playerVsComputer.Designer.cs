@@ -69,6 +69,7 @@
             this.button_WOC2.BackColor = System.Drawing.Color.Transparent;
             this.button_WOC2.BorderColor = System.Drawing.Color.DarkRed;
             this.button_WOC2.ButtonColor = System.Drawing.Color.DarkRed;
+            this.button_WOC2.FlatAppearance.BorderSize = 0;
             this.button_WOC2.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
             this.button_WOC2.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             this.button_WOC2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -92,6 +93,7 @@
             this.button_WOC1.BorderColor = System.Drawing.Color.Black;
             this.button_WOC1.ButtonColor = System.Drawing.Color.Black;
             this.button_WOC1.Enabled = false;
+            this.button_WOC1.FlatAppearance.BorderSize = 0;
             this.button_WOC1.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
             this.button_WOC1.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             this.button_WOC1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
