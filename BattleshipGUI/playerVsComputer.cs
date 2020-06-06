@@ -87,6 +87,7 @@ namespace BattleshipGUI
                 {
                     clickedButton.BackColor = Color.Green;
                     shipHead = null;
+                    currentShipMaking.Clear();
                 }
                 else
                 {
