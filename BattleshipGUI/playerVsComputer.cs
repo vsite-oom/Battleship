@@ -175,7 +175,6 @@ namespace BattleshipGUI
                 {
                     button2.Enabled = true;
                 }
-
             }
         }
 
@@ -420,6 +419,7 @@ namespace BattleshipGUI
             shipHead = null;
             terminator = new modelNmspc.squareTerminator(10, 10);
             resetLabels();
+            button2.Enabled = false;
 
         }
 
@@ -441,6 +441,11 @@ namespace BattleshipGUI
                     button.Enabled = true;
                 }
             }
+        }
+        private void button2_Click(object sender, EventArgs e)
+        {
+            button2.Hide();
+            button1.Hide();
         }
     }
 }
