@@ -170,6 +170,69 @@ namespace BattleshipGUI
                     }
                 }
                 currentShipMaking.Clear();
+                changeLabel();
+
+            }
+        }
+
+        private void changeLabel()
+        {
+            string temp = string.Empty;
+            string label = label2.Text;
+            int val = 0;
+
+            for (int i = 0; i < label.Length; i++)
+            {
+                if (Char.IsDigit(label[i]))
+                    temp += label[i];
+            }
+
+            if (temp.Length > 0)
+                val = int.Parse(temp);
+
+            if (val - 1 == 0)
+            {
+                label1.Text = "Place the ship of length (" + (currentPlacingShipLength - 1) + ")" + " ...";
+                getCurrentPlacingShipLength();
+                switch (currentPlacingShipLength)
+                {
+                    case 4:
+                        label2.Text = "2 ship(s) to place ...";
+                        break;
+                    case 3:
+                        label2.Text = "3 ship(s) to place ...";
+                        break;
+                    case 2:
+                        label2.Text = "4 ship(s) to place ...";
+                        break;
+                    default:
+                        changeColorOfRemainingSquares();
+                        label2.Hide();
+                        label1.Text = "All ship placed ... waiting for player 2";
+                        label1.Hide();
+                        button1.Show();
+                        button2.Show();
+                        break;
+                }
+            }
+            else
+            {
+                label2.Text = (val - 1) + " ship to place ...";
+            }
+        }
+
+        private void changeColorOfRemainingSquares()
+        {
+            foreach (var list in playerButtons)
+            {
+                foreach (var button in list)
+                {
+                     if (button.BackColor == Color.Green)
+                    {
+                        button.BackColor = Color.Gray;
+                        button.Enabled = false;
+                    }
+                }
             }
         }
 
