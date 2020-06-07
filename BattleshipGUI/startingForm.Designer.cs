@@ -29,51 +29,79 @@
         private void InitializeComponent()
         {
             this.label1 = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
+            this.button_WOC2 = new ePOSOne.btnProduct.Button_WOC();
+            this.button_WOC1 = new ePOSOne.btnProduct.Button_WOC();
             this.SuspendLayout();
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Open Sans", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(12, 29);
+            this.label1.Font = new System.Drawing.Font("Ink Free", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.ForeColor = System.Drawing.Color.White;
+            this.label1.Location = new System.Drawing.Point(17, 24);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(275, 22);
+            this.label1.Size = new System.Drawing.Size(281, 23);
             this.label1.TabIndex = 0;
             this.label1.Text = "Please choose one of the following:";
             this.label1.Click += new System.EventHandler(this.label1_Click);
             // 
-            // button1
+            // button_WOC2
             // 
-            this.button1.Location = new System.Drawing.Point(161, 76);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(126, 23);
-            this.button1.TabIndex = 1;
-            this.button1.Text = "Random fleet generator";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.button_WOC2.BackColor = System.Drawing.Color.Transparent;
+            this.button_WOC2.BorderColor = System.Drawing.Color.DarkRed;
+            this.button_WOC2.ButtonColor = System.Drawing.Color.DarkRed;
+            this.button_WOC2.FlatAppearance.BorderSize = 0;
+            this.button_WOC2.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.button_WOC2.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
+            this.button_WOC2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button_WOC2.Font = new System.Drawing.Font("Ink Free", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button_WOC2.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.button_WOC2.Location = new System.Drawing.Point(12, 63);
+            this.button_WOC2.Name = "button_WOC2";
+            this.button_WOC2.OnHoverBorderColor = System.Drawing.Color.Black;
+            this.button_WOC2.OnHoverButtonColor = System.Drawing.Color.Yellow;
+            this.button_WOC2.OnHoverTextColor = System.Drawing.Color.Purple;
+            this.button_WOC2.Size = new System.Drawing.Size(134, 23);
+            this.button_WOC2.TabIndex = 6;
+            this.button_WOC2.Text = "Player vs Computer";
+            this.button_WOC2.TextColor = System.Drawing.Color.White;
+            this.button_WOC2.UseVisualStyleBackColor = false;
+            this.button_WOC2.Click += new System.EventHandler(this.button_WOC2_Click);
             // 
-            // button2
+            // button_WOC1
             // 
-            this.button2.Location = new System.Drawing.Point(12, 76);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(120, 23);
-            this.button2.TabIndex = 2;
-            this.button2.Text = "Player vs Computer";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            this.button_WOC1.BackColor = System.Drawing.Color.Transparent;
+            this.button_WOC1.BorderColor = System.Drawing.Color.DarkRed;
+            this.button_WOC1.ButtonColor = System.Drawing.Color.DarkRed;
+            this.button_WOC1.FlatAppearance.BorderSize = 0;
+            this.button_WOC1.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.button_WOC1.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
+            this.button_WOC1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button_WOC1.Font = new System.Drawing.Font("Ink Free", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button_WOC1.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.button_WOC1.Location = new System.Drawing.Point(152, 63);
+            this.button_WOC1.Name = "button_WOC1";
+            this.button_WOC1.OnHoverBorderColor = System.Drawing.Color.Black;
+            this.button_WOC1.OnHoverButtonColor = System.Drawing.Color.Yellow;
+            this.button_WOC1.OnHoverTextColor = System.Drawing.Color.Purple;
+            this.button_WOC1.Size = new System.Drawing.Size(160, 23);
+            this.button_WOC1.TabIndex = 7;
+            this.button_WOC1.Text = "Random fleet generator";
+            this.button_WOC1.TextColor = System.Drawing.Color.White;
+            this.button_WOC1.UseVisualStyleBackColor = false;
+            this.button_WOC1.Click += new System.EventHandler(this.button_WOC1_Click);
             // 
             // startingForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(299, 111);
-            this.Controls.Add(this.button2);
-            this.Controls.Add(this.button1);
+            this.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.ClientSize = new System.Drawing.Size(324, 111);
+            this.Controls.Add(this.button_WOC1);
+            this.Controls.Add(this.button_WOC2);
             this.Controls.Add(this.label1);
             this.MaximizeBox = false;
-            this.MaximumSize = new System.Drawing.Size(315, 150);
+            this.MaximumSize = new System.Drawing.Size(340, 150);
             this.MinimumSize = new System.Drawing.Size(315, 150);
             this.Name = "startingForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
@@ -86,7 +114,7 @@
         #endregion
 
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button2;
+        private ePOSOne.btnProduct.Button_WOC button_WOC2;
+        private ePOSOne.btnProduct.Button_WOC button_WOC1;
     }
 }

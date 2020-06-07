@@ -22,15 +22,17 @@ namespace BattleshipGUI
 
         }
 
-        private void button2_Click(object sender, EventArgs e)
+
+
+        private void button_WOC2_Click(object sender, EventArgs e)
         {
-                this.Hide();
-                var formToLoad = new playerVsComputer();
-                formToLoad.Closed += (s, args) => Close();
-                formToLoad.Show();
+            this.Hide();
+            var formToLoad = new playerVsComputer();
+            formToLoad.Closed += (s, args) => Close();
+            formToLoad.Show();
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void button_WOC1_Click(object sender, EventArgs e)
         {
             this.Hide();
             var formToLoad = new randomFleetGenerator();
