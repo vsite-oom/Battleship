@@ -138,7 +138,10 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\bckg-battleshipEdited.bmp" />
+    <None Include="Resources\bckg-battleshipEdited1.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\battleIconEditedPS.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

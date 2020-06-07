@@ -63,9 +63,9 @@ namespace BattleshipGUI.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap bckg_battleshipEdited {
+        internal static System.Drawing.Bitmap battleIconEditedPS {
             get {
-                object obj = ResourceManager.GetObject("bckg-battleshipEdited", resourceCulture);
+                object obj = ResourceManager.GetObject("battleIconEditedPS", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

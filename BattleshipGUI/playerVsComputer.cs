@@ -17,12 +17,15 @@ namespace BattleshipGUI
     {
         private int color = 1;
         private List<List<Button>> playerButtons = new List<List<Button>>();
+        private List<List<Button>> computerButtons = new List<List<Button>>();
         private modelNmspc.Grid gr = new modelNmspc.Grid(10, 10);
         private modelNmspc.fleet fl = new modelNmspc.fleet();
         private List<modelNmspc.Square> currentShipMaking = new List<modelNmspc.Square>();
         private int currentPlacingShipLength = 0;
         private modelNmspc.Square shipHead = null;
         private modelNmspc.squareTerminator terminator = new modelNmspc.squareTerminator(10, 10);
+        private Random rand = new Random();
+
         public playerVsComputer()
         {
             InitializeComponent();
@@ -33,9 +36,9 @@ namespace BattleshipGUI
             timer1.Interval = 500;
             timer1.Start();
             timer1.Enabled = true;
-            DrawButtonPlayerGrid();
-            //computerStuff
-            //DrawButtonComputerGrid();
+            DrawButtonPlayerGrid(1);
+            //computer stuff
+            DrawButtonPlayerGrid(2);
         }
 
         //private void DrawButtonComputerGrid()
@@ -43,27 +46,53 @@ namespace BattleshipGUI
         //    throw new NotImplementedException();
         //}
 
-        private void DrawButtonPlayerGrid()  // draw 10x10 button grid for player (player side grid)
+        private void DrawButtonPlayerGrid(int x)  // draw 10x10 button grid for player (player side grid)
         {
-
-            for (int i = 50; i != 550; i += 50)
+            if (x == 1)
             {
-                List<Button> innerButtons = new List<Button>();
-                for (int j = 100; j != 600; j += 50)
+                for (int i = 50; i != 550; i += 50)
                 {
-                    Button button = new Button
+                    List<Button> innerButtons = new List<Button>();
+                    for (int j = 100; j != 600; j += 50)
                     {
-                        Left = i,
-                        Top = j,
-                        Height = 49,
-                        Width = 49
-                    };
-                    innerButtons.Add(button);
-                    button.Click += (s, e) => { preGameStateButtonsHandler(button); };
-                    button.BackColor = Color.DarkGreen;
-                    Controls.Add(button);
+                        Button button = new Button
+                        {
+                            Left = i,
+                            Top = j,
+                            Height = 49,
+                            Width = 49
+                        };
+                        innerButtons.Add(button);
+                        button.Click += (s, e) => { preGameStateButtonsHandler(button); };
+                        button.BackColor = Color.DarkGreen;
+                        Controls.Add(button);
+                    }
+                    playerButtons.Add(innerButtons);
                 }
-                playerButtons.Add(innerButtons);
+            }
+            else if(x==2) {
+                for (int i = 630; i != 1130; i += 50)
+                {
+                    List<Button> innerButtons = new List<Button>();
+                    for (int j = 100; j != 600; j += 50)
+                    {
+                        Button button = new Button
+                        {
+                            Left = i,
+                            Top = j,
+                            Height = 49,
+                            Width = 49,
+                            Enabled = false
+                        };
+                        innerButtons.Add(button);
+                        button.Click += (s, e) => { preGameStateButtonsHandler(button); };
+                        button.BackColor = Color.Gray;
+                        Controls.Add(button);
+                    }
+                    computerButtons.Add(innerButtons);
+                }
+
+
             }
         }
 
@@ -459,6 +488,8 @@ namespace BattleshipGUI
         {
             button_WOC1.Hide();
             button_WOC2.Hide();
+            label1.Hide();
+            label3.Show();
         }
 
         private void timer1_Tick(object sender, EventArgs e)
@@ -479,6 +510,9 @@ namespace BattleshipGUI
                     color++;
                 }
             }
+            label4.ForeColor = Color.FromArgb(rand.Next(0,255), rand.Next(0, 255), rand.Next(0, 255), rand.Next(0, 255));
+            label5.ForeColor = Color.FromArgb(rand.Next(0, 255), rand.Next(0, 255), rand.Next(0, 255), rand.Next(0, 255));
         }
+
     }
 }
