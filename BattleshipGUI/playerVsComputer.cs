@@ -205,13 +205,13 @@ namespace BattleshipGUI
                 switch (currentPlacingShipLength)
                 {
                     case 4:
-                        label2.Text = "2 ship(s) to place ...";
+                        label2.Text = "2 ships to place ...";
                         break;
                     case 3:
-                        label2.Text = "3 ship(s) to place ...";
+                        label2.Text = "3 ships to place ...";
                         break;
                     case 2:
-                        label2.Text = "4 ship(s) to place ...";
+                        label2.Text = "4 ships to place ...";
                         break;
                     default:
                         changeColorOfRemainingSquares();
@@ -222,7 +222,14 @@ namespace BattleshipGUI
             }
             else
             {
-                label2.Text = (val - 1) + " ship(s) to place ...";
+                if (val - 1 > 1)
+                {
+                    label2.Text = (val - 1) + " ships to place ...";
+                }
+                else
+                {
+                    label2.Text = (val - 1) + " ship to place ...";
+                }
             }
         }
 
