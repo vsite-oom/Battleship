@@ -35,9 +35,16 @@ namespace BattleshipGUI
             Invalidate();
         }
 
-        private void drawGrid(Graphics graphics)
+        private void drawGrids(Graphics graphics)
         {
             graphics = panel1.CreateGraphics();
+            DrawGrid(graphics);
+            graphics = panel2.CreateGraphics();
+            DrawGrid(graphics);
+        }
+
+        private void DrawGrid(Graphics graphics)
+        {
             Pen mypen = new Pen(Brushes.Black, 1);
             Font myfont = new Font("Arial", 10);
             int lines = 10;
@@ -107,7 +114,7 @@ namespace BattleshipGUI
         protected override void OnPaint(PaintEventArgs e)
         {
             base.OnPaint(e);
-            drawGrid(e.Graphics);
+            drawGrids(e.Graphics);
             drawShips(e.Graphics);
         }
 
@@ -115,6 +122,53 @@ namespace BattleshipGUI
         {
             fleet = null;
             Invalidate();
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            if (fleet == null)
+            {
+                MessageBox.Show("No fleet!");
+                return;
+            }
+            button1.Enabled = false;
+            button2.Enabled = false;
+            button3.Enabled = false;
+            button4.Enabled = true;
+            button5.Enabled = true;
+            button6.Enabled = true;
+            textBox1.Enabled = true;
+            textBox2.Enabled = true;
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            button1.Enabled = true;
+            button2.Enabled = true;
+            button3.Enabled = true;
+            button4.Enabled = false;
+            button5.Enabled = false;
+            button6.Enabled = false;
+            textBox1.Enabled = false;
+            textBox2.Enabled = false;
+            textBox1.Text = "";
+            textBox2.Text = "";
+            DisplayDefeat();
+        }
+
+        private void DisplayDefeat()
+        {
+            MessageBox.Show("You lose.");
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            textBox1.Text = "";
+        }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+            textBox2.Text = "";
         }
     }
 }
