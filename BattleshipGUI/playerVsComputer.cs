@@ -629,14 +629,14 @@ namespace BattleshipGUI
                     button.Enabled = true;
                 }
             }
-            var x = computerFleet.Ships;              //debugging purpose only
-            foreach (var t in x)
-            {
-                foreach (var z in t.squares)
-                {
-                    computerButtons[z.row][z.column].BackColor = Color.Pink;
-                }
-            }
+            //var x = computerFleet.Ships;                 //debugging purpose only
+            //foreach (var t in x)                         //draws computer fleet
+            //{
+            //    foreach (var z in t.squares)
+            //    {
+            //        computerButtons[z.row][z.column].BackColor = Color.Pink;
+            //    }
+            //}
         }
 
         private void timer1_Tick(object sender, EventArgs e)
