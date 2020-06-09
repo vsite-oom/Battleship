@@ -58,6 +58,9 @@
     <Compile Include="fleetGrid.Designer.cs">
       <DependentUpon>fleetGrid.cs</DependentUpon>
     </Compile>
+    <Compile Include="GridButton.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
