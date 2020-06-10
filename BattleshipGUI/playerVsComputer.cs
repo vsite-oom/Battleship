@@ -15,6 +15,14 @@ namespace BattleshipGUI
 {
     public partial class playerVsComputer : Form
     {
+        //defines
+        private static Color shipSunkColor = Color.DarkOrange;
+        private static Color shipHitColor = Color.Red;
+        private static Color shipMissedColor = Color.Black;
+        private static Color shipPlacedOnGridColor = Color.Blue;
+
+
+
         //player stuff
         private int color = 1;
         private List<List<Button>> playerButtons = new List<List<Button>>();
@@ -30,7 +38,7 @@ namespace BattleshipGUI
         //computer stuff
         private modelNmspc.Grid computerGrid = new modelNmspc.Grid(10, 10);
         private modelNmspc.fleet computerFleet = new modelNmspc.fleet();
-        private modelNmspc.Gunner gun = new modelNmspc.Gunner(10, 10, new int[] { 2, 3, 4, 5 });
+        private modelNmspc.Gunner gun = new modelNmspc.Gunner(10, 10, new int[] { 2, 2, 2, 2, 3, 3, 3, 4, 4, 5 });
 
         public playerVsComputer()
         {
@@ -64,7 +72,7 @@ namespace BattleshipGUI
                         };
                         innerButtons.Add(button);
                         button.Click += (s, e) => { playersButtonGridClickHandler(button); };
-                        button.BackColor = Color.DarkGreen;
+                        button.BackColor = Color.Green;
                         Controls.Add(button);
                     }
                     playerButtons.Add(innerButtons);
@@ -110,7 +118,7 @@ namespace BattleshipGUI
             }
             if (modelNmspc.HitResult.Hit == computerFleet.Hit(new modelNmspc.Square(x, y)))
             {
-                clickedButton.BackColor = Color.Red;
+                clickedButton.BackColor = shipHitColor;
                 clickedButton.Enabled = false;
                 label3.Text = "Hit !";
                 checkIfPlayerWon();
@@ -118,34 +126,37 @@ namespace BattleshipGUI
             }
             if (modelNmspc.HitResult.Sunken == computerFleet.Hit(new modelNmspc.Square(x, y)))
             {
-                clickedButton.BackColor = Color.Purple;
+                clickedButton.BackColor = shipSunkColor;
                 clickedButton.Enabled = false;
-                label3.Text = "You have sunken the ship! Keep it up!";
+                label3.Text = "You have sunken the ship!";
                 checkIfPlayerWon();
+                disableComputerGridButtons();
+                displayMessageAndWaitForXSeconds(1);
+                checkIfComputerWon();
                 return;
             }
-            clickedButton.BackColor = Color.Black;
+            clickedButton.BackColor = shipMissedColor;
             clickedButton.Enabled = false;
             label3.Text = "You missed :(";
             disableComputerGridButtons();
-            displayMessageAndWaitForXSeconds();
+            displayMessageAndWaitForXSeconds(0);
             checkIfComputerWon();
         }
 
         private void checkIfComputerWon()
         {
-            foreach(var item in playerButtons)
+            foreach (var item in playerButtons)
             {
-                foreach(var button in item)
+                foreach (var button in item)
                 {
-                    if(button.BackColor==Color.Blue)
+                    if (button.BackColor == shipPlacedOnGridColor)
                     {
                         return;
                     }
                 }
             }
-                label3.Text = "YOU LOST :(";
-                disableComputerGridButtons();
+            label3.Text = "YOU LOST :(";
+            disableComputerGridButtons();
         }
 
         private void checkIfPlayerWon()
@@ -155,13 +166,13 @@ namespace BattleshipGUI
             {
                 foreach (var button in item)
                 {
-                    if (button.BackColor == Color.Purple || button.BackColor==Color.Red)
+                    if (button.BackColor == shipHitColor || button.BackColor == shipSunkColor)
                     {
                         counter++;
                     }
                 }
             }
-            if (counter ==30)
+            if (counter == 30)
             {
                 label3.Font = new Font("Ink Free", (float)22);
                 label3.Text = "YOU WON! WELL DONE :)";
@@ -175,7 +186,7 @@ namespace BattleshipGUI
             {
                 foreach (var button in items)
                 {
-                    if (button.BackColor != Color.Purple && button.BackColor != Color.Red)
+                    if (button.BackColor != shipSunkColor && button.BackColor != shipHitColor)
                     {
                         button.Enabled = true;
                     }
@@ -183,27 +194,60 @@ namespace BattleshipGUI
             }
         }
 
-        private void displayMessageAndWaitForXSeconds()
+        private void displayMessageAndWaitForXSeconds(int x)
         {
-            label3.Text="Computer shooting ...";
+            if (x == 1)
+            {
+                label3.Text = "You have sunk the ship ! Enemy shooting ...";
+            }
+            else {
+                label3.Text = "Enemy shooting ...";
+            }
             timer2.Interval = 2000;
             timer2.Start();
             timer2.Enabled = true;
         }
 
-        private bool computersTurnToShoot()
+        private int computerTurnToShoot()
         {
-            var x = gun.ShootingTactics;
-            var y = x.ToString();
+            int counter = 0;
             var square = gun.NextTarget();
-                if (playerButtons[square.column][square.row].BackColor==Color.Blue){
-                    gun.ProcessHitResult(modelNmspc.HitResult.Hit);
-                    playerButtons[square.column][square.row].BackColor=Color.Red;
-                    return true;
+            var sq = new modelNmspc.Square(square.column, square.row);
+            foreach (var ship in playerFleet.Ships)
+            {
+                if (ship.squares.Contains(sq))
+                {
+                    foreach (var x in ship.squares)
+                    {
+                        if (x == sq)
+                        {
+                            x.SetState(modelNmspc.HitResult.Hit);
+                        }
+                    }
+                    foreach (var x in ship.squares)
+                    {
+                        if (x.SquareState == modelNmspc.SquareState.Hit)
+                        {
+                            ++counter;
+                        }
+                    }
+                    if (counter == ship.squares.Count())
+                    {
+                        playerButtons[square.column][square.row].BackColor = shipSunkColor;
+                        gun.ProcessHitResult(modelNmspc.HitResult.Sunken);
+                        return 3;
+                    }
+                    else
+                    {
+                        playerButtons[square.column][square.row].BackColor = shipHitColor;
+                        gun.ProcessHitResult(modelNmspc.HitResult.Hit);
+                        return 2;
+                    }
                 }
-            playerButtons[square.row][square.column].BackColor = Color.Black;
+            }
+            playerButtons[square.column][square.row].BackColor = shipMissedColor;
             gun.ProcessHitResult(modelNmspc.HitResult.Missed);
-            return false;
+            return 1;
         }
 
         private void disableComputerGridButtons()
@@ -212,7 +256,7 @@ namespace BattleshipGUI
             {
                 foreach (var button in items)
                 {
-                    if (button.BackColor != Color.Purple && button.BackColor != Color.Red)
+                    if (button.BackColor != shipHitColor && button.BackColor!=shipSunkColor)
                     {
                         button.Enabled = false;
                     }
@@ -233,9 +277,10 @@ namespace BattleshipGUI
             }
             if (shipHead == null)                   // if button that's clicked is first square of ship
             {
-                clickedButton.BackColor = Color.Blue;
+                clickedButton.BackColor = shipPlacedOnGridColor;
                 getCurrentPlacingShipLength();
                 shipHead = new modelNmspc.Square(x, y);
+                currentShipMaking = new List<modelNmspc.Square>();
                 currentShipMaking.Add(shipHead);
                 List<modelNmspc.Square> s = checkForAvailableSquaresAfterSquareIsChosen(new modelNmspc.Square(x, y));
                 if (s.Count() == 0)
@@ -259,7 +304,7 @@ namespace BattleshipGUI
                     }
                     foreach (var s in currentShipMaking)
                     {
-                        playerButtons[s.row][s.column].BackColor = Color.Blue;
+                        playerButtons[s.row][s.column].BackColor = shipPlacedOnGridColor;
                         playerButtons[s.row][s.column].Enabled = false;
                     }
                 }
@@ -271,7 +316,7 @@ namespace BattleshipGUI
                     }
                     foreach (var s in currentShipMaking)
                     {
-                        playerButtons[s.row][s.column].BackColor = Color.Blue;
+                        playerButtons[s.row][s.column].BackColor = shipPlacedOnGridColor;
                         playerButtons[s.row][s.column].Enabled = false;
                     }
                     currentShipMaking.Reverse();
@@ -284,7 +329,7 @@ namespace BattleshipGUI
                     }
                     foreach (var s in currentShipMaking)
                     {
-                        playerButtons[s.row][s.column].BackColor = Color.Blue;
+                        playerButtons[s.row][s.column].BackColor = shipPlacedOnGridColor;
                         playerButtons[s.row][s.column].Enabled = false;
                     }
                 }
@@ -296,7 +341,7 @@ namespace BattleshipGUI
                     }
                     foreach (var s in currentShipMaking)
                     {
-                        playerButtons[s.row][s.column].BackColor = Color.Blue;
+                        playerButtons[s.row][s.column].BackColor = shipPlacedOnGridColor;
                         playerButtons[s.row][s.column].Enabled = false;
                     }
                     currentShipMaking.Reverse();
@@ -325,7 +370,7 @@ namespace BattleshipGUI
                         playerButtons[square.row][square.column].Enabled = true;
                     }
                 }
-                currentShipMaking.Clear();
+                currentShipMaking = null;
                 changeLabel();
                 if (playerFleet.getNumberOfShips() == 10)
                 {
@@ -333,6 +378,7 @@ namespace BattleshipGUI
                     button_WOC1.ButtonColor = Color.DarkRed;
 
                 }
+
             }
         }
 
@@ -637,6 +683,7 @@ namespace BattleshipGUI
             //        computerButtons[z.row][z.column].BackColor = Color.Pink;
             //    }
             //}
+
         }
 
         private void timer1_Tick(object sender, EventArgs e)
@@ -735,15 +782,22 @@ namespace BattleshipGUI
 
         private void timer2_Tick(object sender, EventArgs e)
         {
-            if (!computersTurnToShoot())
+            var x = computerTurnToShoot();
+            if (x==1)
             {
                 timer2.Stop();
-                label3.Text = "Computer missed ... It's your turn !";
+                label3.Text = "Enemy missed ... It's your turn !";
                 enableComputerGrid();
             }
-            else
+            else if(x==2)
             {
-                label3.Text = "Computer hit your ship !";
+                label3.Text = "Enemy hit your ship !";
+            }
+            else if (x == 3)
+            {
+                timer2.Stop();
+                enableComputerGrid();
+                label3.Text = "Enemy sunk your ship ! It's your turn now !";
             }
         }
     }
