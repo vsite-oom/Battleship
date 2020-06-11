@@ -286,9 +286,11 @@ namespace BattleshipGUI
             clickedButton.BackColor = shipPlacedOnGridColor;
             getCurrentPlacingShipLength();
             shipHead = new modelNmspc.Square(x, y);
-            currentShipMaking = new List<modelNmspc.Square>();
-            currentShipMaking.Add(shipHead);
-            List<modelNmspc.Square> s = checkForAvailableSquaresAfterSquareIsChosen(new modelNmspc.Square(x, y));
+                currentShipMaking = new List<modelNmspc.Square>
+                {
+                    shipHead
+                };
+                List<modelNmspc.Square> s = checkForAvailableSquaresAfterSquareIsChosen(new modelNmspc.Square(x, y));
             if (s.Count() == 0)
             {
                 clickedButton.BackColor = Color.Green;
@@ -643,7 +645,7 @@ namespace BattleshipGUI
 
     private void resetLabels()
     {
-        label2.Text = "1 ship(s) to place...";
+        label2.Text = "1 ship to place...";
         label1.Text = "Place the ship of length(5)...";
         label1.Show();
         label2.Show();
