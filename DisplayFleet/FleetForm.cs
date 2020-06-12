@@ -26,8 +26,10 @@ namespace DisplayFleet
 
         private void displayFleet(object sender, EventArgs e)
         {
+            
             wipeBoard(player);
             wipeBoard(enemy);
+
             int[] shipSizes = new int[] { 5,4,4,3,3,3,2,2,2,2 };
             Shipwright b = new Shipwright(Rows, Columns);
             // Creates non displayable 
@@ -58,7 +60,7 @@ namespace DisplayFleet
                     p[i, j].i = i;
                     p[i, j].j = j;
                     p[i, j].BackColor = System.Drawing.SystemColors.ControlLightLight;
-                    p[i, j].Location = new System.Drawing.Point(pos + i * 35, 45 + j * 35);
+                    p[i, j].Location = new System.Drawing.Point(pos + i * 35, 50 + j * 35);
                     p[i, j].Size = new System.Drawing.Size(35, 35);
                     p[i, j].TabStop = false;
                     p[i, j].Click += HitSquare;
@@ -147,6 +149,7 @@ namespace DisplayFleet
         PanelButton[,] enemy = new PanelButton[10, 10];
         Gunner gunner;
         bool gameOn = false;
+        
 
         private void quitGame(object sender, EventArgs e)
         {
@@ -158,6 +161,18 @@ namespace DisplayFleet
             align.Enabled = false;
             startGame.Enabled = false;
             gameOn = true;
+        }
+
+        private void nameButton_Click(object sender, EventArgs e)
+        {
+            align.Visible = true;
+            startGame.Visible = true;
+            button1.Visible = true;
+            nameLabel.Text = "Admiral " + textNameUser.Text;
+            enemyLabel.Text = "Admiral " + textNameEnemy.Text;
+            textNameUser.Visible = false;
+            textNameEnemy.Visible = false;
+            nameButton.Visible = false;
         }
     }
 }
