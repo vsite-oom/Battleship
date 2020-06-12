@@ -29,13 +29,6 @@ namespace Vsite.Oom.Battleship.Gui
             DrawPanels(ref playerFleet, ref computerFleet);
         }
 
-        private void button1_Click(object sender, EventArgs e)
-        {
-            playerPanel.deployed = false;
-            computerPanel.deployed = false;
-            InitGrid();
-        }
-
         public void DrawPanels(ref Fleet playerFleet, ref Fleet computerFleet)
         {
             playerPanel.ClearAll();
@@ -44,22 +37,30 @@ namespace Vsite.Oom.Battleship.Gui
             playerPanel.Location = new Point(50, 50);
             playerPanel.Size = new Size(400, 400);
             playerPanel.BorderStyle = BorderStyle.None;
-            playerPanel.InitMembers(ref playerFleet, ref rules);
+            playerPanel.InitMembers(ref computerFleet, ref rules, ref computerPanel, ref label1);
             this.Controls.Add(playerPanel);
 
             computerPanel.BorderStyle = BorderStyle.None;
             computerPanel.Location = new Point(500, 50);
             computerPanel.Size = new Size(400, 400);
-            computerPanel.InitMembers(ref computerFleet, ref rules);
+            computerPanel.InitMembers(ref playerFleet, ref rules);
             this.Controls.Add(computerPanel);
 
             Refresh();
         }
 
-        Fleet playerFleet = new Fleet();
-        Fleet computerFleet = new Fleet();
-        GuiPanel playerPanel = new GuiPanel(true);
-        GuiPanel computerPanel = new GuiPanel(false);
-        RulesSingleton rules;
+        private void button1_Click(object sender, EventArgs e)
+        {
+            label1.Text = "";
+            playerPanel.deployed = false;
+            computerPanel.deployed = false;
+            InitGrid();
+        }
+
+        private Fleet playerFleet = new Fleet();
+        private Fleet computerFleet = new Fleet();
+        private PanelPlayer playerPanel = new PanelPlayer();
+        private PanelComputer computerPanel = new PanelComputer();
+        private RulesSingleton rules;
     }
 }

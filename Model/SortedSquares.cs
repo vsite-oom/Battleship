@@ -20,7 +20,7 @@ namespace Vsite.Oom.Battleship.Model
             squares.Clear();
         }
 
-        public IEnumerator<Square> GetEnumerator()
+        IEnumerator<Square> IEnumerable<Square>.GetEnumerator()
         {
             return squares.GetEnumerator();
         }
@@ -32,6 +32,8 @@ namespace Vsite.Oom.Battleship.Model
 
         public int Length { get { return squares.Count; } }
 
+
         private List<Square> squares = new List<Square>();
+
     }
 }

@@ -52,7 +52,10 @@
     <Compile Include="GuiForm.Designer.cs">
       <DependentUpon>GuiForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="GuiPanel.cs">
+    <Compile Include="PanelComputer.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="PanelPlayer.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Program.cs" />

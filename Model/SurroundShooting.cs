@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -22,27 +21,23 @@ namespace Vsite.Oom.Battleship.Model
             foreach (Direction direction in Enum.GetValues(typeof(Direction)))
             {
                 var l = evidenceGrid.GetSquaresNextTo(squaresHit.First(), direction);
-
                 if (l.Count() > 0)
                     arround.Add(l);
             }
-
             if (arround.Count == 1)
                 return arround[0].First();
-            var order = arround.OrderByDescending(ls => ls.Count());
-            int maxLen = order.First().Count();
+            var ordered = arround.OrderByDescending(ls => ls.Count());
+            int maxLen = ordered.First().Count();
             int shipLength = shipsToShoot[0];
             if (maxLen > shipLength - 1)
                 maxLen = shipLength - 1;
-            var longest = order.Where(ls => ls.Count() >= maxLen);
+            var longest = ordered.Where(ls => ls.Count() >= maxLen);
             int index = random.Next(0, longest.Count());
-
             return longest.ElementAt(index).First();
         }
-
         private Random random = new Random();
-        private readonly SortedSquares squaresHit;
         private readonly Grid evidenceGrid;
+        private readonly SortedSquares squaresHit;
         private readonly List<int> shipsToShoot;
     }
 }

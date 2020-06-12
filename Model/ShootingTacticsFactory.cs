@@ -11,10 +11,11 @@ namespace Vsite.Oom.Battleship.Model
     {
         public ShootingTacticsFactory(Grid evidenceGrid, SortedSquares squaresHit, List<int> shipsToShoot)
         {
-            this.evidenceGrid = evidenceGrid;
             this.squaresHit = squaresHit;
+            this.evidenceGrid = evidenceGrid;
             this.shipsToShoot = shipsToShoot;
         }
+
         public ITargetSelect GetTactics(ShootingTactics tactics)
         {
             switch (tactics)
@@ -30,7 +31,6 @@ namespace Vsite.Oom.Battleship.Model
                     return null;
             }
         }
-
         private readonly Grid evidenceGrid;
         private readonly SortedSquares squaresHit;
         private readonly List<int> shipsToShoot;

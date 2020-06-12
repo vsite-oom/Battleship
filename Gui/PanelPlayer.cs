@@ -12,15 +12,13 @@ using System.Runtime.CompilerServices;
 
 namespace Vsite.Oom.Battleship.Gui
 {
-    class GuiPanel : Panel
+    class PanelPlayer : Panel
     {
-        public GuiPanel(bool player = false)
+        public PanelPlayer()
         {
             SetStyle(ControlStyles.ResizeRedraw, true);
             SetStyle(ControlStyles.DoubleBuffer, true);
             SetStyle(ControlStyles.AllPaintingInWmPaint, true);
-
-            this.player = player;
         }
 
         protected override void OnPaint(PaintEventArgs e)
@@ -28,16 +26,21 @@ namespace Vsite.Oom.Battleship.Gui
             base.OnPaint(e);
             DrawGrid(e.Graphics);
             if (!deployed)
-                FillShipSquares(e.Graphics);
+                FillShipSquares();
+            if (winner == 1)
+                lbl.Text = "You won";
+            if (winner == 2)
+                lbl.Text = "You lost";
             Invalidate();
         }
 
-        public void InitMembers(ref Fleet f, ref RulesSingleton rules)
+        public void InitMembers(ref Fleet f, ref RulesSingleton rules, ref PanelComputer pc, ref Label lbl)
         {
             m_rows = rules.Rows + 1;
             m_cols = rules.Columns + 1;
             m_fleet = f;
-            gunner = new Gunner(rules.Rows, rules.Columns, rules.ShipLengths);
+            this.pc = pc;
+            this.lbl = lbl;
         }
 
         private void DrawGrid(Graphics graphics)
@@ -71,40 +74,23 @@ namespace Vsite.Oom.Battleship.Gui
             }
         }
 
-        private void FillShipSquares(Graphics graphics)
+        private void FillShipSquares()
         {
-            if (!player)
+            for (int i = 0; i < 10; ++i)
             {
-                for (int i = 0; i < 10; ++i)
+                for (int j = 0; j < 10; ++j)
                 {
-                    for (int j = 0; j < 10; ++j)
-                    {
-                        SquareButton tmpButton = new SquareButton(m_cell_width - 2, m_cell_height - 2, new Square(i, j));
-                        tmpButton.Top = i * m_cell_width + m_cell_width + 1;
-                        tmpButton.Left = j * m_cell_height + m_cell_height + 1;
-                        tmpButton.Width = m_cell_width - 2;
-                        tmpButton.Height = m_cell_height - 2;
+                    SquareButton tmpButton = new SquareButton(m_cell_width - 2, m_cell_height - 2, new Square(i, j));
+                    tmpButton.Top = i * m_cell_width + m_cell_width + 1;
+                    tmpButton.Left = j * m_cell_height + m_cell_height + 1;
+                    tmpButton.Width = m_cell_width - 2;
+                    tmpButton.Height = m_cell_height - 2;
 
-                        tmpButton.MouseDown += Button_Click;
-                        this.Controls.Add(tmpButton);
-                    }
-                }
-                deployed = true;
-            }
-            else
-            {
-                foreach (Ship ship in m_fleet.Ships)
-                {
-                    foreach (Square field in ship.Squares)
-                    {
-                        using (SolidBrush pen = new SolidBrush(Color.Blue))
-                        {
-                            graphics.FillRectangle(pen, field.Column * m_cell_width + m_cell_width + 2, 
-                                field.Row * m_cell_height + m_cell_height + 2, m_cell_width - 4, m_cell_height - 4);
-                        }
-                    }
+                    tmpButton.MouseDown += Button_Click;
+                    this.Controls.Add(tmpButton);
                 }
             }
+            deployed = true;
         }
 
         private void Button_Click(object sender, EventArgs e)
@@ -112,7 +98,7 @@ namespace Vsite.Oom.Battleship.Gui
             SquareButton targetButton = (SquareButton)sender;
             Square square = targetButton.GetSquare();
 
-            //Obradi pucanj u floti
+            //Obradi pucanj u neprijateljskoj floti
             HitResult hr = m_fleet.Hit(square);
 
             //Provjeri da li je brod potopljen
@@ -127,8 +113,16 @@ namespace Vsite.Oom.Battleship.Gui
             //Promjeni state square-a u button-u
             square.SetState(hr);
 
-            //Refresh sve
+            //Refresh sve buttone
             RefreshAll();
+
+            CoputerShipsLeftALive();
+            
+
+            //Kompjuter puca
+            pc.GunnerShoot();
+
+            PlayerShipsLeftAlive();
         }
 
         private void RefreshAll()
@@ -147,13 +141,14 @@ namespace Vsite.Oom.Battleship.Gui
                         break;
                     case SquareState.Sunken:
                         button.BackColor = Color.DarkRed;
+                        button.Enabled = false;
                         button.Refresh();
                         break;
                 }
             }
         }
 
-        public void SinkButtonShip(Ship ship)
+        public void SinkShip(Ship ship)
         {
             foreach (Square sSq in ship.Squares)
             {
@@ -162,33 +157,58 @@ namespace Vsite.Oom.Battleship.Gui
                     if (button.GetSquare() == sSq)
                     {
                         button.GetSquare().SetState(HitResult.Sunken);
+                        sSq.SetState(HitResult.Sunken);
                     }
                 } 
             }
         }
 
-        private void SinkShip(Ship ship)
+        private void PlayerShipsLeftAlive()
         {
-            foreach(Square sq in ship.Squares)
+            bool flag = pc.PlayerShipsLeftAlive();
+            if (!flag)
             {
-                sq.SetState(HitResult.Sunken);
+                foreach (SquareButton button in this.Controls)
+                    button.Enabled = false;
+                ClearAll();
+                winner = 2;
             }
-            SinkButtonShip(ship);
+        }
+
+        private void CoputerShipsLeftALive()
+        {
+            foreach(Ship ship in m_fleet.Ships)
+            {
+                foreach(Square sq in ship.Squares)
+                {
+                    if (sq.SquareState != SquareState.Sunken)
+                        return;
+                }
+            }
+            winner = 1;
+            LockButtons();
+        }
+
+        void LockButtons()
+        {
+            foreach (SquareButton button in this.Controls)
+                button.Enabled = false;
+            ClearAll();
         }
 
         public void ClearAll()
         {
             Controls.Clear();
+            Refresh();
         }
-
-        private Gunner gunner;
         private static Fleet m_fleet;
         private int m_rows;
         private int m_cols;
         private int m_cell_height;
         private int m_cell_width;
         public bool deployed = false;
-        private bool player = false;
+        private PanelComputer pc;
+        private int winner = 0;
+        private Label lbl;
     }
-
 }
