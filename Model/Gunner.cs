@@ -53,9 +53,7 @@ namespace Vsite.Oom.Battleship.Model
                 squaresHit.Clear();
 
             }
-
             ChangeTactics(hitResult);
-
         }
 
         private void ChangeTactics(HitResult hitResult)

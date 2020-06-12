@@ -20,22 +20,46 @@ namespace Vsite.Oom.Battleship.Gui
 
         public void InitGrid()
         {
-            //Testing drawing grid
-            int rows = 10;
-            int cols = 10;
+            rules = RulesSingleton.Instance;
+            Shipwright sw = new Shipwright(rules.Rows,rules.Columns);
+            
+            playerFleet = sw.CreateFleet(rules.ShipLengths);
+            computerFleet = sw.CreateFleet(rules.ShipLengths);
 
-            Shipwright sw = new Shipwright(rows, cols);
-            IEnumerable<int> ships = new int[] { 2, 2, 2, 2, 3, 3, 3, 4, 4, 5 };
-            Fleet fleet = new Fleet();
-            fleet = sw.CreateFleet(ships);
-
-            guiPanel1.SetSize(rows, cols, ref fleet);
-          //--------------------------------------------------------------------------
+            DrawPanels(ref playerFleet, ref computerFleet);
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
+            playerPanel.deployed = false;
+            computerPanel.deployed = false;
             InitGrid();
         }
+
+        public void DrawPanels(ref Fleet playerFleet, ref Fleet computerFleet)
+        {
+            playerPanel.ClearAll();
+            computerPanel.ClearAll();
+
+            playerPanel.Location = new Point(50, 50);
+            playerPanel.Size = new Size(400, 400);
+            playerPanel.BorderStyle = BorderStyle.None;
+            playerPanel.InitMembers(ref playerFleet, ref rules);
+            this.Controls.Add(playerPanel);
+
+            computerPanel.BorderStyle = BorderStyle.None;
+            computerPanel.Location = new Point(500, 50);
+            computerPanel.Size = new Size(400, 400);
+            computerPanel.InitMembers(ref computerFleet, ref rules);
+            this.Controls.Add(computerPanel);
+
+            Refresh();
+        }
+
+        Fleet playerFleet = new Fleet();
+        Fleet computerFleet = new Fleet();
+        GuiPanel playerPanel = new GuiPanel(true);
+        GuiPanel computerPanel = new GuiPanel(false);
+        RulesSingleton rules;
     }
 }
