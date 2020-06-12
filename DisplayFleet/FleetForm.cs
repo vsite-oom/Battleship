@@ -35,6 +35,7 @@ namespace DisplayFleet
             var enemyFlota = b.CreateFleet(shipSizes);
             playerFleet = flota;
             enemyFleet = enemyFlota;
+            gunner = new Gunner(Rows, Columns, shipSizes);
             //
             //Displays player fleet, enemy fleet exists but only in memory
             foreach (Ship ship in flota.Ships)
@@ -79,6 +80,8 @@ namespace DisplayFleet
 
         private void HitSquare(object sender, EventArgs e)
         {
+            if (gameOn == false)
+                return;
             PanelButton button = sender as PanelButton;
             Square clicked = new Square(button.i, button.j);
             HitResult result = enemyFleet.Hit(clicked);
@@ -92,6 +95,7 @@ namespace DisplayFleet
                 case HitResult.Missed:
                     {
                         button.BackColor = Color.FromArgb(211, 211, 211);
+                        EnemyTurn();
                         break;
                     }
                 case HitResult.Sunken:
@@ -104,6 +108,35 @@ namespace DisplayFleet
             }
         }
 
+        private void EnemyTurn()
+        {
+            Square clicked = gunner.NextTarget();
+            HitResult result = playerFleet.Hit(clicked);
+            gunner.ProcessHitResult(result);
+            switch(result)
+            {
+                case HitResult.Hit:
+                    {
+                        player[clicked.Row, clicked.Column].BackColor = Color.FromArgb(255,233, 0);
+                        System.Threading.Thread.Sleep(500);
+                        EnemyTurn();
+                        break;
+                    }
+                case HitResult.Missed:
+                    {
+                        player[clicked.Row, clicked.Column].BackColor = Color.FromArgb(255, 255, 255);
+                        break;
+                    }
+                case HitResult.Sunken:
+                    {
+                        foreach (var sunken in playerFleet.Ships.Where(s => s.Squares.Contains(clicked)).SelectMany(s => s.Squares))
+                            player[sunken.Row, sunken.Column].BackColor = Color.FromArgb(0, 0, 0);
+                        EnemyTurn();
+                        break;
+                    }
+            }
+        }
+
 
 
         Fleet playerFleet;
@@ -112,6 +145,8 @@ namespace DisplayFleet
         int Columns = 10;
         PanelButton[,] player = new PanelButton[10, 10];
         PanelButton[,] enemy = new PanelButton[10, 10];
+        Gunner gunner;
+        bool gameOn = false;
 
         private void quitGame(object sender, EventArgs e)
         {
@@ -122,6 +157,7 @@ namespace DisplayFleet
         {
             align.Enabled = false;
             startGame.Enabled = false;
+            gameOn = true;
         }
     }
 }
