@@ -28,9 +28,15 @@ namespace Vsite.Oom.Battleship.Gui
             if (!deployed)
                 FillShipSquares();
             if (winner == 1)
+            {
                 lbl.Text = "You won";
-            if (winner == 2)
+                winner = 0;
+            }
+            else if (winner == 2)
+            {
                 lbl.Text = "You lost";
+                winner = 0;
+            }
             Invalidate();
         }
 
@@ -114,7 +120,7 @@ namespace Vsite.Oom.Battleship.Gui
             square.SetState(hr);
 
             //Refresh sve buttone
-            RefreshAll();
+            RefreshAllButtons();
 
             CoputerShipsLeftALive();
             
@@ -125,7 +131,7 @@ namespace Vsite.Oom.Battleship.Gui
             PlayerShipsLeftAlive();
         }
 
-        private void RefreshAll()
+        private void RefreshAllButtons()
         {
             foreach (SquareButton button in this.Controls)
             {
@@ -199,7 +205,6 @@ namespace Vsite.Oom.Battleship.Gui
         public void ClearAll()
         {
             Controls.Clear();
-            Refresh();
         }
         private static Fleet m_fleet;
         private int m_rows;

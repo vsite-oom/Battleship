@@ -120,9 +120,9 @@ namespace Vsite.Oom.Battleship.Gui
             }
 
             //Refresh sve buttone
-            RefreshAll();
+            RefreshAllButtons();
         }
-        private void RefreshAll()
+        private void RefreshAllButtons()
         {
             foreach (SquareButton button in this.Controls)
             {
