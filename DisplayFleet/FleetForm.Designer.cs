@@ -40,6 +40,8 @@
             this.textNameEnemy = new System.Windows.Forms.TextBox();
             this.nameButton = new System.Windows.Forms.Button();
             this.fleetGrid1 = new DisplayFleet.FleetGrid(this.components);
+            this.userPoint = new System.Windows.Forms.Label();
+            this.enemyPoint = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // align
@@ -107,14 +109,14 @@
             // 
             // textNameUser
             // 
-            this.textNameUser.Location = new System.Drawing.Point(249, 417);
+            this.textNameUser.Location = new System.Drawing.Point(12, 414);
             this.textNameUser.Name = "textNameUser";
             this.textNameUser.Size = new System.Drawing.Size(100, 20);
             this.textNameUser.TabIndex = 8;
             // 
             // textNameEnemy
             // 
-            this.textNameEnemy.Location = new System.Drawing.Point(495, 417);
+            this.textNameEnemy.Location = new System.Drawing.Point(750, 414);
             this.textNameEnemy.Name = "textNameEnemy";
             this.textNameEnemy.Size = new System.Drawing.Size(100, 20);
             this.textNameEnemy.TabIndex = 9;
@@ -136,11 +138,31 @@
             this.fleetGrid1.Size = new System.Drawing.Size(0, 0);
             this.fleetGrid1.TabIndex = 0;
             // 
+            // userPoint
+            // 
+            this.userPoint.AutoSize = true;
+            this.userPoint.Location = new System.Drawing.Point(9, 17);
+            this.userPoint.Name = "userPoint";
+            this.userPoint.Size = new System.Drawing.Size(35, 13);
+            this.userPoint.TabIndex = 11;
+            this.userPoint.Text = "label1";
+            // 
+            // enemyPoint
+            // 
+            this.enemyPoint.AutoSize = true;
+            this.enemyPoint.Location = new System.Drawing.Point(815, 22);
+            this.enemyPoint.Name = "enemyPoint";
+            this.enemyPoint.Size = new System.Drawing.Size(35, 13);
+            this.enemyPoint.TabIndex = 12;
+            this.enemyPoint.Text = "label1";
+            // 
             // FleetForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(862, 450);
+            this.Controls.Add(this.enemyPoint);
+            this.Controls.Add(this.userPoint);
             this.Controls.Add(this.nameButton);
             this.Controls.Add(this.textNameEnemy);
             this.Controls.Add(this.textNameUser);
@@ -170,6 +192,8 @@
         private System.Windows.Forms.TextBox textNameUser;
         private System.Windows.Forms.TextBox textNameEnemy;
         private System.Windows.Forms.Button nameButton;
+        private System.Windows.Forms.Label userPoint;
+        private System.Windows.Forms.Label enemyPoint;
     }
 }
 

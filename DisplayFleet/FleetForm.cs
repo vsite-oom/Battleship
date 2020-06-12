@@ -91,7 +91,7 @@ namespace DisplayFleet
             {
                 case HitResult.Hit:
                     {
-                        button.BackColor = Color.FromArgb(255, 0, 0);
+                        button.BackColor = Color.FromArgb(255, 225, 0);
                         break;
                     }
                 case HitResult.Missed:
@@ -103,7 +103,27 @@ namespace DisplayFleet
                 case HitResult.Sunken:
                     {
                         foreach (var sunken in enemyFleet.Ships.Where(s => s.Squares.Contains(clicked)).SelectMany(s => s.Squares))
-                            enemy[sunken.Row, sunken.Column].BackColor = Color.FromArgb(255, 255, 255);
+                            enemy[sunken.Row, sunken.Column].BackColor = Color.FromArgb(255, 0, 0);
+                        userScore++;
+                        userPoint.Text = userScore + "/ 10";
+                        if(userScore == 10)
+                        {
+                            foreach (var sunken in enemyFleet.Ships.Where(s => s.Squares.Contains(clicked)).SelectMany(s => s.Squares))
+                                enemy[sunken.Row, sunken.Column].BackColor = Color.FromArgb(255, 0, 0);
+                            string message = "YOU WIN, Yes to close, No to restart";
+                            string title = "YOU WIN";
+                            MessageBoxButtons buttons = MessageBoxButtons.YesNo;
+                            DialogResult score = MessageBox.Show(message, title, buttons);
+                            if (score == DialogResult.Yes)
+                            {
+                                this.Close();
+                            }
+                            else
+                            {
+                                Application.Restart();
+                            }
+
+                        }
                         break;
                     }
 
@@ -132,7 +152,28 @@ namespace DisplayFleet
                 case HitResult.Sunken:
                     {
                         foreach (var sunken in playerFleet.Ships.Where(s => s.Squares.Contains(clicked)).SelectMany(s => s.Squares))
-                            player[sunken.Row, sunken.Column].BackColor = Color.FromArgb(0, 0, 0);
+                            player[sunken.Row, sunken.Column].BackColor = Color.FromArgb(0, 0, 225);
+                        enemyScore++;
+                        enemyPoint.Text = enemyScore + "/ 10";
+                        if (enemyScore == 10)
+                        {
+                            foreach (var sunken in playerFleet.Ships.Where(s => s.Squares.Contains(clicked)).SelectMany(s => s.Squares))
+                                player[sunken.Row, sunken.Column].BackColor = Color.FromArgb(0, 0, 225);
+                            string message = "YOU Lose, Yes to close, No to restart";
+                            string title = "YOU Lose";
+                            MessageBoxButtons buttons = MessageBoxButtons.YesNo;
+                            DialogResult score = MessageBox.Show(message, title, buttons);
+                            if (score == DialogResult.Yes)
+                            {
+                                this.Close();
+                            }
+                            else
+                            {
+                                Application.Restart();
+                            }
+                            break;
+
+                        }
                         EnemyTurn();
                         break;
                     }
@@ -149,6 +190,7 @@ namespace DisplayFleet
         PanelButton[,] enemy = new PanelButton[10, 10];
         Gunner gunner;
         bool gameOn = false;
+        int userScore, enemyScore = 0;
         
 
         private void quitGame(object sender, EventArgs e)
@@ -170,6 +212,8 @@ namespace DisplayFleet
             button1.Visible = true;
             nameLabel.Text = "Admiral " + textNameUser.Text;
             enemyLabel.Text = "Admiral " + textNameEnemy.Text;
+            userPoint.Text = userScore + "/ 10";
+            enemyPoint.Text = enemyScore + "/ 10";
             textNameUser.Visible = false;
             textNameEnemy.Visible = false;
             nameButton.Visible = false;
