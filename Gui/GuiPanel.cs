@@ -1,48 +1,44 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
-using System.Windows.Forms;
+using System.Drawing.Drawing2D;
+using System.Drawing;
 using Vsite.Oom.Battleship.Model;
+using System.Windows.Forms;
+using System.Diagnostics;
+using System.Runtime.CompilerServices;
 
 namespace Vsite.Oom.Battleship.Gui
 {
-    class PanelComputer : Panel
+    class GuiPanel : Panel
     {
-        public PanelComputer()
+        public GuiPanel(bool player = false)
         {
             SetStyle(ControlStyles.ResizeRedraw, true);
             SetStyle(ControlStyles.DoubleBuffer, true);
             SetStyle(ControlStyles.AllPaintingInWmPaint, true);
-            BackColor = Color.FromArgb(85, 15, 122, 189);
+
+            this.player = player;
         }
-        public void InitMembers(ref Fleet f, ref RulesSingleton rules, bool playerTurn)
+
+        protected override void OnPaint(PaintEventArgs e)
+        {
+            base.OnPaint(e);
+            DrawGrid(e.Graphics);
+            if (!deployed)
+                FillShipSquares(e.Graphics);
+            Invalidate();
+        }
+
+        public void InitMembers(ref Fleet f, ref RulesSingleton rules)
         {
             m_rows = rules.Rows + 1;
             m_cols = rules.Columns + 1;
             m_fleet = f;
-            gunner = new Gunner(rules.Rows, rules.Columns, rules.ShipLengths);
-            this.playerTurn = playerTurn;
         }
-        protected override void OnPaint(PaintEventArgs e)
-        {
-            base.OnPaint(e);
-            e.Graphics.DrawRectangle(
-                new Pen(
-                    new SolidBrush(Color.Red), 2), e.ClipRectangle);
-            DrawGrid(e.Graphics);
-            if (!deployed)
-                FillShipSquares();
-            if (!playerTurn)
-            {
-                GunnerShoot();
-                playerTurn = !playerTurn;
-            }
-            Invalidate();
-        }
+
         private void DrawGrid(Graphics graphics)
         {
             using (Pen pen = new Pen(Color.Gray))
@@ -73,69 +69,68 @@ namespace Vsite.Oom.Battleship.Gui
                 }
             }
         }
-        private void FillShipSquares()
+
+        private void FillShipSquares(Graphics graphics)
         {
-            for (int i = 0; i < 10; ++i)
+            if (!player)
             {
-                for (int j = 0; j < 10; ++j)
+                for (int i = 0; i < 10; ++i)
                 {
-                    SquareButton tmpButton = new SquareButton(m_cell_width - 2, m_cell_height - 2, new Square(i, j))
+                    for (int j = 0; j < 10; ++j)
                     {
-                        Top = i * m_cell_width + m_cell_width + 1,
-                        Left = j * m_cell_height + m_cell_height + 1,
-                        Width = m_cell_width - 2,
-                        Height = m_cell_height - 2,
-                        Enabled = false
-                    };
+                        SquareButton tmpButton = new SquareButton(m_cell_width - 2, m_cell_height - 2, new Square(i, j));
+                        tmpButton.Top = i * m_cell_width + m_cell_width + 1;
+                        tmpButton.Left = j * m_cell_height + m_cell_height + 1;
+                        tmpButton.Width = m_cell_width - 2;
+                        tmpButton.Height = m_cell_height - 2;
 
-                    this.Controls.Add(tmpButton);
+                        tmpButton.MouseDown += Button_Click;
+                        this.Controls.Add(tmpButton);
+                    }
                 }
+                deployed = true;
             }
-            deployed = true;
-
-            foreach (Ship ship in m_fleet.Ships)
+            else
             {
-                foreach (Square sq in ship.Squares)
+                foreach (Ship ship in m_fleet.Ships)
                 {
-                    foreach (SquareButton button in this.Controls)
+                    foreach (Square field in ship.Squares)
                     {
-                        if (button.GetSquare() == sq)
-                            button.BackColor = Color.Green;
+                        using (SolidBrush pen = new SolidBrush(Color.Blue))
+                        {
+                            graphics.FillRectangle(pen, field.Column * m_cell_width + m_cell_width + 2, 
+                                field.Row * m_cell_height + m_cell_height + 2, m_cell_width - 4, m_cell_height - 4);
+                        }
                     }
                 }
             }
         }
-        public void ClearAll()
+
+        private void Button_Click(object sender, EventArgs e)
         {
-            Controls.Clear();
-        }
+            SquareButton targetButton = (SquareButton)sender;
+            Square square = targetButton.GetSquare();
 
-        public void GunnerShoot()
-        {
-            //Just to slow it down a notch
-            Thread.Sleep(500);
+            //Obradi pucanj u neprijateljskoj floti
+            HitResult hr = m_fleet.Hit(square);
 
-            var target = gunner.NextTarget();
-            var hResult = m_fleet.Hit(target);
-            gunner.ProcessHitResult(hResult);
-
-            foreach (SquareButton button in this.Controls)
-            {
-                if (target == button.GetSquare())
-                    button.GetSquare().SetState(hResult);
-            }
-            
+            //Provjeri da li je brod potopljen
             foreach (Ship ship in m_fleet.Ships)
             {
                 foreach (Square sq in ship.Squares)
                 {
                     if (sq.SquareState == SquareState.Sunken)
-                        MarkSunkenButtons(ship);
+                        SinkShip(ship);
                 }
             }
-            RefreshAllButtons();
+            //Promjeni state square-a u button-u
+            square.SetState(hr);
+
+            //Refresh sve buttone
+            RefreshAll();
         }
-        private void RefreshAllButtons()
+
+        private void RefreshAll()
         {
             foreach (SquareButton button in this.Controls)
             {
@@ -143,11 +138,11 @@ namespace Vsite.Oom.Battleship.Gui
                 {
                     case SquareState.Missed:
                         button.BackColor = Color.Blue;
-                        button.Refresh();
+                        button.Enabled = false;
                         break;
                     case SquareState.Hit:
                         button.BackColor = Color.Red;
-                        button.Refresh();
+                        button.Enabled = false;
                         break;
                     case SquareState.Sunken:
                         button.BackColor = Color.DarkRed;
@@ -157,7 +152,7 @@ namespace Vsite.Oom.Battleship.Gui
             }
         }
 
-        private void MarkSunkenButtons(Ship ship)
+        public void SinkShip(Ship ship)
         {
             foreach (Square sSq in ship.Squares)
             {
@@ -166,29 +161,25 @@ namespace Vsite.Oom.Battleship.Gui
                     if (button.GetSquare() == sSq)
                     {
                         button.GetSquare().SetState(HitResult.Sunken);
+                        sSq.SetState(HitResult.Sunken);
                     }
-                }
+                } 
             }
         }
 
-        public bool PlayerShipsLeftAlive()
+        public void ClearAll()
         {
-            foreach(Ship ship in m_fleet.Ships)
-            {
-                foreach (Square sq in ship.Squares)
-                    if (sq.SquareState != SquareState.Sunken)
-                        return true;
-            }
-            return false;
+            Controls.Clear();
         }
 
+        bool isFleetSunk = false;
         private static Fleet m_fleet;
         private int m_rows;
         private int m_cols;
         private int m_cell_height;
         private int m_cell_width;
         public bool deployed = false;
-        private Gunner gunner;
-        private bool playerTurn = false;
+        private bool player = false;
     }
+
 }

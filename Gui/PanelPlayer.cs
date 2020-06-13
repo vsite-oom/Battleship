@@ -9,6 +9,7 @@ using Vsite.Oom.Battleship.Model;
 using System.Windows.Forms;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
+using System.Windows.Forms.VisualStyles;
 
 namespace Vsite.Oom.Battleship.Gui
 {
@@ -19,11 +20,17 @@ namespace Vsite.Oom.Battleship.Gui
             SetStyle(ControlStyles.ResizeRedraw, true);
             SetStyle(ControlStyles.DoubleBuffer, true);
             SetStyle(ControlStyles.AllPaintingInWmPaint, true);
+            BackColor = Color.FromArgb(85, 15, 122, 189);
+            BorderStyle = BorderStyle.Fixed3D;
+            
         }
 
         protected override void OnPaint(PaintEventArgs e)
         {
             base.OnPaint(e);
+            e.Graphics.DrawRectangle(
+                new Pen( 
+                    new SolidBrush(Color.Red), 2), e.ClipRectangle);
             DrawGrid(e.Graphics);
             if (!deployed)
                 FillShipSquares();

@@ -34,14 +34,14 @@ namespace Vsite.Oom.Battleship.Gui
             playerPanel.ClearAll();
             computerPanel.ClearAll();
 
-            playerPanel.Location = new Point(50, 50);
+            playerPanel.Location = new Point(50, 75);
             playerPanel.Size = new Size(400, 400);
             playerPanel.BorderStyle = BorderStyle.None;
             playerPanel.InitMembers(ref computerFleet, ref rules, ref computerPanel, ref label1);
             this.Controls.Add(playerPanel);
 
             computerPanel.BorderStyle = BorderStyle.None;
-            computerPanel.Location = new Point(500, 50);
+            computerPanel.Location = new Point(500, 75);
             computerPanel.Size = new Size(400, 400);
             computerPanel.InitMembers(ref playerFleet, ref rules, playerTurn);
             this.Controls.Add(computerPanel);
@@ -60,6 +60,8 @@ namespace Vsite.Oom.Battleship.Gui
             else
                 playerTurn = false;
             InitGrid();
+            label2.Text = "Evidence grid";
+            label3.Text = "Your fleet";
         }
 
         private Fleet playerFleet = new Fleet();
