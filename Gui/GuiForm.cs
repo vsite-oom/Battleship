@@ -24,7 +24,7 @@ namespace Vsite.Oom.Battleship.Gui
             Shipwright sw = new Shipwright(rules.Rows,rules.Columns);
             
             playerFleet = sw.CreateFleet(rules.ShipLengths);
-            computerFleet = sw.CreateFleet(rules.ShipLengths);
+            computerFleet = sw.CreateFleet(rules.ShipLengths);   
 
             DrawPanels(ref playerFleet, ref computerFleet);
         }
@@ -43,17 +43,22 @@ namespace Vsite.Oom.Battleship.Gui
             computerPanel.BorderStyle = BorderStyle.None;
             computerPanel.Location = new Point(500, 50);
             computerPanel.Size = new Size(400, 400);
-            computerPanel.InitMembers(ref playerFleet, ref rules);
+            computerPanel.InitMembers(ref playerFleet, ref rules, playerTurn);
             this.Controls.Add(computerPanel);
 
             Refresh();
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void Button1_Click(object sender, EventArgs e)
         {
             label1.Text = "";
             playerPanel.deployed = false;
             computerPanel.deployed = false;
+            //Who gets to go first
+            if (new Random().Next(1, 10) % 2 == 0)
+                playerTurn = true;
+            else
+                playerTurn = false;
             InitGrid();
         }
 
@@ -62,5 +67,6 @@ namespace Vsite.Oom.Battleship.Gui
         private PanelPlayer playerPanel = new PanelPlayer();
         private PanelComputer computerPanel = new PanelComputer();
         private RulesSingleton rules;
+        private bool playerTurn = false;
     }
 }

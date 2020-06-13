@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Vsite.Oom.Battleship.Model;
@@ -17,12 +18,13 @@ namespace Vsite.Oom.Battleship.Gui
             SetStyle(ControlStyles.DoubleBuffer, true);
             SetStyle(ControlStyles.AllPaintingInWmPaint, true);
         }
-        public void InitMembers(ref Fleet f, ref RulesSingleton rules)
+        public void InitMembers(ref Fleet f, ref RulesSingleton rules, bool playerTurn)
         {
             m_rows = rules.Rows + 1;
             m_cols = rules.Columns + 1;
             m_fleet = f;
             gunner = new Gunner(rules.Rows, rules.Columns, rules.ShipLengths);
+            this.playerTurn = playerTurn;
         }
         protected override void OnPaint(PaintEventArgs e)
         {
@@ -30,6 +32,11 @@ namespace Vsite.Oom.Battleship.Gui
             DrawGrid(e.Graphics);
             if (!deployed)
                 FillShipSquares();
+            if (!playerTurn)
+            {
+                GunnerShoot();
+                playerTurn = !playerTurn;
+            }
             Invalidate();
         }
         private void DrawGrid(Graphics graphics)
@@ -68,12 +75,14 @@ namespace Vsite.Oom.Battleship.Gui
             {
                 for (int j = 0; j < 10; ++j)
                 {
-                    SquareButton tmpButton = new SquareButton(m_cell_width - 2, m_cell_height - 2, new Square(i, j));
-                    tmpButton.Top = i * m_cell_width + m_cell_width + 1;
-                    tmpButton.Left = j * m_cell_height + m_cell_height + 1;
-                    tmpButton.Width = m_cell_width - 2;
-                    tmpButton.Height = m_cell_height - 2;
-                    tmpButton.Enabled = false;
+                    SquareButton tmpButton = new SquareButton(m_cell_width - 2, m_cell_height - 2, new Square(i, j))
+                    {
+                        Top = i * m_cell_width + m_cell_width + 1,
+                        Left = j * m_cell_height + m_cell_height + 1,
+                        Width = m_cell_width - 2,
+                        Height = m_cell_height - 2,
+                        Enabled = false
+                    };
 
                     this.Controls.Add(tmpButton);
                 }
@@ -99,6 +108,8 @@ namespace Vsite.Oom.Battleship.Gui
 
         public void GunnerShoot()
         {
+            //Just to slow it down a notch
+            Thread.Sleep(500);
 
             var target = gunner.NextTarget();
             var hResult = m_fleet.Hit(target);
@@ -115,11 +126,9 @@ namespace Vsite.Oom.Battleship.Gui
                 foreach (Square sq in ship.Squares)
                 {
                     if (sq.SquareState == SquareState.Sunken)
-                        SinkShip(ship);
+                        MarkSunkenButtons(ship);
                 }
             }
-
-            //Refresh sve buttone
             RefreshAllButtons();
         }
         private void RefreshAllButtons()
@@ -144,7 +153,7 @@ namespace Vsite.Oom.Battleship.Gui
             }
         }
 
-        public void SinkShip(Ship ship)
+        private void MarkSunkenButtons(Ship ship)
         {
             foreach (Square sSq in ship.Squares)
             {
@@ -176,5 +185,6 @@ namespace Vsite.Oom.Battleship.Gui
         private int m_cell_width;
         public bool deployed = false;
         private Gunner gunner;
+        private bool playerTurn = false;
     }
 }

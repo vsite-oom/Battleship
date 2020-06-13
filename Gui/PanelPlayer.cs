@@ -86,11 +86,13 @@ namespace Vsite.Oom.Battleship.Gui
             {
                 for (int j = 0; j < 10; ++j)
                 {
-                    SquareButton tmpButton = new SquareButton(m_cell_width - 2, m_cell_height - 2, new Square(i, j));
-                    tmpButton.Top = i * m_cell_width + m_cell_width + 1;
-                    tmpButton.Left = j * m_cell_height + m_cell_height + 1;
-                    tmpButton.Width = m_cell_width - 2;
-                    tmpButton.Height = m_cell_height - 2;
+                    SquareButton tmpButton = new SquareButton(m_cell_width - 2, m_cell_height - 2, new Square(i, j))
+                    {
+                        Top = i * m_cell_width + m_cell_width + 1,
+                        Left = j * m_cell_height + m_cell_height + 1,
+                        Width = m_cell_width - 2,
+                        Height = m_cell_height - 2
+                    };
 
                     tmpButton.MouseDown += Button_Click;
                     this.Controls.Add(tmpButton);
@@ -104,10 +106,28 @@ namespace Vsite.Oom.Battleship.Gui
             SquareButton targetButton = (SquareButton)sender;
             Square square = targetButton.GetSquare();
 
-            //Obradi pucanj u neprijateljskoj floti
+            //Process HitREsult            
+            //Change SquareState in button's Square
+            square.SetState(ProcessHitResult(square));
+
+            //Refresh all buttons and set apropriate color
+            RefreshAllButtons();
+
+            //If none left alive, player wins
+            CoputerShipsLeftALive();
+
+            //Computer shoots
+            pc.GunnerShoot();
+
+            //If none left alive, computer wins
+            PlayerShipsLeftAlive();
+        }
+
+        private HitResult ProcessHitResult(Square square)
+        {
             HitResult hr = m_fleet.Hit(square);
 
-            //Provjeri da li je brod potopljen
+            //Check if ship is sunk
             foreach (Ship ship in m_fleet.Ships)
             {
                 foreach (Square sq in ship.Squares)
@@ -116,19 +136,7 @@ namespace Vsite.Oom.Battleship.Gui
                         SinkShip(ship);
                 }
             }
-            //Promjeni state square-a u button-u
-            square.SetState(hr);
-
-            //Refresh sve buttone
-            RefreshAllButtons();
-
-            CoputerShipsLeftALive();
-            
-
-            //Kompjuter puca
-            pc.GunnerShoot();
-
-            PlayerShipsLeftAlive();
+            return hr;
         }
 
         private void RefreshAllButtons()

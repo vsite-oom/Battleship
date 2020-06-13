@@ -39,9 +39,9 @@
             this.button1.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.button1.Size = new System.Drawing.Size(130, 23);
             this.button1.TabIndex = 1;
-            this.button1.Text = "Rasporedi flotu";
+            this.button1.Text = "New game";
             this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.button1.Click += new System.EventHandler(this.Button1_Click);
             // 
             // label1
             // 
