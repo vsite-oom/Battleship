@@ -20,7 +20,7 @@ namespace Vsite.Oom.Battleship.Gui
             SetStyle(ControlStyles.ResizeRedraw, true);
             SetStyle(ControlStyles.DoubleBuffer, true);
             SetStyle(ControlStyles.AllPaintingInWmPaint, true);
-            BackColor = Color.FromArgb(85, 15, 122, 189);
+            BackColor = Color.FromArgb(255, 15, 122, 189);
             BorderStyle = BorderStyle.Fixed3D;
             
         }

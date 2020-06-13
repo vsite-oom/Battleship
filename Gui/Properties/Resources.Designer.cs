@@ -59,5 +59,15 @@ namespace Vsite.Oom.Battleship.Gui.Properties {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap bckgx {
+            get {
+                object obj = ResourceManager.GetObject("bckgx", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
     }
 }
