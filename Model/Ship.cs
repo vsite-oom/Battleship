@@ -36,5 +36,14 @@ namespace Vsite.Oom.Battleship.Model
             return HitResult.Hit;
         }
         public readonly IEnumerable<Square> Squares;
+        public bool ContainsSquare(Square square)
+        {
+            foreach(var squares in Squares)
+            {
+                if (square.Equals(squares))
+                    return true;
+            }
+            return false;
+        }
     }
 }
