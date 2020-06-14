@@ -14,6 +14,8 @@ namespace Vsite.Oom.Battleship.Model
         Inline
 
     }
+
+    
     public class Gunner
     {
         public Gunner(int rows, int columns, IEnumerable<int> shipLenghts) {
@@ -22,12 +24,15 @@ namespace Vsite.Oom.Battleship.Model
             ShootingTactics = ShootingTactics.Random;
             squareTerminator = new SquareTerminator(rows, columns);
             targetSelect = new RandomShooting(evidenceGrid);
+            shipLenght = 0;
 
         }
         public Square NextTarget() {
             //TODO: implement
-
-            lastTarget = targetSelect.NextTarget(shipsToShoot[0]);
+            if(shipLenght == 1)
+                lastTarget = targetSelect.NextTarget(1);
+            else
+                lastTarget = targetSelect.NextTarget(shipsToShoot[0]);
             return lastTarget;
         }
 
@@ -85,6 +90,7 @@ namespace Vsite.Oom.Battleship.Model
             
         }
 
+        public int shipLenght { get; set; }
 
         private Square lastTarget;
 

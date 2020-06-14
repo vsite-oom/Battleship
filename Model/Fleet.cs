@@ -16,6 +16,17 @@ namespace Vsite.Oom.Battleship.Model
             get { return ships; }
         }
 
+        public bool AllShipsSunken() { 
+            foreach(var ship in Ships)
+            {
+                foreach (var square in ship.squares) {
+                    if (square.SquareState != SquareState.Sunken)
+                        return false;
+                }
+
+            }
+            return true;
+        }
 
         public HitResult Hit(Square square) {
             foreach (Ship ship in ships) 
