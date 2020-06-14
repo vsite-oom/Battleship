@@ -1,21 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
 using System.Drawing;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Vsite.Oom.Battleship.Model.BattleshipGUI
+namespace FinalGUI
 {
-    public partial class Form1 : Form
+    public partial class GameGrid : UserControl
     {
-        public Form1()
+        public GameGrid()
         {
             InitializeComponent();
-            int buttonSize = panel1.Width / columns;
+            int buttonSize = gridPanel.Width / columns;
             AddHorizontalLabels(buttonSize);
             AddVerticalLabels(buttonSize);
             AddButtons(buttonSize);
@@ -23,12 +23,12 @@ namespace Vsite.Oom.Battleship.Model.BattleshipGUI
 
         void AddHorizontalLabels(int buttonSize)
         {
-            int left = panel1.Left;
+            int left = gridPanel.Left;
             for (int c = 0; c < columns; ++c)
             {
                 Label label = new Label
                 {
-                    Top = panel1.Top - buttonSize,
+                    Top = gridPanel.Top - buttonSize,
                     Left = left,
                     Width = buttonSize,
                     Height = buttonSize,
@@ -42,13 +42,13 @@ namespace Vsite.Oom.Battleship.Model.BattleshipGUI
 
         void AddVerticalLabels(int buttonSize)
         {
-            int top = panel1.Top;
+            int top = gridPanel.Top;
             for (int r = 0; r < rows; ++r)
             {
                 Label label = new Label
                 {
                     Top = top,
-                    Left = panel1.Left - buttonSize,
+                    Left = gridPanel.Left - buttonSize,
                     Width = buttonSize,
                     Height = buttonSize,
                     Text = (r + 1).ToString(),
@@ -62,10 +62,10 @@ namespace Vsite.Oom.Battleship.Model.BattleshipGUI
         void AddButtons(int buttonSize)
         {
             buttons = new Button[rows, columns];
-            int top = panel1.Top - buttonSize;
+            int top = gridPanel.Top - buttonSize;
             for (int r = 0; r < rows; ++r)
             {
-                int left = panel1.Left - buttonSize;
+                int left = gridPanel.Left - buttonSize;
                 for (int c = 0; c < columns; ++c)
                 {
                     Button button = new Button
@@ -78,7 +78,7 @@ namespace Vsite.Oom.Battleship.Model.BattleshipGUI
                         Text = "",
                         TextAlign = ContentAlignment.MiddleCenter
                     };
-                    panel1.Controls.Add(button);
+                    gridPanel.Controls.Add(button);
                     buttons[r, c] = button;
                     left += buttonSize;
                 }
@@ -86,42 +86,9 @@ namespace Vsite.Oom.Battleship.Model.BattleshipGUI
             }
         }
 
-        void FillGrid(Fleet fleet)
-        {
-            List<Ship> ships = new List<Ship>(fleet.Ships);
-            for (int i = 0; i < ships.Count(); ++i)
-            {
-                foreach (var square in ships[i].Squares)
-                {
-                    buttons[square.Row, square.Column].BackColor = shipColor;
-                }
-            }
-        }
-
-        void ClearGrid()
-        {
-            for (int r = 0; r < rows; ++r)
-            {
-                for (int c = 0; c < columns; ++c)
-                {
-                    buttons[r, c].BackColor = buttonColor;
-                }
-            }
-        }
-
         int rows = 10;
         int columns = 10;
         Button[,] buttons;
-        Fleet fleet = new Fleet();
-        Color shipColor = Color.Red;
         Color buttonColor = SystemColors.ControlLight;
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-            ClearGrid();
-            Shipwright sw = new Shipwright(rows, columns);
-            fleet = sw.CreateFleet(new int[] { 5, 4, 4, 3, 3, 3, 2, 2, 2, 2 });
-            FillGrid(fleet);
-        }
     }
 }

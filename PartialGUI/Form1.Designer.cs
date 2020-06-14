@@ -1,6 +1,6 @@
 ﻿using System.Windows.Forms;
 
-namespace Vsite.Oom.Battleship.Model.BattleshipGUI
+namespace Vsite.Oom.Battleship.Model.PartialGUI
 {
     partial class Form1
     {

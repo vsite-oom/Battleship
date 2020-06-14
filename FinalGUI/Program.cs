@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Vsite.Oom.Battleship.Model.BattleshipGUI
+namespace FinalGUI
 {
     static class Program
     {
@@ -16,7 +16,7 @@ namespace Vsite.Oom.Battleship.Model.BattleshipGUI
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form1());
+            Application.Run(new GameForm());
         }
     }
 }
