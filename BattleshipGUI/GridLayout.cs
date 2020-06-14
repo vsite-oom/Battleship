@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Vsite.Oom.Battleship.Model;
 
+
 namespace BattleshipGUI
 {
     enum Player
@@ -225,10 +226,10 @@ namespace BattleshipGUI
             base.OnPaint(e);
             DrawGrids(e.Graphics);
             DrawShips(e.Graphics);
-            DrawHits(e.Graphics);
+            DrawHits(e.Graphics,e);
         }
 
-        private void DrawHits(Graphics graphics)
+        private void DrawHits(Graphics graphics,PaintEventArgs e)
         {
             graphics = panel2.CreateGraphics();
             Pen myPen = new Pen(Brushes.Black, 1);
@@ -264,7 +265,7 @@ namespace BattleshipGUI
                     graphics.FillRectangle(Brushes.Green, rect);
                     
                 }
-                if (square.SquareState == SquareState.Hit)
+                if (square.SquareState == SquareState.Hit&&square.SquareState!=SquareState.Sunken)
                 {
                     graphics.FillRectangle(Brushes.Red, rect);  
                 }
@@ -282,14 +283,23 @@ namespace BattleshipGUI
             {
                 if (ship.Squares.Contains(square))
                 {
-                    foreach(var squares in ship.Squares)
+                    RectangleF rectf=new RectangleF((int)(square.Row * xspace) + 1, (int)(square.Column * yspace) + 1, (int)xspace - 1, (int)yspace - 1);
+                    foreach (var squares in ship.Squares)
                     {
-                        var rect = new Rectangle((int)(squares.Row * xspace) + 1, (int)(squares.Column * yspace) + 1, (int)xspace - 1, (int)yspace - 1);
-                        graphics.FillRectangle(Brushes.Yellow, rect);
+                        
+                        var rect = new RectangleF((int)(squares.Row * xspace) + 1, (int)(squares.Column * yspace) + 1, (int)xspace - 1, (int)yspace - 1);
+                        System.Drawing.RectangleF.Union(rect, rectf);
+                        //graphics.FillRectangle(Brushes.Yellow, rect);
+                        rectf= RectangleF.Union(rectf,rect);
+
+
                     }
+                    Rectangle unionRect = Rectangle.Truncate(rectf);
+                    graphics.FillRectangle(Brushes.Yellow, rectf);
                 }
             }
         }
+
 
         private void DrawGrids(Graphics graphics)
         {
