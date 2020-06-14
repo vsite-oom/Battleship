@@ -155,25 +155,28 @@ namespace Vsite.Oom.Battleship.Model
             }
             return result;
         }
-        public IEnumerable<IEnumerable<Square>> GetSquaresInLine(IEnumerable<Square> squaresHit)
+        public IEnumerable<IEnumerable<Square>> GetSquaresInline(IEnumerable<Square> squaresHit)
         {
-            List<IEnumerable<Square>> result = new List<Placement>();
-            //for horizontal ship
+            List<Placement> result = new List<Placement>();
+            //Horizontal
             if (squaresHit.First().Row == squaresHit.Last().Row)
             {
-                var l=GetSquaresNextTo(squaresHit.First(), Direction.Left);
+                var l = GetSquaresNextTo(squaresHit.First(), Direction.Left);
                 if (l.Count() > 0)
                     result.Add(l);
-                GetSquaresNextTo(squaresHit.Last(), Direction.Right);
+
+                l = GetSquaresNextTo(squaresHit.Last(), Direction.Right);
                 if (l.Count() > 0)
                     result.Add(l);
             }
+            //Vertical
             else if (squaresHit.First().Column == squaresHit.Last().Column)
             {
                 var l = GetSquaresNextTo(squaresHit.First(), Direction.Up);
                 if (l.Count() > 0)
                     result.Add(l);
-                GetSquaresNextTo(squaresHit.Last(), Direction.Down);
+
+                l = GetSquaresNextTo(squaresHit.Last(), Direction.Down);
                 if (l.Count() > 0)
                     result.Add(l);
             }
@@ -181,7 +184,17 @@ namespace Vsite.Oom.Battleship.Model
             {
                 Debug.Assert(false);
             }
+
             return result;
+        }
+        public List<Square> GetSquares()
+        {
+            List<Square> squaresL = new List<Square>();
+            foreach(var square in squares)
+            {
+                squaresL.Add(square);
+            }
+            return squaresL;
         }
         public readonly int Rows;
         public readonly int Columns;

@@ -16,16 +16,14 @@ namespace Vsite.Oom.Battleship.Model
         }
         public Square NextTarget()
         {
-            var l = evidenceGrid.GetSquaresInLine(squaresHit);
+            var l = evidenceGrid.GetSquaresInline(squaresHit);
             if (l.Count() == 1)
-            {
                 return l.ElementAt(0).First();
-            }
             var ordered = l.OrderByDescending(ls => ls.Count());
             int maxLen = ordered.First().Count();
             int shipLength = shipsToShoot[0];
-            if (maxLen > shipLength - squaresHit.Length)
-                maxLen = shipLength - squaresHit.Length;
+            if (maxLen > shipLength - squaresHit.Count())
+                maxLen = shipLength - squaresHit.Count();
             var longest = ordered.Where(ls => ls.Count() >= maxLen);
             int index = random.Next(0, longest.Count());
             return longest.ElementAt(index).First();

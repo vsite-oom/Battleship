@@ -11,31 +11,287 @@ using Vsite.Oom.Battleship.Model;
 
 namespace BattleshipGUI
 {
+    enum Player
+    {
+        Player,Computer
+    }
     public partial class GridLayout : Form
     {
-        Fleet fleet;
+        Player currentPlayer = Player.Player;
+        Gunner gunner;
+        Fleet playerFleet;
+        Grid playerEvidenceGrid=new Grid(10,10);
+        List<Square> hitList=new List<Square>();
         readonly int[] ships = new int[] { 2, 2, 2, 2, 3, 3, 3, 4, 4, 5 };
         public GridLayout()
         {
             InitializeComponent();
         }
+        //Functionality
+
+        private void GameOver()
+        {
+            button1.Enabled = true;
+            button2.Enabled = true;
+            button3.Enabled = true;
+            button4.Enabled = false;
+            button5.Enabled = false;
+            button6.Enabled = false;
+            textBox1.Enabled = false;
+            textBox2.Enabled = false;
+            textBox1.Text = "";
+            textBox2.Text = "";
+            playerFleet = null;
+            Invalidate();
+        }
+        private void StartNewGame()
+        {
+            button1.Enabled = false;
+            button2.Enabled = false;
+            button3.Enabled = false;
+            button4.Enabled = true;
+            button5.Enabled = true;
+            button6.Enabled = true;
+            textBox1.Enabled = true;
+            textBox2.Enabled = true;
+            WhoFirst();
+            playerEvidenceGrid = new Grid(10, 10);
+        }
+
+        private void WhoFirst()
+        {
+            if (MessageBox.Show("Do you wish to start first?", "Start new game", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+            {
+                currentPlayer = Player.Player;
+                return;
+            }
+            currentPlayer = Player.Computer;
+        }
+
+        private void DisplayDefeat()
+        {
+            DialogResult dr=MessageBox.Show("You lose. Play again?","Defeat",MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            PlayAgain(dr);
+        }
+        
+        private void DisplayVictory()
+        {
+            DialogResult dr = MessageBox.Show("Congratulations,you win. Play again?", "Victory!", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            PlayAgain(dr);
+        }
+
+        private void PlayAgain(DialogResult dr)
+        {
+            if (dr == DialogResult.Yes)
+            {
+                GameOver();
+            }
+            else
+            {
+                Close();
+            }
+        }
 
         private void button1_Click(object sender, EventArgs e)
         {
+            //draw player playerFleet
             var shipBuilder = new Shipwright(10, 10);
             try
             {
-                fleet = shipBuilder.CreateFleet(ships);
+                playerFleet = shipBuilder.CreateFleet(ships);
             }
             catch
             {
-                fleet = shipBuilder.CreateFleet(ships);
+                playerFleet = shipBuilder.CreateFleet(ships);
             }
-            
+
+            Invalidate();
+        }
+        private void button2_Click(object sender, EventArgs e)
+        {
+            //delete player playerFleet
+            playerFleet = null;
+            Invalidate();
+        }
+        private void button3_Click(object sender, EventArgs e)
+        {
+            //start game
+            if (playerFleet == null)
+            {
+                MessageBox.Show("No fleet!");
+                return;
+            }
+            gunner = new Gunner(10, 10, ships);
+            StartNewGame();
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            //surrender
+            DialogResult dr = MessageBox.Show("Are you sure you want to surrender?", "Surrender", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (dr == DialogResult.Yes)
+            {
+                DisplayDefeat();
+            }
+        }
+        private void button5_Click(object sender, EventArgs e)
+        {
+            //From textbox1 mark a specific cube as hit/sunken
+            try
+            {
+                //Translator(textBox1.Text);
+            }
+            catch (ArgumentOutOfRangeException)
+            {
+                MessageBox.Show("Wrong input please try again", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            textBox1.Text = "";
             Invalidate();
         }
 
-        private void drawGrids(Graphics graphics)
+        private void button6_Click(object sender, EventArgs e)
+        {
+            Square square = new Square(0, 0);
+            try
+            {
+               // square=Translator(textBox2.Text);
+            }
+            catch(ArgumentOutOfRangeException)
+            {
+                MessageBox.Show("Wrong input please try again","Error",MessageBoxButtons.OK,MessageBoxIcon.Error);
+            }
+            Shoot(square);
+        }
+
+        private bool FleetIsSunken(Fleet fleet)
+        {
+            foreach (var ship in fleet.Ships)
+            {
+                if (!ShipIsSunken(ship))
+                    return false;
+            }
+            return true;
+        }
+
+        private bool ShipIsSunken(Ship ship)
+        {
+
+            if (ship.Squares.Last().SquareState == SquareState.Sunken)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        private Square Translator(string target)
+        {
+            int column = char.ToUpper(target[0]) - 'A';
+
+            target.Trim();
+            if (column < 0 || column >= 10)
+                throw new ArgumentOutOfRangeException();
+            int i = 1;
+            while (!char.IsDigit(target[i]))
+                ++i;
+            int row = int.Parse(target.Substring(i)) - 1;
+            if (row >= 10)
+                throw new ArgumentOutOfRangeException();
+            return new Square(row, column);
+
+        }
+        private void Shoot(Square square)
+        {
+            //Notify grid/square/fleet that the field is shot
+            //call paint to paint it
+
+            square = gunner.NextTarget();
+            HitResult hitResult = playerFleet.Hit(square);
+            gunner.ProcessHitResult(hitResult);
+            playerEvidenceGrid.MarkHitResult(square, hitResult);
+            textBox2.Text = "";
+            textBox1.Text = square.Column.ToString() + square.Row.ToString();
+            if (FleetIsSunken(playerFleet))
+            {
+                DisplayVictory();
+            }
+
+            
+
+            
+        }
+        //Drawing
+        protected override void OnPaint(PaintEventArgs e)
+        {
+            base.OnPaint(e);
+            DrawGrids(e.Graphics);
+            DrawShips(e.Graphics);
+            DrawHits(e.Graphics);
+        }
+
+        private void DrawHits(Graphics graphics)
+        {
+            graphics = panel2.CreateGraphics();
+            Pen myPen = new Pen(Brushes.Black, 1);
+            Font myFont = new Font("Arial", 10);
+            int lines = 10;
+            float xspace = panel1.Height / lines;
+            float yspace = panel1.Width / lines - 1;
+            if (playerEvidenceGrid == null)
+            {
+                throw new NullReferenceException();
+            }
+            if (playerFleet == null)
+            {
+                foreach (var square in playerEvidenceGrid.GetSquares())
+                {
+                    var rect = new Rectangle((int)(square.Row * xspace) + 1, (int)(square.Column * yspace) + 1, (int)xspace - 1, (int)yspace - 1);
+                    graphics.FillRectangle(Brushes.Gray, rect);
+                    
+                }
+                playerEvidenceGrid = new Grid(10, 10);
+                return;
+            }
+            foreach (var square in playerEvidenceGrid.GetSquares())
+            {
+                var rect = new Rectangle((int)(square.Row * xspace) + 1, (int)(square.Column* yspace) + 1, (int)xspace - 1, (int)yspace - 1);
+                if (square.SquareState == SquareState.None)
+                {
+                    graphics.FillRectangle(Brushes.Gray, rect);
+                    
+                }
+                if (square.SquareState == SquareState.Missed)
+                {
+                    graphics.FillRectangle(Brushes.Green, rect);
+                    
+                }
+                if (square.SquareState == SquareState.Hit)
+                {
+                    graphics.FillRectangle(Brushes.Red, rect);  
+                }
+                if (square.SquareState == SquareState.Sunken)
+                {
+                    ColorShipWithSquare(square, xspace, yspace, graphics);
+                }
+
+            }
+        }
+
+        private void ColorShipWithSquare(Square square, float xspace, float yspace,Graphics graphics)
+        {
+            foreach(var ship in playerFleet.Ships)
+            {
+                if (ship.Squares.Contains(square))
+                {
+                    foreach(var squares in ship.Squares)
+                    {
+                        var rect = new Rectangle((int)(squares.Row * xspace) + 1, (int)(squares.Column * yspace) + 1, (int)xspace - 1, (int)yspace - 1);
+                        graphics.FillRectangle(Brushes.Yellow, rect);
+                    }
+                }
+            }
+        }
+
+        private void DrawGrids(Graphics graphics)
         {
             graphics = panel1.CreateGraphics();
             DrawGrid(graphics);
@@ -65,110 +321,60 @@ namespace BattleshipGUI
             }
         }
 
-        private void drawShips(Graphics graphics)
+        private void DrawShips(Graphics graphics)
         {
             graphics = panel1.CreateGraphics();
-            Pen mypen = new Pen(Brushes.Black, 1);
-            Font myfont = new Font("Arial", 10);
+            Pen myPen = new Pen(Brushes.Black, 1);
+            Font myFont = new Font("Arial", 10);
             int lines = 10;
             float xspace = panel1.Height / lines;
             float yspace = panel1.Width / lines - 1;
-            if (fleet != null)
+            if (playerFleet != null)
             {
-                List<Square> shipsquares = new List<Square>();
-                foreach (var ship in fleet.Ships)
+                List<Square> shipsafesquares = new List<Square>();
+                foreach (var ship in playerFleet.Ships)
                 {
                     foreach (var square in ship.Squares)
                     {
-                        shipsquares.Add(square);
+                        shipsafesquares.Add(square);
                     }
                 }
                 for (int i = 0; i < lines; ++i)
                 {
                     for (int j = 0; j < lines; ++j)
                     {
-                        var rect = new Rectangle((int)(i * xspace) + 1, (int)(j * yspace) + 1, (int)xspace - 1, (int)yspace - 1);
-                        if (shipsquares.Contains(new Square(i, j)))
-                        {
-                            graphics.FillRectangle(Brushes.BlueViolet, rect);
-                        }
-                        else
-                        {
-                            graphics.FillRectangle(Brushes.WhiteSmoke, rect);
-                        }
+                        FillSquareBasedOnState(graphics, xspace, yspace, shipsafesquares, i, j);
                     }
                 }
             }
             else
             {
-                for (int i = 0; i < lines; ++i)
-                {
-                    for (int j = 0; j < lines; ++j)
-                    {
-                        var rect = new Rectangle((int)(i * xspace) + 1, (int)(j * yspace) + 1, (int)xspace - 1, (int)yspace - 1);
-                        graphics.FillRectangle(Brushes.WhiteSmoke, rect);
-                    }
-                }
-            } 
-        }
-        protected override void OnPaint(PaintEventArgs e)
-        {
-            base.OnPaint(e);
-            drawGrids(e.Graphics);
-            drawShips(e.Graphics);
-        }
-
-        private void button2_Click(object sender, EventArgs e)
-        {
-            fleet = null;
-            Invalidate();
-        }
-
-        private void button3_Click(object sender, EventArgs e)
-        {
-            if (fleet == null)
-            {
-                MessageBox.Show("No fleet!");
-                return;
+                FillEmptySquares(graphics, lines, xspace, yspace);
             }
-            button1.Enabled = false;
-            button2.Enabled = false;
-            button3.Enabled = false;
-            button4.Enabled = true;
-            button5.Enabled = true;
-            button6.Enabled = true;
-            textBox1.Enabled = true;
-            textBox2.Enabled = true;
         }
 
-        private void button4_Click(object sender, EventArgs e)
+        private static void FillSquareBasedOnState(Graphics graphics, float xspace, float yspace, List<Square> shipsafesquares, int i, int j)
         {
-            button1.Enabled = true;
-            button2.Enabled = true;
-            button3.Enabled = true;
-            button4.Enabled = false;
-            button5.Enabled = false;
-            button6.Enabled = false;
-            textBox1.Enabled = false;
-            textBox2.Enabled = false;
-            textBox1.Text = "";
-            textBox2.Text = "";
-            DisplayDefeat();
+            var rect = new Rectangle((int)(i * xspace) + 1, (int)(j * yspace) + 1, (int)xspace - 1, (int)yspace - 1);
+            if (shipsafesquares.Contains(new Square(i, j)))
+            {
+                graphics.FillRectangle(Brushes.BlueViolet, rect);
+            }
+            else
+            {
+                graphics.FillRectangle(Brushes.WhiteSmoke, rect);
+            }
         }
-
-        private void DisplayDefeat()
+        private static void FillEmptySquares(Graphics graphics, int lines, float xspace, float yspace)
         {
-            MessageBox.Show("You lose.");
-        }
-
-        private void button5_Click(object sender, EventArgs e)
-        {
-            textBox1.Text = "";
-        }
-
-        private void button6_Click(object sender, EventArgs e)
-        {
-            textBox2.Text = "";
+            for (int i = 0; i < lines; ++i)
+            {
+                for (int j = 0; j < lines; ++j)
+                {
+                    var rect = new Rectangle((int)(i * xspace) + 1, (int)(j * yspace) + 1, (int)xspace - 1, (int)yspace - 1);
+                    graphics.FillRectangle(Brushes.WhiteSmoke, rect);
+                }
+            }
         }
     }
 }
