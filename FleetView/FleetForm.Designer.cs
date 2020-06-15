@@ -52,6 +52,7 @@
 			this.Play.Text = "Play Game";
 			this.Play.UseVisualStyleBackColor = true;
 			this.Play.Visible = false;
+			this.Play.Click += new System.EventHandler(this.Play_Click);
 			// 
 			// button1
 			// 

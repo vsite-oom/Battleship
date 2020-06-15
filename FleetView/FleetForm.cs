@@ -81,6 +81,7 @@ namespace FleetView
 				case HitResult.Missed:
 					{
 						button.BackColor = Color.FromArgb(255,0,255);
+						NextTurn();
 						break;
 					}
 				case HitResult.Sunken:
@@ -88,13 +89,13 @@ namespace FleetView
 						foreach (var sunken in pcFleetToPlayWith.Ships.Where(s => s.Squares.Contains(point)).SelectMany(s => s.Squares))
 						{
 							opponent[sunken.Row, sunken.Col].BackColor = Color.FromArgb(255, 51, 51);
-							countSunkenShipsMe++;
-							if(countSunkenShipsMe == 10)
-							{
-								string message = "You Win!";
-								string title = "You Win!";
-								MessageBox.Show(message, title);
-							}
+						}
+						countSunkenShipsMe++;
+						if (countSunkenShipsMe == 10)
+						{
+							string message = "You Win!";
+							string title = "You Win!";
+							MessageBox.Show(message, title);
 						}
 						break;
 					}
@@ -102,7 +103,49 @@ namespace FleetView
 
 		}
 
-		
+		private void NextTurn()
+		{
+			Square point = gunner.NextTarget();
+			HitResult hitResult = myFleetToPlayWith.Hit(point);
+			gunner.ProcessHitResult(hitResult);
+			switch (hitResult)
+			{
+				case HitResult.Hit:
+					{
+						myFleet[point.Row, point.Col].BackColor = Color.FromArgb(204,0,0);
+						NextTurn();
+						break;
+					}
+				case HitResult.Missed:
+					{
+						myFleet[point.Row, point.Col].BackColor = Color.FromArgb(255,0,255);
+						break;
+					}
+				case HitResult.Sunken:
+					{
+						foreach (var sunken in myFleetToPlayWith.Ships.Where(s => s.Squares.Contains(point)).SelectMany(s => s.Squares))
+						{
+							myFleet[sunken.Row, sunken.Col].BackColor = Color.FromArgb(255,51,51);
+						}
+						countSunkenShipsPc++;
+						if (countSunkenShipsPc == 10)
+						{
+							string message = "You Lose!";
+							string title = "You Lose!";
+							MessageBox.Show(message, title);
+						}
+						NextTurn();
+						break;
+					}
+			}
+
+		}
+		private void Play_Click(object sender, EventArgs e)
+		{
+			Arrange.Visible = false;
+			check = true;
+		}
+
 		private int rows = 10;
 		private int cols = 10;
 		private Btn[,] myFleet = new Btn[10, 10];

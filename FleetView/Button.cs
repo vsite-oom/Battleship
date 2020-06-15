@@ -7,7 +7,7 @@ using System.Windows.Forms;
 
 namespace FleetView
 {
-	public class Btn : Button
+	class Btn : Button
 	{
 		public int x;
 		public int y;
