@@ -14,7 +14,6 @@ namespace GUI
     public partial class Form1 : Form
     {
         Shipwright sw = new Shipwright(10, 10);
-        Shipwright swIgrac;
         Fleet FleetAi;
         Fleet FleetIgrac;
         Gunner gunner;
@@ -23,13 +22,14 @@ namespace GUI
 
         public Form1()
         {
-            
+
             InitializeComponent();
             AddButtons();
             AddRowColumnIds();
         }
 
-        private void AddButtons() {
+        private void AddButtons()
+        {
             for (int i = 0; i < 10; i++)
             {
                 for (int j = 0; j < 10; j++)
@@ -76,7 +76,7 @@ namespace GUI
                     Height = 50,
                     Location = new Point(30, 20 + 51 * (i + 1))
                 };
-                
+
                 Label rowId2 = new Label
                 {
                     Text = (i + 1).ToString(),
@@ -100,13 +100,14 @@ namespace GUI
                     Text = Convert.ToString((char)('A' + i)),
                     Width = 50,
                     Height = 50,
-                    Location = new Point(620 +(20 + 51 * (i + 1)), 20)
+                    Location = new Point(620 + (20 + 51 * (i + 1)), 20)
                 };
                 this.Controls.Add(columnId);
                 this.Controls.Add(columnId2);
             }
         }
-        private void refreshSunken(Panel panel,Fleet fleet) {
+        private void refreshSunken(Panel panel, Fleet fleet)
+        {
             foreach (var ship in fleet.Ships)
             {
                 foreach (var square in ship.squares)
@@ -115,20 +116,21 @@ namespace GUI
                     {
                         if (square.Equals(button.Tag))
                         {
-                            if(square.SquareState == SquareState.Sunken)
-                            button.BackColor = Color.DarkRed;
+                            if (square.SquareState == SquareState.Sunken)
+                                button.BackColor = Color.DarkRed;
                         }
                     }
                 }
             }
         }
-        private void igracButton_Click(object sender, EventArgs e)
+
+        private void resetButtonBorders()
         {
-            foreach (Button bu in aiPanel.Controls) {
+            foreach (Button bu in aiPanel.Controls)
+            {
                 bu.FlatStyle = FlatStyle.Flat;
                 bu.FlatAppearance.BorderColor = Color.Gray;
                 bu.FlatAppearance.BorderSize = 1;
-
             }
 
             foreach (Button bu in igracPanel.Controls)
@@ -137,10 +139,13 @@ namespace GUI
                 bu.FlatAppearance.BorderColor = Color.Gray;
                 bu.FlatAppearance.BorderSize = 1;
             }
-
+        }
+        private void playerTurn(object sender)
+        {
             Button button = (Button)sender;
             HitResult hitResult = FleetAi.Hit((Square)button.Tag);
-            switch (hitResult) {
+            switch (hitResult)
+            {
                 case HitResult.Hit:
                     button.BackColor = Color.Red;
                     break;
@@ -150,111 +155,141 @@ namespace GUI
                 case HitResult.Sunken:
                     button.BackColor = Color.DarkRed;
                     shipCountAi--;
+                    refreshSunken(aiPanel, FleetAi);
                     brodoviAi.Text = "Ships left (AI): " + shipCountAi;
-                    refreshSunken(aiPanel,FleetAi);
-                    
-                    
-                    
                     break;
             }
+
+            //add blue border to last move played for player
             button.FlatStyle = FlatStyle.Flat;
             button.FlatAppearance.BorderColor = Color.Blue;
             button.FlatAppearance.BorderSize = 2;
             button.Enabled = false;
-            this.ActiveControl = null;
-            
-            //this.Enabled = false;
-            //this.UseWaitCursor = true;
-            //await Task.Delay(800);
-            //this.Enabled = true;
-            //this.UseWaitCursor = false;
 
+            //remove focus 
+            this.ActiveControl = null;
+
+
+        }
+
+        private void aiTurn()
+        {
             Square target = gunner.NextTarget();
-            hitResult = FleetIgrac.Hit(target);
+            HitResult hitResult = FleetIgrac.Hit(target);
             gunner.ProcessHitResult(hitResult);
-            Button b= new Button();
-            foreach (Button but in igracPanel.Controls) {
-                if (but.Tag.Equals(target)) {
-                    b = but;
+            Button button = new Button();
+
+            //find button that represents target
+            foreach (Button but in igracPanel.Controls)
+            {
+                if (but.Tag.Equals(target))
+                {
+                    button = but;
                 }
-                
+
             }
 
             switch (hitResult)
             {
                 case HitResult.Hit:
-                    b.BackColor = Color.Red;
+                    button.BackColor = Color.Red;
                     break;
                 case HitResult.Missed:
-                    b.BackColor = Color.LightGray;
+                    button.BackColor = Color.LightGray;
                     break;
                 case HitResult.Sunken:
-                    b.BackColor = Color.DarkRed;
+                    button.BackColor = Color.DarkRed;
                     shipCountIgrac--;
-                    refreshSunken(igracPanel,FleetIgrac);
+                    refreshSunken(igracPanel, FleetIgrac);
                     brodoviIgrac.Text = "Ships left (Igrac): " + shipCountIgrac.ToString();
-                    
                     break;
             }
-            b.FlatStyle = FlatStyle.Flat;
-            b.FlatAppearance.BorderColor = Color.Blue;
-            b.FlatAppearance.BorderSize = 2;
 
-            zadnjiPotezAi.Text = target.Row.ToString() + "  " + target.Column.ToString();
+            //add blue border to last move played for AI
+            button.FlatStyle = FlatStyle.Flat;
+            button.FlatAppearance.BorderColor = Color.Blue;
+            button.FlatAppearance.BorderSize = 2;
 
-            if (FleetAi.AllShipsSunken())
+            //display last move for AI
+            zadnjiPotezAi.Text = (target.Column + 1).ToString() + "-" + ((char)('A' + target.Row)).ToString() + " - " + hitResult.ToString();
+        }
+
+
+        private void igracButton_Click(object sender, EventArgs e)
+        {
+            resetButtonBorders();
+
+            // Player turn to play
+            playerTurn(sender);
+
+            //this.Enabled = false;
+            //await Task.Delay(800);
+            //this.Enabled = true;
+
+
+            // Ai turn to play
+            aiTurn();
+
+            //check for winning condition
+            if (shipCountAi == 0)
             {
-                MessageBox.Show("Pobjeda");
+                MessageBox.Show("Win");
 
-                foreach (Button but in aiPanel.Controls)
+                foreach (Button button in aiPanel.Controls)
                 {
-                    but.Enabled = false;
+                    button.Enabled = false;
                 }
                 return;
             }
-            if (FleetIgrac.AllShipsSunken())
+            if (shipCountIgrac == 0)
             {
-                MessageBox.Show("Poraz");
-                foreach (Button but in aiPanel.Controls)
+                MessageBox.Show("You lost");
+                foreach (Button button in aiPanel.Controls)
                 {
-                    but.Enabled = false;
+                    button.Enabled = false;
                 }
                 return;
             }
         }
 
-
+        //new game button
         private void resetbutton_Click(object sender, EventArgs e)
         {
-            //reset map
+            //reset maps square color and border
             foreach (Button button in aiPanel.Controls)
             {
-                    button.BackColor = Color.White;
-                    button.Enabled = true;
+                button.BackColor = Color.White;
+                button.Enabled = true;
+                button.FlatAppearance.BorderColor = Color.Gray;
+                button.FlatAppearance.BorderSize = 1;
             }
             foreach (Button button in igracPanel.Controls)
             {
-                    button.BackColor = Color.White;
+                button.BackColor = Color.White;
+                button.FlatAppearance.BorderColor = Color.Gray;
+                button.FlatAppearance.BorderSize = 1;
             }
-
-            
+            zadnjiPotezAi.Text = "";
 
             try
             {
-                swIgrac = new Shipwright(10, 10);
+                //create fleets and gunner   
                 FleetAi = sw.CreateFleet(new int[] { 5, 4, 4, 3, 3, 3, 2, 2, 2, 2 });
-                FleetIgrac = swIgrac.CreateFleet(new int[] { 5, 4, 4, 3, 3, 3, 2, 2, 2, 2 });
+                FleetIgrac = sw.CreateFleet(new int[] { 5, 4, 4, 3, 3, 3, 2, 2, 2, 2 });
                 gunner = new Gunner(10, 10, new int[] { 5, 4, 4, 3, 3, 3, 2, 2, 2, 2 });
+
+                //store and display ship counts
                 shipCountAi = FleetAi.Ships.Count();
                 shipCountIgrac = FleetIgrac.Ships.Count();
-                brodoviAi.Text ="Ships left (AI): " +  shipCountAi;
+                brodoviAi.Text = "Ships left (AI): " + shipCountAi;
                 brodoviIgrac.Text = "Ships left (Igrac): " + shipCountIgrac;
+
                 //add ships to map
                 foreach (var ship in FleetIgrac.Ships)
                 {
                     foreach (var square in ship.squares)
                     {
-                        foreach(Button button in igracPanel.Controls)
+                        foreach (Button button in igracPanel.Controls)
                         {
                             if (square.Equals(button.Tag))
                             {
@@ -265,12 +300,13 @@ namespace GUI
                 }
             }
             //random adding of ships has failed
-            catch (ArgumentOutOfRangeException) {
+            catch (ArgumentOutOfRangeException)
+            {
                 MessageBox.Show("Neuspješno slaganje brodova");
             }
-            
+
         }
 
-      
+
     }
 }
