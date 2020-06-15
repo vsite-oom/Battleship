@@ -19,11 +19,11 @@ namespace BattleshipGUI
     }
     public partial class GridLayout : Form
     {
-        Player currentPlayer = Player.Player;
         Gunner gunner;
         static int size = 10;
         Fleet playerFleet;
         Fleet computerFleet;
+        List<Square> hitList = new List<Square>();
         Grid playerEvidenceGrid=new Grid(size,size);
         Grid playerShootingGrid=new Grid(size,size);
         
@@ -40,11 +40,8 @@ namespace BattleshipGUI
             button2.Enabled = true;
             button3.Enabled = true;
             button4.Enabled = false;
-            button5.Enabled = false;
             button6.Enabled = false;
-            textBox1.Enabled = false;
             textBox2.Enabled = false;
-            textBox1.Text = "";
             textBox2.Text = "";
             playerFleet = null;
             computerFleet = null;
@@ -56,9 +53,7 @@ namespace BattleshipGUI
             button2.Enabled = false;
             button3.Enabled = false;
             button4.Enabled = true;
-            button5.Enabled = true;
             button6.Enabled = true;
-            textBox1.Enabled = true;
             textBox2.Enabled = true;
             
             
@@ -69,17 +64,9 @@ namespace BattleshipGUI
         {
             if (MessageBox.Show("Do you wish to start first?", "Start new game", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
             {
-                currentPlayer = Player.Player;
                 return;
             }
-            currentPlayer = Player.Computer;
-            FireAtPlayer();
-        }
-
-        private void FireAtPlayer()
-        {
-            Thread.Sleep(1000);
-            Shoot();
+            ShootComputer();
         }
 
         private void DisplayDefeat()
@@ -126,13 +113,13 @@ namespace BattleshipGUI
             {
                 computerFleet = shipBuilder.CreateFleet(ships);
             }
-            Invalidate();
+            InvalidatePlayer();
         }
         private void button2_Click(object sender, EventArgs e)
         {
             //delete player playerFleet
             playerFleet = null;
-            Invalidate();
+            InvalidatePlayer();
         }
         private void button3_Click(object sender, EventArgs e)
         {
@@ -155,19 +142,66 @@ namespace BattleshipGUI
                 DisplayDefeat();
             }
         }
-        private void button5_Click(object sender, EventArgs e)
-        {
-            //Testing purpouses
-            //Shoots With computer
-            Shoot();
-
-        }
 
         private void button6_Click(object sender, EventArgs e)
         {
-            Shoot();
+            if(ShootPlayer())
+                ShootComputer();
+            CheckEndGame();
         }
 
+        private void ShootComputer()
+        {
+            Square square;
+            HitResult hitResult;
+            square = gunner.NextTarget();
+            hitResult = playerFleet.Hit(square);
+            gunner.ProcessHitResult(hitResult);
+            playerEvidenceGrid.MarkHitResult(square, hitResult);
+            InvalidatePlayer();
+            if (hitResult == HitResult.Sunken)
+            {
+                MarkSurrounding(square, playerEvidenceGrid, playerFleet);
+            }
+            
+        }
+
+        private bool ShootPlayer()
+        {
+            Square square=new Square(-1,-1);
+            HitResult hitResult;
+            try
+            {
+                square = Translator(textBox2.Text);
+            }
+            catch (ArgumentOutOfRangeException)
+            {
+                MessageBox.Show("Invalid input.");
+            }
+            catch (IndexOutOfRangeException)
+            {
+                MessageBox.Show("Invalid input.");
+            }
+
+            if (square.Row == -1 || square.Column == -1)
+                return false;
+            if (hitList.Contains(square))
+            {
+                textBox2.Text = "";
+                return false;
+            }
+            hitResult = computerFleet.Hit(square);
+            playerShootingGrid.MarkHitResult(square, computerFleet.Hit(square));
+            textBox2.Text = "";
+            InvalidateComputer();
+            Thread.Sleep(1000);
+            if (hitResult == HitResult.Sunken)
+            {
+                MarkSurrounding(square, playerShootingGrid, computerFleet);
+            }
+            hitList.Add(square);
+            return true;
+        }
         private bool FleetIsSunken(Fleet fleet)
         {
             foreach (var ship in fleet.Ships)
@@ -208,51 +242,41 @@ namespace BattleshipGUI
             return new Square(column, row);
 
         }
-        private void Shoot()
+
+        private void CheckEndGame()
         {
-            Square square;
-            if (currentPlayer == Player.Computer)
-            {
-                square = gunner.NextTarget();
-                HitResult hitResult = playerFleet.Hit(square);
-                gunner.ProcessHitResult(hitResult);
-                playerEvidenceGrid.MarkHitResult(square, hitResult);
-            }
-            else
-            {
-                //square = Translator(textBox2.Text);
-                //if (square.Row == -1 || square.Column == -1)
-                //    return;
-                square = gunner.NextTarget();
-                HitResult hitResult = computerFleet.Hit(square);
-                gunner.ProcessHitResult(hitResult);
-                playerShootingGrid.MarkHitResult(square,computerFleet.Hit(square));
-                textBox2.Text = "";
-                textBox1.Text = square.Column.ToString() + square.Row.ToString();
-            }
-            Invalidate();
-            if (FleetIsSunken(playerFleet))
-            {
-                DisplayDefeat();
-            }
-            else if (FleetIsSunken(computerFleet))
+            if (FleetIsSunken(computerFleet))
             {
                 DisplayVictory();
+                return;
+            }
+            else if (FleetIsSunken(playerFleet))
+            {
+                DisplayDefeat();
+                return;
             }
         }
+
+        private void InvalidateComputer()
+        {
+            Invalidate(panel2.Region);
+        }
+
+        private void InvalidatePlayer()
+        {
+            Invalidate(panel1.Region);
+        }
+
         //Drawing
         protected override void OnPaint(PaintEventArgs e)
         {
             base.OnPaint(e);
-            PaintPlayerGrid(e.Graphics, e);
-            PaintComputerGrid(e.Graphics, e);
 
-            if (!GameIsStarted())
-            {
+                PaintPlayerGrid(e.Graphics, e);
+                PaintComputerGrid(e.Graphics, e);
+
                 DrawGrids(e.Graphics);
-            }
-        
-            
+
         }
 
         private void PaintComputerGrid(Graphics graphics, PaintEventArgs e)
@@ -263,14 +287,17 @@ namespace BattleshipGUI
             int lines = size;
             float xspace = panel1.Height / lines;
             float yspace = panel1.Width / lines - 1;
-            if (playerEvidenceGrid == null)
+            if (playerShootingGrid == null)
             {
                 throw new NullReferenceException();
             }
             foreach (var square in playerShootingGrid.GetSquares())
             {
                 var rect = new Rectangle((int)(square.Row * xspace) + 1, (int)(square.Column * yspace) + 1, (int)xspace - 1, (int)yspace - 1);
-
+                if (square.SquareState == SquareState.None)
+                {
+                    graphics.FillRectangle(Brushes.LightSteelBlue, rect);
+                }
                 if (square.SquareState == SquareState.Missed)
                 {
                     graphics.FillRectangle(Brushes.LightSlateGray, rect);
@@ -282,15 +309,9 @@ namespace BattleshipGUI
                 }
                 if (square.SquareState == SquareState.Sunken)
                 {
-                    ColorShipWithSquare(square, xspace, yspace, graphics, computerFleet);
+                    ColorShipWithSquare(square, xspace, yspace, graphics, computerFleet,Brushes.Crimson);
                     DrawGrids(e.Graphics);
                 }
-            }
-            if (!GameIsStarted())
-            {
-                playerShootingGrid = new Grid(size, size);
-                DrawEmptyField(graphics, xspace, yspace, playerShootingGrid);
-
             }
         }
 
@@ -302,23 +323,23 @@ namespace BattleshipGUI
             int lines = size;
             float xspace = panel1.Height / lines;
             float yspace = panel1.Width / lines - 1;
-            if (playerShootingGrid == null)
+            if (playerEvidenceGrid == null)
             {
                 throw new NullReferenceException();
-            }
-            if (playerFleet == null)
-            {
-                DrawEmptyField(graphics, xspace, yspace,playerEvidenceGrid);
-                return;
             }
             foreach (var square in playerEvidenceGrid.GetSquares())
             {
                 var rect = new Rectangle((int)(square.Row * xspace) + 1, (int)(square.Column* yspace) + 1, (int)xspace - 1, (int)yspace - 1);
-
+                if (square.SquareState == SquareState.None)
+                {
+                    graphics.FillRectangle(Brushes.LightSteelBlue, rect);
+                }
+                if (playerFleet != null&& square.SquareState == SquareState.None) {
+                    ColorShipWithSquare(square, xspace, yspace, graphics, playerFleet,Brushes.Navy);
+                }
                 if (square.SquareState == SquareState.Missed)
                 {
                     graphics.FillRectangle(Brushes.LightSlateGray, rect);
-                    
                 }
                 if (square.SquareState == SquareState.Hit&&square.SquareState!=SquareState.Sunken)
                 {
@@ -326,40 +347,43 @@ namespace BattleshipGUI
                 }
                 if (square.SquareState == SquareState.Sunken)
                 {
-                    ColorShipWithSquare(square, xspace, yspace, graphics,playerFleet);
-                    DrawSurrounding(square, xspace, yspace, graphics);
+                    ColorShipWithSquare(square, xspace, yspace, graphics,playerFleet,Brushes.Crimson);
                     DrawGrids(e.Graphics);
                 }
             }
-            if (!GameIsStarted())
-            {
-                playerEvidenceGrid = new Grid(size, size);
-                DrawEmptyField(graphics, xspace, yspace, playerEvidenceGrid);
-                    DrawShips(graphics, xspace, yspace);
-
-            }
+            
         }
 
-        private void DrawSurrounding(Square square, float xspace, float yspace, Graphics graphics)
+        public void MarkSurrounding(Square square,Grid grid,Fleet fleet)
         {
-            //TODO: implement this
+            SquareTerminator terminator = new SquareTerminator(size, size);
+            Ship ship=new Ship(null);
+            foreach (var ships in fleet.Ships)
+            {
+                if (ships.ContainsSquare(square))
+                {
+                    ship = ships;
+                    break;
+                }
+            }
+            List<Square> squares = new List<Square>();
+            squares = terminator.ToEliminate(ship.Squares).ToList();
+            squares=squares.Except(ship.Squares).ToList();
+            squares=grid.GetSquares().Intersect(squares).ToList();
+            foreach(var squaree in squares)
+            {
+                squaree.SetState(HitResult.Missed);
+            }
             return;
         }
 
-        private void DrawShips(Graphics graphics, float xspace, float yspace)
-        {
-            foreach (var ship in playerFleet.Ships)
-            {
-                    ColorEntireship(graphics, xspace, yspace, ship, ship.Squares.First(), Brushes.LightSteelBlue, Brushes.BlueViolet);
-            }
-        }
+
 
         private void DrawEmptyField(Graphics graphics, float xspace, float yspace,Grid grid)
         {
             foreach (var square in grid.GetSquares())
             {
                 var rect = new Rectangle((int)(square.Row * xspace) + 1, (int)(square.Column * yspace) + 1, (int)xspace - 1, (int)yspace - 1);
-                graphics.FillRectangle(Brushes.LightSteelBlue, rect);
 
             }
             return;
@@ -370,7 +394,7 @@ namespace BattleshipGUI
             return !button1.Enabled;
         }
 
-        private static void ColorEntireship(Graphics graphics, float xspace, float yspace, Ship ship, Square square,Brush bottom,Brush top)
+        private static void ColorEntireship(Graphics graphics, float xspace, float yspace, Ship ship, Square square,Brush bottom)
         {
             RectangleF rectf = new RectangleF((int)(square.Row * xspace) + 1, (int)(square.Column * yspace) + 1, (int)xspace - 1, (int)yspace - 1);
             foreach (var squares in ship.Squares)
@@ -382,17 +406,16 @@ namespace BattleshipGUI
             }
             Rectangle unionRect = Rectangle.Truncate(rectf);
             graphics.FillRectangle(bottom, rectf);
-            graphics.FillEllipse(top, rectf);
         }
 
-        private void ColorShipWithSquare(Square square, float xspace, float yspace,Graphics graphics,Fleet fleet)
+        private void ColorShipWithSquare(Square square, float xspace, float yspace,Graphics graphics,Fleet fleet,Brush Brush1)
         {
             foreach(var ship in fleet.Ships)
             {
                 if (ship.ContainsSquare(square))
                 {
-                    ColorEntireship(graphics, xspace, yspace, ship, square, Brushes.Crimson, Brushes.DarkOrange);
-                }
+                    ColorEntireship(graphics, xspace, yspace, ship, square, Brush1);
+                } 
             }
         }
 
@@ -424,6 +447,16 @@ namespace BattleshipGUI
             {
                 graphics.DrawLine(mypen, x, y, lines * xspace, y);
                 y += yspace;
+            }
+        }
+
+        private void textBox2_KeyPress(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                button6_Click(sender, e);
+                e.Handled = true;
+                e.SuppressKeyPress = true;
             }
         }
     }
