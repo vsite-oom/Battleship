@@ -14,54 +14,65 @@ namespace BattleshipGUI
     public partial class Form1 : Form
     {
         Shipwright sw;
-        Fleet flt;
-        public Form1()
+        Fleet humanFleet;
+        Fleet neHumanFleet;
+        List<Button> humanButtons = new List<Button>();
+        List<Button> neHumanButtons = new List<Button>();
 
+        public Form1()
         {
             InitializeComponent();
-            
-            TableLayoutColumnStyleCollection ColumnStyles = BrodGUI.ColumnStyles;
-            foreach (ColumnStyle style in ColumnStyles)
+
+            for(int row = 0; row<10; row++)
             {
-                style.SizeType = SizeType.Percent;
-                style.Width = 10;
+                for (int column = 0; column < 10; column++)
+                {
+                    Button button = new Button();
+                    button.Size = new System.Drawing.Size(40, 40);
+                    button.Location = new System.Drawing.Point((column + 1) * 40, (row + 1) * 40);
+
+                    this.Controls.Add(button);
+                    humanButtons.Add(button);
+                }
             }
 
-            TableLayoutRowStyleCollection RowStyles = BrodGUI.RowStyles;
-            foreach (RowStyle style in RowStyles)
+            for (int row = 0; row < 10; row++)
             {
-                style.SizeType = SizeType.Percent;
-                style.Height = 10;
-            }
+                for (int column = 0; column < 10; column++)
+                {
+                    Button button = new Button();
+                    button.Size = new System.Drawing.Size(40, 40);
+                    button.Location = new System.Drawing.Point(440 + (column + 1) * 40, (row + 1) * 40);
 
-            sw = new Shipwright(10, 10);
-            List<int> shipLengths = new List<int> { 5, 4, 4, 3, 3, 3, 2, 2, 2, 2 };
-            flt = sw.CreateFleet(shipLengths);
+                    this.Controls.Add(button);
+                    neHumanButtons.Add(button);
+                }
+            }
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
             sw = new Shipwright(10, 10);
             List<int> shipLengths = new List<int> { 5, 4, 4, 3, 3, 3, 2, 2, 2, 2 };
-            flt = sw.CreateFleet(shipLengths);
+            humanFleet = sw.CreateFleet(shipLengths);
 
-            BrodGUI.Invalidate();
-        }
-        private void BS_CellPaint(object sender, TableLayoutCellPaintEventArgs e)
-        {
-            foreach (var ship in flt.Ships)
+            for (int row = 0; row < 10; row++)
             {
-                foreach (var item in ship.Squares)
+                for (int column = 0; column < 10; column++)
                 {
-                    if (e.Row == item.Row && e.Column == item.Column)
-                        e.Graphics.FillRectangle(Brushes.Blue, e.CellBounds);
+                    Square sq = new Square(row, column);
+                    foreach (Ship ship in humanFleet.Ships)
+                    {
+                        if(ship.Squares.Contains(sq))
+                        {
+                            humanButtons[row * 10 + column].BackColor = System.Drawing.Color.DarkGreen;
+                            break;
+                        }
+                        else
+                            humanButtons[row * 10 + column].BackColor = System.Drawing.Color.White;
+                    }
                 }
             }
-        }
-
-        private void Form1_Load(object sender, EventArgs e)
-        {
-
-        }
+        }            
     }
 }
