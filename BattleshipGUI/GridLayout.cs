@@ -335,13 +335,16 @@ namespace BattleshipGUI
                     graphics.FillRectangle(Brushes.LightSteelBlue, rect);
                 }
                 if (playerFleet != null&& square.SquareState == SquareState.None) {
-                    ColorShipWithSquare(square, xspace, yspace, graphics, playerFleet,Brushes.Navy);
+                    Ship ship=ColorShipWithSquare(square, xspace, yspace, graphics, playerFleet,Brushes.Navy);
+                    if (ship == null)
+                        continue;
+                    RedrawHits(ship, xspace, yspace, graphics, Brushes.Red);
                 }
                 if (square.SquareState == SquareState.Missed)
                 {
                     graphics.FillRectangle(Brushes.LightSlateGray, rect);
                 }
-                if (square.SquareState == SquareState.Hit&&square.SquareState!=SquareState.Sunken)
+                if (square.SquareState == SquareState.Hit)
                 {
                     graphics.FillRectangle(Brushes.Red, rect);  
                 }
@@ -352,6 +355,18 @@ namespace BattleshipGUI
                 }
             }
             
+        }
+
+        private void RedrawHits(Ship ship, float xspace, float yspace, Graphics graphics, Brush brush)
+        {
+            foreach(var square in ship.Squares)
+            {
+                var rect = new Rectangle((int)(square.Row * xspace) + 1, (int)(square.Column * yspace) + 1, (int)xspace - 1, (int)yspace - 1);
+                if (square.SquareState == SquareState.Hit)
+                {
+                    graphics.FillRectangle(brush, rect);
+                }
+            }
         }
 
         public void MarkSurrounding(Square square,Grid grid,Fleet fleet)
@@ -408,15 +423,17 @@ namespace BattleshipGUI
             graphics.FillRectangle(bottom, rectf);
         }
 
-        private void ColorShipWithSquare(Square square, float xspace, float yspace,Graphics graphics,Fleet fleet,Brush Brush1)
+        private Ship ColorShipWithSquare(Square square, float xspace, float yspace,Graphics graphics,Fleet fleet,Brush Brush1)
         {
             foreach(var ship in fleet.Ships)
             {
                 if (ship.ContainsSquare(square))
                 {
                     ColorEntireship(graphics, xspace, yspace, ship, square, Brush1);
+                    return ship;
                 } 
             }
+            return null;
         }
 
 
