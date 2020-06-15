@@ -9,7 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests", "UnitTests\Unit
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GUI", "PrikazBrodova\GUI.csproj", "{7ABA84F8-95C9-4B1E-8D10-7DFE37433F20}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BrojGadjanjaDoPrvogPogodjenog", "BrojGadjanjaDoPrvogPogodjenog\BrojGadjanjaDoPrvogPogodjenog.csproj", "{B3A54C00-8D7E-4DFF-B730-019098ED74B1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NasumicnaTaktikaGadjanja", "BrojGadjanjaDoPrvogPogodjenog\NasumicnaTaktikaGadjanja.csproj", "{B3A54C00-8D7E-4DFF-B730-019098ED74B1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
