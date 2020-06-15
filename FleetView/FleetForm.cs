@@ -28,12 +28,15 @@ namespace FleetView
 					grid[i, j].BackColor = Color.FromArgb(255,207,255);
 					grid[i, j].Location = new System.Drawing.Point(position + i * 40, 80 + j * 40);
 					grid[i, j].Size = new System.Drawing.Size(40, 40);
+					grid[i, j].Click += OnClickSquares;
 					this.Controls.Add(grid[i, j]);
 				}
 			}
 		}
 		private void Arrange_Click(object sender, EventArgs e)
 		{
+			ClearFleet(myFleet);
+			ClearFleet(opponent);
 			Play.Visible = true;
 			Shipwright ship = new Shipwright(rows, cols);
 			var fleetOfUser= ship.CreateFleet(sizeOfShip);
@@ -50,8 +53,56 @@ namespace FleetView
 				}
 			}
 		}
+		private void ClearFleet(Button[,] fleet)
+		{
+			for (int i = 0; i < rows; i++)
+			{
+				for (int j = 0; j < cols; j++)
+				{
+					fleet[i, j].BackColor = Color.FromArgb(255,207,255);
+				}
+			}
+		}
 		
+		private void OnClickSquares(object sender, EventArgs e)
+		{
+			if (check == false)
+				return;
+			Btn button = sender as Btn;
+			Square point = new Square(button.x, button.y);
+			HitResult hitResult = pcFleetToPlayWith.Hit(point);
+			switch (hitResult)
+			{
+				case HitResult.Hit:
+					{
+						button.BackColor = Color.FromArgb(204, 0, 0);
+						break;
+					}
+				case HitResult.Missed:
+					{
+						button.BackColor = Color.FromArgb(255,0,255);
+						break;
+					}
+				case HitResult.Sunken:
+					{
+						foreach (var sunken in pcFleetToPlayWith.Ships.Where(s => s.Squares.Contains(point)).SelectMany(s => s.Squares))
+						{
+							opponent[sunken.Row, sunken.Col].BackColor = Color.FromArgb(255, 51, 51);
+							countSunkenShipsMe++;
+							if(countSunkenShipsMe == 10)
+							{
+								string message = "You Win!";
+								string title = "You Win!";
+								MessageBox.Show(message, title);
+							}
+						}
+						break;
+					}
+			}
 
+		}
+
+		
 		private int rows = 10;
 		private int cols = 10;
 		private Btn[,] myFleet = new Btn[10, 10];
@@ -61,6 +112,12 @@ namespace FleetView
 		private Gunner gunner;
 		private int[] sizeOfShip = new int[] { 5, 4, 4, 3, 3, 3, 2, 2, 2, 2 };
 		bool check = false;
+		int countSunkenShipsPc = 0;
+		int countSunkenShipsMe = 0;
 
+		private void Quit_Game(object sender, EventArgs e)
+		{
+			Application.Exit();
+		}
 	}
 }
