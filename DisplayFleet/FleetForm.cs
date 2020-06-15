@@ -62,7 +62,6 @@ namespace DisplayFleet
                     p[i, j].BackColor = System.Drawing.SystemColors.ControlLightLight;
                     p[i, j].Location = new System.Drawing.Point(pos + i * 35, 50 + j * 35);
                     p[i, j].Size = new System.Drawing.Size(35, 35);
-                    p[i, j].TabStop = false;
                     p[i, j].Click += HitSquare;
                     this.Controls.Add(p[i, j]);
                 }
