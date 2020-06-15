@@ -46,17 +46,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Button.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="FleetForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="FleetForm.Designer.cs">
       <DependentUpon>FleetForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="GridForFleet.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="GridForFleet.Designer.cs">
-      <DependentUpon>GridForFleet.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
