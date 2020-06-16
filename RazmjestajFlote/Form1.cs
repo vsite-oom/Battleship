@@ -28,6 +28,8 @@ namespace RazmjestajFlote
             AddFields(playingGrid, positionB);
             AddColumnLabels(positionC);
             AddRowLabels(positionR);
+            label1.Text = playersCounter.ToString();
+            label2.Text = playersCounter.ToString();
         }
         void AddColumnLabels(int positionC)
         {
@@ -97,7 +99,6 @@ namespace RazmjestajFlote
         Color shipHit = Color.FromArgb(80, 132, 186);
         Color shipSunken = Color.FromArgb(195, 35, 35);
         
-
         private void GridReset(Button[,] buttons)
         {
             for (int i = 0; i < 10; ++i)
@@ -134,6 +135,7 @@ namespace RazmjestajFlote
         }
         public static int playersCounter = 10;
         public static int computersCounter = 10;
+       
         private void GridButtonClick(object sender, System.EventArgs e)
         {
             if (!button1Called)
@@ -164,6 +166,7 @@ namespace RazmjestajFlote
                     {
                         ShipIsSunken(computerGrid, computersFleet, field);
                         computersCounter--;
+                        label2.Text = playersCounter.ToString();
                         if (computersCounter == 0)
                         {
                             string message = "Pobjeda!";
@@ -197,6 +200,7 @@ namespace RazmjestajFlote
                     {
                         ShipIsSunken(playerGrid, playersFleet, field);
                         playersCounter--;
+                        label1.Text = playersCounter.ToString();
                         if (computersCounter == 0)
                         {
                             string message = "Izgubili ste!";
