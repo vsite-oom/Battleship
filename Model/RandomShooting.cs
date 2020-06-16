@@ -15,13 +15,13 @@ namespace Vsite.Oom.Battleship.Model
         }
         public Square NextTarget()
         {
+            int shipLength = shipsToShoot[0];
             var placement = evidenceGrid.GetAvailablePlacements(shipLength);
             var allCandidates = placement.SelectMany(seq => seq);
             var groups = allCandidates.GroupBy(sq => sq);
             var maxCount = groups.Max(g => g.Count());
             var largestGroup = groups.Where(g => g.Count() == maxCount);
             var mostCommon = largestGroup.Select(g => g.Key);
-            int shipLength = shipsToShoot[0];
             if (mostCommon.Count() == 1)
                 return mostCommon.First();
             int index = random.Next(0, mostCommon.Count());

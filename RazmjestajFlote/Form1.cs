@@ -17,12 +17,19 @@ namespace RazmjestajFlote
         Square s = new Square(10, 10);
         public Form1()
         {
-            InitializeComponent(); 
-            AddFields();
-            AddColumnLabels();
-            AddRowLabels();
+            InitializeComponent();
+ 
+            PlayingGrid(playerGrid, 50, 10, 50);
+            PlayingGrid(computerGrid, 550, 510, 550);
         }
-        void AddColumnLabels()
+
+        void PlayingGrid(Button[,] playingGrid, int positionC, int positionR, int positionB)
+        {
+            AddFields(playingGrid, positionB);
+            AddColumnLabels(positionC);
+            AddRowLabels(positionR);
+        }
+        void AddColumnLabels(int positionC)
         {
             int unicode = 65;
             for (int i = 0; i < s.Column; i++)
@@ -35,7 +42,7 @@ namespace RazmjestajFlote
                     Height = 40,
                     BorderStyle = BorderStyle.FixedSingle,
                     Location = new Point(i * 40),
-                    Left = 50 + i * 40,
+                    Left = positionC + i * 40,
                     Top = 10,
                     Text = character.ToString(),
                     Font= new Font(Font.FontFamily.Name, 16),
@@ -44,7 +51,7 @@ namespace RazmjestajFlote
             this.Controls.Add(column_label);
             }
         }
-        void AddRowLabels()
+        void AddRowLabels(int positionB)
         {
             for (int j = 0; j < s.Row; j++)
             {
@@ -55,7 +62,7 @@ namespace RazmjestajFlote
                     BorderStyle = BorderStyle.FixedSingle, 
                     Location = new Point(j*40),
                     Top = 50 + j * 40,
-                    Left = 10,
+                    Left = positionB,
                     Text = Convert.ToString(j + 1),
                     Font = new Font(Font.FontFamily.Name, 16),
                     TextAlign = ContentAlignment.MiddleCenter,  
@@ -64,8 +71,9 @@ namespace RazmjestajFlote
             }
         }
 
-        Button[,] allButtons = new Button[10, 10];
-        void AddFields()
+        Button[,] playerGrid = new Button[10, 10];
+        Button[,] computerGrid = new Button[10, 10];
+        void AddFields(Button[,] buttons, int positionB)
         {
            
             for (int i = 0; i < s.Column; i++)
@@ -75,44 +83,44 @@ namespace RazmjestajFlote
                     Button button = new Button();
                     button.Width = 40;
                     button.Height = 40;
-                    button.Location = new Point(50+i * 40, 50+j * 40);
-                    allButtons[i, j] = button;
-                    this.Controls.Add(button);
+                    button.Location = new Point(positionB + i * 40, 50 + j * 40);
+                    buttons[i, j] = button;
+                    this.Controls.Add(buttons[i,j]);
                 }
             }
         }
-        Fleet fleet = new Fleet();
+        Fleet playersFleet = new Fleet();
+        Fleet computersFleet = new Fleet();
         Color shipColor = Color.Blue;
         Color fieldColor = SystemColors.ButtonFace;
 
-        private void GridReset()
+        private void GridReset(Button[,] buttons, Fleet fleet)
         {
             for (int i = 0; i < 10; ++i)
             {
                 for (int j = 0; j < 10; ++j)
                 {
-                       allButtons[i, j].BackColor = fieldColor;
+                       buttons[i, j].BackColor = fieldColor;
                 }
             }
-
             List<Ship> ships = new List<Ship>(fleet.Ships);
             for (int i = 0; i < ships.Count(); ++i)
             {
                 foreach (var square in ships[i].Squares)
                 {
-                    if(allButtons[square.Row, square.Column] !=null)
-                        allButtons[square.Row, square.Column].BackColor = shipColor;
+                    if(buttons[square.Row, square.Column] !=null)
+                        buttons[square.Row, square.Column].BackColor = shipColor;
                 }
             }
         }
         private void button1_Click(object sender, EventArgs e)
         {
             Shipwright shipwright = new Shipwright(10, 10);
-            fleet = shipwright.CreateFleet(new int[] { 5, 4, 4, 3, 3, 3, 2, 2, 2, 2 });
-            //CreateFleet poziva PlaceShips koja izvuče sve dostupne placemente i random izabere jedno mjesto
-            //na tu poziciju stavi brod i eliminara ta polja iz dostupnih i okolna.
-            //flota se sastoji od niza brodova koji se sastoje od square-ova, a svaki square ima row i column
-            GridReset();
+            playersFleet = shipwright.CreateFleet(new int[] { 5, 4, 4, 3, 3, 3, 2, 2, 2, 2 });
+            computersFleet = shipwright.CreateFleet(new int[] { 5, 4, 4, 3, 3, 3, 2, 2, 2, 2 });
+
+            GridReset(playerGrid, playersFleet);
+            GridReset(computerGrid, computersFleet);
         }
     }
 }
