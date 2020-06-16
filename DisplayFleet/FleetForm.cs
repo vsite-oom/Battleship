@@ -26,7 +26,7 @@ namespace DisplayFleet
 
         private void displayFleet(object sender, EventArgs e)
         {
-            
+            startGame.Enabled = true;
             wipeBoard(player);
             wipeBoard(enemy);
 
@@ -209,6 +209,7 @@ namespace DisplayFleet
             align.Visible = true;
             startGame.Visible = true;
             button1.Visible = true;
+            startGame.Enabled = false;
             nameLabel.Text = "Admiral " + textNameUser.Text;
             enemyLabel.Text = "Admiral " + textNameEnemy.Text;
             userPoint.Text = userScore + "/ 10";
