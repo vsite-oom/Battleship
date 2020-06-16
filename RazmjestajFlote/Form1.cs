@@ -94,7 +94,7 @@ namespace RazmjestajFlote
         Color shipColor = Color.Blue;
         Color fieldColor = SystemColors.ButtonFace;
 
-        private void GridReset(Button[,] buttons, Fleet fleet)
+        private void GridReset(Button[,] buttons)
         {
             for (int i = 0; i < 10; ++i)
             {
@@ -103,12 +103,25 @@ namespace RazmjestajFlote
                        buttons[i, j].BackColor = fieldColor;
                 }
             }
+            //List<Ship> ships = new List<Ship>(fleet.Ships);
+            //for (int i = 0; i < ships.Count(); ++i)
+            //{
+            //    foreach (var square in ships[i].Squares)
+            //    {
+            //        if(buttons[square.Row, square.Column] !=null)
+            //            buttons[square.Row, square.Column].BackColor = shipColor;
+            //    }
+            //}
+        }
+
+        private void MarkPlayersShips(Button[,] buttons, Fleet fleet)
+        {
             List<Ship> ships = new List<Ship>(fleet.Ships);
             for (int i = 0; i < ships.Count(); ++i)
             {
                 foreach (var square in ships[i].Squares)
                 {
-                    if(buttons[square.Row, square.Column] !=null)
+                    if (buttons[square.Row, square.Column] != null)
                         buttons[square.Row, square.Column].BackColor = shipColor;
                 }
             }
@@ -119,8 +132,9 @@ namespace RazmjestajFlote
             playersFleet = shipwright.CreateFleet(new int[] { 5, 4, 4, 3, 3, 3, 2, 2, 2, 2 });
             computersFleet = shipwright.CreateFleet(new int[] { 5, 4, 4, 3, 3, 3, 2, 2, 2, 2 });
 
-            GridReset(playerGrid, playersFleet);
-            GridReset(computerGrid, computersFleet);
+            GridReset(playerGrid);
+            GridReset(computerGrid);
+            MarkPlayersShips(playerGrid, playersFleet);
         }
     }
 }
