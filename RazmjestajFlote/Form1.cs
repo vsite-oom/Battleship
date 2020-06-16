@@ -132,6 +132,8 @@ namespace RazmjestajFlote
             MarkPlayersShips(playerGrid, playersFleet);
             button1Called = true;
         }
+        public static int playersCounter = 10;
+        public static int computersCounter = 10;
         private void GridButtonClick(object sender, System.EventArgs e)
         {
             if (!button1Called)
@@ -161,6 +163,12 @@ namespace RazmjestajFlote
                 case HitResult.Sunken:
                     {
                         ShipIsSunken(computerGrid, computersFleet, field);
+                        computersCounter--;
+                        if (computersCounter == 0)
+                        {
+                            string message = "Pobjeda!";
+                            MessageBox.Show(message);
+                        }
                         break;
                     }
             }
@@ -188,8 +196,18 @@ namespace RazmjestajFlote
                 case HitResult.Sunken:
                     {
                         ShipIsSunken(playerGrid, playersFleet, field);
-                        NextHit();
-                        break;
+                        playersCounter--;
+                        if (computersCounter == 0)
+                        {
+                            string message = "Izgubili ste!";
+                            MessageBox.Show(message);
+                            break;
+                        }
+                        else {
+                            NextHit();
+                            break;
+                        }
+                        
                     }
             }
         }
