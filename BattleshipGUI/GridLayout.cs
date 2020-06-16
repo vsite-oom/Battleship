@@ -23,10 +23,11 @@ namespace BattleshipGUI
         static int size = 10;
         Fleet playerFleet;
         Fleet computerFleet;
-        List<Square> hitList = new List<Square>();
+        List<Square> playerhitList = new List<Square>();
+        List<Square> computerhitList = new List<Square>();
         Grid playerEvidenceGrid=new Grid(size,size);
         Grid playerShootingGrid=new Grid(size,size);
-        
+        Pen mypen = new Pen(Brushes.Black, 1);
         readonly int[] ships = new int[] { 2, 2, 2, 2, 3, 3, 3, 4, 4, 5 };
         public GridLayout()
         {
@@ -45,6 +46,10 @@ namespace BattleshipGUI
             textBox2.Text = "";
             playerFleet = null;
             computerFleet = null;
+            playerEvidenceGrid = new Grid(10, 10);
+            playerShootingGrid = new Grid(10, 10);
+            playerhitList = new List<Square>();
+            computerhitList = new List<Square>();
             Invalidate();
         }
         private void StartNewGame()
@@ -158,11 +163,12 @@ namespace BattleshipGUI
             hitResult = playerFleet.Hit(square);
             gunner.ProcessHitResult(hitResult);
             playerEvidenceGrid.MarkHitResult(square, hitResult);
-            InvalidatePlayer();
             if (hitResult == HitResult.Sunken)
             {
-                MarkSurrounding(square, playerEvidenceGrid, playerFleet);
+                MarkSurrounding(square, playerEvidenceGrid, playerFleet,computerhitList);
             }
+            InvalidatePlayer();
+            
             
         }
 
@@ -185,21 +191,23 @@ namespace BattleshipGUI
 
             if (square.Row == -1 || square.Column == -1)
                 return false;
-            if (hitList.Contains(square))
+            if (playerhitList.Contains(square))
             {
                 textBox2.Text = "";
+                MessageBox.Show("That field is already hit");
                 return false;
             }
             hitResult = computerFleet.Hit(square);
             playerShootingGrid.MarkHitResult(square, computerFleet.Hit(square));
             textBox2.Text = "";
-            InvalidateComputer();
-            Thread.Sleep(1000);
             if (hitResult == HitResult.Sunken)
             {
-                MarkSurrounding(square, playerShootingGrid, computerFleet);
+                MarkSurrounding(square, playerShootingGrid, computerFleet,playerhitList);
             }
-            hitList.Add(square);
+            InvalidateComputer();
+            Thread.Sleep(1000);
+            
+            playerhitList.Add(square);
             return true;
         }
         private bool FleetIsSunken(Fleet fleet)
@@ -282,11 +290,8 @@ namespace BattleshipGUI
         private void PaintComputerGrid(Graphics graphics, PaintEventArgs e)
         {
             graphics = panel2.CreateGraphics();
-            Pen myPen = new Pen(Brushes.Black, 1);
-            Font myFont = new Font("Arial", size);
-            int lines = size;
-            float xspace = panel1.Height / lines;
-            float yspace = panel1.Width / lines - 1;
+            float xspace = panel1.Height / size;
+            float yspace = panel1.Width / size - 1;
             if (playerShootingGrid == null)
             {
                 throw new NullReferenceException();
@@ -303,14 +308,9 @@ namespace BattleshipGUI
                     graphics.FillRectangle(Brushes.LightSlateGray, rect);
 
                 }
-                if (square.SquareState == SquareState.Hit && square.SquareState != SquareState.Sunken)
+                if (square.SquareState == SquareState.Sunken || square.SquareState == SquareState.Hit)
                 {
                     graphics.FillRectangle(Brushes.Red, rect);
-                }
-                if (square.SquareState == SquareState.Sunken)
-                {
-                    ColorShipWithSquare(square, xspace, yspace, graphics, computerFleet,Brushes.Crimson);
-                    DrawGrids(e.Graphics);
                 }
             }
         }
@@ -318,11 +318,8 @@ namespace BattleshipGUI
         private void PaintPlayerGrid(Graphics graphics,PaintEventArgs e)
         {
             graphics = panel1.CreateGraphics();
-            Pen myPen = new Pen(Brushes.Black, 1);
-            Font myFont = new Font("Arial", size);
-            int lines = size;
-            float xspace = panel1.Height / lines;
-            float yspace = panel1.Width / lines - 1;
+            float xspace = panel1.Height / size;
+            float yspace = panel1.Width / size - 1;
             if (playerEvidenceGrid == null)
             {
                 throw new NullReferenceException();
@@ -334,42 +331,43 @@ namespace BattleshipGUI
                 {
                     graphics.FillRectangle(Brushes.LightSteelBlue, rect);
                 }
-                if (playerFleet != null&& square.SquareState == SquareState.None) {
-                    Ship ship=ColorShipWithSquare(square, xspace, yspace, graphics, playerFleet,Brushes.Navy);
-                    if (ship == null)
-                        continue;
-                    RedrawHits(ship, xspace, yspace, graphics, Brushes.Red);
+                if (playerFleet != null&& square.SquareState == SquareState.None&&FleetHasSquare(playerFleet,square)) {
+                    graphics.FillRectangle(Brushes.Navy, rect);
                 }
                 if (square.SquareState == SquareState.Missed)
                 {
                     graphics.FillRectangle(Brushes.LightSlateGray, rect);
                 }
-                if (square.SquareState == SquareState.Hit)
+                if (square.SquareState == SquareState.Sunken || square.SquareState==SquareState.Hit)
                 {
                     graphics.FillRectangle(Brushes.Red, rect);  
-                }
-                if (square.SquareState == SquareState.Sunken)
-                {
-                    ColorShipWithSquare(square, xspace, yspace, graphics,playerFleet,Brushes.Crimson);
-                    DrawGrids(e.Graphics);
                 }
             }
             
         }
 
-        private void RedrawHits(Ship ship, float xspace, float yspace, Graphics graphics, Brush brush)
+        private bool FleetHasSquare(Fleet playerFleet, Square square)
         {
-            foreach(var square in ship.Squares)
+            foreach(Ship ship in playerFleet.Ships)
             {
-                var rect = new Rectangle((int)(square.Row * xspace) + 1, (int)(square.Column * yspace) + 1, (int)xspace - 1, (int)yspace - 1);
-                if (square.SquareState == SquareState.Hit)
-                {
-                    graphics.FillRectangle(brush, rect);
-                }
+                if (ship.ContainsSquare(square))
+                    return true;
             }
+            return false;
         }
 
-        public void MarkSurrounding(Square square,Grid grid,Fleet fleet)
+        private Ship GiveShipWithSquare(Square square,Fleet fleet)
+        {
+            foreach (var ship in fleet.Ships)
+            {
+                if (ship.ContainsSquare(square))
+                {
+                    return ship;
+                }
+            }
+            return null;
+        }
+        public void MarkSurrounding(Square square,Grid grid,Fleet fleet,List<Square>hitList)
         {
             SquareTerminator terminator = new SquareTerminator(size, size);
             Ship ship=new Ship(null);
@@ -388,55 +386,14 @@ namespace BattleshipGUI
             foreach(var squaree in squares)
             {
                 squaree.SetState(HitResult.Missed);
+                hitList.Add(squaree);
             }
             return;
         }
-
-
-
-        private void DrawEmptyField(Graphics graphics, float xspace, float yspace,Grid grid)
-        {
-            foreach (var square in grid.GetSquares())
-            {
-                var rect = new Rectangle((int)(square.Row * xspace) + 1, (int)(square.Column * yspace) + 1, (int)xspace - 1, (int)yspace - 1);
-
-            }
-            return;
-        }
-
         private bool GameIsStarted()
         {
             return !button1.Enabled;
         }
-
-        private static void ColorEntireship(Graphics graphics, float xspace, float yspace, Ship ship, Square square,Brush bottom)
-        {
-            RectangleF rectf = new RectangleF((int)(square.Row * xspace) + 1, (int)(square.Column * yspace) + 1, (int)xspace - 1, (int)yspace - 1);
-            foreach (var squares in ship.Squares)
-            {
-
-                var rect = new RectangleF((int)(squares.Row * xspace) + 1, (int)(squares.Column * yspace) + 1, (int)xspace - 1, (int)yspace - 1);
-                RectangleF.Union(rect, rectf);
-                rectf = RectangleF.Union(rectf, rect);
-            }
-            Rectangle unionRect = Rectangle.Truncate(rectf);
-            graphics.FillRectangle(bottom, rectf);
-        }
-
-        private Ship ColorShipWithSquare(Square square, float xspace, float yspace,Graphics graphics,Fleet fleet,Brush Brush1)
-        {
-            foreach(var ship in fleet.Ships)
-            {
-                if (ship.ContainsSquare(square))
-                {
-                    ColorEntireship(graphics, xspace, yspace, ship, square, Brush1);
-                    return ship;
-                } 
-            }
-            return null;
-        }
-
-
         private void DrawGrids(Graphics graphics)
         {
             graphics = panel1.CreateGraphics();
@@ -447,22 +404,19 @@ namespace BattleshipGUI
 
         private void DrawGrid(Graphics graphics)
         {
-            Pen mypen = new Pen(Brushes.Black, 1);
-            Font myfont = new Font("Arial", size);
-            int lines = size;
             float x = 0;
             float y = 0;
-            float xspace = panel1.Height / lines;
-            float yspace = panel1.Width / lines - 1;
-            for (int i = 0; i <= lines; ++i)
+            float xspace = panel1.Height / size;
+            float yspace = panel1.Width / size - 1;
+            for (int i = 0; i <= size; ++i)
             {
-                graphics.DrawLine(mypen, x, y, x, lines * yspace);
+                graphics.DrawLine(mypen, x, y, x, size * yspace);
                 x += xspace;
             }
             x = 0;
-            for (int i = 0; i <= lines; ++i)
+            for (int i = 0; i <= size; ++i)
             {
-                graphics.DrawLine(mypen, x, y, lines * xspace, y);
+                graphics.DrawLine(mypen, x, y, size * xspace, y);
                 y += yspace;
             }
         }
