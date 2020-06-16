@@ -83,16 +83,22 @@ namespace RazmjestajFlote
                     Button button = new Button();
                     button.Width = 40;
                     button.Height = 40;
+                    buttons[i, j].Tag = i + "," + j;
                     button.Location = new Point(positionB + i * 40, 50 + j * 40);
                     buttons[i, j] = button;
+                    buttons[i, j].Click += new EventHandler(GridButtonClick);
                     this.Controls.Add(buttons[i,j]);
                 }
             }
         }
         Fleet playersFleet = new Fleet();
         Fleet computersFleet = new Fleet();
-        Color shipColor = Color.Blue;
         Color fieldColor = SystemColors.ButtonFace;
+        Color shipColor = Color.FromArgb(140, 192, 246);
+        Color shipMissed = Color.FromArgb(200, 200, 200);
+        Color shipHit = Color.FromArgb(80, 132, 186);
+        Color shipSunken = Color.FromArgb(195, 35, 35);
+        
 
         private void GridReset(Button[,] buttons)
         {
@@ -103,17 +109,7 @@ namespace RazmjestajFlote
                        buttons[i, j].BackColor = fieldColor;
                 }
             }
-            //List<Ship> ships = new List<Ship>(fleet.Ships);
-            //for (int i = 0; i < ships.Count(); ++i)
-            //{
-            //    foreach (var square in ships[i].Squares)
-            //    {
-            //        if(buttons[square.Row, square.Column] !=null)
-            //            buttons[square.Row, square.Column].BackColor = shipColor;
-            //    }
-            //}
         }
-
         private void MarkPlayersShips(Button[,] buttons, Fleet fleet)
         {
             List<Ship> ships = new List<Ship>(fleet.Ships);
@@ -136,5 +132,34 @@ namespace RazmjestajFlote
             GridReset(computerGrid);
             MarkPlayersShips(playerGrid, playersFleet);
         }
+        private void GridButtonClick(object sender, System.EventArgs e)
+        {
+            Button button = sender as Button;
+            string[] indexes = button.Tag.ToString().Split(',');
+            Square field = new Square(Int32.Parse(indexes[0]), Int32.Parse(indexes[1]));
+            HitResult hitResult = computersFleet.Hit(field);
+            switch (hitResult)
+            {
+                case HitResult.Missed:
+                    {
+                        button.BackColor = shipMissed;
+                        break;
+                    }
+                case HitResult.Hit:
+                    {
+                        button.BackColor = shipHit;
+                        break;
+                    }
+                case HitResult.Sunken:
+                    {
+                        foreach (var square in computersFleet.Ships.Where(sq => sq.Squares.Contains(field)).SelectMany(sq => sq.Squares))
+                        {
+                            computerGrid[square.Row, square.Column].BackColor = shipSunken;
+                        }
+                        break;
+                    }
+            }
+        }
+
     }
 }
