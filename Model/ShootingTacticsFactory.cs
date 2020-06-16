@@ -15,7 +15,7 @@ namespace Vsite.Oom.Battleship.Model
             this.squaresHit = squaresHit;
             this.shipsToShoot= shipsToShoot;
         }
-        public ITargetSelect GerTactics(ShootingTactics tactics)
+        public ITargetSelect GetTactics(ShootingTactics tactics)
         {
             switch(tactics)
             {

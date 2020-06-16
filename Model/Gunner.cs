@@ -23,7 +23,7 @@ namespace Vsite.Oom.Battleship.Model
             ShootingTactics = ShootingTactics.Random;
             squareTerminator = new SquareTerminator(rows, columns);
             shootingTacticsFactory = new ShootingTacticsFactory(evidenceGrid, squaresHit, shipsToShoot);
-            targetSelect = shootingTacticsFactory.GerTactics(ShootingTactics.Random);
+            targetSelect = shootingTacticsFactory.GetTactics(ShootingTactics.Random);
         }
         public Square NextTarget()
         {
@@ -72,7 +72,7 @@ namespace Vsite.Oom.Battleship.Model
                         return;
                 }
             }
-            targetSelect = shootingTacticsFactory.GerTactics(ShootingTactics);
+            targetSelect = shootingTacticsFactory.GetTactics(ShootingTactics);
 
         }
         private Square lastTarget;
