@@ -26,7 +26,7 @@ namespace Vsite.Oom.Battleship.Model
                 case ShootingTactics.Surrounding:
                     return new SurroundShooting(evidenceGrid,squaresHit, shipsToShoot);
                 case ShootingTactics.Inline:
-                    return new SurroundShooting(evidenceGrid, squaresHit, shipsToShoot);
+                    return new InlineShooting(evidenceGrid, squaresHit, shipsToShoot);
                 default:
                     Debug.Assert(false);
                     return null;
