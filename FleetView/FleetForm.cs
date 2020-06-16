@@ -164,5 +164,10 @@ namespace FleetView
 		{
 			Application.Exit();
 		}
+
+		private void Restart_Game(object sender, EventArgs e)
+		{
+			Application.Restart();
+		}
 	}
 }
