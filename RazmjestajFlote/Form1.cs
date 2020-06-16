@@ -75,19 +75,17 @@ namespace RazmjestajFlote
         Button[,] computerGrid = new Button[10, 10];
         void AddFields(Button[,] buttons, int positionB)
         {
-           
             for (int i = 0; i < s.Column; i++)
             {
                 for (int j = 0; j < s.Row; j++)
                 {
-                    Button button = new Button();
-                    button.Width = 40;
-                    button.Height = 40;
+                    buttons[i, j] = new Button();
+                    buttons[i, j].Width = 40;
+                    buttons[i, j].Height = 40;
                     buttons[i, j].Tag = i + "," + j;
-                    button.Location = new Point(positionB + i * 40, 50 + j * 40);
-                    buttons[i, j] = button;
+                    buttons[i, j].Location = new Point(positionB + i * 40, 50 + j * 40);                
                     buttons[i, j].Click += new EventHandler(GridButtonClick);
-                    this.Controls.Add(buttons[i,j]);
+                    this.Controls.Add(buttons[i, j]);
                 }
             }
         }
