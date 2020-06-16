@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Vsite.Oom.Battleship.Model;
 
 namespace FinalGUI
 {
@@ -86,9 +87,9 @@ namespace FinalGUI
             }
         }
 
-        int rows = 10;
-        int columns = 10;
-        Button[,] buttons;
+        readonly int rows = RulesSingleton.Instance.Rows;
+        readonly int columns = RulesSingleton.Instance.Columns;
+        protected Button[,] buttons;
         Color buttonColor = SystemColors.ControlLight;
     }
 }

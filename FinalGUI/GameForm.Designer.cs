@@ -28,44 +28,27 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.gameGrid1 = new FinalGUI.GameGrid();
+            this.groupBoxComputer = new System.Windows.Forms.GroupBox();
             this.gameGrid2 = new FinalGUI.GameGrid();
-            this.groupBox2.SuspendLayout();
-            this.groupBox1.SuspendLayout();
+            this.groupBoxPlayer = new System.Windows.Forms.GroupBox();
+            this.playersGrid = new FinalGUI.PlayersGrid();
+            this.buttonDeploy = new System.Windows.Forms.Button();
+            this.buttonStartGame = new System.Windows.Forms.Button();
+            this.groupBoxComputer.SuspendLayout();
+            this.groupBoxPlayer.SuspendLayout();
             this.SuspendLayout();
             // 
-            // groupBox2
+            // groupBoxComputer
             // 
-            this.groupBox2.Controls.Add(this.gameGrid2);
-            this.groupBox2.Location = new System.Drawing.Point(560, 14);
-            this.groupBox2.Margin = new System.Windows.Forms.Padding(5);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Padding = new System.Windows.Forms.Padding(0);
-            this.groupBox2.Size = new System.Drawing.Size(460, 475);
-            this.groupBox2.TabIndex = 0;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Computer";
-            // 
-            // groupBox1
-            // 
-            this.groupBox1.Controls.Add(this.gameGrid1);
-            this.groupBox1.Location = new System.Drawing.Point(14, 12);
-            this.groupBox1.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Padding = new System.Windows.Forms.Padding(0);
-            this.groupBox1.Size = new System.Drawing.Size(460, 475);
-            this.groupBox1.TabIndex = 0;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Player";
-            // 
-            // gameGrid1
-            // 
-            this.gameGrid1.Location = new System.Drawing.Point(4, 17);
-            this.gameGrid1.Name = "gameGrid1";
-            this.gameGrid1.Size = new System.Drawing.Size(440, 440);
-            this.gameGrid1.TabIndex = 0;
+            this.groupBoxComputer.Controls.Add(this.gameGrid2);
+            this.groupBoxComputer.Location = new System.Drawing.Point(660, 14);
+            this.groupBoxComputer.Margin = new System.Windows.Forms.Padding(5);
+            this.groupBoxComputer.Name = "groupBoxComputer";
+            this.groupBoxComputer.Padding = new System.Windows.Forms.Padding(0);
+            this.groupBoxComputer.Size = new System.Drawing.Size(460, 475);
+            this.groupBoxComputer.TabIndex = 0;
+            this.groupBoxComputer.TabStop = false;
+            this.groupBoxComputer.Text = "Computer";
             // 
             // gameGrid2
             // 
@@ -74,29 +57,77 @@
             this.gameGrid2.Size = new System.Drawing.Size(440, 440);
             this.gameGrid2.TabIndex = 0;
             // 
+            // groupBoxPlayer
+            // 
+            this.groupBoxPlayer.Controls.Add(this.playersGrid);
+            this.groupBoxPlayer.Location = new System.Drawing.Point(190, 14);
+            this.groupBoxPlayer.Margin = new System.Windows.Forms.Padding(5);
+            this.groupBoxPlayer.Name = "groupBoxPlayer";
+            this.groupBoxPlayer.Padding = new System.Windows.Forms.Padding(0);
+            this.groupBoxPlayer.Size = new System.Drawing.Size(460, 475);
+            this.groupBoxPlayer.TabIndex = 0;
+            this.groupBoxPlayer.TabStop = false;
+            this.groupBoxPlayer.Text = "Player";
+            // 
+            // playersGrid
+            // 
+            this.playersGrid.Location = new System.Drawing.Point(4, 19);
+            this.playersGrid.Name = "playersGrid";
+            this.playersGrid.Size = new System.Drawing.Size(440, 440);
+            this.playersGrid.TabIndex = 0;
+            // 
+            // buttonDeploy
+            // 
+            this.buttonDeploy.FlatStyle = System.Windows.Forms.FlatStyle.System;
+            this.buttonDeploy.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonDeploy.Location = new System.Drawing.Point(27, 17);
+            this.buttonDeploy.Name = "buttonDeploy";
+            this.buttonDeploy.Size = new System.Drawing.Size(139, 41);
+            this.buttonDeploy.TabIndex = 0;
+            this.buttonDeploy.Text = "Deploy Fleets";
+            this.buttonDeploy.UseVisualStyleBackColor = true;
+            this.buttonDeploy.Click += new System.EventHandler(this.buttonDeploy_Click);
+            // 
+            // buttonStartGame
+            // 
+            this.buttonStartGame.Enabled = false;
+            this.buttonStartGame.FlatStyle = System.Windows.Forms.FlatStyle.System;
+            this.buttonStartGame.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonStartGame.Location = new System.Drawing.Point(27, 79);
+            this.buttonStartGame.Name = "buttonStartGame";
+            this.buttonStartGame.Size = new System.Drawing.Size(139, 41);
+            this.buttonStartGame.TabIndex = 1;
+            this.buttonStartGame.Text = "Start Game";
+            this.buttonStartGame.UseVisualStyleBackColor = true;
+            this.buttonStartGame.Click += new System.EventHandler(this.buttonStartGame_Click);
+            // 
             // GameForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1034, 531);
-            this.Controls.Add(this.groupBox1);
-            this.Controls.Add(this.groupBox2);
+            this.ClientSize = new System.Drawing.Size(1134, 511);
+            this.Controls.Add(this.buttonStartGame);
+            this.Controls.Add(this.buttonDeploy);
+            this.Controls.Add(this.groupBoxPlayer);
+            this.Controls.Add(this.groupBoxComputer);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Name = "GameForm";
             this.Text = "Battleship";
-            this.groupBox2.ResumeLayout(false);
-            this.groupBox1.ResumeLayout(false);
+            this.groupBoxComputer.ResumeLayout(false);
+            this.groupBoxPlayer.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.GroupBox groupBox1;
-        private GameGrid gameGrid1;
+        private System.Windows.Forms.GroupBox groupBoxComputer;
+        private System.Windows.Forms.GroupBox groupBoxPlayer;
         private GameGrid gameGrid2;
+        private PlayersGrid playersGrid;
+        private System.Windows.Forms.Button buttonDeploy;
+        private System.Windows.Forms.Button buttonStartGame;
     }
 }
 

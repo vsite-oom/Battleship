@@ -58,6 +58,12 @@
     <Compile Include="GameGrid.Designer.cs">
       <DependentUpon>GameGrid.cs</DependentUpon>
     </Compile>
+    <Compile Include="PlayersGrid.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="PlayersGrid.Designer.cs">
+      <DependentUpon>PlayersGrid.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="GameForm.resx">
@@ -87,6 +93,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Model\Model.csproj">
+      <Project>{5C2F8261-98E9-487D-955A-32DD5A36098B}</Project>
+      <Name>Model</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
