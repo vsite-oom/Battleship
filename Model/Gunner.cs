@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Diagnostics;
-using Vsite.Oom.Battleship.Model;
+using Vsite.oom.Battleship.Model;
 
 namespace Vsite.oom.Battleship.Model
 {

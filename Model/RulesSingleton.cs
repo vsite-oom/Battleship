@@ -11,12 +11,12 @@ namespace Vsite.oom.Battleship.Model
 
         private static readonly RulesSingleton instance = new RulesSingleton();
 
-        public RulesSingleton()
+        private RulesSingleton()
         {
             //read data from configuration file
             Rows = 10;
             Columns = 10;
-            ShipLengths = new int[] { 5, 4, 4, 3, 3, 3, 2, 2, 2, 2 };
+            ShipLengths = new int[] {5, 4, 4, 3, 3, 3, 2, 2, 2, 2 };
         }
         public static RulesSingleton Instance { get { return instance; } }
         public readonly int Rows;

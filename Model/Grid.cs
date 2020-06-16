@@ -60,10 +60,7 @@ namespace Vsite.oom.Battleship.Model
 
         }
 
-        public void MarkHitResult(Square square, HitResult hitResult)
-        {
-           
-        }
+        
         
         public IEnumerable<Square> GetSquaresNextTo(Square square, Direction direction)
         {
@@ -119,7 +116,10 @@ namespace Vsite.oom.Battleship.Model
             }
             return result;
         }
-
+        public void MarkHitResult(Square square, HitResult hitResult)
+        {
+            squares[square.Rows, square.Columns].SetState(hitResult);
+        }
         public IEnumerable<IEnumerable<Square>> GetSquaresInline(IEnumerable<Square> squaresHit)
         {
             List<IEnumerable<Square>> result = new List<Placement>();

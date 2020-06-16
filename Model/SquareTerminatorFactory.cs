@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Vsite.oom.Battleship.Model;
 
-namespace Vsite.Oom.Battleship.Model
+namespace Vsite.oom.Battleship.Model
 {
     public enum ShipAdjoining
     {
