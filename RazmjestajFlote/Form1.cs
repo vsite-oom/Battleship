@@ -120,6 +120,7 @@ namespace RazmjestajFlote
                 }
             }
         }
+        bool button1Called = false;
         private void button1_Click(object sender, EventArgs e)
         {
             Shipwright shipwright = new Shipwright(10, 10);
@@ -129,9 +130,17 @@ namespace RazmjestajFlote
             GridReset(playerGrid);
             GridReset(computerGrid);
             MarkPlayersShips(playerGrid, playersFleet);
+            button1Called = true;
         }
         private void GridButtonClick(object sender, System.EventArgs e)
         {
+            if (!button1Called)
+            {
+                string message = "Složite flotu!";
+                MessageBox.Show(message);
+                button1Called = true;
+                return;
+            }
             Button button = sender as Button;
             string[] indexes = button.Tag.ToString().Split(',');
             Square field = new Square(Int32.Parse(indexes[0]), Int32.Parse(indexes[1]));
@@ -141,6 +150,7 @@ namespace RazmjestajFlote
                 case HitResult.Missed:
                     {
                         button.BackColor = shipMissed;
+                        NextHit();
                         break;
                     }
                 case HitResult.Hit:
@@ -150,14 +160,46 @@ namespace RazmjestajFlote
                     }
                 case HitResult.Sunken:
                     {
-                        foreach (var square in computersFleet.Ships.Where(sq => sq.Squares.Contains(field)).SelectMany(sq => sq.Squares))
-                        {
-                            computerGrid[square.Row, square.Column].BackColor = shipSunken;
-                        }
+                        ShipIsSunken(computerGrid, computersFleet, field);
                         break;
                     }
             }
         }
 
+        private Gunner gunner = new Gunner(10,10,new int[] { 5,4,4,3,3,3,2,2,2,2});
+        private void NextHit()
+        {
+            Square field = gunner.NextTarget();
+            HitResult hitResult = playersFleet.Hit(field);
+            gunner.ProcessHitResult(hitResult);
+            switch (hitResult)
+            {
+                case HitResult.Missed:
+                    {
+                        playerGrid[field.Row, field.Column].BackColor = shipMissed;
+                        break;
+                    }
+                case HitResult.Hit:
+                    {
+                        playerGrid[field.Row, field.Column].BackColor = shipHit;
+                        NextHit();
+                        break;
+                    }
+                case HitResult.Sunken:
+                    {
+                        ShipIsSunken(playerGrid, playersFleet, field);
+                        NextHit();
+                        break;
+                    }
+            }
+        }
+
+        private void ShipIsSunken(Button[,] grid, Fleet fleet, Square field)
+        {
+            foreach (var square in fleet.Ships.Where(sq => sq.Squares.Contains(field)).SelectMany(sq => sq.Squares))
+            {
+                grid[square.Row, square.Column].BackColor = shipSunken;
+            }
+        }
     }
 }
