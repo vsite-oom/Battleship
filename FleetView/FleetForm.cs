@@ -96,6 +96,7 @@ namespace FleetView
 							string message = "You Win!";
 							string title = "You Win!";
 							MessageBox.Show(message, title);
+							Application.Exit();
 						}
 						break;
 					}
@@ -133,6 +134,7 @@ namespace FleetView
 							string message = "You Lose!";
 							string title = "You Lose!";
 							MessageBox.Show(message, title);
+							Application.Exit();
 						}
 						NextTurn();
 						break;

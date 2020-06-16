@@ -19,10 +19,14 @@ namespace Vsite.Oom.Battleship.Model
 			var l = evidenceGrid.GetSquaresInline(squaresHit);
 			if (l.Count() == 1)
 				return l.ElementAt(0).First();
-			//TODO: improve selection so that only largest lists are taken as candidates 
-			//l.OrderByDescending(ls => ls.Count());
-			int index = random.Next(0, l.Count());
-			return l.ElementAt(index).First();
+			var ordered = l.OrderByDescending(ls => ls.Count());
+			int maxLen = ordered.First().Count();
+			int shipLength = shipToShoot[0];
+			if (maxLen > shipLength - squaresHit.Count())
+				maxLen = shipLength - squaresHit.Count();
+			var longest = ordered.Where(ls => ls.Count() >= maxLen);
+			int index = random.Next(0, longest.Count());
+			return longest.ElementAt(index).First();
 		}
 		private Random random = new Random();
 		private readonly SortedSquares squaresHit;

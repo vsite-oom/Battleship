@@ -109,62 +109,66 @@ namespace Vsite.Oom.Battleship.Model
 		{
 			List<Square> result = new List<Square>();
 			int row = square.Row;
-			int col = square.Col;
+			int column = square.Col;
 			int deltaRow = 0;
-			int deltaCol = 0;
+			int deltaColumn = 0;
 			int maxCount = 0;
 			switch (direction)
 			{
-				case Direction.Right:
-					++col;
-					deltaCol = 1;
-					maxCount = Cols - col;
-					break;
 				case Direction.Down:
 					++row;
-					deltaRow = 1;
+					deltaRow++;
 					maxCount = Rows - row;
 					break;
-				case Direction.Left:
-					--col;
-					deltaCol = -1;
-					maxCount = col + 1;
-					break;
 				case Direction.Up:
+					maxCount = row;
 					--row;
-					deltaRow = -1;
-					maxCount = row + 1;
+					deltaRow--;
+					break;
+				case Direction.Left:
+					maxCount = column;
+					--column;
+					deltaColumn--;
+					break;
+				case Direction.Right:
+					++column;
+					deltaColumn++;
+					maxCount = Cols - column;
 					break;
 				default:
 					Debug.Assert(false);
 					break;
 			}
-			for ( int i = 0; i < maxCount && IsAvailable(row,col); ++i)
+			for (int i = 0; i < maxCount && IsAvailable(row, column); ++i)
 			{
-				result.Add(squares[row, col]);
+				result.Add(squares[row, column]);
 				row += deltaRow;
-				col += deltaCol;
+				column += deltaColumn;
 			}
 			return result;
 		}
-		public IEnumerable<IEnumerable<Square>> GetSquaresInline(IEnumerable<Square> hitSquares)
+		public IEnumerable<IEnumerable<Square>> GetSquaresInline(IEnumerable<Square> squaresHit)
 		{
 			List<Placement> result = new List<Placement>();
-			if (hitSquares.First().Row == hitSquares.Last().Row)
+			//Horizontal
+			if (squaresHit.First().Row == squaresHit.Last().Row)
 			{
-				var l = GetSquaresNextTo(hitSquares.First(), Direction.Left);
+				var l = GetSquaresNextTo(squaresHit.First(), Direction.Left);
 				if (l.Count() > 0)
 					result.Add(l);
-				l = GetSquaresNextTo(hitSquares.First(), Direction.Right);
+
+				l = GetSquaresNextTo(squaresHit.Last(), Direction.Right);
 				if (l.Count() > 0)
 					result.Add(l);
 			}
-			else if (hitSquares.First().Col == hitSquares.Last().Col)
+			//Vertical
+			else if (squaresHit.First().Col == squaresHit.Last().Col)
 			{
-				var l = GetSquaresNextTo(hitSquares.First(), Direction.Up);
+				var l = GetSquaresNextTo(squaresHit.First(), Direction.Up);
 				if (l.Count() > 0)
 					result.Add(l);
-				l = GetSquaresNextTo(hitSquares.First(), Direction.Down);
+
+				l = GetSquaresNextTo(squaresHit.Last(), Direction.Down);
 				if (l.Count() > 0)
 					result.Add(l);
 			}
@@ -172,6 +176,7 @@ namespace Vsite.Oom.Battleship.Model
 			{
 				Debug.Assert(false);
 			}
+
 			return result;
 		}
 		private bool IsAvailable(int row, int col)

@@ -17,9 +17,17 @@ namespace Vsite.Oom.Battleship.Model
 		{
 			int shipLength = shipToShoot[0];
 			var placements = evidenceGrid.GetAvailablePlacments(shipLength);
-			var allCandidates = placements.SelectMany(seq => seq);
-			int index = random.Next(0, allCandidates.Count());
-			return allCandidates.ElementAt(index);
+			var allcandidates = placements.SelectMany(seq => seq);
+			var groups = allcandidates.GroupBy(sq => sq);
+			var maxCount = groups.Max(g => g.Count());
+			var largestGroups = groups.Where(g => g.Count() == maxCount);
+			var mostCommon = largestGroups.Select(g => g.Key);
+			if (mostCommon.Count() == 1)
+			{
+				return mostCommon.First();
+			}
+			int index = random.Next(0, mostCommon.Count());
+			return mostCommon.ElementAt(index);
 		}
 
 		private Random random = new Random();
