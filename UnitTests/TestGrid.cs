@@ -30,7 +30,7 @@ namespace Vsite.Oom.Battleship.Model.UnitTests
             Assert.AreEqual(3, sequence.Count());
         }
 
-
+        /*
         [TestMethod]
         public void GetAvailablePlacementsForShipReturns3PlacementsForShipOfLength2InHorizontalGrid1X6AfterSquareIsEleminated()
         {
@@ -51,7 +51,7 @@ namespace Vsite.Oom.Battleship.Model.UnitTests
             foreach (var sequence in result)
                 Assert.AreEqual(2, sequence.Count());
 
-        }
+        }*/
 
         [TestMethod]
         public void GetSquaresNextToReturns3SquaresForGrid1x5ToRightSquare0x1()

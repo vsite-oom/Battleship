@@ -1,45 +1,31 @@
-﻿
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using Vsite.Oom.Battleship.Model;
+﻿using System;using System.Collections.Generic;using System.ComponentModel;using System.Data;using System.Diagnostics;using System.Drawing;using System.Linq;using System.Text;using System.Threading.Tasks;using System.Windows.Forms;using Vsite.Oom.Battleship.Model;namespace WindowsFormsApp1{    public partial class Form1 : Form    {        bool turn = true;
+        //Fleet initialization
+        Fleet fleetPlayer = new Fleet();        Fleet fleetComputer = new Fleet();
+        //Gunner definition
+        Gunner gunnerPlayer = new Gunner(10, 10, shipSizes);        Gunner gunnerComputer = new Gunner(10, 10, shipSizes);
+        //Rule definition
+        int rowsPlayer = 10;        int columnsPlayer = 10;        int rowsComputer = 10;        int columnsComputer = 10;
+        //Ship defintion
+        private static int[] shipSizes = new int[] { 5, 4, 4, 3, 3, 3, 2, 2, 2, 2 };        CheckBox[,] playerButtons;        CheckBox[,] computerButtons;        Color buttonColor = Color.White;        Color shipColor = Color.Black;        public Form1()        {            InitializeComponent();            ControlCreator();        }        private void button1_Click(object sender, EventArgs e)        {            Shipwright sw = new Shipwright(rowsPlayer, columnsPlayer);            fleetPlayer = sw.CreateFleet(new int[] { 5, 4, 4, 3, 3, 3, 2, 2, 2, 2 });
+            CreatePlayerFleet();            Shipwright sw2 = new Shipwright(rowsComputer, columnsComputer);            fleetComputer = sw2.CreateFleet(new int[] { 5, 4, 4, 3, 3, 3, 2, 2, 2, 2 });            CreateComputerFleet();        }        private int ControlCreator()        {            playerButtons = new ControlCreator[rowsPlayer, columnsPlayer];            computerButtons = new ControlCreator[rowsPlayer, columnsPlayer];            int controlSize = Math.Min(panel1.Width / columnsPlayer, panel1.Height / rowsPlayer);            int x0 = (panel1.Width - columnsPlayer * controlSize) / 2;            int y = (panel1.Height - rowsPlayer * controlSize) / 2;            for (int i = 0; i < rowsPlayer; ++i)            {                int x = x0;                for (int j = 0; j < columnsPlayer; ++j)                {                    ControlCreator buttonPanel1 = new ControlCreator                    {                        Row = i,                        Column = j,                        Top = y,                        Left = x,                        Width = controlSize,                        Height = controlSize,                        Appearance = Appearance.Button                    };                    ControlCreator buttonPanel2 = new ControlCreator                    {                        Row = i,                        Column = j,                        Top = y,                        Left = x,                        Width = controlSize,                        Height = controlSize,                        Appearance = Appearance.Button                    };                    buttonPanel2.Click += ButtonPlayer_Click;                    playerButtons[i, j] = buttonPanel1;
+                    computerButtons[i, j] = buttonPanel2;                    panel1.Controls.Add(buttonPanel1);                    panel2.Controls.Add(buttonPanel2);                    x += controlSize;                }                y += controlSize;            }            return controlSize;        }        private void ButtonPlayer_Click(object sender, EventArgs e)        {            ControlCreator checkBox = (ControlCreator)sender;            if (turn)                playerGunner(checkBox.Row, checkBox.Column);            else                enemyGunner();        }        private void CreateComputerFleet()        {            for (int i = 0; i < rowsComputer; ++i)            {                for (int j = 0; j < columnsComputer; ++j)                {                    computerButtons[i, j].Checked = false;                    computerButtons[i, j].BackColor = buttonColor;                }            }            List<Ship> shipsComputer = new List<Ship>(fleetComputer.Ships);            shipsComputer.Sort((s1, s2) => s2.Squares.Count());            for (int i = 0; i < shipsComputer.Count(); i++)            {                foreach (var square2 in shipsComputer[i].Squares)                {                    var button2 = computerButtons[square2.Row, square2.Column];                    button2.BackColor = buttonColor;                }            }        }        private void CreatePlayerFleet()        {            for (int i = 0; i < rowsPlayer; i++)            {                for (int j = 0; j < columnsPlayer; j++)                {                    playerButtons[i, j].Checked = false;                    playerButtons[i, j].BackColor = buttonColor;                }            }            List<Ship> shipsPlayer = new List<Ship>(fleetPlayer.Ships);            shipsPlayer.Sort((s1, s2) => s2.Squares.Count());            for (int i = 0; i < shipsPlayer.Count(); i++)            {                foreach (var square in shipsPlayer[i].Squares)                {                    var button = playerButtons[square.Row, square.Column];                    button.BackColor = shipColor;                }            }        }        private void markResult(Square target, HitResult hitResult, CheckBox[,] field)        {            switch (hitResult)            {
 
-namespace WindowsFormsApp1
-{
-   
-    public partial class Form1 : Form
-    {
-        Fleet fleet = new Fleet();
-        public Form1()
-        {
-            InitializeComponent();
-        }
-        private void button1_Click(object sender, EventArgs e)
-        {
-            Shipwright sw = new Shipwright(10, 10);
-            fleet = sw.CreateFleet(new int[] { 5, 4, 4, 3, 3, 3, 2, 2, 2, 2 });
-            tableLayoutPanel1.Invalidate();
-            button1.Enabled=false;
+                case HitResult.Missed:                    field[target.Row, target.Column].BackColor = Color.Gray;                    textBox1.AppendText("Missed" + " " + (target.Row + 1) + "-" + (target.Column + 1) + Environment.NewLine);                    break;                case HitResult.Hit:                    field[target.Row, target.Column].BackColor = Color.Red;
+                    textBox1.AppendText("HIT" + " " + (target.Row + 1) + "-" + (target.Column + 1) + Environment.NewLine);
+                    break;                case HitResult.Sunken:                    field[target.Row, target.Column].BackColor = Color.Green;                    MessageBox.Show("Sunken");                    textBox1.AppendText("Keep going, u got that one" + " " + (target.Row + 1) + "-" + (target.Column + 1) + Environment.NewLine);
+                    break;                default:                    Debug.Assert(false);                    break;            }        }
+        private void markResultEnemy(Square target, HitResult hitResult, CheckBox[,] field)        {            switch (hitResult)            {
+
+                case HitResult.Missed:                    field[target.Row, target.Column].BackColor = Color.Gray;                    textBox2.AppendText("Missed" + " " + (target.Row + 1) + "-" + (target.Column + 1) + Environment.NewLine);                    break;                case HitResult.Hit:                    field[target.Row, target.Column].BackColor = Color.Red;
+                    textBox2.AppendText("HIT" + " " + (target.Row + 1) + "-" + (target.Column + 1) + Environment.NewLine);
+                    break;                case HitResult.Sunken:                    field[target.Row, target.Column].BackColor = Color.Green;                    MessageBox.Show("Sunken");                    textBox2.AppendText("I've got that one, looking for more" + " " + (target.Row + 1) + "-" + (target.Column + 1) + Environment.NewLine);
+                    break;                default:                    Debug.Assert(false);                    break;            }        }        public void playerGunner(int row, int col)        {            HitResult hitResult;            Square sq = new Square(row, col);            hitResult = fleetComputer.Hit(sq);            markResult(sq, hitResult, computerButtons);            if (hitResult == HitResult.Missed)            {                enemyGunner();            }            winner();        }        public async void enemyGunner()        {            turn = false;            await Task.Delay(800);            ;            int i = fleetPlayer.Ships.Count(s => s.Squares.All(sq => sq.SquareState == SquareState.Sunken));            if (i != 10)            {                Square target = gunnerComputer.NextTarget();                HitResult hitResult = fleetPlayer.Hit(target);                gunnerComputer.ProcessHitResult(hitResult);                markResultEnemy(target, hitResult, playerButtons);                if (hitResult == HitResult.Hit || hitResult == HitResult.Sunken)                {                    enemyGunner();                }                else                    turn = true;                winner();            }        }        private void winner()        {
+
+            var computer = fleetPlayer.Ships.SelectMany(s => s.Squares).Any(s => s.SquareState != SquareState.Sunken);
+            var me = fleetComputer.Ships.SelectMany(s => s.Squares).Any(s => s.SquareState != SquareState.Sunken);
+
+            if (!computer)            {                MessageBox.Show("You lost! Thanks for playing :).");                this.Close();            }            else if (!me)            {                MessageBox.Show("You won! Thanks for playing :).");                this.Close();            }
         }
 
-        private void tableLayoutPanel1_CellPaint_1(object sender, TableLayoutCellPaintEventArgs e)
-        {
-            for (int i = 0; i < fleet.Ships.Count(); ++i)
-            {
-                if (fleet.Ships.ElementAt(i).Squares.Contains(new Square(e.Column, e.Row)))
-                {
-                    e.Graphics.FillRectangle(Brushes.Black, e.CellBounds);
-                    break;
-                }
-                else
-                    e.Graphics.FillRectangle(Brushes.White, e.CellBounds);
-            }
-        }
     }
 }
