@@ -32,7 +32,7 @@ namespace Vsite.Oom.Battleship.Model
             if (maxLen > shipLength - 1)
                 maxLen = shipLength - 1;
             var longest = ordered.Where(ls => ls.Count() >= maxLen);
-            int index = random.Next(1, longest.Count());
+            int index = random.Next(0, longest.Count());
             return longest.ElementAt(index).First();
         }
         private Random random = new Random();
