@@ -160,6 +160,7 @@ namespace RazmjestajFlote
                 case HitResult.Hit:
                     {
                         button.BackColor = shipHit;
+                        NextHit();
                         break;
                     }
                 case HitResult.Sunken:
@@ -193,7 +194,6 @@ namespace RazmjestajFlote
                 case HitResult.Hit:
                     {
                         playerGrid[field.Row, field.Column].BackColor = shipHit;
-                        NextHit();
                         break;
                     }
                 case HitResult.Sunken:
@@ -208,14 +208,12 @@ namespace RazmjestajFlote
                             break;
                         }
                         else {
-                            NextHit();
                             break;
                         }
                         
                     }
             }
         }
-
         private void ShipIsSunken(Button[,] grid, Fleet fleet, Square field)
         {
             foreach (var square in fleet.Ships.Where(sq => sq.Squares.Contains(field)).SelectMany(sq => sq.Squares))
