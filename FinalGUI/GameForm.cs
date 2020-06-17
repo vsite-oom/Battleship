@@ -20,20 +20,61 @@ namespace FinalGUI
             sw = new Shipwright(rows, columns);
         }
 
-        private void buttonDeploy_Click(object sender, EventArgs e)
+        private void DeployFleets()
         {
             playersGrid.ClearGrid();
             playersFleet = sw.CreateFleet(shipLengths);
             playersGrid.FillGrid(playersFleet);
             computersFleet = sw.CreateFleet(shipLengths);
+        }
+
+        private void buttonDeploy_Click(object sender, EventArgs e)
+        {
+            DeployFleets();
             if (!buttonStartGame.Enabled)
+            {
                 buttonStartGame.Enabled = true;
+                buttonStartGame.Text = "Start Game";
+            }
             buttonDeploy.Text = "Redeploy Fleets";
+            RestorePlayerLabel();
+            RestoreComputerLabel();
         }
 
         private void buttonStartGame_Click(object sender, EventArgs e)
         {
             buttonStartGame.Enabled = false;
+            buttonStartGame.Text = "Game Started";
+            Game game = new Game(this);
+            game.Play();
+        }
+
+        public void OnFirstShooterChosen(object source, Game.MessageArgs arg)
+        {
+            if (arg.Message == "You")
+            {
+                groupBoxPlayer.Text = arg.Message + " shoot first!";
+                groupBoxPlayer.ForeColor = Color.Red;
+                RestoreComputerLabel();
+            }
+            else
+            {
+                groupBoxComputer.Text = arg.Message + " shoots first!";
+                groupBoxComputer.ForeColor = Color.Red;
+                RestorePlayerLabel();
+            }                
+        }
+
+        private void RestorePlayerLabel()
+        {
+            groupBoxPlayer.Text = "You";
+            groupBoxPlayer.ForeColor = SystemColors.ControlText;
+        }
+
+        private void RestoreComputerLabel()
+        {
+            groupBoxComputer.Text = "Computer";
+            groupBoxComputer.ForeColor = SystemColors.ControlText;
         }
 
         readonly Shipwright sw;
@@ -43,6 +84,5 @@ namespace FinalGUI
         private Fleet playersFleet = new Fleet();
         private Fleet computersFleet = new Fleet();
 
-       
     }
 }

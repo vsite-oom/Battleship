@@ -34,6 +34,7 @@
             this.playersGrid = new FinalGUI.PlayersGrid();
             this.buttonDeploy = new System.Windows.Forms.Button();
             this.buttonStartGame = new System.Windows.Forms.Button();
+            this.labelStatus = new System.Windows.Forms.Label();
             this.groupBoxComputer.SuspendLayout();
             this.groupBoxPlayer.SuspendLayout();
             this.SuspendLayout();
@@ -41,6 +42,7 @@
             // groupBoxComputer
             // 
             this.groupBoxComputer.Controls.Add(this.gameGrid2);
+            this.groupBoxComputer.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBoxComputer.Location = new System.Drawing.Point(660, 14);
             this.groupBoxComputer.Margin = new System.Windows.Forms.Padding(5);
             this.groupBoxComputer.Name = "groupBoxComputer";
@@ -52,6 +54,8 @@
             // 
             // gameGrid2
             // 
+            this.gameGrid2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.gameGrid2.ForeColor = System.Drawing.SystemColors.ControlText;
             this.gameGrid2.Location = new System.Drawing.Point(4, 17);
             this.gameGrid2.Name = "gameGrid2";
             this.gameGrid2.Size = new System.Drawing.Size(440, 440);
@@ -60,6 +64,7 @@
             // groupBoxPlayer
             // 
             this.groupBoxPlayer.Controls.Add(this.playersGrid);
+            this.groupBoxPlayer.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBoxPlayer.Location = new System.Drawing.Point(190, 14);
             this.groupBoxPlayer.Margin = new System.Windows.Forms.Padding(5);
             this.groupBoxPlayer.Name = "groupBoxPlayer";
@@ -67,10 +72,12 @@
             this.groupBoxPlayer.Size = new System.Drawing.Size(460, 475);
             this.groupBoxPlayer.TabIndex = 0;
             this.groupBoxPlayer.TabStop = false;
-            this.groupBoxPlayer.Text = "Player";
+            this.groupBoxPlayer.Text = "You";
             // 
             // playersGrid
             // 
+            this.playersGrid.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.playersGrid.ForeColor = System.Drawing.SystemColors.ControlText;
             this.playersGrid.Location = new System.Drawing.Point(4, 19);
             this.playersGrid.Name = "playersGrid";
             this.playersGrid.Size = new System.Drawing.Size(440, 440);
@@ -101,11 +108,22 @@
             this.buttonStartGame.UseVisualStyleBackColor = true;
             this.buttonStartGame.Click += new System.EventHandler(this.buttonStartGame_Click);
             // 
+            // labelStatus
+            // 
+            this.labelStatus.AutoSize = true;
+            this.labelStatus.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelStatus.ForeColor = System.Drawing.Color.Red;
+            this.labelStatus.Location = new System.Drawing.Point(27, 149);
+            this.labelStatus.Name = "labelStatus";
+            this.labelStatus.Size = new System.Drawing.Size(0, 16);
+            this.labelStatus.TabIndex = 2;
+            // 
             // GameForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1134, 511);
+            this.Controls.Add(this.labelStatus);
             this.Controls.Add(this.buttonStartGame);
             this.Controls.Add(this.buttonDeploy);
             this.Controls.Add(this.groupBoxPlayer);
@@ -117,6 +135,7 @@
             this.groupBoxComputer.ResumeLayout(false);
             this.groupBoxPlayer.ResumeLayout(false);
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -128,6 +147,7 @@
         private PlayersGrid playersGrid;
         private System.Windows.Forms.Button buttonDeploy;
         private System.Windows.Forms.Button buttonStartGame;
+        private System.Windows.Forms.Label labelStatus;
     }
 }
 
