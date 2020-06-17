@@ -31,12 +31,13 @@ namespace ShootingStats
                 } while (result != HitResult.Hit);
             }
             Console.WriteLine(hitNumber / 10000.0);
+            Console.WriteLine("Press any key and wait...");
             Console.ReadKey();
 
             hitNumber = 0;
             for (int i = 0; i < 10000; ++i)
             {
-                Fleet fleet = fleet = sw.CreateFleet(new int[] { 1 });
+                Fleet fleet = fleet = sw.CreateFleet(new int[] { 1,1,1,1,1,1,1,1,1,1 });
                 Gunner gunner = new Gunner(10, 10, new int[] { 1 });
                 HitResult result;
 
