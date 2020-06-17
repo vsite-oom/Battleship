@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Model", "Model\Model.csproj
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests", "UnitTests\UnitTests.csproj", "{68D01B60-9615-4628-A629-7398F907AF2B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Battleship.GameBoard", "Battleship.GameBoard.test\Battleship.GameBoard.test\Battleship.GameBoard.csproj", "{30FCC599-7912-48F0-939B-45F33BFBF147}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Battleship.Board", "..\Battleship5\BattleshipGUI\Battleship.Board.csproj", "{244243E2-4957-4316-BD8D-BC8399CAEC76}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,10 +23,10 @@ Global
 		{68D01B60-9615-4628-A629-7398F907AF2B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{68D01B60-9615-4628-A629-7398F907AF2B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{68D01B60-9615-4628-A629-7398F907AF2B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{30FCC599-7912-48F0-939B-45F33BFBF147}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{30FCC599-7912-48F0-939B-45F33BFBF147}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{30FCC599-7912-48F0-939B-45F33BFBF147}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{30FCC599-7912-48F0-939B-45F33BFBF147}.Release|Any CPU.Build.0 = Release|Any CPU
+		{244243E2-4957-4316-BD8D-BC8399CAEC76}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{244243E2-4957-4316-BD8D-BC8399CAEC76}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{244243E2-4957-4316-BD8D-BC8399CAEC76}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{244243E2-4957-4316-BD8D-BC8399CAEC76}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

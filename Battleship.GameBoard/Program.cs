@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Battleship.GameBoard
+namespace BattleshipGUI
 {
     static class Program
     {
@@ -16,7 +16,7 @@ namespace Battleship.GameBoard
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new GameBoard());
+            Application.Run(new Form1());
         }
     }
 }
