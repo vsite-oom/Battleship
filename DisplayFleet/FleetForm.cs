@@ -91,6 +91,7 @@ namespace DisplayFleet
                 case HitResult.Hit:
                     {
                         button.BackColor = Color.FromArgb(255, 225, 0);
+                        EnemyTurn();
                         break;
                     }
                 case HitResult.Missed:
@@ -123,6 +124,8 @@ namespace DisplayFleet
                             }
 
                         }
+                        EnemyTurn();
+
                         break;
                     }
 
@@ -140,7 +143,6 @@ namespace DisplayFleet
                     {
                         player[clicked.Row, clicked.Column].BackColor = Color.FromArgb(255,233, 0);
                         System.Threading.Thread.Sleep(500);
-                        EnemyTurn();
                         break;
                     }
                 case HitResult.Missed:
