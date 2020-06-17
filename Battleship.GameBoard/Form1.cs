@@ -13,7 +13,7 @@ namespace BattleshipGUI
 {
     public partial class Form1 : Form
     {
-        int columns =10;
+        int columns = 10;
         int rows = 10;
         int buttonSize = 40;
         int fleet1Position = 80;
@@ -46,25 +46,25 @@ namespace BattleshipGUI
                     Button button = new Button();
                     button.Size = new Size(buttonSize, buttonSize);
                     button.Location = new Point(position + (c + 1) * buttonSize, (r + 1) * buttonSize);
-                   
-                    if(isHuman == false)
+
+                    if (isHuman == false)
                     {
                         button.Click += new System.EventHandler(this.Button_Click);
                         button.Name = r.ToString() + " " + c.ToString();
                     }
-                   
+
                     button.Enabled = false;
-                    this.Controls.Add(button);
                     button.BackColor = Color.LightBlue;
-                    buttons.Add(button);                
+                    this.Controls.Add(button);
+                    buttons.Add(button);
                 }
             }
         }
         private void CreateFleet_Click(object sender, EventArgs e)
         {
-            List<int> shipLengths = new List<int> {2,2,2,2,3,3,3,4,4,5};
-            Shipwright sw = new Shipwright(rows, columns);          
-            gunner = new Gunner(rows, columns, shipLengths);          
+            List<int> shipLengths = new List<int> { 2, 2, 2, 2, 3, 3, 3, 4, 4, 5 };
+            Shipwright sw = new Shipwright(rows, columns);
+            gunner = new Gunner(rows, columns, shipLengths);
             player = sw.CreateFleet(shipLengths);
             computerPlayer = sw.CreateFleet(shipLengths);
             playerShipCount = shipLengths.Count();
@@ -75,7 +75,7 @@ namespace BattleshipGUI
                 for (int c = 0; c < columns; c++)
                 {
                     Square sq = new Square(r, c);
-                   
+
                     foreach (Ship ship in player.Ships)
                     {
                         if (ship.Squares.Contains(sq))
@@ -83,10 +83,9 @@ namespace BattleshipGUI
                             playerButtons[r * 10 + c].BackColor = Color.Navy;
                         }
                     }
-
                 }
             }
-            
+
             foreach (Button button in computerButtons)
             {
                 button.Enabled = true;
@@ -100,7 +99,7 @@ namespace BattleshipGUI
                 {
                     foreach (Square squareSunken in ship.Squares)
                     {
-                        buttons[squareSunken.Row * 10 + squareSunken.Column].BackColor = Color.Orange;
+                        buttons[squareSunken.Row * 10 + squareSunken.Column].BackColor = Color.Red;
                     }
                     break;
                 }
@@ -117,47 +116,45 @@ namespace BattleshipGUI
                 Square sq = new Square(row, column);
                 HitResult result = computerPlayer.Hit(sq);
 
-                if (result == HitResult.Hit)
-                    button.BackColor = Color.Red;
-                else if (result == HitResult.Sunken)
+                switch (result)
                 {
-                    computerShipCount--;
-                    SunkenShip(sq, computerPlayer, computerButtons);
-                }
-                else
-                {
-                    button.BackColor = Color.White;
-                    button.Enabled = false;
+                    case HitResult.Hit:
+                        button.BackColor = Color.Orange;
+                        break;
+                    case HitResult.Sunken:
+                        computerShipCount--;
+                        SunkenShip(sq, computerPlayer, computerButtons);
+                        break;
+                    default:
+                        button.BackColor = Color.Black;
+                        button.Enabled = false;
+                        break;
                 }
 
-                if (computerShipCount == 0)
-                {
-                    MessageBox.Show("WIN");
-                }
+                if (computerShipCount == 0) MessageBox.Show("WIN");
+
                 else
                 {
                     sq = gunner.NextTarget();
                     result = player.Hit(sq);
                     gunner.ProcessHitResult(result);
+                    switch (result)
+                    {
+                        case HitResult.Hit:
+                            playerButtons[sq.Row * 10 + sq.Column].BackColor = Color.Orange;
+                            break;
+                        case HitResult.Sunken:
+                            playerShipCount--;
+                            SunkenShip(sq, player, playerButtons);
+                            break;
+                        default:
+                            playerButtons[sq.Row * 10 + sq.Column].BackColor = Color.Black;
+                            break;
+                    }
 
-                    if (result == HitResult.Hit)
-                        playerButtons[sq.Row * 10 + sq.Column].BackColor = Color.Orange;
-                    else if (result == HitResult.Sunken)
-                    {
-                        playerShipCount--;
-                        SunkenShip(sq, player, playerButtons);
-                    }
-                    else
-                    {
-                        playerButtons[sq.Row * 10 + sq.Column].BackColor = Color.White;
-                    }
-
-                    if (playerShipCount == 0)
-                    {
-                        MessageBox.Show("LOSE");
-                    }
+                    if (playerShipCount == 0) MessageBox.Show("LOSE");
                 }
             }
         }
-    }  
+    }
 }
