@@ -126,8 +126,7 @@ namespace RazmjestajFlote
         {
             Shipwright shipwright = new Shipwright(10, 10);
             playersFleet = shipwright.CreateFleet(new int[] { 5, 4, 4, 3, 3, 3, 2, 2, 2, 2 });
-            computersFleet = shipwright.CreateFleet(new int[] { 5, 4, 4, 3, 3, 3, 2, 2, 2, 2 });
-
+            computersFleet = shipwright.CreateFleet(new int[] { 5, 4, 4, 3, 3, 3, 2, 2, 2, 2 }); 
             GridReset(playerGrid);
             GridReset(computerGrid);
             MarkPlayersShips(playerGrid, playersFleet);
@@ -165,9 +164,9 @@ namespace RazmjestajFlote
                     }
                 case HitResult.Sunken:
                     {
-                        ShipIsSunken(computerGrid, computersFleet, field);
                         computersCounter--;
-                        label2.Text = playersCounter.ToString();
+                        ShipIsSunken(computerGrid, computersFleet, field);                       
+                        label2.Text = computersCounter.ToString();
                         if (computersCounter == 0)
                         {
                             string message = "Pobjeda!";
@@ -198,10 +197,10 @@ namespace RazmjestajFlote
                     }
                 case HitResult.Sunken:
                     {
-                        ShipIsSunken(playerGrid, playersFleet, field);
                         playersCounter--;
+                        ShipIsSunken(playerGrid, playersFleet, field);
                         label1.Text = playersCounter.ToString();
-                        if (computersCounter == 0)
+                        if (playersCounter == 0)
                         {
                             string message = "Izgubili ste!";
                             MessageBox.Show(message);
