@@ -175,7 +175,6 @@ namespace DisplayFleet
                             break;
 
                         }
-                        EnemyTurn();
                         break;
                     }
             }
