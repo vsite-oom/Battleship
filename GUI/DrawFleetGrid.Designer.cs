@@ -1,6 +1,6 @@
 ﻿namespace Vsite.Oom.Battleship.GUI
 {
-    partial class DrawPanel
+    partial class DrawFleetGrid
     {
         /// <summary>
         /// Required designer variable.
