@@ -28,38 +28,40 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             this.buttonDraw = new System.Windows.Forms.Button();
-            this.fleetgrid = new FleetView.fleetGrid(this.components);
+            this.playButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // buttonDraw
             // 
             this.buttonDraw.ForeColor = System.Drawing.SystemColors.MenuHighlight;
-            this.buttonDraw.Location = new System.Drawing.Point(156, 402);
+            this.buttonDraw.Location = new System.Drawing.Point(12, 520);
             this.buttonDraw.Name = "buttonDraw";
             this.buttonDraw.Size = new System.Drawing.Size(141, 30);
             this.buttonDraw.TabIndex = 1;
             this.buttonDraw.Text = "&Draw";
             this.buttonDraw.UseVisualStyleBackColor = true;
-            this.buttonDraw.Click += new System.EventHandler(this.drawButton);
+            this.buttonDraw.Click += new System.EventHandler(this.DrawButton);
             // 
-            // fleetgrid
+            // playButton
             // 
-            this.fleetgrid.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.fleetgrid.Location = new System.Drawing.Point(35, 12);
-            this.fleetgrid.Name = "fleetgrid";
-            this.fleetgrid.Size = new System.Drawing.Size(394, 366);
-            this.fleetgrid.TabIndex = 0;
+            this.playButton.ForeColor = System.Drawing.SystemColors.MenuHighlight;
+            this.playButton.Location = new System.Drawing.Point(850, 520);
+            this.playButton.Name = "playButton";
+            this.playButton.Size = new System.Drawing.Size(141, 30);
+            this.playButton.TabIndex = 2;
+            this.playButton.Text = "Play";
+            this.playButton.UseVisualStyleBackColor = true;
+            this.playButton.Click += new System.EventHandler(this.playButton_Click);
             // 
             // FleetForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.SystemColors.MenuHighlight;
-            this.ClientSize = new System.Drawing.Size(460, 474);
+            this.BackColor = System.Drawing.SystemColors.ControlText;
+            this.ClientSize = new System.Drawing.Size(1115, 562);
+            this.Controls.Add(this.playButton);
             this.Controls.Add(this.buttonDraw);
-            this.Controls.Add(this.fleetgrid);
             this.Name = "FleetForm";
             this.Text = "Fleet";
             this.ResumeLayout(false);
@@ -67,7 +69,7 @@
         }
 
         #endregion
-        private fleetGrid fleetgrid;
         private System.Windows.Forms.Button buttonDraw;
+        private System.Windows.Forms.Button playButton;
     }
 }

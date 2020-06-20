@@ -1,29 +1,37 @@
 ﻿using System;
-using System.Windows.Forms;
-using Vsite.Oom.Battleship.Model;
 using System.Drawing;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows.Forms;
+using Vsite.Oom.Battleship.Model;
 
 namespace FleetView
 {
+    public enum Turn
+    {
+        User,
+        PC
+    };
+    public enum Winner
+    {
+        User,
+        PC,
+        Tie,
+        None
+    };
+
     public partial class FleetForm : Form
     {
 
-        private int numOfRows = 10;
-        private int numOfCols = 10;
-        private GridButton[,] userPanel = new GridButton[10, 10];
-        private GridButton[,] pcPanel = new GridButton[10, 10];
-        private Fleet userFleet;
-        private Fleet pcFleet;
-        private Gunner gunner;
-        private int[] sizeOfShip = new int[] { 5, 4, 4, 3, 3, 3, 2, 2, 2, 2 };
+        //Constructor, draw panel, draw fleet, exit game
         public FleetForm()
         {
             InitializeComponent();
             DrawPanel(userPanel, 47);
             DrawPanel(pcPanel, 600);
-
+            whoPlays = Turn.User;
+            EnableButtons(userPanel, false);
+            EnableButtons(pcPanel, false);
         }
         private void DrawPanel(GridButton[,] panel, int left)
         {
@@ -34,7 +42,7 @@ namespace FleetView
                     panel[i, j] = new GridButton();
                     panel[i, j].i = i;
                     panel[i, j].j = j;
-                    panel[i, j].BackColor = System.Drawing.SystemColors.ControlDark;
+                    panel[i, j].BackColor = Color.FromArgb(232, 232, 232);
                     panel[i, j].Location = new System.Drawing.Point(left + i * 40, 60 + j * 40);
                     panel[i, j].Size = new System.Drawing.Size(40, 40);
                     panel[i, j].TabStop = false;
@@ -42,7 +50,152 @@ namespace FleetView
                     this.Controls.Add(panel[i, j]);
                 }
             }
+            char letter = 'A';
+            for (int i = 0; i < numOfRows + 1; i++)
+            {
+                for (int j = 0; j < numOfCols + 1; j++)
+                {
+                    gridMarks[i, j] = new GridButton();
+                    if (j != 0)
+                        gridMarks[i, j].Text = j.ToString();
+                    if (i != 0)
+                        gridMarks[i, j].Text = letter.ToString();
+                    gridMarks[i, j].BackColor = Color.FromArgb(232, 232, 232);
+                    gridMarks[i, j].Location = new System.Drawing.Point(left + i * 40 - 40, 60 + j * 40 - 40);
+                    gridMarks[i, j].Size = new System.Drawing.Size(40, 40);
+                    gridMarks[i, j].TabStop = false;
+                    gridMarks[i, j].Enabled = false;
+                    this.Controls.Add(gridMarks[i, j]);
+                }
+                if (i != 0)
+                    letter++;
+            }
+
         }
+        private void DrawButton(object sender, EventArgs e)
+        {
+            running = false;
+            whoPlays = Turn.User;
+            playButton.Enabled = true;
+            ResetButtons(userPanel);
+            ResetButtons(pcPanel);
+
+            Shipwright ship = new Shipwright(numOfRows, numOfCols);
+            //User fleet
+            var fleet = ship.CreateFleet(sizeOfShip);
+            //PC Fleet
+            var fleetPc = ship.CreateFleet(sizeOfShip);
+            //Store that in class members
+            userFleet = fleet;
+            pcFleet = fleetPc;
+            //Create gunner
+            gunner = new Gunner(numOfRows, numOfCols, sizeOfShip);
+
+            foreach (Ship ships in userFleet.Ships)
+            {
+                foreach (Square field in ships.Squares)
+                {
+                    userPanel[field.Row, field.Col].BackColor = Color.FromArgb(0, 96, 255);
+                }
+            }
+
+
+            foreach (Ship ships in pcFleet.Ships)
+            {
+                foreach (Square field in ships.Squares)
+                {
+                    pcPanel[field.Row, field.Col].BackColor = Color.FromArgb(0, 96, 255);
+                }
+            }
+        }
+        private void ResetButtons(Button[,] panel)
+        {
+            for (int i = 0; i < numOfRows; i++)
+            {
+                for (int j = 0; j < numOfCols; j++)
+                {
+                    panel[i, j].BackColor = Color.FromArgb(232, 232, 232);
+                }
+            }
+        }
+        private void ButtonQuitOnClick(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
+        private void playButton_Click(object sender, EventArgs e)
+        {
+            playButton.Enabled = false;
+            running = true;
+            Play();
+        }
+
+        //Game Loop
+        private void Play()
+        {
+            if (running)
+            {
+                if (IsGameOver() == Winner.None)
+                {
+                    switch (whoPlays)
+                    {
+                        case Turn.User:
+                            {
+                                UserPlay();
+                                break;
+                            }
+                        case Turn.PC:
+                            {
+                                EnableButtons(pcPanel, false);
+                                PcPlay();
+                                break;
+                            }
+                    }
+                }
+            }
+        }
+
+        private Winner IsGameOver()
+        {
+            Winner winner;
+            var pcFleetSunked = pcFleet.Ships.SelectMany(s => s.Squares).Any(s => s.SquareState != SquareState.Sunken);
+            var userFleetSunked = userFleet.Ships.SelectMany(s => s.Squares).Any(s => s.SquareState != SquareState.Sunken);
+            if (!pcFleetSunked)
+            {
+                running = false;
+                winner = Winner.User;
+            }
+            else if (!userFleetSunked)
+            {
+                running = false;
+                winner = Winner.PC;
+            }
+            else if (!pcFleetSunked && !userFleetSunked)
+            {
+                running = false;
+                winner = Winner.Tie;
+            }
+            else
+            {
+                winner = Winner.None;
+            }
+            return winner;
+        }
+        private void UserPlay()
+        {
+            EnableButtons(pcPanel, true);
+        }
+        private void EnableButtons(GridButton[,] grid, bool enable)
+        {
+            //If enable==true, then user can play
+            for (int i = 0; i < numOfRows; i++)
+            {
+                for (int j = 0; j < numOfCols; j++)
+                {
+                    grid[i, j].Enabled = enable;
+                }
+            }
+        }
+
         private void ClickSquareEvent(object sender, EventArgs e)
         {
             GridButton button = sender as GridButton;
@@ -52,13 +205,13 @@ namespace FleetView
             {
                 case HitResult.Hit:
                     {
-                        button.BackColor = Color.Red;
+                        button.BackColor = Color.FromArgb(255, 255, 0);
                         break;
                     }
                 case HitResult.Missed:
                     {
-                        button.BackColor = Color.Black;
-                        PcPlay();
+                        button.BackColor = Color.Red;
+                        whoPlays = Turn.PC;
                         break;
                     }
                 case HitResult.Sunken:
@@ -68,6 +221,7 @@ namespace FleetView
                         break;
                     }
             }
+            Play();
         }
 
         private async Task PcPlay()
@@ -80,13 +234,14 @@ namespace FleetView
             {
                 case HitResult.Hit:
                     {
-                        userPanel[square.Row, square.Col].BackColor = Color.Red;
+                        userPanel[square.Row, square.Col].BackColor = Color.FromArgb(255, 255, 0);
                         await PcPlay();
                         break;
                     }
                 case HitResult.Missed:
                     {
-                        userPanel[square.Row, square.Col].BackColor = Color.Black;
+                        userPanel[square.Row, square.Col].BackColor = Color.Red;
+                        whoPlays = Turn.User;
                         break;
                     }
                 case HitResult.Sunken:
@@ -97,55 +252,19 @@ namespace FleetView
                         break;
                     }
             }
+            Play();
         }
 
-        private void ButtonQuitOnClick(object sender, EventArgs e)
-        {
-            Application.Exit();
-        }
-
-        private void DrawButton(object sender, EventArgs e)
-        {
-            playButton.Enabled = true;
-            ResetButtons(userPanel);
-            ResetButtons(pcPanel);
-
-            Shipwright ship = new Shipwright(numOfRows, numOfCols);
-            var fleet = ship.CreateFleet(sizeOfShip);
-            var fleetPc = ship.CreateFleet(sizeOfShip);
-            userFleet = fleet;
-            pcFleet = fleetPc;
-            gunner = new Gunner(numOfRows, numOfCols, sizeOfShip);
-            foreach (Ship ships in fleet.Ships)
-            {
-                foreach (Square field in ships.Squares)
-                {
-                    userPanel[field.Row, field.Col].BackColor = System.Drawing.SystemColors.ControlDark;
-                }
-            }
-            foreach (Ship ships in fleetPc.Ships)
-            {
-                foreach (Square field in ships.Squares)
-                {
-                    pcPanel[field.Row, field.Col].BackColor = System.Drawing.SystemColors.ControlDark;
-                }
-            }
-        }
-
-        private void ResetButtons(Button[,] panel)
-        {
-            for (int i = 0; i < numOfRows; i++)
-            {
-                for (int j = 0; j < numOfCols; j++)
-                {
-                    panel[i, j].BackColor = System.Drawing.SystemColors.GradientActiveCaption;
-                }
-            }
-        }
-        private void playButton_Click(object sender, EventArgs e)
-        {
-            buttonDraw.Enabled = false;
-            playButton.Enabled = false;
-        }
+        private int numOfRows = 10;
+        private int numOfCols = 10;
+        private GridButton[,] userPanel = new GridButton[10, 10];
+        private GridButton[,] pcPanel = new GridButton[10, 10];
+        private GridButton[,] gridMarks = new GridButton[11, 11];
+        private Fleet userFleet;
+        private Fleet pcFleet;
+        private Gunner gunner;
+        private int[] sizeOfShip = new int[] { 5, 4, 4, 3, 3, 3, 2, 2, 2, 2 };
+        private Turn whoPlays;
+        private bool running = false;
     }
 }
