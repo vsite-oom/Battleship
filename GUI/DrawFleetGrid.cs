@@ -58,7 +58,7 @@ namespace Vsite.Oom.Battleship.GUI
             return button;
         }
 
-        public void DrawGrid()
+        private void DrawGrid()
         {
             Fleet = Shipwright.CreateFleet(RulesSingleton.Instance.ShipLengths);
             int numOfFields = RulesSingleton.Instance.Columns * RulesSingleton.Instance.Rows;
@@ -66,6 +66,13 @@ namespace Vsite.Oom.Battleship.GUI
             {
                 Controls.Add(DrawButton(i));
             }
+        }
+
+        public void Init()
+        {
+            SquareTerminator = new SquareTerminator(RulesSingleton.Instance.Rows,RulesSingleton.Instance.Columns);
+            Shipwright = new Shipwright(RulesSingleton.Instance.Rows,RulesSingleton.Instance.Columns,SquareTerminator);
+            DrawGrid();
         }
 
 

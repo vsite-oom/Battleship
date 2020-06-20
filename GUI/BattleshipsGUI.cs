@@ -23,8 +23,8 @@ namespace Vsite.Oom.Battleship.GUI
         {
             playerFleetGrid.Controls.Clear();
             enemyFleetGrid.Controls.Clear();
-            playerFleetGrid.DrawGrid();
-            enemyFleetGrid.DrawGrid();
+            playerFleetGrid.Init();
+            enemyFleetGrid.Init();
         }
     }
 }
