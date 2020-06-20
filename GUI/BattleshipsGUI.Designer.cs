@@ -1,4 +1,7 @@
-﻿namespace Vsite.Oom.Battleship.GUI
+﻿using System.Data;
+using Vsite.Oom.Battleship.Model;
+
+namespace Vsite.Oom.Battleship.GUI
 {
     partial class BattleshipsGUI
     {
@@ -41,29 +44,31 @@
             this.newGameButton.TabIndex = 1;
             this.newGameButton.Text = "New game";
             this.newGameButton.UseVisualStyleBackColor = true;
-            this.newGameButton.Click += new System.EventHandler(this.button1_Click);
+            this.newGameButton.Click += new System.EventHandler(this.newGameButton_Click);
             // 
             // playerFleetGrid
             // 
-            this.playerFleetGrid.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.playerFleetGrid.Fleet = null;
             this.playerFleetGrid.Lines = 0;
             this.playerFleetGrid.Location = new System.Drawing.Point(72, 23);
             this.playerFleetGrid.MinimumSize = new System.Drawing.Size(550, 550);
             this.playerFleetGrid.Name = "playerFleetGrid";
-            this.playerFleetGrid.Shipwright = null;
+            this.playerFleetGrid.playerGrid = DrawFleetGrid.PlayerGridType.PLAYER;
+            this.playerFleetGrid.SquareTerminator = new SquareTerminator(RulesSingleton.Instance.Rows, RulesSingleton.Instance.Columns);
+            this.playerFleetGrid.Shipwright = new Shipwright(RulesSingleton.Instance.Rows, RulesSingleton.Instance.Columns, this.playerFleetGrid.SquareTerminator);
             this.playerFleetGrid.Size = new System.Drawing.Size(550, 550);
             this.playerFleetGrid.TabIndex = 0;
             // 
             // enemyFleetGrid
             // 
-            this.enemyFleetGrid.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.enemyFleetGrid.Fleet = null;
             this.enemyFleetGrid.Lines = 0;
             this.enemyFleetGrid.Location = new System.Drawing.Point(725, 23);
             this.enemyFleetGrid.MinimumSize = new System.Drawing.Size(550, 550);
             this.enemyFleetGrid.Name = "enemyFleetGrid";
-            this.enemyFleetGrid.Shipwright = null;
+            this.enemyFleetGrid.playerGrid = DrawFleetGrid.PlayerGridType.ENEMY;
+            this.enemyFleetGrid.SquareTerminator = new SquareTerminator(RulesSingleton.Instance.Rows, RulesSingleton.Instance.Columns);
+            this.enemyFleetGrid.Shipwright = new Shipwright(RulesSingleton.Instance.Rows, RulesSingleton.Instance.Columns, this.playerFleetGrid.SquareTerminator);
             this.enemyFleetGrid.Size = new System.Drawing.Size(550, 550);
             this.enemyFleetGrid.TabIndex = 2;
             // 

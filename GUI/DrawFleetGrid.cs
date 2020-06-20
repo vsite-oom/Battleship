@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Data;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
@@ -22,41 +23,61 @@ namespace Vsite.Oom.Battleship.GUI
         public DrawFleetGrid()
         {
             InitializeComponent();
-            rules = RulesSingleton.Instance;
+            Margin = new Padding(0);
+            BackColor = Color.Aqua;
+            buttons = new List<Button>();
         }
 
         private Button DrawButton(int ID)
         {
             Button button = new Button();
             button.Name = "button" + ID;
-            button.Width = Width / rules.Rows -7;
-            button.Height = Height / rules.Columns -7;
+            button.Width = Width / RulesSingleton.Instance.Rows - 7;
+            button.Height = Height / RulesSingleton.Instance.Columns - 7;
             button.Visible = true;
+            button.BackColor = Color.Aqua;
+            if (playerGrid == PlayerGridType.PLAYER)
+            {
+                foreach (var fleetShip in Fleet.Ships)
+                {
+                    foreach (var fleetShipSquare in fleetShip.Squares)
+                    {
+                        if (fleetShipSquare.Row * 10 + fleetShipSquare.Column == ID)
+                        {
+                            button.BackColor = Color.DimGray;
+                        }
+                    }
+                }
+            }
+
+            if (playerGrid == PlayerGridType.ENEMY)
+            {
+                gunner = new Gunner(RulesSingleton.Instance.Rows, RulesSingleton.Instance.Columns, RulesSingleton.Instance.ShipLengths);
+            }
+            buttons.Add(button);
             return button;
         }
 
         public void DrawGrid()
         {
-            int numOfFields = rules.Columns * rules.Rows;
+            Fleet = Shipwright.CreateFleet(RulesSingleton.Instance.ShipLengths);
+            int numOfFields = RulesSingleton.Instance.Columns * RulesSingleton.Instance.Rows;
             for (int i = 0; i < numOfFields; ++i)
             {
                 Controls.Add(DrawButton(i));
             }
         }
 
-        private void DrawShips()
-        {
-
-        }
 
         public Shipwright Shipwright { get; set; }
         public Fleet Fleet { get; set; }
         public int Lines { get; set; }
+        public PlayerGridType playerGrid { get; set; }
+        public ISquareTerminator SquareTerminator { get; set; }
 
-        public PlayerGridType PlayerGrid { get; set; }
 
+        private Gunner gunner;
 
-        private RulesSingleton rules;
-        
+        private List<Button> buttons;
     }
 }
