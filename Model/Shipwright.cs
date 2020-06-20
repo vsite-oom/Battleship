@@ -41,7 +41,6 @@ namespace Vsite.Oom.Battleship.Model
 
             Grid grid = new Grid(rows, cols);
             Fleet fleet = new Fleet();
-            Random random = new Random();
             while (lengths.Count > 0)
             {
                 var placements = grid.GetAvailablePlacments(lengths[0]);

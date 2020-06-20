@@ -16,7 +16,6 @@ namespace FleetView
     {
         User,
         PC,
-        Tie,
         None
     };
 
@@ -42,7 +41,7 @@ namespace FleetView
                     panel[i, j] = new GridButton();
                     panel[i, j].i = i;
                     panel[i, j].j = j;
-                    panel[i, j].BackColor = Color.FromArgb(232, 232, 232);
+                    panel[i, j].BackColor = Color.FromArgb(200, 212, 200);
                     panel[i, j].Location = new System.Drawing.Point(left + i * 40, 60 + j * 40);
                     panel[i, j].Size = new System.Drawing.Size(40, 40);
                     panel[i, j].TabStop = false;
@@ -60,7 +59,7 @@ namespace FleetView
                         gridMarks[i, j].Text = j.ToString();
                     if (i != 0)
                         gridMarks[i, j].Text = letter.ToString();
-                    gridMarks[i, j].BackColor = Color.FromArgb(232, 232, 232);
+                    gridMarks[i, j].BackColor = Color.FromArgb(200, 212, 200);
                     gridMarks[i, j].Location = new System.Drawing.Point(left + i * 40 - 40, 60 + j * 40 - 40);
                     gridMarks[i, j].Size = new System.Drawing.Size(40, 40);
                     gridMarks[i, j].TabStop = false;
@@ -96,15 +95,6 @@ namespace FleetView
                 foreach (Square field in ships.Squares)
                 {
                     userPanel[field.Row, field.Col].BackColor = Color.FromArgb(0, 96, 255);
-                }
-            }
-
-
-            foreach (Ship ships in pcFleet.Ships)
-            {
-                foreach (Square field in ships.Squares)
-                {
-                    pcPanel[field.Row, field.Col].BackColor = Color.FromArgb(0, 96, 255);
                 }
             }
         }
@@ -163,16 +153,13 @@ namespace FleetView
             {
                 running = false;
                 winner = Winner.User;
+                MessageBox.Show("User won!");
             }
             else if (!userFleetSunked)
             {
                 running = false;
                 winner = Winner.PC;
-            }
-            else if (!pcFleetSunked && !userFleetSunked)
-            {
-                running = false;
-                winner = Winner.Tie;
+                MessageBox.Show("PC won!");
             }
             else
             {
