@@ -58,7 +58,8 @@ namespace Vsite.Oom.Battleship.GUI
                     break;
                 case HitResult.Sunken:
                     SunkenShips(enemyFleetGrid);
-                    if (enemyFleetGrid.Fleet.Ships.Count() == 0)
+                    enemyShipsToShoot--;
+                    if (enemyShipsToShoot == 0)
                     {
                         MessageBox.Show("YOU WON !!!");
                         newGameStarted = false;
@@ -91,7 +92,8 @@ namespace Vsite.Oom.Battleship.GUI
                     break;
                 case HitResult.Sunken:
                     SunkenShips(playerFleetGrid);
-                    if (playerFleetGrid.Fleet.Ships.Count() == 0)
+                    playerShipsToShoot--;
+                    if (playerShipsToShoot == 0)
                     {
                         MessageBox.Show("You lose :(");
                         newGameStarted = false;
@@ -124,8 +126,9 @@ namespace Vsite.Oom.Battleship.GUI
         }
 
         private bool newGameStarted;
-        private Gunner friendlyGunner;
         private Gunner enemyGunner;
+        private int enemyShipsToShoot = RulesSingleton.Instance.ShipLengths.Length;
+        private int playerShipsToShoot = RulesSingleton.Instance.ShipLengths.Length;
 
 
         private void enemyFleetGrid_Click(object sender, EventArgs e)

@@ -121,7 +121,7 @@ namespace Vsite.Oom.Battleship.Model
                 var l = GetSquaresNextTo(squaresHit.First(), Direction.Left);
                 if(l.Count() > 0)
                     result.Add(l);
-                l = GetSquaresNextTo(squaresHit.First(), Direction.Right);
+                l = GetSquaresNextTo(squaresHit.Last(), Direction.Right);
                 if(l.Count() > 0)
                     result.Add(l);
             }      
@@ -131,7 +131,7 @@ namespace Vsite.Oom.Battleship.Model
                 var l = GetSquaresNextTo(squaresHit.First(), Direction.Up);
                 if(l.Count() > 0)
                     result.Add(l);
-                l = GetSquaresNextTo(squaresHit.First(), Direction.Down);
+                l = GetSquaresNextTo(squaresHit.Last(), Direction.Down);
                 if(l.Count() > 0)
                     result.Add(l);
             }
