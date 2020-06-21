@@ -48,31 +48,40 @@ namespace Vsite.Oom.Battleship.GUI
             // 
             // enemyFleetGrid
             // 
+            this.enemyFleetGrid.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.enemyFleetGrid.BackColor = System.Drawing.Color.Aqua;
             this.enemyFleetGrid.Fleet = null;
-            this.enemyFleetGrid.Lines = 0;
             this.enemyFleetGrid.Location = new System.Drawing.Point(606, 9);
             this.enemyFleetGrid.Margin = new System.Windows.Forms.Padding(0);
             this.enemyFleetGrid.MinimumSize = new System.Drawing.Size(550, 550);
             this.enemyFleetGrid.Name = "enemyFleetGrid";
             this.enemyFleetGrid.playerGrid = Vsite.Oom.Battleship.GUI.DrawFleetGrid.PlayerGridType.ENEMY;
+            this.enemyFleetGrid.Shipwright = null;
             this.enemyFleetGrid.Size = new System.Drawing.Size(550, 550);
             this.enemyFleetGrid.SquareTerminator = null;
             this.enemyFleetGrid.TabIndex = 2;
+            this.enemyFleetGrid.Turn = false;
+            this.enemyFleetGrid.Click += new System.EventHandler(this.enemyFleetGrid_Click);
             // 
             // playerFleetGrid
             // 
+            this.playerFleetGrid.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.playerFleetGrid.BackColor = System.Drawing.Color.Aqua;
             this.playerFleetGrid.Fleet = null;
-            this.playerFleetGrid.Lines = 0;
             this.playerFleetGrid.Location = new System.Drawing.Point(9, 9);
             this.playerFleetGrid.Margin = new System.Windows.Forms.Padding(0);
             this.playerFleetGrid.MinimumSize = new System.Drawing.Size(550, 550);
             this.playerFleetGrid.Name = "playerFleetGrid";
             this.playerFleetGrid.playerGrid = Vsite.Oom.Battleship.GUI.DrawFleetGrid.PlayerGridType.PLAYER;
+            this.playerFleetGrid.Shipwright = null;
             this.playerFleetGrid.Size = new System.Drawing.Size(550, 550);
             this.playerFleetGrid.SquareTerminator = null;
             this.playerFleetGrid.TabIndex = 0;
+            this.playerFleetGrid.Turn = false;
             // 
             // BattleshipsGUI
             // 
