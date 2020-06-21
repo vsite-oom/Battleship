@@ -118,7 +118,7 @@ namespace BattleshipForm
                 }
                 else
                 {
-                    //cpuShoots();
+                    cpuShoots();
                 }
 
                 if (userShipsToShoot == 0)
