@@ -47,6 +47,8 @@ namespace FinalGUI
         {
             buttonStartGame.Enabled = false;
             buttonStartGame.Text = "Game Started";
+            playersGrid.Enabled = true;
+            computersGrid.Enabled = true;
             Game game = new Game(this, playersFleet, computersFleet, playersGrid, computersGrid);
             game.StartShooting();
         }
@@ -82,6 +84,7 @@ namespace FinalGUI
         internal void OnChangeOfTurn(object source, Game.MessageArgs arg)
         {
             labelStatus.Text = arg.Message;
+            labelStatus.Update();
         }
 
         private void RestoreStatusLabel()

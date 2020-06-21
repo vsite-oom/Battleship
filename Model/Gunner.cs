@@ -59,7 +59,6 @@ namespace Vsite.Oom.Battleship.Model
             if (hitResult == HitResult.Sunken)
             {
                 ShootingTactics = ShootingTactics.Random;
-                return;
             }
 
             if (hitResult == HitResult.Hit)

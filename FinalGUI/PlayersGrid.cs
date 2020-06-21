@@ -54,9 +54,6 @@ namespace FinalGUI
                     button.Text = "Sunk";
                     button.ForeColor = missedColor;
                     break;
-                default:
-                    Debug.Assert(false);
-                    break;
             }
         }
     }

@@ -55,6 +55,12 @@ namespace FinalGUI
 
         public void StartShooting()
         {
+            if (playersShipsLeft == 0 || computersShipsLeft == 0)
+            {
+                GameOver();
+                return;
+            }
+
             if (shooter == Shooter.You)
             {
                 OnChangeOfTurn("It's Your turn to play!");
@@ -62,9 +68,18 @@ namespace FinalGUI
             else
             {
                 OnChangeOfTurn("Computer shoots...");
+                Thread.Sleep(1000);
                 ComputerShoots();
-                
             }
+        }
+
+        private void GameOver()
+        {
+            if (playersShipsLeft == 0)
+                OnChangeOfTurn("You lost!");
+            else OnChangeOfTurn("You won!");
+            playersGrid.Enabled = false;
+            computersGrid.Enabled = false;
         }
 
         public event EventHandler<MessageArgs> FirstShooterChosen;

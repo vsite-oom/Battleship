@@ -81,7 +81,7 @@ namespace FinalGUI
                     Debug.Assert(false);
                     break;
             }
-
+            button.Update();
 
         }
     }
