@@ -8,6 +8,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Vsite.Oom.Battleship.Model;
+using System.Runtime.CompilerServices;
+using System.Diagnostics;
+using System.Timers;
 
 namespace FinalGUI
 {
@@ -16,6 +19,7 @@ namespace FinalGUI
         public PlayersGrid()
         {
             InitializeComponent();
+            
         }
 
         public void FillGrid(Fleet fleet)
@@ -30,18 +34,30 @@ namespace FinalGUI
             }
         }
 
-        public void ClearGrid()
+        internal void OnComputerShoots(object sender, Game.SquareShotArgs arg)
         {
-            for (int r = 0; r < RulesSingleton.Instance.Rows; ++r)
+            Button button = buttons[arg.SquareShot.Row, arg.SquareShot.Column];
+            Square square = arg.SquareShot;
+            switch (square.SquareState)
             {
-                for (int c = 0; c < RulesSingleton.Instance.Columns; ++c)
-                {
-                    buttons[r, c].BackColor = buttonColor;
-                }
+                case SquareState.Missed:
+                    button.BackColor = missedColor;
+                    button.ForeColor = shipColor;
+                    break;
+                case SquareState.Hit:
+                    button.BackColor = hitColor;
+                    button.Text = "Hit";
+                    button.ForeColor = missedColor;
+                    break;
+                case SquareState.Sunken:
+                    button.BackColor = sunkenColor;
+                    button.Text = "Sunk";
+                    button.ForeColor = missedColor;
+                    break;
+                default:
+                    Debug.Assert(false);
+                    break;
             }
         }
-
-        Color buttonColor = SystemColors.ControlLight;
-        Color shipColor = Color.Red;
     }
 }

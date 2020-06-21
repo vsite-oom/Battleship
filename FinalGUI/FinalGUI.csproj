@@ -46,6 +46,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ComputersGrid.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ComputersGrid.Designer.cs">
+      <DependentUpon>ComputersGrid.cs</DependentUpon>
+    </Compile>
     <Compile Include="Game.cs" />
     <Compile Include="GameForm.cs">
       <SubType>Form</SubType>
@@ -72,6 +78,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="GameGrid.resx">
       <DependentUpon>GameGrid.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayersGrid.resx">
+      <DependentUpon>PlayersGrid.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

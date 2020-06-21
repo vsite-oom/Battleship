@@ -87,9 +87,25 @@ namespace FinalGUI
             }
         }
 
-        readonly int rows = RulesSingleton.Instance.Rows;
-        readonly int columns = RulesSingleton.Instance.Columns;
+        public void ClearGrid()
+        {
+            for (int r = 0; r < rows; ++r)
+            {
+                for (int c = 0; c < columns; ++c)
+                {
+                    buttons[r, c].BackColor = buttonColor;
+                    buttons[r, c].Text = "";
+                }
+            }
+        }
+
+        protected readonly int rows = RulesSingleton.Instance.Rows;
+        protected readonly int columns = RulesSingleton.Instance.Columns;
         protected Button[,] buttons;
-        Color buttonColor = SystemColors.ControlLight;
+        protected Color buttonColor = SystemColors.ControlLight;
+        protected Color shipColor = Color.Red;
+        protected Color missedColor = Color.White;
+        protected Color hitColor = Color.DarkGray;
+        protected Color sunkenColor = Color.Gray;
     }
 }

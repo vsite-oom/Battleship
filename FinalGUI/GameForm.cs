@@ -23,6 +23,7 @@ namespace FinalGUI
         private void DeployFleets()
         {
             playersGrid.ClearGrid();
+            computersGrid.ClearGrid();
             playersFleet = sw.CreateFleet(shipLengths);
             playersGrid.FillGrid(playersFleet);
             computersFleet = sw.CreateFleet(shipLengths);
@@ -39,17 +40,18 @@ namespace FinalGUI
             buttonDeploy.Text = "Redeploy Fleets";
             RestorePlayerLabel();
             RestoreComputerLabel();
+            RestoreStatusLabel();
         }
 
         private void buttonStartGame_Click(object sender, EventArgs e)
         {
             buttonStartGame.Enabled = false;
             buttonStartGame.Text = "Game Started";
-            Game game = new Game(this);
-            game.Play();
+            Game game = new Game(this, playersFleet, computersFleet, playersGrid, computersGrid);
+            game.StartShooting();
         }
 
-        public void OnFirstShooterChosen(object source, Game.MessageArgs arg)
+        internal void OnFirstShooterChosen(object source, Game.MessageArgs arg)
         {
             if (arg.Message == "You")
             {
@@ -77,12 +79,21 @@ namespace FinalGUI
             groupBoxComputer.ForeColor = SystemColors.ControlText;
         }
 
+        internal void OnChangeOfTurn(object source, Game.MessageArgs arg)
+        {
+            labelStatus.Text = arg.Message;
+        }
+
+        private void RestoreStatusLabel()
+        {
+            labelStatus.Text = "";
+        }
+
         readonly Shipwright sw;
-        private readonly int rows = RulesSingleton.Instance.Rows;
-        private readonly int columns = RulesSingleton.Instance.Columns;
-        private readonly int[] shipLengths = RulesSingleton.Instance.ShipLengths;
+        internal readonly int rows = RulesSingleton.Instance.Rows;
+        internal readonly int columns = RulesSingleton.Instance.Columns;
+        internal readonly int[] shipLengths = RulesSingleton.Instance.ShipLengths;
         private Fleet playersFleet = new Fleet();
         private Fleet computersFleet = new Fleet();
-
     }
 }
