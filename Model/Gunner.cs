@@ -16,6 +16,15 @@ namespace Vsite.Oom.Battleship.Model
     }
     public class Gunner
     {
+        public Gunner()
+        {
+            evidenceGrid = new Grid(RulesSingleton.Instance.Rows, RulesSingleton.Instance.Columns);
+            shipsToShoot = RulesSingleton.Instance.ShipLengths.OrderByDescending(s => s).ToList();
+            ShootingTactics = ShootingTactics.Random;
+            squareTerminator = new SquareTerminator(RulesSingleton.Instance.Rows, RulesSingleton.Instance.Columns);
+            shootingTacticsFactory = new ShootingTacticsFactory(evidenceGrid, squaresHit, shipsToShoot);
+            targetSelect = shootingTacticsFactory.GetTactics(ShootingTactics.Random);
+        }
         public Gunner(int rows, int columns, IEnumerable<int> shipLengths)
         {
             evidenceGrid = new Grid(rows, columns);

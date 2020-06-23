@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests", "UnitTests\Unit
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Battleship.Board", "..\Battleship5\BattleshipGUI\Battleship.Board.csproj", "{244243E2-4957-4316-BD8D-BC8399CAEC76}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LabNadoknada", "LabNadoknada\LabNadoknada.csproj", "{54121630-FFEE-42A7-BD19-148C14E52378}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{244243E2-4957-4316-BD8D-BC8399CAEC76}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{244243E2-4957-4316-BD8D-BC8399CAEC76}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{244243E2-4957-4316-BD8D-BC8399CAEC76}.Release|Any CPU.Build.0 = Release|Any CPU
+		{54121630-FFEE-42A7-BD19-148C14E52378}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{54121630-FFEE-42A7-BD19-148C14E52378}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{54121630-FFEE-42A7-BD19-148C14E52378}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{54121630-FFEE-42A7-BD19-148C14E52378}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
