@@ -30,7 +30,7 @@ namespace Vsite.oom.Battleship.Model
 
         public Square NextTarget()
         {
-            // TODO: implement correctly!
+            
             lastTarget = targetSelect.NextTarget();
             return lastTarget;
         }

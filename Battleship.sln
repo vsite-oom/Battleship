@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests", "UnitTests\Unit
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShootingStats", "ShootingStats\ShootingStats.csproj", "{4D3CCEEC-36B6-4B36-A0CC-F985D3F71F3B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GUI", "GUI\GUI.csproj", "{2D356F73-FB93-4875-BA31-B4F9AA5077EE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{4D3CCEEC-36B6-4B36-A0CC-F985D3F71F3B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4D3CCEEC-36B6-4B36-A0CC-F985D3F71F3B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4D3CCEEC-36B6-4B36-A0CC-F985D3F71F3B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2D356F73-FB93-4875-BA31-B4F9AA5077EE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2D356F73-FB93-4875-BA31-B4F9AA5077EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2D356F73-FB93-4875-BA31-B4F9AA5077EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2D356F73-FB93-4875-BA31-B4F9AA5077EE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

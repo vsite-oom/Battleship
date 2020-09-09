@@ -16,23 +16,23 @@ namespace ShootingStats
             Shipwright sw = new Shipwright(10, 10);
 
             int hitNumber = 0;
-            for (int i = 0; i < 10000; ++i)
-            {
-                Fleet fleet = fleet = sw.CreateFleet(new int[] { 2, 2, 2, 2, 3, 3, 3, 4, 4, 5 });
-                Gunner gunner = new Gunner(10, 10, new int[] { 2, 2, 2, 2, 3, 3, 3, 4, 4, 5 });
-                HitResult result;
+            //for (int i = 0; i < 10000; ++i)
+            //{
+            //    Fleet fleet = fleet = sw.CreateFleet(new int[] { 2, 2, 2, 2, 3, 3, 3, 4, 4, 5 });
+            //    Gunner gunner = new Gunner(10, 10, new int[] { 2, 2, 2, 2, 3, 3, 3, 4, 4, 5 });
+            //    HitResult result;
 
-                do
-                {
-                    Square target = gunner.NextTarget();
-                    result = fleet.Hit(target);
-                    gunner.ProcessHitResult(result);
-                    hitNumber++;
-                } while (result != HitResult.Hit);
-            }
-            Console.WriteLine(hitNumber / 10000.0);
-            Console.WriteLine("Press any key and wait...");
-            Console.ReadKey();
+            //    do
+            //    {
+            //        Square target = gunner.NextTarget();
+            //        result = fleet.Hit(target);
+            //        gunner.ProcessHitResult(result);
+            //        hitNumber++;
+            //    } while (result != HitResult.Hit);
+            //}
+            //Console.WriteLine(hitNumber / 10000.0);
+            //Console.WriteLine("Press any key and wait...");
+            //Console.ReadKey();
 
             hitNumber = 0;
             for (int i = 0; i < 10000; ++i)

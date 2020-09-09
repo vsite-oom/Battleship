@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{C222C976-6E40-400E-8558-6FE241C70545}</ProjectGuid>
+    <ProjectGuid>{2D356F73-FB93-4875-BA31-B4F9AA5077EE}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <RootNamespace>GUI</RootNamespace>
     <AssemblyName>GUI</AssemblyName>
@@ -52,6 +52,7 @@
     <Compile Include="Battlefield.Designer.cs">
       <DependentUpon>Battlefield.cs</DependentUpon>
     </Compile>
+    <Compile Include="Player.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Battlefield.resx">

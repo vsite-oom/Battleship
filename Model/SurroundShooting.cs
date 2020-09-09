@@ -17,17 +17,16 @@ namespace Vsite.oom.Battleship.Model
         }
         public Square NextTarget()
         {
-            List<IEnumerable<Square>> around = new List<IEnumerable<Square>>();
+            List<IEnumerable<Square>> arround = new List<IEnumerable<Square>>();
             foreach (Direction direction in Enum.GetValues(typeof(Direction)))
             {
                 var l = evidenceGrid.GetSquaresNextTo(squaresHit.First(), direction);
                 if (l.Count() > 0)
-                    around.Add(l);
+                    arround.Add(l);
             }
-            if (around.Count == 1)
-                return around[0].First();
-
-            var ordered = around.OrderByDescending(ls => ls.Count());
+            if (arround.Count == 1)
+                return arround[0].First();
+            var ordered = arround.OrderByDescending(ls => ls.Count());
             int maxLen = ordered.First().Count();
             int shipLength = shipsToShoot[0];
             if (maxLen > shipLength - 1)

@@ -122,7 +122,7 @@ namespace Vsite.oom.Battleship.Model
         }
         public IEnumerable<IEnumerable<Square>> GetSquaresInline(IEnumerable<Square> squaresHit)
         {
-            List<IEnumerable<Square>> result = new List<Placement>();
+            List<Placement> result = new List<Placement>();
             // horizontal ship
             if (squaresHit.First().Rows == squaresHit.Last().Rows)
             {
