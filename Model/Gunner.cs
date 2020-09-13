@@ -67,9 +67,8 @@ namespace Vsite.oom.Battleship.Model
             {
                 ShootingTactics = ShootingTactics.Random;
 
-                return;
             }
-            if (hitResult == HitResult.Hit)
+            else if (hitResult == HitResult.Hit)
 
 
             {
@@ -80,7 +79,7 @@ namespace Vsite.oom.Battleship.Model
                         break;
                     case ShootingTactics.Surrounding:
                         ShootingTactics = ShootingTactics.Inline;
-                        return;
+                        break;
                     
                 }
             }
