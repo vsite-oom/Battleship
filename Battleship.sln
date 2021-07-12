@@ -3,7 +3,31 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29806.167
 MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Model", "Model\Model.csproj", "{E5A263CB-DE6C-49C8-B5C8-6E29DDE05F77}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests", "UnitTests\UnitTests.csproj", "{E9AF0B27-09F5-4198-80DB-C3305BAE5DAE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GUI Ship Placement Randomizer", "GUI Ship Placement Randomizer\GUI Ship Placement Randomizer.csproj", "{E81372D7-87D7-4848-89D6-7C2C5242E851}"
+EndProject
 Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E5A263CB-DE6C-49C8-B5C8-6E29DDE05F77}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E5A263CB-DE6C-49C8-B5C8-6E29DDE05F77}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E5A263CB-DE6C-49C8-B5C8-6E29DDE05F77}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E5A263CB-DE6C-49C8-B5C8-6E29DDE05F77}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E9AF0B27-09F5-4198-80DB-C3305BAE5DAE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E9AF0B27-09F5-4198-80DB-C3305BAE5DAE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E9AF0B27-09F5-4198-80DB-C3305BAE5DAE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E9AF0B27-09F5-4198-80DB-C3305BAE5DAE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E81372D7-87D7-4848-89D6-7C2C5242E851}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E81372D7-87D7-4848-89D6-7C2C5242E851}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E81372D7-87D7-4848-89D6-7C2C5242E851}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E81372D7-87D7-4848-89D6-7C2C5242E851}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
