@@ -1,0 +1,15 @@
+Shooting opponents fleet
+
+Actors: Two players
+Precondition: Both players have arranged their fleets
+
+1. Randomly chosen player starts the game
+2. player A checks evidence grid and selects a target square to shoot
+3. player a asks payer B for a square he is shooting
+4. player B checks his fleet and replies with:
+	a) "missed" if no ship is on the square
+	b) "hit" if one of the ships contains the square
+	c) "sunk" if hit square is the last square of a ship
+5. players shift roles: player B shoots player A's fleet
+6. Steps 2 - 5 are repeated until all ships from one player have been sunk.
+7. The winner is the one who has at least one ship not sunk.
