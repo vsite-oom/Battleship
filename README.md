@@ -23,11 +23,11 @@ Strategy game with 2 players playing one against another
 10.	Winner is the player whose fleet has at least one ship not sunk.
 
 
-[[/images/battleship.png]]
+![battleship](/images/battleship.png)
 
 ### Domain Model
 
-[[/images/domain_model.png]]
+![battleship](/images/domain_model.png)
 
 ### Arranging the Fleet
 
@@ -45,7 +45,7 @@ Strategy game with 2 players playing one against another
 
 #### Sequence Diagram: Arranging the Fleet
 
-[[/images/arranging_fleet_sequence_diagram.png]]
+![battleship](/images/arranging_fleet_sequence_diagram.png)
 
 
 #### Eliminating Squares After Ship Is Created
@@ -54,10 +54,10 @@ After a ship is placed, squares belonging to ship have to be removed from the gr
 
 <table cellspacing="0" cellpadding="0">
   <tr>
-    <td align="left"><img align="left" src="wiki/images/eliminate_squares1.png"></td>
-    <td align="right"><img align="right" src="wiki/images/eliminate_squares2.png"/></td>
+    <td align="left"><img align="left" src="/images/eliminate_squares1.png"></td>
+    <td align="right"><img align="right" src="/images/eliminate_squares2.png"/></td>
   </tr>
-    <td align="center" colspan="2"><img align="center" src="wiki/images/removing_squares.png"/></td>
+    <td align="center" colspan="2"><img align="center" src="/images/removing_squares.png"/></td>
 </table>
 
 
@@ -68,19 +68,19 @@ Figures below depict how available placements for ships are evaluated. Left figu
 
 <table cellspacing="0" cellpadding="0">
   <tr>
-    <td align="left"><img align="left" src="wiki/images/available_placements1.png"></td>
-    <td align="right"><img align="right" src="wiki/images/available_placements2.png"/></td>
+    <td align="left"><img align="left" src="/images/available_placements1.png"></td>
+    <td align="right"><img align="right" src="/images/available_placements2.png"/></td>
   </tr>
 </table>
 
 
 To find a given number _n_ of consecutive free squares, a counter is used which starts from 0 and is incremented for each available square. When counter reaches _n_, last _n_ squares are appended to the collection of available placements. If already eliminated square is encountered, counter is reset. Figure below depicts the procedure for a sequence of 3 consecutive squares.
 
-[[/images/counting_available_squares.png]]
+![battleship](/images/counting_available_squares.png)
 
 While placing ships, it may happen that all available placements on the grid are exhausted and there is no place for the next ship, as shown on the figure below.
 
-[[/images/no_more_squares.png]]
+![battleship](/images/no_more_squares.png)
 
 
 ### Shooting Opponent's Fleet
@@ -108,9 +108,9 @@ While placing ships, it may happen that all available placements on the grid are
 
 #### Sequence Diagram: Shooting the Fleet
 
-[[/images/sequence_diagram_shooting.png]]
+![battleship](/images/sequence_diagram_shooting.png)
 
-[[/images/sequence_diagram_shooting_ship.png]]
+![battleship](/images/sequence_diagram_shooting_ship.png)
 
 #### Shooting Tactics
 
@@ -121,11 +121,11 @@ There are three tactics interchanged:
 3. After a second square is hit, next target is selected from one of two squares in the sequel of squares hit (on the right figure below two squares hit are black, target candidates are gray).
 4. When ship is sunken, tactics changes to random again and the above sequence is repeated.
 
-[[/images/shooting_tactics.png]]
+![battleship](/images/shooting_tactics.png)
 
 #### State Chart Diagram: Shooting Tactics
 
-[[/images/shooting_statechart.png]]
+![battleship](/images/shooting_statechart.png)
 
 
 
