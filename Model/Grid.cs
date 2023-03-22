@@ -10,8 +10,8 @@ namespace Vsie.Oom.Battleship.Model
     {
         public Grid(int rows, int columns)
         {
-            rows = rows;
-            columns = columns;
+            Rows = rows;
+            Columns = columns;
             squares = new Square[Rows, Columns];
             for(int r = 0; r< rows; r++)
             {
