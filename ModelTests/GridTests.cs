@@ -12,12 +12,12 @@ namespace ModelTests
     public class GridTests
     {
         [TestMethod]
-        public void ConstructorCreatesGridWithGivenNumberOfSquares();
+        public void ConstructorCreatesGridWithGivenNumberOfSquares()
         {
-           int rows = 10;
-           int columns = 10;
-           var grid = new Grid(rows, columns);
-        Assert.AreEqual(rows* columns, Grid.AvaiableSquares().private Count())
+            int rows = 10;
+            int columns = 10;
+            var grid = new Grid(rows, columns);
+            Assert.AreEqual(rows * columns, grid.AvaiableSquares().Count());
         }
 
     }

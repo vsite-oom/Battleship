@@ -13,7 +13,7 @@ namespace Vsite.Oom.Battleship.Model
             Rows = rows;
             Columns = columns;
             squares = new Square[Rows, Columns];
-            for (int r = Rows - 1; r >= 0; ++r)
+            for (int r = 0; r < Rows; ++r)
             {
                 for (int c = 0; c < Columns; ++c)
                 {
