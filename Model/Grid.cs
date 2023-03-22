@@ -22,7 +22,7 @@ namespace Vsite.Oom.Battleship.Model
                 for(int c = 0; c < columns; c++)
                 {
                     squares[r, c]=new Square(r, c);
-                    
+                     
                 }
             }
         }
