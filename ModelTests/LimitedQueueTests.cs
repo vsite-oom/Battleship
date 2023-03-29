@@ -42,7 +42,7 @@ namespace ModelTests
             Assert.AreEqual(3, queue.Count);
 
             queue.Enqueue(7);
-            Assert.AreEqual(2, queue.Count);
+            Assert.AreEqual(3, queue.Count);
 
             Assert.IsTrue(queue.Contains(3));
             Assert.IsTrue(queue.Contains(5));

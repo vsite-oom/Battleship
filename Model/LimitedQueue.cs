@@ -12,7 +12,7 @@ namespace Vsie.Oom.Battleship.Model
         {
             this.maxLength = maxLength;
         }
-        public void Enqueue(Task item)
+        public void Enqueue(T item)
         {
             base.Enqueue(item);
             if(this.Count > maxLength)
