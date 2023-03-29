@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -48,32 +49,26 @@ namespace Vsite.Oom.Battleship.Model
         private Sequences GetAvailableHorizontalSequances(int length)
         {
             var result = new List<SquareSequence>();
+
             for (int r = 0; r < Rows; ++r)
             {
-                var counter = 0;
+                var queue = new LimitedQueue<Square>(length);
 
                 for (int c = 0; c < Columns; ++c)
                 {
                     if (_squares[r, c] != null)
                     {
-                        ++counter;
-                        
-                        if (counter >= length)
+                        queue.Enqueue(_squares[r, c]);
+
+                        if (queue.Count == length)
                         {
-                            var toAdd = new List<Square>();
-
-                            for (int cc = c - length + 1; cc <= c; ++cc)
-                            {
-                                toAdd.Add(_squares[r, cc]);
-                            }
-
-                            result.Add(toAdd);
+                            result.Add(queue.ToArray());
                         }
                     }
 
                     else
                     {
-                        counter = 0;
+                        queue.Clear();
                     }
                 }
             }
@@ -86,30 +81,23 @@ namespace Vsite.Oom.Battleship.Model
             var result = new List<SquareSequence>();
             for (int c = 0; c < Columns; ++c)
             {
-                var counter = 0;
+                var queue = new LimitedQueue<Square>(length);
 
                 for (int r = 0; r < Columns; ++r)
                 {
                     if (_squares[r, c] != null)
                     {
-                        ++counter;
+                        queue.Enqueue(_squares[r, c]);
 
-                        if (counter >= length)
+                        if (queue.Count == length)
                         {
-                            var toAdd = new List<Square>();
-
-                            for (int rr = r - length + 1; rr <= r; ++rr)
-                            {
-                                toAdd.Add(_squares[rr, c]);
-                            }
-
-                            result.Add(toAdd);
+                            result.Add(queue.ToArray());
                         }
                     }
 
                     else
                     {
-                        counter = 0;
+                        queue.Clear();
                     }
                 }
             }
