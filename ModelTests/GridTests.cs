@@ -35,5 +35,27 @@ namespace ModelTests
             var result = grid.GetAvailableSequences(3);
             Assert.AreEqual(3, result.Count());
         }
+
+        [TestMethod]
+        public void GetAvailableSequencesReturnsThreeSequencesOfLength2ForGrid1Row6ColumnsAfterSquare0_2IsRemoved()
+        {
+            int rows = 1;
+            int columns = 6;
+            var grid = new Grid(rows, columns);
+            grid.RemoveSquare(0, 2);
+            var result = grid.GetAvailableSequences(2);
+            Assert.AreEqual(3, result.Count());
+        }
+
+        [TestMethod]
+        public void GetAvailableSequencesReturnsTwoSequencesOfLength2ForGrid5Rows1ColumnAfterSquare1_0IsRemoved()
+        {
+            int rows = 5;
+            int columns = 1;
+            var grid = new Grid(rows, columns);
+            grid.RemoveSquare(1, 0);
+            var result = grid.GetAvailableSequences(2);
+            Assert.AreEqual(2, result.Count());
+        }
     }
 }
