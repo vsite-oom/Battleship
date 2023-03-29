@@ -4,8 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+
+
 namespace Vsite.Oom.Battleship.Model
 {
+    using SquareSequence = IEnumerable<Square>;
+    using Sequences = IEnumerable<IEnumerable<Square>>;
     public class Grid
     {
         public Grid(int rows, int columns)
@@ -24,15 +28,19 @@ namespace Vsite.Oom.Battleship.Model
 
         public readonly int Rows;
         public readonly int Columns;
-        
+
 
         private readonly Square[,] squares;
 
 
         public IEnumerable<Square> AvaiableSquares()
         {
-             return squares.Cast<Square>();
-            throw new NotImplementedException();
+            return squares.Cast<Square>();
+
+        }
+        public Sequences GetAvailableSequences(int lenght)
+        {
+        throw new NotImplementedException();
         }
     }
 }
