@@ -19,5 +19,25 @@ namespace ModelTests
             var grid = new Grid(rows, columns);
             Assert.AreEqual(rows * columns, grid.AvailableSquares().Count());
         }
+
+        [TestMethod]
+        public void GetAvailableSequencesReturnsTwoSequencesOfLength3ForGrid1Row4Columns()
+        {
+            int rows = 1;
+            int columns = 4;
+            var grid = new Grid(rows, columns);
+            var result = grid.GetAvailableSequences(3);
+            Assert.AreEqual(2, result.Count());
+        }
+
+        [TestMethod]
+        public void GetAvailableSequencesReturnsThreeSequencesOfLength3ForGrid5Rows1Column()
+        {
+            int rows = 5;
+            int columns = 1;
+            var grid = new Grid(rows, columns);
+            var result = grid.GetAvailableSequences(3);
+            Assert.AreEqual(3, result.Count());
+        }
     }
 }
