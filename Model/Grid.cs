@@ -51,25 +51,20 @@ namespace Vsite.Oom.Battleship.Model
             var result = new List<SquareSequence>();
             for (int r =0; r< Rows; ++r)
             {
-                int counter = 0;
-                for (int c =0; c < Columns; ++c)
+                var queue = new LimitedQueue<Square>(length);
+                for (int c = 0; c < Columns; ++c)
                 {
                     if (squares[r,c] != null)
                     {
-                        ++counter;
-                        if (counter >= length)
+                        queue.Enqueue(squares[r, c]);
+                        if (queue.Count == length)
                         {
-                            var toAdd = new List<Square>();
-                            for (int cc = c-length +1; cc<=c; ++cc)
-                            {
-                                toAdd.Add(new Square(r, cc));
-                            }
-                            result.Add(toAdd);
+                            result.Add(queue.ToArray());
                         }
                     }
                     else
                     {
-                        counter = 0;
+                        queue.Clear();
                     }
                 }
             }
