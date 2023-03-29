@@ -70,6 +70,25 @@ namespace Vsite.Oom.Battleship.Model
         private Sequences GetAvailableVerticalSequences(int lenght)
         {
             List<SquareSequence> result = new();
+            for (int c = 0; c < Columns; ++c)
+            {
+                LimitedQueue<Square> queue = new(lenght);
+                for (int r = 0; r < Rows; ++r)
+                {
+                    if (squares[r, c] != null)
+                    {
+                        queue.Enqueue(squares[r, c]);
+                        if (queue.Count == lenght)
+                        {
+                            result.Add(queue.ToArray());
+                        }
+                    }
+                    else
+                    {
+                        queue.Clear();
+                    }
+                }
+            }
             return result;
         }
 
