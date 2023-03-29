@@ -12,6 +12,8 @@ namespace Vsite.Oom.Battleship.Model
         {
             this.maxLength = maxLength;
         }
+
+        private readonly int maxLength;
         public new void Enque(T item)
         {
             base.Enqueue(item);
@@ -20,4 +22,5 @@ namespace Vsite.Oom.Battleship.Model
                 Dequeue();
             }
         }
+    }
 }
