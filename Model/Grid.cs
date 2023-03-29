@@ -75,8 +75,32 @@ namespace Vsite.Oom.Battleship.Model
         private Sequances GetAvaliableVerticalSequances(int length)
         {
             var result = new List<SquareSequance>();
+            for (int c = 0; c < columns; c++) 
+            {
+                int counter = 0;
+                for (int r = 0; r < rows; r++)
+                {
+                    if (squares[r, c] != null)
+                    {
+                        ++counter;
+                        if (counter >= length)
+                        {
+                            var toAdd = new List<Square>();
+                            for (int rr = r - length + 1; rr <= r; ++rr)
+                            {
+                                toAdd.Add(squares[rr, c]);
+                            }
+                            result.Add(toAdd);
+                        }
+                    }
+                    else
+                    {
+                        counter = 0;
+                    }
+                }
+            }
             return result;
         }
-        public IEnumerable<Square> BannedSquares() {  return squares.Cast<Square>(); }
+        public void RemoveSquare(int row,int column) { squares[row, column] = null; }
     }
 }
