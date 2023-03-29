@@ -30,6 +30,11 @@
             //throw new NotImplementedException();
         }
 
+        public void RemoveSquare(int row, int column)
+        {
+            squares[row, column] = null;
+        }
+
         public Sequences GetAvailableSequences(int length)
         {
             return GetAvailableHorizontalSequences(length).Concat(GetAvailableVerticalSequences(length));
