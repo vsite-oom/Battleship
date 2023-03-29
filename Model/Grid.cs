@@ -42,7 +42,7 @@ namespace Vsite.Oom.Battleship.Model
 
         public Sequences GetAvailableSequences(int length)
         {
-            return GetAvailableHorizontalSequances(length).Concat(GetAvailableVerticalSequances(length));
+            return GetAvailableHorizontalSequances(length);//.Concat(GetAvailableVerticalSequances(length));
         }
 
         private Sequences GetAvailableHorizontalSequances(int length)
@@ -88,7 +88,7 @@ namespace Vsite.Oom.Battleship.Model
             {
                 var counter = 0;
 
-                for (int r = 0; r < Rows; ++r)
+                for (int r = 0; r < Columns; ++r)
                 {
                     if (_squares[r, c] != null)
                     {
@@ -98,9 +98,9 @@ namespace Vsite.Oom.Battleship.Model
                         {
                             var toAdd = new List<Square>();
 
-                            for (int rr = c - length + 1; rr <= c; ++rr)
+                            for (int rr = r - length + 1; rr <= r; ++rr)
                             {
-                                toAdd.Add(_squares[c, rr]);
+                                toAdd.Add(_squares[rr, c]);
                             }
 
                             result.Add(toAdd);
