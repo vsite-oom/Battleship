@@ -59,8 +59,9 @@ namespace Vsite.Oom.Battleship.Model
                             var toAdd = new List<Square>();
                             for (int cc = c - length + 1; cc <= c; ++cc)
                             {
-
+                                toAdd.Add(squares[r, cc]);
                             }
+                            result.Add(toAdd);
                         }
                         else
                         {
