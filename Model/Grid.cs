@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -38,9 +39,51 @@ namespace Vsite.Oom.Battleship.Model
             return squares.Cast<Square>();
 
         }
+
+        public void RemoveSquare(int row, int column)
+        {
+            squares[row, column] = null;
+        }
         public Sequences GetAvailableSequences(int lenght)
         {
-        throw new NotImplementedException();
+            return GetAvailableHorizonatalSequences(lenght);
+        }
+
+        private Sequences GetAvailableHorizonatalSequences(int lenght)
+        {
+            var result = new List<SquareSequence>();
+            for (int r = 0; r < Rows; ++r)
+            {
+                int counter = 0;
+                for (int c = 0; c < Columns; ++c)
+                {
+                    if (squares[r, c] != null)
+                    {
+                        ++counter;
+                        if (counter >= lenght)
+                        {
+                            var toAdd = new List<Square>();
+                            for (int cc = c - lenght + 1; cc <= c; ++cc)
+                            {
+                                toAdd.Add(new Square(r, cc));
+                            }
+                            result.Add(toAdd);
+                            }
+                        }
+                        else
+                        {
+                            counter = 0;
+                        }
+                    }
+                }
+                return result;
+            }
+            private Sequences GetAvailableVerticalSequences(int lenght)
+            {
+            var result = new List<SquareSequence>();
+            return result;
+            }
         }
     }
-}
+
+

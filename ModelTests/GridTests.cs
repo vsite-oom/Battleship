@@ -22,7 +22,7 @@ namespace ModelTests
         }
         [TestMethod]
 
-        public void GetAvaiilableSequencesReturnsTwoSequencesOfLenght3ForGridRow4Columns()
+        public void GetAvailableSequencesReturnsThreeSequencesOfLenghtForGrid1Row6ColumnsAfterSqure0_2IsRemoved()
         {
             int rows = 1;
             int columns = 4;
@@ -32,7 +32,7 @@ namespace ModelTests
         }
         [TestMethod]
 
-        public void GetAvaiilableSequencesReturnsTwoSequencesOfLenght3ForGridRow5Column()
+        public void GetAvailableSequencesReturnsTwoSequencesOfLenght3ForGridRow5Column()
         {
             int rows = 1;
             int columns = 4;
@@ -41,10 +41,32 @@ namespace ModelTests
             Assert.AreEqual(3, result.Count());
 
         }
+        [TestMethod]
+
+        public void GetAvailableSequencesReturnsThreeSequencesOfLenght2ForGrid1Row6ColumnsAfterSquareR0C2IsRemoved()
+        {
+            int rows = 1;
+            int columns = 6;
+            var grid = new Grid(rows, columns);
+            grid.RemoveSquare(0, 2);
+            var result = grid.GetAvailableSequences(2);
+            Assert.AreEqual(3, result.Count());
+        }
+        [TestMethod]
+
+        public void GetAvailableSequencesReturnsTwoSequencesOfLenght2ForGrid5Rows1ColumnAfterSquare1_0IsRemoved()
+        {
+            int rows = 5;
+            int columns = 1;
+            var grid = new Grid(rows, columns);
+            grid.RemoveSquare(1, 0);
+            var result = grid.GetAvailableSequences(3);
+            Assert.AreEqual(3, result.Count());
+
+
+        }
 
 
     }
-
-
-    }
+}
 
