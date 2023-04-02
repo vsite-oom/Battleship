@@ -11,7 +11,7 @@ namespace ModelTests
     public class LimitedQueueTests
     {
         [TestMethod]
-        public void EnqueuAddsNewElement()
+        public void EnqueueAddsNewElement()
         {
             var queue = new LimitedQueue<int>(3);
             Assert.AreEqual(0, queue.Count);
@@ -24,10 +24,10 @@ namespace ModelTests
 
             queue.Enqueue(5);
             Assert.AreEqual(3, queue.Count);
-
         }
+
         [TestMethod]
-        public void EnqueuRemovessExcessiveElement()
+        public void EnqueueRemovesExcessElement()
         {
             var queue = new LimitedQueue<int>(3);
             Assert.AreEqual(0, queue.Count);

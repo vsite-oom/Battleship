@@ -16,10 +16,11 @@ namespace ModelTests
             int rows = 10;
             int columns = 10;
             var grid = new Grid(rows, columns);
-            Assert.AreEqual(rows * columns, grid.AvaliableSquares().Count());
+            Assert.AreEqual(rows * columns, grid.AvailableSquares().Count());
         }
+
         [TestMethod]
-        public void GetAvailableSequancesReturnsTwoSequancesOfLength3FarGridlRow4Columns()
+        public void GetAvailableSequencesReturnsTwoSquencesOfLenght3ForGrid1Row4Columns()
         {
             int rows = 1;
             int columns = 4;
@@ -28,7 +29,7 @@ namespace ModelTests
             Assert.AreEqual(2, result.Count());
         }
         [TestMethod]
-        public void GetAvailableSequancesReturnsThreeSequancesOfLength5FarGridlRow1Columns()
+        public void GetAvailableSequencesReturnsThreeSquencesOfLenght3ForGrid5Row1Columns()
         {
             int rows = 5;
             int columns = 1;
@@ -38,7 +39,7 @@ namespace ModelTests
         }
 
         [TestMethod]
-        public void GetAvailableSequancesReturnsThreeoSequancesOfLength2FarGrid1Row6ColumnsAfterSquareR0C2IsRemoved()
+        public void GetAvailableSquencesReturnsThreeSequencesOfLenght2ForGrid1Row6ColumnsAfterSquare0_2IsRemoved()
         {
             int rows = 1;
             int columns = 6;
@@ -48,7 +49,7 @@ namespace ModelTests
             Assert.AreEqual(3, result.Count());
         }
         [TestMethod]
-        public void GetAvailableSequancesReturnsTwoSequancesOfLength2FarGridl5Row1ColumnsAfterSquare1_0IsRemoved()
+        public void GetAvailableSquencesReturnsTwoSequencesOfLenght2ForGrid5Row1ColumnsAfterSquare1_0IsRemoved()
         {
             int rows = 5;
             int columns = 1;
@@ -57,6 +58,5 @@ namespace ModelTests
             var result = grid.GetAvailableSequences(2);
             Assert.AreEqual(2, result.Count());
         }
-
     }
 }

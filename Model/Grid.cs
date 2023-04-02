@@ -16,31 +16,30 @@ namespace Vsie.Oom.Battleship.Model
             Rows = rows;
             Columns = columns;
             squares = new Square[Rows, Columns];
-            for (int r = 0; r < rows; r++)
+            for (int r = 0; r < Rows; ++r)
             {
-                for (int c = 0; c < Columns; ++c) {
+                for (int c = 0; c < Columns; ++c)
+                {
                     squares[r, c] = new Square(r, c);
                 }
             }
         }
+
         public readonly int Rows;
         public readonly int Columns;
 
         private readonly Square[,] squares;
 
-        public IEnumerable<Square> AvaliableSquares()
+        public IEnumerable<Square> AvailableSquares()
         {
             return squares.Cast<Square>();
-            throw new NotImplementedException();
         }
-        public void RemoveSquare(int row, int column)
-        {
-            squares[row, column] = null;
-        }
+
         public Sequences GetAvailableSequences(int length)
         {
-            return GetAvailableHorizontalSequences(length).Concat(GetAvailableVerticallSequences(length));
+            return GetAvailableHorizontalSequences(length).Concat(GetAvailableVerticalSequences(length));
         }
+
         private Sequences GetAvailableHorizontalSequences(int length)
         {
             var result = new List<SquareSequence>();
@@ -49,13 +48,12 @@ namespace Vsie.Oom.Battleship.Model
                 var queue = new LimitedQueue<Square>(length);
                 for (int c = 0; c < Columns; ++c)
                 {
-                    if(squares[r, c] != null)
+                    if (squares[r, c] != null)
                     {
                         queue.Enqueue(squares[r, c]);
                         if (queue.Count == length)
                         {
                             result.Add(queue.ToArray());
-                          
                         }
                     }
                     else
@@ -65,11 +63,36 @@ namespace Vsie.Oom.Battleship.Model
                 }
             }
             return result;
-            }
-            private Sequences GetAvailableVerticallSequences(int length)
-            {
+        }
+
+        private Sequences GetAvailableVerticalSequences(int length)
+        {
             var result = new List<SquareSequence>();
+            for (int c = 0; c < Columns; ++c)
+            {
+                var queue = new LimitedQueue<Square>(length);
+                for (int r = 0; r < Rows; ++r)
+                {
+                    if (squares[r, c] != null)
+                    {
+                        queue.Enqueue(squares[r, c]);
+                        if (queue.Count == length)
+                        {
+                            result.Add(queue.ToArray());
+                        }
+                    }
+                    else
+                    {
+                        queue.Clear();
+                    }
+                }
+            }
             return result;
         }
+
+        public void RemoveSquare(int row, int column)
+        {
+            squares[row, column] = null;
         }
     }
+}
