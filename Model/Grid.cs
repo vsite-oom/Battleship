@@ -92,7 +92,7 @@ namespace Vsite.Oom.Battleship.Model
                     }
                 }
             }
-            return (Sequences)result;
+            return result;
         }
 
     }
