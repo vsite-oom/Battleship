@@ -22,7 +22,6 @@ namespace ModelTests
             Assert.IsTrue(ship.Squares.Contains(squares[0]));
             Assert.IsTrue(ship.Squares.Contains(squares[1]));
             Assert.IsTrue(ship.Squares.Contains(squares[2]));
-
         }
     }
 }
