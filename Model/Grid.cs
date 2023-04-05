@@ -35,6 +35,12 @@ namespace Vsite.Oom.Battleship.Model
         {
             return squares.Cast<Square>();
         }
+
+        public void RemoveSquare(int row, int column)
+        {
+            squares[row, column] = null;
+        }
+
         public Sequences GetAvailableSequences(int length)
         {
             return GetAvailableHorizontalSequences(length);
@@ -72,6 +78,25 @@ namespace Vsite.Oom.Battleship.Model
         private Sequences GetAvailableVerticalSequences(int length)
         {
             var result = new List<SquareSequence>();
+            for (int c = 0; c < Columns; ++c)
+            {
+                var queue = new LimitedQueue<Square>(length);
+                for (int r = 0; r < Rows; ++r)
+                {
+                    if (squares[r, c] != null)
+                    {
+                        queue.Enqueue(squares[r, c]);
+                        if (queue.Count == length)
+                        {
+                            result.Add(queue.ToArray());
+                        }
+                    }
+                    else
+                    {
+                        queue.Clear();
+                    }
+                }
+            }
             return (Sequences)result;
         }
 
