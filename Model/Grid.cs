@@ -117,6 +117,7 @@ namespace Vsite.Oom.Battleship.Model
                 var queue = new LimitedQueue<Square>(length);
                 for (int i = 0; i < innerLoopLimit; ++i)
                 {
+
                     if (squareAccess(o,i) != null)
                     {
                         queue.Enqueue(squareAccess(o, i));
