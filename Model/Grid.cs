@@ -72,8 +72,8 @@ namespace Vsite.Oom.Battleship.Model
                     }
                     else
                     {
+                        //if (length > ) break;
                         queue.Clear();
-                        if (length > o) break;
                     }
                 }
             }
