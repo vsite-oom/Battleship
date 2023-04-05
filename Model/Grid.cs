@@ -2,6 +2,7 @@
 {
     using SquareSequence = IEnumerable<Square>;
     using Sequences = IEnumerable<IEnumerable<Square>>;
+    using SquareAccess = Func<int, int, Square>;
 
     public class Grid
     {
@@ -26,7 +27,7 @@
 
         public SquareSequence AvailableSquares()
         {
-            return squares.Cast<Square>();
+            return squares.Cast<Square>().Where(sq => sq != null);
             //throw new NotImplementedException();
         }
 
@@ -37,41 +38,69 @@
 
         public Sequences GetAvailableSequences(int length)
         {
+            var result = GetAvailableHorizontalSequences(length);
+            if (length == 1)
+            {
+                return result;
+            }
             return GetAvailableHorizontalSequences(length).Concat(GetAvailableVerticalSequences(length));
         }
 
         private Sequences GetAvailableHorizontalSequences(int length) 
-        { 
-            var result = new List<SquareSequence>();
-            for (int r = 0; r < Rows; ++r)
-            {
-                var queue = new LimitedQueue<Square>(length);
-                for (int c = 0; c < Columns; ++c)
-                {
-                    if (squares[r, c] != null)
-                    {
-                        queue.Enqueue(squares[r, c]);
-                        if (queue.Count == length)
-                            result.Add(queue.ToArray());
-                    }
-                    else
-                        queue.Clear();
-                }
-            }
-            return result;
+        {
+            return GetAvailableSequences(Rows, Columns, (a, b) => squares[a, b], length);
+            //var result = new List<SquareSequence>();
+            //for (int r = 0; r < Rows; ++r)
+            //{
+            //    var queue = new LimitedQueue<Square>(length);
+            //    for (int c = 0; c < Columns; ++c)
+            //    {
+            //        if (squares[r, c] != null)
+            //        {
+            //            queue.Enqueue(squares[r, c]);
+            //            if (queue.Count == length)
+            //                result.Add(queue.ToArray());
+            //        }
+            //        else
+            //            queue.Clear();
+            //    }
+            //}
+            //return result;
         }
         
         private Sequences GetAvailableVerticalSequences(int length) 
         {
+            return GetAvailableSequences(Columns, Rows, (a, b)  => squares[b, a], length);
+            //var result = new List<SquareSequence>();
+            //for (int c = 0; c < Columns; ++c)
+            //{
+            //    var queue = new LimitedQueue<Square>(length);
+            //    for (int r = 0; r < Rows; ++r)
+            //    {
+            //        if (squares[r, c] != null)
+            //        {
+            //            queue.Enqueue(squares[r, c]);
+            //            if (queue.Count == length)
+            //                result.Add(queue.ToArray());
+            //        }
+            //        else
+            //            queue.Clear();
+            //    }
+            //}
+            //return result;
+        }
+
+        private Sequences GetAvailableSequences(int outerLoopLimit, int innerLoopLimit, SquareAccess squareaccess, int length)
+        {
             var result = new List<SquareSequence>();
-            for (int c = 0; c < Columns; ++c)
+            for (int o = 0; o < outerLoopLimit; ++o)
             {
                 var queue = new LimitedQueue<Square>(length);
-                for (int r = 0; r < Rows; ++r)
+                for (int i = 0; i < innerLoopLimit; ++i)
                 {
-                    if (squares[r, c] != null)
+                    if (squareaccess(o, i) != null)
                     {
-                        queue.Enqueue(squares[r, c]);
+                        queue.Enqueue(squareaccess(o, i));
                         if (queue.Count == length)
                             result.Add(queue.ToArray());
                     }
