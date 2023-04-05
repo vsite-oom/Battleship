@@ -8,6 +8,10 @@
             this.selector = selector;
         }
 
+        public FleetBuilder(GameRules rules) : this(rules, new RandomSelector())
+        {
+        }
+
         private readonly GameRules rules;
         private readonly ISequenceSelector selector;
 
