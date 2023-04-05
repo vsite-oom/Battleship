@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace Vsite.Oom.Battleship.Model
 {
     using SquareSequence = IEnumerable<Square>;
-    public interface ISequencesTerminator
+    public interface ISquareTerminator
     {
         SquareSequence ToEliminate(SquareSequence shipSquares);
     }
