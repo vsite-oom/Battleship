@@ -11,6 +11,7 @@ namespace Vsite.Oom.Battleship.Model
 {
     using SquareSequence = IEnumerable<Square>;
     using Sequences = IEnumerable<IEnumerable<Square>>;
+    using SquareAccess = Func<int, int, Square>;
 
     public class Grid
     {
@@ -36,11 +37,16 @@ namespace Vsite.Oom.Battleship.Model
 
         public SquareSequence AvailableSquares()
         {
-            return squares.Cast<Square>();
+            return squares.Cast<Square>().Where(sq => sq != null);
         }
 
         public Sequences GetAvailableSquences(int lenght)
         {
+            var result = GetAvailableHorizontalSequences(lenght);
+            if (lenght == 1)
+            {
+                return result;
+            }
             return GetAvailableHorizontalSequences(lenght).Concat(GetAvailableVerticalSequences(lenght));
         }
 
@@ -93,8 +99,34 @@ namespace Vsite.Oom.Battleship.Model
             }
             return result;
         }
+        private Sequences GetAvailableSequences(int outerLoopLimit, int innerLoopLimit, SquareAccess squareAccess, int lenght)
+        {
+            List<SquareSequence> result = new();
+            for (int o = 0; o < outerLoopLimit; ++o)
+            {
+                LimitedQueue<Square> queue = new(lenght);
+                for (int i = 0; i < innerLoopLimit; ++i)
+                {
+                    if (squares[o, i] != null)
+                    {
+                        queue.Enqueue(squares[o, i]);
+                        if (queue.Count == lenght)
+                        {
+                            result.Add(queue.ToArray());
+                        }
+                    }
+                    else
+                    {
+                        queue.Clear();
+                    }
+                }
+                
+            }
+            return result;
+        }
+     
 
-        public void RemoveSquare(int row, int column)
+            public void RemoveSquare(int row, int column)
         {
             squares[row, column] = null;
         }
