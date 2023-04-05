@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace Vsite.Oom.Battleship.Model
 {
     using SquareSequence = IEnumerable<Square>;
-    using Sequences = IEnumerable<Square>;
+    using Sequences = IEnumerable<IEnumerable<Square>>;
     public class Grid
     {
         public Grid(int rows, int columns)
