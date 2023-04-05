@@ -122,12 +122,20 @@ namespace Vsie.Oom.Battleship.Model
             //        }
             //    }
             //    return result;
-          }
+        }
 
-            public void RemoveSquare(int row, int column)
+        public void RemoveSquare(int row, int column)
+        {
+            squares[row, column] = null;
+        }
+
+        public void RemoveSquareSequence(IEnumerable<Square> squaresToRemove)
+        {
+            foreach (var square in squaresToRemove)
             {
-                squares[row, column] = null;
+                RemoveSquare(square.Row, square.Column);
             }
+        }
         }
     }
 
