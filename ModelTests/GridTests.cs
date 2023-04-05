@@ -29,6 +29,11 @@ namespace ModelTests
             var grid = new Grid(rows, columns);
             var result = grid.GetAvailableSquences(3);
             Assert.AreEqual(2, result.Count());
+
+            Assert.AreEqual(1, result.Count(s => s.Contains(new Square(0,0))));
+            Assert.AreEqual(2, result.Count(s => s.Contains(new Square(0,1))));
+            Assert.AreEqual(2, result.Count(s => s.Contains(new Square(0,2))));
+            Assert.AreEqual(1, result.Count(s => s.Contains(new Square(0,3))));
         }
 
         [TestMethod]
@@ -64,4 +69,5 @@ namespace ModelTests
 
     }
 }
+
 
