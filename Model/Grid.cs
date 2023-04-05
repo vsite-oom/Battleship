@@ -36,6 +36,14 @@
             squares[row, column] = null;
         }
 
+        public void RemoveSquares(SquareSequence squaresToRemove)
+        {
+            foreach (var square in squaresToRemove)
+            {
+                RemoveSquare(square.Row, square.Column);
+            }
+        }
+
         public Sequences GetAvailableSequences(int length)
         {
             var result = GetAvailableHorizontalSequences(length);
