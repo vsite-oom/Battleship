@@ -8,5 +8,7 @@
 
         }
         public readonly IEnumerable<Square> Sqaures;
+
+        public IEnumerable<Square> Squares { get; }
     }
 }
