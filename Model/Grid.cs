@@ -130,5 +130,12 @@ namespace Vsite.Oom.Battleship.Model
         {
             squares[row, column] = null;
         }
+        public void RemoveSquares(IEnumerable<Square> squaresToRemove) 
+        {
+            foreach (var square in squaresToRemove)
+            {
+                RemoveSquare(square.Row, square.Column);
+            }
+        }
     }
 }

@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Vsite.Oom.Battleship.Model
+﻿namespace Vsite.Oom.Battleship.Model
 {
-    internal class Ship
+    public class Ship
     {
+        public Ship(IEnumerable<Square> sqaures)
+        {
+            Squares = sqaures;
+
+        }
+        public readonly IEnumerable<Square> Sqaures;
     }
 }
