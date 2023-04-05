@@ -9,6 +9,7 @@ namespace Vsite.Oom.Battleship.Model
 {
     using SquareSequence = IEnumerable<Square>;
     using Sequences = IEnumerable<IEnumerable<Square>>;
+    using SqaureAccess = Func<int, int, Square>;
 
     public class Grid
     {
@@ -33,7 +34,7 @@ namespace Vsite.Oom.Battleship.Model
 
         public SquareSequence AvailableSquares()
         {
-            return squares.Cast<Square>();
+            return squares.Cast<Square>().Where(sq => sq != null);
         }
 
         public void RemoveSquare(int row, int column)
@@ -43,44 +44,33 @@ namespace Vsite.Oom.Battleship.Model
 
         public Sequences GetAvailableSequences(int length)
         {
-            return GetAvailableHorizontalSequences(length).Concat(GetAvailableVerticalSequences(length));
+            var result = GetAvailableHorizontalSequences(length);
+            if (length == 1)
+            {
+                return result;
+            }
+            return result.Concat(GetAvailableVerticalSequences(length));
         }
 
         private Sequences GetAvailableHorizontalSequences(int length)
         {
-            var result = new List<SquareSequence>();
-            for (int r = 0; r < Rows; ++r)
-            {
-                var queue = new LimitedQueue<Square>(length);
-                for (int c = 0; c < Columns; ++c)
-                {
-                    if (squares[r, c] != null)
-                    {
-                        queue.Enqueue(squares[r, c]);
-                        if (queue.Count == length)
-                        {
-                            result.Add(queue.ToArray());
-                        }
-                    }
-                    else
-                    {
-                        queue.Clear();
-                    }
-                }
-            }
-            return result;
+            return GetAvailableSequences(Rows, Columns, (a, b) => squares[a, b], length);
         }
         private Sequences GetAvailableVerticalSequences(int length)
         {
+            return GetAvailableSequences(Columns, Rows, (a, b) => squares[b, a], length);
+        }
+       private Sequences GetAvailableSequences(int outerLoopLimit, int innerLoopLimit, SqaureAccess squareAccess, int length)
+        {
             var result = new List<SquareSequence>();
-            for (int c = 0; c < Columns; ++c)
+            for (int o = 0; o < outerLoopLimit; ++o)
             {
                 var queue = new LimitedQueue<Square>(length);
-                for (int r = 0; r < Rows; ++r)
+                for (int i = 0; i < innerLoopLimit; ++i)
                 {
-                    if (squares[r, c] != null)
+                    if (squareAccess(o, i) != null)
                     {
-                        queue.Enqueue(squares[r, c]);
+                        queue.Enqueue(squareAccess(o, i));
                         if (queue.Count == length)
                         {
                             result.Add(queue.ToArray());
