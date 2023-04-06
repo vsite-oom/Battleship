@@ -87,5 +87,12 @@ namespace Vsite.Oom.Battleship.Model
 
         }
         public void RemoveSquare(int row, int column) { squares[row, column] = null; }
+        public void RemoveSquares(IEnumerable<Square> squares)
+        {
+            foreach(Square square in squares)
+            {
+                RemoveSquare(square.row, square.column);
+            }
+        }
     }
 }

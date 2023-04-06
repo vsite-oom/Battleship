@@ -14,7 +14,7 @@ namespace Vsite.Oom.Battleship.Model
         {
             this.maxLength = maxLength;
         }
-        public void Enqueue(T item)
+        public new void Enqueue(T item)
         {
             base.Enqueue(item);
             if(Count> maxLength)

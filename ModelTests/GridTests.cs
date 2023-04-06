@@ -34,6 +34,12 @@ namespace ModelTests
             Grid grid = new Grid(rows, columns);
             var result = grid.GetAvaliableSequences(3);
             Assert.AreEqual(3, result.Count());
+
+            Assert.AreEqual(1, result.Count(s => s.Contains(new Square(0, 0))));
+            Assert.AreEqual(2, result.Count(s => s.Contains(new Square(1, 0))));
+            Assert.AreEqual(3, result.Count(s => s.Contains(new Square(2, 0))));
+            Assert.AreEqual(2, result.Count(s => s.Contains(new Square(3, 0))));
+            Assert.AreEqual(1, result.Count(s => s.Contains(new Square(4, 0))));
         }
         [TestMethod]
         public void GetAvaliableSequancesReturnsthreeSequencesOfLength2ForGrid1Row6ColumnsAfterSquare0_2IsRemoved()
@@ -43,6 +49,13 @@ namespace ModelTests
             grid.RemoveSquare(0, 2);
             var result = grid.GetAvaliableSequences(2);
             Assert.AreEqual(3, result.Count());
+            Assert.AreEqual(1, result.Count(s => s.Contains(new Square(0, 0))));
+            Assert.AreEqual(1, result.Count(s => s.Contains(new Square(0, 1))));
+            Assert.AreEqual(0, result.Count(s => s.Contains(new Square(0, 2))));
+            Assert.AreEqual(1, result.Count(s => s.Contains(new Square(0, 3))));
+            Assert.AreEqual(2, result.Count(s => s.Contains(new Square(0, 4))));
+            Assert.AreEqual(1, result.Count(s => s.Contains(new Square(0, 5))));
+            
         }
         [TestMethod]
         public void GetAvaliableSequancesReturnstwoSequencesOfLength2ForGrid5Row1ColumnsAfterSquare1_0IsRemoved()
@@ -52,6 +65,12 @@ namespace ModelTests
             grid.RemoveSquare(1, 0);
             var result = grid.GetAvaliableSequences(2);
             Assert.AreEqual(2, result.Count());
+            Assert.AreEqual(0, result.Count(s => s.Contains(new Square(0, 0))));
+            Assert.AreEqual(0, result.Count(s => s.Contains(new Square(1, 0))));
+            Assert.AreEqual(1, result.Count(s => s.Contains(new Square(2, 0))));
+            Assert.AreEqual(2, result.Count(s => s.Contains(new Square(3, 0))));
+            Assert.AreEqual(1, result.Count(s => s.Contains(new Square(4, 0))));
+            
         }
 
 
