@@ -95,7 +95,10 @@
             }
             return result;
         }
-
+        public void RemoveSquare(int row,int column)
+        {
+            squares[row, column] = null;
+        }
     }
 }
 
