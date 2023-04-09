@@ -4,33 +4,36 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Vsie.Oom.Battleship.Model
+namespace Vsite.Oom.Battleship.Model
 {
     public class FleetBuilder
     {
-        public FleetBuilder(GameRules rules, ISequenceSelector selector)
+        public FleetBuilder(GameRules rules, ISequenceSqlector selector)
         {
             this.rules = rules;
             this.selector = selector;
         }
+        public FleetBuilder(GameRules rules) : this(rules, new RandomSelector())
+        {
+
+        }
         private readonly GameRules rules;
-        private readonly ISequenceSelector selector;
-
-        public IEnumerable<Square> ToEliminat { get; private set; }
-
+        private readonly ISequenceSqlector selector;
         public Fleet CreateFleet()
         {
-            var grid = new Grid(rules.GridRows, rules.GridColumns);
-            var fleet =new Fleet();
-            foreach(var shipLength in rules.ShipLengths){
-                var candidates = grid.GetAvailableSequences(shipLength);
+            Grid grid = new Grid(rules.GridRows, rules.GridColumns);
+            var fleet = new Fleet();
+            foreach (var shipLenght in rules.ShipLenghts)
+            {
+                var candidates = grid.GetAvaliableSequences(shipLenght);
                 var selected = selector.Select(candidates);
                 fleet.CreateShip(selected);
-                rules.Terminator.ToEliminat(selected);
-                grid.RemoveSquareSequence(ToEliminat);
+                var toEliminate = rules.terminator.ToEliminate(selected);
+                grid.RemoveSquares(toEliminate);
+
+
             }
             return fleet;
-
         }
     }
 }

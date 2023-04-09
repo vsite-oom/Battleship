@@ -1,141 +1,100 @@
 ﻿using System;
 using System.Collections.Generic;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics.Metrics;
 using System.Linq;
+using System.Reflection.Metadata.Ecma335;
 using System.Text;
 using System.Threading.Tasks;
 
 
-namespace Vsie.Oom.Battleship.Model
+
+namespace Vsite.Oom.Battleship.Model
+
 {
-    using SquareSequence = IEnumerable<Square>;
-    using Sequences = IEnumerable<IEnumerable<Square>>;
-    using SquareAccess = Func<int, int, Square>;
+    using SquareSequance = IEnumerable<Square>;
+    using Sequances = IEnumerable<IEnumerable<Square>>;
+    using squareAccess = Func<int, int, Square>;
     public class Grid
     {
+        readonly public int rows;
+        readonly public int columns;
+        private Square[,] squares;
         public Grid(int rows, int columns)
         {
-            Rows = rows;
-            Columns = columns;
-            squares = new Square[Rows, Columns];
-            for (int r = 0; r < Rows; ++r)
+            this.rows = rows;
+            this.columns = columns;
+            squares = new Square[rows, columns];
+            for (int r = 0; r < rows; r++)
             {
-                for (int c = 0; c < Columns; ++c)
+                for (int c = 0; c < columns; c++)
                 {
                     squares[r, c] = new Square(r, c);
+
                 }
             }
         }
-
-        public readonly int Rows;
-        public readonly int Columns;
-
-        private readonly Square[,] squares;
-
-        public IEnumerable<Square> AvailableSquares()
+        public SquareSequance AvailableSquares()
         {
             return squares.Cast<Square>().Where(sq => sq != null);
         }
 
-        public Sequences GetAvailableSequences(int length)
+        public Sequances GetAvaliableSequences(int length)
         {
-            var result = GetAvailableHorizontalSequences(length);
-            if (length == 1)
-            {
-                return result;
-            }
-            return GetAvailableHorizontalSequences(length).Concat(GetAvailableVerticalSequences(length));
-        }
+            if (length == 1) return GetAvaliableHorizontalSequances(length);
+            return GetAvaliableHorizontalSequances(length).Concat(GetAvaliableVerticalSequances(length));
 
-        private Sequences GetAvailableHorizontalSequences(int length)
+
+
+        }
+        private Sequances GetAvalableSequences(int outerloopLimitint, int innerLoopLimit, squareAccess sq, int length)
         {
-            var result = new List<SquareSequence>();
-            for (int r = 0; r < Rows; ++r)
+            var result = new List<SquareSequance>();
+            for (int o = 0; o < outerloopLimitint; o++)
             {
+
                 var queue = new LimitedQueue<Square>(length);
-                for (int c = 0; c < Columns; ++c)
+                for (int i = 0; i < innerLoopLimit; i++)
                 {
-                    if (squares[r, c] != null)
+                    if (sq(o, i) != null)
                     {
-                        queue.Enqueue(squares[r, c]);
+
+                        queue.Enqueue(sq(o, i));
                         if (queue.Count == length)
                         {
                             result.Add(queue.ToArray());
+
                         }
                     }
                     else
                     {
+
                         queue.Clear();
+                        if (innerLoopLimit - i <= length) break;
+
                     }
                 }
             }
             return result;
         }
-
-        private Sequences GetAvailableSequences(int outerLoopLimitint, int innerLoopLimit, SquareAccess squareAccess, int length)
+        private Sequances GetAvaliableHorizontalSequances(int length)
         {
+            return GetAvalableSequences(rows, columns, (a, b) => squares[a, b], length);
 
-            return GetAvailableSequences(Columns, Rows, (a, b) => squares[a, b], length);
-            //var result = new List<SquareSequence>();
-            //for (int o = 0; o < Columns; ++o)
-            //{
-            //    var queue = new LimitedQueue<Square>(length);
-            //    for (int i = 0; i < innerLoopLimit; ++i)
-            //    {
-            //        if (squareAccess[o, i] != null)
-            //        {
-            //            queue.Enqueue(squareAccess[o, i]);
-            //            if (queue.Count == length)
-            //            {
-            //                result.Add(queue.ToArray());
-            //            }
-            //        }
-            //        else
-            //        {
-            //            queue.Clear();
-            //        }
-            //    }
-            //}
-            //return result;
         }
-
-        private Sequences GetAvailableVerticalSequences(int length)
+        private Sequances GetAvaliableVerticalSequances(int length)
         {
-            return GetAvailableSequences(Columns, Rows, (a, b) => squares[b, a], length);
-            //    var result = new List<SquareSequence>();
-            //    for (int c = 0; c < Columns; ++c)
-            //    {
-            //        var queue = new LimitedQueue<Square>(length);
-            //        for (int r = 0; r < Rows; ++r)
-            //        {
-            //            if (squares[r, c] != null)
-            //            {
-            //                queue.Enqueue(squares[r, c]);
-            //                if (queue.Count == length)
-            //                {
-            //                    result.Add(queue.ToArray());
-            //                }
-            //            }
-            //            else
-            //            {
-            //                queue.Clear();
-            //            }
-            //        }
-            //    }
-            //    return result;
+            return GetAvalableSequences(columns, rows, (a, b) => squares[b, a], length);
+
         }
-
-        public void RemoveSquare(int row, int column)
+        public void RemoveSquare(int row, int column) { squares[row, column] = null; }
+        public void RemoveSquares(IEnumerable<Square> squares)
         {
-            squares[row, column] = null;
-        }
-
-        public void RemoveSquareSequence(IEnumerable<Square> squaresToRemove)
-        {
-            foreach (var square in squaresToRemove)
+            foreach (Square square in squares)
             {
-                RemoveSquare(square.Row, square.Column);
+                RemoveSquare(square.row, square.column);
             }
         }
-        }
     }
-
+}

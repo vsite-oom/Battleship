@@ -4,12 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Vsie.Oom.Battleship.Model
+namespace Vsite.Oom.Battleship.Model
 {
-    using SquareSequence = IEnumerable<Square>;
-    using Sequences = IEnumerable<IEnumerable<Square>>;
-    public interface ISequenceSelector
+    using SquareSequance = IEnumerable<Square>;
+    using Sequances = IEnumerable<IEnumerable<Square>>;
+    public interface ISequenceSqlector
     {
-        SquareSequence Select(Sequences sequences);
+        SquareSequance Select(Sequances sequances);
     }
 }

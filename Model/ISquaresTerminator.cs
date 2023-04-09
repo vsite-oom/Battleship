@@ -4,11 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Vsie.Oom.Battleship.Model
+namespace Vsite.Oom.Battleship.Model
 {
-    using Sequences = IEnumerable<IEnumerable<Square>>;
+    using SquareSequance = IEnumerable<Square>;
+
     public interface ISquaresTerminator
     {
-        SquareSequence ToEliminat(SquareSequence shipSquares);   
+        SquareSequance ToEliminate(SquareSequance squareSequance);
     }
 }

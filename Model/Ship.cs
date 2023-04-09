@@ -4,14 +4,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Vsie.Oom.Battleship.Model
+namespace Vsite.Oom.Battleship.Model
 {
     public class Ship
     {
+        public readonly IEnumerable<Square> squares;
         public Ship(IEnumerable<Square> squares)
         {
-            Squares = squares;
+            this.squares = squares;
         }
-        public readonly IEnumerable<Square> Squares;
+
+
     }
 }

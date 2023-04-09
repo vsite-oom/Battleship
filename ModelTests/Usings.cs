@@ -1,2 +1,2 @@
 global using Microsoft.VisualStudio.TestTools.UnitTesting;
-global using Vsie.Oom.Battleship.Model;
+global using Vsite.Oom.Battleship.Model;
