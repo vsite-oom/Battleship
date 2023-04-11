@@ -13,13 +13,11 @@
 
         public bool Equals(Square other)
         {
-            if (GetType() != other.GetType())
-                return false;
-            return this.Row == other.Row && this.Column == other.Column;
+            return GetType() == other.GetType() && this.Row == other.Row && this.Column == other.Column;
         }
 
         public override bool Equals(object obj) {
-            return base.Equals(obj);
+            return Equals(obj as Square);
         }
 
         public override int GetHashCode()
