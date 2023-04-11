@@ -7,16 +7,16 @@ using System.Threading.Tasks;
 
 namespace Vsite.Oom.Battleship.Model
 {
-    public class SuroundingSquaresTerminator : ISquareTerminator
+    public class SurroundingSquaresTerminator : ISquareTerminator
     {
-        public SuroundingSquaresTerminator(int gridRows, int gridColumns)
+        public readonly int gridRows;
+        public readonly int gridColumns;
+
+        public SurroundingSquaresTerminator(int gridRows, int gridColumns)
         {
             this.gridRows = gridRows;
             this.gridColumns = gridColumns;
         }
-
-        public readonly int gridRows;
-        public readonly int gridColumns;
 
         public IEnumerable<Square> ToEliminate(IEnumerable<Square> shipSquares)
         {

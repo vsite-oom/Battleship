@@ -23,7 +23,7 @@ namespace Vsite.Oom.Battleship.Model
             var fleet = new Fleet();
             foreach (var shipLenght in rules.shipLenghts)
             {
-                var candidates = grid.GetAvailableSquences(shipLenght);
+                var candidates = grid.GetAvailableSequences(shipLenght);
                 var selected = selector.Select(candidates);
 
                 fleet.createShip(selected);
