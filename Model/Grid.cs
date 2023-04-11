@@ -38,7 +38,7 @@ namespace Vsite.Oom.Battleship.Model
             return squares.Cast<Square>().Where(sq => sq != null);
         }
 
-        public Sequences GetAvailableSquences(int lenght)
+        public Sequences GetAvailableSequences(int lenght)
         {
             var result = GetAvailableHorizontalSequences(lenght);
             if (lenght == 1) {
@@ -67,6 +67,8 @@ namespace Vsite.Oom.Battleship.Model
                     else
                     {
                         queue.Clear();
+                        if (lenght > innerLoopMax - i)
+                            break;
                     }
                 }
             }
