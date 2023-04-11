@@ -8,6 +8,9 @@ namespace Vsite.Oom.Battleship.Model
 {
     public class FleetBuilder
     {
+        private readonly GameRules rules;
+        private readonly ISequenceSelector selector;
+
         public FleetBuilder(GameRules rules, ISequenceSelector selector)
         {
             this.rules = rules;
@@ -15,8 +18,6 @@ namespace Vsite.Oom.Battleship.Model
 
         }
 
-        private readonly GameRules rules;
-        private readonly ISequenceSelector selector;
         public Fleet CreateFleet()
         {
             var grid = new Grid(rules.gridRows, rules.gridColumns);

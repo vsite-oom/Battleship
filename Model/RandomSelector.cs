@@ -8,12 +8,13 @@ namespace Vsite.Oom.Battleship.Model
 {
     public class RandomSelector : ISequenceSelector
     {
+        private readonly Random random = new();
+
         public IEnumerable<Square> Select(IEnumerable<IEnumerable<Square>> sequences)
         {
             var randIndex = random.Next(0, sequences.Count());
             return sequences.ElementAt(randIndex);
         }
 
-        private readonly Random random = new();
     }
 }

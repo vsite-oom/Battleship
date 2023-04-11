@@ -13,6 +13,9 @@ namespace Vsite.Oom.Battleship.Model
 
     public class Grid
     {
+        public readonly int Rows;
+        public readonly int Columns;
+        private readonly Square[,] squares;
 
         public Grid(int rows, int columns)
         {
@@ -27,11 +30,6 @@ namespace Vsite.Oom.Battleship.Model
                 }
             }
         }
-
-        public readonly int Rows;
-        public readonly int Columns;
-
-        private readonly Square[,] squares;
 
         public SquareSequence AvailableSquares()
         {
@@ -49,7 +47,6 @@ namespace Vsite.Oom.Battleship.Model
 
         private Sequences GetAvailableSequences(int outerLoopMax, int innerLoopMax, SquareAccess squareAccess, int lenght)
         {
-            // ako nema dovoljno polja iza trenutne provjere onda break
             List<SquareSequence> result = new();
             for (int o = 0; o < outerLoopMax; ++o)
             {

@@ -9,13 +9,13 @@ namespace Vsite.Oom.Battleship.Model
     public class Fleet
     {
         private readonly List<Ship> ships = new();
+        public IEnumerable<Ship> Ships { get { return ships; } }
 
         public void createShip(IEnumerable<Square> shipSquares)
         {
             ships.Add(new Ship(shipSquares));
         }
 
-        public IEnumerable<Ship> Ships { get { return ships; } }
 
     }
 
