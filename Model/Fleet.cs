@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace Vsite.Oom.Battleship.Model
 {
-    internal class Fleet
+    public class Fleet
     {
         public void CreateShip(IEnumerable<Square> shipSquares)
         {
-            ships.Add(new Ship((IEnumerable<Ship>)shipSquares));
+            ships.Add(new Ship(shipSquares));
         }
         private List<Ship> ships = new List<Ship>();
 

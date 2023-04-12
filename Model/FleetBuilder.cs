@@ -8,16 +8,15 @@ namespace Vsite.Oom.Battleship.Model
 {
     public class FleetBuilder
     {
-        private readonly GameRules rules;
-        private readonly ISequenceSelector selector;
+       
         public FleetBuilder(GameRules rules, ISequenceSelector selector)
         {
             this.rules = rules;
             this.selector = selector;
         }
 
-        public class FleetBuilder
-        {
+        
+        
             public FleetBuilder(GameRules rules) : this(rules, new RandomSelector())
             {
 
@@ -25,7 +24,9 @@ namespace Vsite.Oom.Battleship.Model
 
             private readonly GameRules rules;
             private readonly ISequenceSelector selector;
-            public Fleet CreateFleet(Fleet fleet)
+
+            
+            public Fleet CreateFleet(Fleet f)
             {
                 var grid = new Grid(rules.GridRows, rules.GridColumns);
                 var fleet = new Fleet();
@@ -38,8 +39,8 @@ namespace Vsite.Oom.Battleship.Model
                     grid.RemoveSquares(toEliminate);
                 }
 
-                return fleet();
+                return fleet;
             }
-        }
+        
     }
 }

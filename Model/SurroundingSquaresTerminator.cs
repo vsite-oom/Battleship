@@ -11,10 +11,15 @@ namespace Vsite.Oom.Battleship.Model
     {
         public SurroundingSquaresTerminator(int gridRows, int gridColumns)
         {
-
+            
         }
 
         
         private readonly int gridRows;
+
+        public IEnumerable<Square> ToEliminate(IEnumerable<Square> shipSquares)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
