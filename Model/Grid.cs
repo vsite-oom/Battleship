@@ -58,7 +58,7 @@ namespace Vsite.Oom.Battleship.Model
             {
                 return result;
             }
-            return GetAvailableHorizontalSequences(length);
+            return result.Concat(GetAvailableVerticalSequences(length));
         }
 
         private Sequences GetAvailableHorizontalSequences(int length)
