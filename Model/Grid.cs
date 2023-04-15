@@ -72,7 +72,7 @@ namespace Vsite.Oom.Battleship.Model
                     }
                     else
                     {
-                        //if (length > i ) break;
+                        if (length > innerLoopLimit ) break;
                         queue.Clear();
                     }
                 }
