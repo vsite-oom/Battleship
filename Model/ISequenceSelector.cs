@@ -6,7 +6,10 @@ using System.Threading.Tasks;
 
 namespace Vsite.Oom.Battleship.Model
 {
-    internal interface ISequenceSelector
+    using SquareSequence = IEnumerable<Square>;
+    using Sequences = IEnumerable<IEnumerable<Square>>;
+    public interface ISequenceSelector
     {
+        SquareSequence Select(Sequences sequences);
     }
 }

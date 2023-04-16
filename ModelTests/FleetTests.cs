@@ -16,9 +16,9 @@ namespace ModelTests
             Assert.AreEqual(1, fleet.Ships.Count());
 
             var ship = fleet.Ships.ElementAt(0);
-            Assert.IsTrue(ship.Sqaures.Contains(squares[0]));
-            Assert.IsTrue(ship.Sqaures.Contains(squares[1]));
-            Assert.IsTrue(ship.Sqaures.Contains(squares[2]));
+            Assert.IsTrue(ship.squares.Contains(squares[0]));
+            Assert.IsTrue(ship.squares.Contains(squares[1]));
+            Assert.IsTrue(ship.squares.Contains(squares[2]));
             
         }
     }

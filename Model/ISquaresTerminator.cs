@@ -6,7 +6,10 @@ using System.Threading.Tasks;
 
 namespace Vsite.Oom.Battleship.Model
 {
-    internal interface ISquaresTerminator
+
+    using SquareSequence = IEnumerable<Square>;
+    public interface ISquaresTerminator
     {
+        SquareSequence ToEliminate(SquareSequence shipSquares);
     }
 }
