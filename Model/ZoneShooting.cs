@@ -21,5 +21,7 @@ namespace Vsie.Oom.Battleship.Model
         {
             throw new NotImplementedException();
         }
+
+
     }
 }
