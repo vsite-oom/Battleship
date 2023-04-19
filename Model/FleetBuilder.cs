@@ -21,19 +21,29 @@ namespace Vsite.Oom.Battleship.Model
         private readonly ISequenceSqlector selector;
         public Fleet CreateFleet()
         {
-            Grid grid = new Grid(rules.GridRows, rules.GridColumns);
-            var fleet = new Fleet();
-            foreach(var shipLenght in  rules.ShipLenghts)
+            try
             {
-                var candidates=grid.GetAvaliableSequences(shipLenght);
-                var selected=selector.Select(candidates);
-                fleet.CreateShip(selected);
-                var toEliminate=rules.terminator.ToEliminate(selected);
-                grid.RemoveSquares(toEliminate);
-                
+                Grid grid = new Grid(rules.GridRows, rules.GridColumns);
+                var fleet = new Fleet();
+                foreach (var shipLenght in rules.ShipLenghts)
+                {
+                    var candidates = grid.GetAvaliableSequences(shipLenght);
+                    var selected = selector.Select(candidates);
+                    fleet.CreateShip(selected);
+                    var toEliminate = rules.terminator.ToEliminate(selected);
+                    grid.RemoveSquares(toEliminate);
 
+
+                }
+                return fleet;
             }
-            return fleet;
+            catch
+            {
+
+                return CreateFleet();
+            }
+            
+           
         }
     }
 }
