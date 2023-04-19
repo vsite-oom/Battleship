@@ -11,7 +11,7 @@ namespace Vsite.Oom.Battleship.Model
         public ZoneShooting(Grid grid, Square firstSquareHit)
         {
             this.grid = grid;
-            firsthit = firstSquareHit
+            firsthit = firstSquareHit;
         }
 
         private readonly Grid grid;
