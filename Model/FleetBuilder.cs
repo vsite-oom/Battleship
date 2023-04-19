@@ -21,7 +21,7 @@ namespace Vsite.Oom.Battleship.Model
         private readonly ISequenceSqlector selector;
         public Fleet CreateFleet()
         {
-            Grid grid = new Grid(rules.GridRows, rules.GridColumns);
+            var grid = new Grid(rules.GridRows, rules.GridColumns);
             var fleet = new Fleet();
             foreach (var shipLenght in rules.ShipLenghts)
             {
