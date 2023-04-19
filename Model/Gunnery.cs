@@ -30,7 +30,7 @@ namespace Vsite.Oom.Battleship.Model
 
        public void ProcessHitResult(HitResult hitResult)
         {
-
+          
         }
 
         private readonly Grid grid;
