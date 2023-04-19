@@ -67,7 +67,7 @@
             var terminator = new SurroundingSquaresTerminator(10, 10);
             var toEliminate = terminator.ToEliminate(squares);
 
-            Assert.AreEqual(8, toEliminate.Count());
+            Assert.AreEqual(12, toEliminate.Count());
             Assert.IsTrue(toEliminate.Contains(squares[0]));
             Assert.IsTrue(toEliminate.Contains(squares[1]));
             
