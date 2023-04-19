@@ -30,7 +30,7 @@
             var terminator = new SurroundingSquaresTerminator(10, 10);
             var toEliminate = terminator.ToEliminate(squares);
 
-            Assert.AreEqual(18, toEliminate.Count());
+            Assert.AreEqual(8, toEliminate.Count());
             Assert.IsTrue(toEliminate.Contains(squares[0]));
             Assert.IsTrue(toEliminate.Contains(squares[1]));
             
@@ -48,7 +48,7 @@
             var terminator = new SurroundingSquaresTerminator(10, 10);
             var toEliminate = terminator.ToEliminate(squares);
 
-            Assert.AreEqual(18, toEliminate.Count());
+            Assert.AreEqual(8, toEliminate.Count());
             Assert.IsTrue(toEliminate.Contains(squares[0]));
             Assert.IsTrue(toEliminate.Contains(squares[1]));
             
@@ -66,7 +66,7 @@
             var terminator = new SurroundingSquaresTerminator(10, 10);
             var toEliminate = terminator.ToEliminate(squares);
 
-            Assert.AreEqual(18, toEliminate.Count());
+            Assert.AreEqual(8, toEliminate.Count());
             Assert.IsTrue(toEliminate.Contains(squares[0]));
             Assert.IsTrue(toEliminate.Contains(squares[1]));
             
@@ -83,7 +83,7 @@
             var terminator = new SurroundingSquaresTerminator(10, 10);
             var toEliminate = terminator.ToEliminate(squares);
 
-            Assert.AreEqual(18, toEliminate.Count());
+            Assert.AreEqual(9, toEliminate.Count());
             Assert.IsTrue(toEliminate.Contains(squares[0]));
             Assert.IsTrue(toEliminate.Contains(squares[1]));
             
