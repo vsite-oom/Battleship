@@ -2,12 +2,11 @@
 {
     public class Ship
     {
-               
-            public Ship(IEnumerable<Square> squares)
-            {
-            squares = squares;
-            }
-
-            public readonly IEnumerable<Square> squares;
+        public Ship(IEnumerable<Square> squares)
+        {
+            Squares = squares;
         }
+
+        public readonly IEnumerable<Square> Squares;
+    }
 }
