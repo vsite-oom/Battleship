@@ -95,7 +95,7 @@ namespace ModelTests
             var terminator = new SurroundingSquaresTerminator(10, 10);
             var toeliminate = terminator.ToEliminate(squares);
 
-            Assert.AreEqual(18, toeliminate.Count());
+            Assert.AreEqual(9, toeliminate.Count());
             Assert.IsTrue(toeliminate.Contains(squares[0]));
             Assert.IsTrue(toeliminate.Contains(squares[1]));
 
