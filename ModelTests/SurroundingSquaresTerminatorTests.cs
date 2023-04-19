@@ -76,10 +76,12 @@ namespace ModelTests
             Assert.IsTrue(toEliminate.Contains(squares[2]));
 
             // TODO: finish
-            Assert.IsTrue(toEliminate.Contains(new Square(2, 8)));
-            Assert.IsTrue(toEliminate.Contains(new Square(2, 9)));
-            Assert.IsTrue(toEliminate.Contains(new Square(5, 8)));
-            Assert.IsTrue(toEliminate.Contains(new Square(5, 9)));
+            Assert.IsTrue(toEliminate.Contains(new Square(6, 4)));
+            Assert.IsTrue(toEliminate.Contains(new Square(7, 4)));
+            Assert.IsTrue(toEliminate.Contains(new Square(8, 4)));
+            Assert.IsTrue(toEliminate.Contains(new Square(6, 6)));
+            Assert.IsTrue(toEliminate.Contains(new Square(7, 6)));
+            Assert.IsTrue(toEliminate.Contains(new Square(8, 6)));
         }
         
         [TestMethod]
@@ -95,10 +97,9 @@ namespace ModelTests
             Assert.IsTrue(toEliminate.Contains(squares[1]));
 
             // TODO: finish
-            Assert.IsTrue(toEliminate.Contains(new Square(2, 8)));
-            Assert.IsTrue(toEliminate.Contains(new Square(2, 9)));
-            Assert.IsTrue(toEliminate.Contains(new Square(5, 8)));
-            Assert.IsTrue(toEliminate.Contains(new Square(5, 9)));
+            Assert.IsTrue(toEliminate.Contains(new Square(3, 0)));
+            Assert.IsTrue(toEliminate.Contains(new Square(3, 1)));
+            Assert.IsTrue(toEliminate.Contains(new Square(4, 1)));
         }
     }
 }
