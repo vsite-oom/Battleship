@@ -41,25 +41,7 @@ namespace Vsite.Oom.Battleship.Model
                 (CurrentShootingTacttics.Zone, HitResult.Sunk) or (CurrentShootingTacttics.Line, HitResult.Sunk) => CurrentShootingTacttics.Random,
                 _ => CurrentShootingTacttics
             };
-            //if (CurrentShootingTacttics == CurrentShootingTacttics.Random&& result == HitResult.Hit)
-            //{
-            //        CurrentShootingTacttics = CurrentShootingTacttics.Zone;
-            //}
-            //else if (CurrentShootingTacttics == CurrentShootingTacttics.Zone)
-            //{
-            //    if (result == HitResult.Hit)
-            //    {
-            //        CurrentShootingTacttics = CurrentShootingTacttics.Line;
-            //    }
-            //    else if (result == HitResult.Sunk)
-            //    {
-            //        CurrentShootingTacttics = CurrentShootingTacttics.Random;
-            //    }
-            //}
-            //else if (CurrentShootingTacttics == CurrentShootingTacttics.Line&& result == HitResult.Sunk)
-            //{
-            //    CurrentShootingTacttics = CurrentShootingTacttics.Random;
-            //}
+            
         }
     }
 }
