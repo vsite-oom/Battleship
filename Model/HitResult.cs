@@ -6,8 +6,10 @@ using System.Threading.Tasks;
 
 namespace Vsite.Oom.Battleship.Model
 {
-    public interface IShootingTactics
+    public enum HitResult
     {
-        Square NextTarget();
+        Missed,
+        Hit,
+        Sunk
     }
 }

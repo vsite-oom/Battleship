@@ -6,7 +6,19 @@ using System.Threading.Tasks;
 
 namespace Vsite.Oom.Battleship.Model
 {
-    internal class ZoneShooting
+    public class ZoneShooting : IShootingTactics
     {
+        private readonly Grid grid;
+        private readonly Square firstHit;
+        public ZoneShooting(Grid grid,Square firstHit)
+        {
+            this.grid = grid;
+            this.firstHit = firstHit;
+            
+        }
+        public Square NextTarget()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
