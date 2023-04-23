@@ -3,25 +3,24 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Vsite.Oom.Battleship.Model;
+using Vsie.Oom.Battleship.Model;
 
-namespace Vsie.Oom.Battleship.Model
+namespace Vsite.Oom.Battleship.Model
 {
-    public class ZoneShooting: IShootingTactics
+    public class ZoneShooting : IShootingTactics
     {
-        public ZoneShooting(Grid grid, Square firstSquareHit)
+        public ZoneShooting(Grid grid, Square firstHit)
         {
             this.grid = grid;
-            firstHit = firstSquareHit;
+            this.firstHit = firstHit;
         }
 
         private readonly Grid grid;
-        private readonly Square firstSquareHit;
+        private readonly Square firstHit;
+
         public Square NextTarget()
         {
             throw new NotImplementedException();
         }
-
-
     }
 }

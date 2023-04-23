@@ -8,7 +8,7 @@ namespace ModelTests
     public class GunneryTests
     {
         [TestMethod]
-        public void MCurrentShootingTacticsIsInitiallyRandom()
+        public void CurrentShootingTacticsIsInitiallyRandom()
         {
             var gameRules = new GameRules();
             var gunnery = new Gunnery(gameRules, new Fleet());
@@ -31,7 +31,7 @@ namespace ModelTests
             Assert.AreEqual(CurrentShootingTactics.Zone, gunnery.CurrentShootingTactics);
         }
         [TestMethod]
-        public void MCurrentShootingTacticsChangesRandomZoneToLineAfterHit()
+        public void CurrentShootingTacticsChangesFromZoneToLineAfterHit()
         {
             var gameRules = new GameRules();
             var gunnery = new Gunnery(gameRules, new Fleet());
@@ -40,7 +40,7 @@ namespace ModelTests
             Assert.AreEqual(CurrentShootingTactics.Line, gunnery.CurrentShootingTactics);
         }      
         [TestMethod]
-        public void CurrentShootingTacticsRenamesInZoneRandomZoneAfterMiss()
+        public void CurrentShootingTacticsRemainsInZoneAfterMiss()
         {
             var gameRules = new GameRules();
             var gunnery = new Gunnery(gameRules, new Fleet());
@@ -48,14 +48,5 @@ namespace ModelTests
             gunnery.ProcessHitResult(HitResult.Missed);
             Assert.AreEqual(CurrentShootingTactics.Zone, gunnery.CurrentShootingTactics);
         }    
-        [TestMethod]
-        public void CurrentShootingTacticsRenamesInZoneRandomZoneAfterMiss()
-        {
-            var gameRules = new GameRules();
-            var gunnery = new Gunnery(gameRules, new Fleet());
-            gunnery.ProcessHitResult(HitResult.Hit);
-            gunnery.ProcessHitResult(HitResult.Missed);
-            Assert.AreEqual(CurrentShootingTactics.Zone, gunnery.CurrentShootingTactics);
-        }
     }
 }

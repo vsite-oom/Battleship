@@ -29,7 +29,40 @@ namespace Vsie.Oom.Battleship.Model
 
         public void ProcessHitResult(HitResult hitResult)
         {
-            
+            if (hitResult == HitResult.Sunk)
+            {
+                CurrentShootingTactics = CurrentShootingTactics.Random;
+            }
+
+            if (hitResult == HitResult.Hit && CurrentShootingTactics == CurrentShootingTactics.Zone)
+            {
+                CurrentShootingTactics = CurrentShootingTactics.Line;
+            }
+
+            if (hitResult == HitResult.Hit && CurrentShootingTactics == CurrentShootingTactics.Random)
+            {
+                CurrentShootingTactics = CurrentShootingTactics.Zone;
+            }
+
+            if (hitResult == HitResult.Hit && CurrentShootingTactics == CurrentShootingTactics.Line)
+            {
+                CurrentShootingTactics = CurrentShootingTactics.Line;
+            }
+
+            if (hitResult == HitResult.Missed && CurrentShootingTactics == CurrentShootingTactics.Random)
+            {
+                CurrentShootingTactics = CurrentShootingTactics.Random;
+            }
+
+            if (hitResult == HitResult.Missed && CurrentShootingTactics == CurrentShootingTactics.Zone)
+            {
+                CurrentShootingTactics = CurrentShootingTactics.Zone;
+            }
+
+            if (hitResult == HitResult.Missed && CurrentShootingTactics == CurrentShootingTactics.Line)
+            {
+                CurrentShootingTactics = CurrentShootingTactics.Zone;
+            }
         }
 
         private readonly Grid grid;
