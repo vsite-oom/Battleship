@@ -15,10 +15,9 @@ namespace Vsite.Oom.Battleship.Model
 
     public class Gunnery
     {
-        public Gunnery(GameRules gameRules, Fleet fleet)
+        public Gunnery(GameRules gameRules)
         {
             grid = new Grid(gameRules.GridRows, gameRules.GridColumns);
-            this.fleet = fleet;
             shootingTactics = new RandomShooting(grid);
             CurrentShootingTactics = CurrentShootingTactics.Random;
         }
@@ -34,7 +33,6 @@ namespace Vsite.Oom.Battleship.Model
         }
 
         private readonly Grid grid;
-        private readonly Fleet fleet;
         private IShootingTactics shootingTactics;
 
         public CurrentShootingTactics CurrentShootingTactics { get; private set; }
