@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -25,48 +26,77 @@ namespace Vsite.Oom.Battleship.Model
 
         public Square nextTarget()
         {
-            return shootingTactics.NextTarget();
+            targetSquares.Add(shootingTactics.NextTarget());
+            return targetSquares.Last();
         }
 
         public void ProcessHitResult(HitResult hitResult)
         {
+           // RecordHitResult(hitResult);
+            ChangeTactics(hitResult);
 
-            //if (hitResult == HitResult.Sunk)
-            //{
-            //    currentShootingTactics = CurrentShootingTactics.Random;
-            //}
 
-            //if (hitResult == HitResult.Hit && currentShootingTactics == CurrentShootingTactics.Zone)
-            //{
-            //    currentShootingTactics = CurrentShootingTactics.Line;
-            //}
-
-            //if (hitResult == HitResult.Hit && currentShootingTactics == CurrentShootingTactics.Random)
-            //{
-            //    currentShootingTactics = CurrentShootingTactics.Zone;
-            //}
-
-            //if (hitResult == HitResult.Hit && currentShootingTactics == CurrentShootingTactics.Line)
-            //{
-            //    currentShootingTactics = CurrentShootingTactics.Line;
-            //}
-
-            //if (hitResult == HitResult.Missed && currentShootingTactics == CurrentShootingTactics.Random)
-            //{
-            //    currentShootingTactics = CurrentShootingTactics.Random;
-            //}
-
-            //if (hitResult == HitResult.Missed && currentShootingTactics == CurrentShootingTactics.Zone)
-            //{
-            //    currentShootingTactics = CurrentShootingTactics.Zone;
-            //}
-
-            //if (hitResult == HitResult.Missed && currentShootingTactics == CurrentShootingTactics.Line)
-            //{
-            //    currentShootingTactics = CurrentShootingTactics.Zone;
-            //}
 
         }
+
+        private void ChangeTactics(HitResult hitResult)
+        {
+            switch (hitResult)
+            {
+                case HitResult.Missed:
+                    return;
+                case HitResult.Sunk:
+                    ChangeToRandom();
+                    return;
+                case HitResult.Hit:
+                    {
+                        switch (currentShootingTactics)
+                        {
+                            case CurrentShootingTactics.Random:
+                                ChangeToZone();
+                                return;
+                            case CurrentShootingTactics.Zone:
+                                ChangeToLine();
+                                return;
+                            case CurrentShootingTactics.Line:
+                                return;
+                            default:
+                                Debug.Assert(false, "Unsuported shooting tactics");
+                                break;
+                        }
+                    }
+                    break;
+                default:
+                    Debug.Assert(false, "Unsuported shooting tactics");
+                    break;
+
+            }
+        }
+
+        private void ChangeToLine()
+        {
+            currentShootingTactics = CurrentShootingTactics.Line;
+            //TODO: Apply actual tactics
+        }
+
+        private void ChangeToZone()
+        {
+            currentShootingTactics = CurrentShootingTactics.Zone;
+            //TODO: Apply actual tactics
+        }
+
+        private void ChangeToRandom()
+        {
+            throw new NotImplementedException();
+        }
+
+        private void RecordHitResult(HitResult hitResult)
+        {
+            var lastTarget = targetSquares.Last();
+            grid.MarkSquare(lastTarget.Row, lastTarget.Column, hitResult);
+        }
+
+        List<Square> targetSquares = new List<Square>();
 
         private readonly Grid grid;
         private readonly Fleet fleet;
