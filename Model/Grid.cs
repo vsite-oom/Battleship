@@ -137,5 +137,10 @@ namespace Vsite.Oom.Battleship.Model
                 RemoveSquare(square.Row, square.Column);
             }
         }
+
+        public void MarkSquare(int row, int column, HitResult hitResult)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
