@@ -46,6 +46,9 @@ namespace Vsite.Oom.Battleship.Model
 
 
         }
+        private bool IsSquareAvaliable(int row,int column) {
+            throw new NotImplementedException();
+        }
         private Sequances GetAvalableSequences(int outerloopLimitint, int innerLoopLimit, squareAccess sq, int length)
         {
             var result = new List<SquareSequance>();
@@ -55,7 +58,7 @@ namespace Vsite.Oom.Battleship.Model
                 var queue = new LimitedQueue<Square>(length);
                 for (int i = 0; i < innerLoopLimit; i++)
                 {
-                    if (sq(o, i) != null)
+                    if (sq(o, i) != null&&sq(o,i).squareState==SquareState.Initial)
                     {
 
                         queue.Enqueue(sq(o, i));
@@ -95,9 +98,9 @@ namespace Vsite.Oom.Battleship.Model
             }
         }
 
-        internal void MarkSquare(int row, int column, HitResult result)
+        public void MarkSquare(int row, int column, HitResult result)
         {
-            throw new NotImplementedException();
+            squares[row,column].Mark(result);
         }
     }
 }

@@ -15,32 +15,84 @@ namespace Vsite.Oom.Battleship.Model
     public class Gunnery
     {
         private readonly Grid grid;
-        private readonly Fleet fleet;
+        
         private IShootingTactics shootingTactics;
+
+        private List<int> shipLenghts;
         public CurrentShootingTacttics CurrentShootingTacttics { get; set; }
+
+        List<Square> targetSquares= new List<Square>();
 
         public Gunnery(GameRules rules)
         {
 
             grid = new Grid(rules.GridRows, rules.GridColumns);
-            this.fleet = fleet;
-            shootingTactics = new RandomShooting(grid);
+            shipLenghts = new List<int>(rules.ShipLenghts);
+            CurrentShootingTacttics=ChangeToRandom();
+            shootingTactics = new RandomShooting(grid,shipLenghts);
+            //CurrentShootingTacttics = CurrentShootingTacttics.Random;
         }
-        public Square nextTarget(Square square)
+        public Square nextTarget()
         {
-            return shootingTactics.NextTarget();
+            targetSquares.Add(shootingTactics.NextTarget());
+            return targetSquares.Last();
         }
 
         public void ProcessHitResult(HitResult result)
         {
+            //RecordHitResult(result);
+
+            ChangeTactics(result);
+            
+            
+        }
+        public CurrentShootingTacttics ChangeToLine()
+        {
+            shootingTactics = new LineShooting(grid, targetSquares.Where(w=>w.squareState==SquareState.Hit), shipLenghts);
+            return CurrentShootingTacttics.Line;
+        }
+        public CurrentShootingTacttics ChangeToZone()
+        {
+            //shootingTactics=new ZoneShooting(grid,targetSquares.Last(),shipLenghts);
+            return CurrentShootingTacttics.Zone;
+        }
+        public CurrentShootingTacttics ChangeToRandom()
+        {
+            shootingTactics = new RandomShooting(grid, shipLenghts);
+            //CurrentShootingTacttics = CurrentShootingTacttics.Random;
+            return CurrentShootingTacttics.Random;
+        }
+
+        private void ChangeTactics(HitResult result)
+        {
 
             CurrentShootingTacttics = (CurrentShootingTacttics, result) switch
             {
-                (CurrentShootingTacttics.Random, HitResult.Hit) => CurrentShootingTacttics.Zone,
-                (CurrentShootingTacttics.Zone, HitResult.Hit) => CurrentShootingTacttics.Line,
-                (CurrentShootingTacttics.Zone, HitResult.Sunk) or (CurrentShootingTacttics.Line, HitResult.Sunk) => CurrentShootingTacttics.Random,
+                (CurrentShootingTacttics.Random, HitResult.Hit) => ChangeToZone(),
+                (CurrentShootingTacttics.Zone, HitResult.Hit) => ChangeToLine(),
+                (CurrentShootingTacttics.Zone, HitResult.Sunk) or (CurrentShootingTacttics.Line, HitResult.Sunk) => ChangeToRandom(),
                 _ => CurrentShootingTacttics
             };
+
+
+            
+        }
+
+        private void RecordHitResult(HitResult result)
+        {
+            if (result == HitResult.Sunk) 
+            {
+                foreach(var square in targetSquares){
+                    grid.MarkSquare(square.row, square.column, result);
+                }
+                shipLenghts.Remove(targetSquares.Count(c=>c.squareState==SquareState.Hit));
+                targetSquares.Clear();
+            }
+            else
+            {
+                var lastTarget = targetSquares.Last();
+                grid.MarkSquare(lastTarget.row, lastTarget.column, result);
+            }
             
         }
     }

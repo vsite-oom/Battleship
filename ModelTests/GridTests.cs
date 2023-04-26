@@ -72,8 +72,52 @@ namespace ModelTests
             Assert.AreEqual(1, result.Count(s => s.Contains(new Square(4, 0))));
             
         }
+        public void GetAvaliableSequancesReturnstwoSequencesOfLength2ForGrid5Row1ColumnsAfterSquare1_0IsMarkedMissed() 
+        { 
+            int rows = 5; int columns = 1;
+            Grid grid = new Grid(rows, columns);
+            grid.MarkSquare(1, 0, HitResult.Missed);
+            var result = grid.GetAvaliableSequences(2);
+            Assert.AreEqual(2, result.Count());
+            Assert.AreEqual(0, result.Count(s => s.Contains(new Square(0, 0))));
+            Assert.AreEqual(0, result.Count(s => s.Contains(new Square(1, 0))));
+            Assert.AreEqual(1, result.Count(s => s.Contains(new Square(2, 0))));
+            Assert.AreEqual(2, result.Count(s => s.Contains(new Square(3, 0))));
+            Assert.AreEqual(1, result.Count(s => s.Contains(new Square(4, 0))));
+            Assert.IsFalse(result.SelectMany(s => s).Contains(new Square(1, 0)));
 
+        }
 
+        public void GetAvaliableSequancesReturnstwoSequencesOfLength2ForGrid5Row1ColumnsAfterSquare1_0IsMarkedHit()
+        {
+            int rows = 5; int columns = 1;
+            Grid grid = new Grid(rows, columns);
+            grid.MarkSquare(1, 0,HitResult.Hit);
+            var result = grid.GetAvaliableSequences(2);
+            Assert.AreEqual(2, result.Count());
+            Assert.AreEqual(0, result.Count(s => s.Contains(new Square(0, 0))));
+            Assert.AreEqual(0, result.Count(s => s.Contains(new Square(1, 0))));
+            Assert.AreEqual(1, result.Count(s => s.Contains(new Square(2, 0))));
+            Assert.AreEqual(2, result.Count(s => s.Contains(new Square(3, 0))));
+            Assert.AreEqual(1, result.Count(s => s.Contains(new Square(4, 0))));
+            Assert.IsFalse(result.SelectMany(s => s).Contains(new Square(1, 0)));
+
+        }
+        public void GetAvaliableSequancesReturnstwoSequencesOfLength2ForGrid5Row1ColumnsAfterSquare1_0IsMarkedSunk()
+        {
+            int rows = 5; int columns = 1;
+            Grid grid = new Grid(rows, columns);
+            grid.MarkSquare(1, 0, HitResult.Sunk);
+            var result = grid.GetAvaliableSequences(2);
+            Assert.AreEqual(2, result.Count());
+            Assert.AreEqual(0, result.Count(s => s.Contains(new Square(0, 0))));
+            Assert.AreEqual(0, result.Count(s => s.Contains(new Square(1, 0))));
+            Assert.AreEqual(1, result.Count(s => s.Contains(new Square(2, 0))));
+            Assert.AreEqual(2, result.Count(s => s.Contains(new Square(3, 0))));
+            Assert.AreEqual(1, result.Count(s => s.Contains(new Square(4, 0))));
+            Assert.IsFalse(result.SelectMany(s=>s).Contains(new Square(1, 0)));
+
+        }
 
     }
 }

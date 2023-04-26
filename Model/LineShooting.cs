@@ -10,9 +10,10 @@ namespace Vsite.Oom.Battleship.Model
     {
         private readonly Grid grid;
         private readonly List<Square> squaresHit;
-        public LineShooting(Grid grid,IEnumerable<Square> squaresHit)
+        private readonly IEnumerable<int> shiplenghts;
+        public LineShooting(Grid grid,IEnumerable<Square> squaresHit, IEnumerable<int> shipLenghts)
         {
-            
+            this.shiplenghts = shipLenghts;
             this.grid = grid;
             this.squaresHit=new List<Square>(squaresHit);
         }
