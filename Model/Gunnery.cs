@@ -15,9 +15,9 @@ namespace Vsite.Oom.Battleship.Model
         public Gunnery(GameRules gameRules)
         {
             grid = new Grid(gameRules.GridRows, gameRules.GridColumns);
-            shootingTactics = new RandomShooting(grid);
-            currentShootingTactics = CurrentShootingTactics.Random;
             shipLengths = new List<int>(gameRules.ShipLengts);
+            shootingTactics = new RandomShooting(grid, shipLengths);
+            currentShootingTactics = CurrentShootingTactics.Random;
         }
 
         public Square nextTarget()
@@ -49,8 +49,7 @@ namespace Vsite.Oom.Battleship.Model
             }
             else
             {
-                var last = hitSquares.Last();
-                grid.MarkSquare(last.Row, last.Column, hitResult);
+                grid.MarkSquare(lastTarget.Row, lastTarget.Column, hitResult);
             }
         }
 
