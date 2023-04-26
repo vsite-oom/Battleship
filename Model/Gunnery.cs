@@ -20,7 +20,7 @@ namespace Vsite.Oom.Battleship.Model
         public Gunnery(GameRules gameRules)
         {
             grid = new Grid(gameRules.GridRows, gameRules.GridColumns);
-            shootingTactics = new RandomShooting(grid);
+            shootingTactics = new RandomShooting(grid, shipLenghts);
             CurrentShootingTactics = CurrentShootingTactics.Random;
             shipLenghts = new List<int>(gameRules.ShipLenghts);
 
@@ -40,7 +40,10 @@ namespace Vsite.Oom.Battleship.Model
 
         private void RecordHitResult(HitResult hitResult)
         {
-            if (hitResult != HitResult.Missed) 
+            if (hitResult != HitResult.Missed)
+            
+              
+            
             {
                 foreach (var square in hitSquares)
                 {
@@ -49,11 +52,11 @@ namespace Vsite.Oom.Battleship.Model
                 shipLenghts.Remove(hitSquares.Count);
                 hitSquares.Clear();
             }
+
             else
             {
-               
-                var lastTarget = hitSquares.Last();
-                grid.MarkSquare(lastTarget.Row, lastTarget.Column, hitResult);
+
+                grid.MarkSquare(hitSquares.Last().Row, hitSquares.Last().Column, hitResult);
             }
 
             var lastTarget = hitSquares.Last();
