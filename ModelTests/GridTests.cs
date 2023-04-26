@@ -66,5 +66,41 @@ namespace ModelTests
             var result = grid.GetAvailableSequences(2);
             Assert.AreEqual(2, result.Count());
         }
+
+        [TestMethod]
+        public void GetAvailableSequencesReturnsTwoSequencesOfLength2ForGrid5Rows1ColumnAfterSquare1_0IsMarkedMissed()
+        {
+            int rows = 5;
+            int columns = 1;
+            var grid = new Grid(rows, columns);
+            grid.MarkSquare(1, 0, HitResult.Missed);
+            var result = grid.GetAvailableSequences(2);
+            Assert.AreEqual(2, result.Count());
+            Assert.IsFalse(result.SelectMany(s => s).Contains(new Square(1, 0)));
+        }
+
+        [TestMethod]
+        public void GetAvailableSequencesReturnsTwoSequencesOfLength2ForGrid5Rows1ColumnAfterSquare1_0IsMarkedHit()
+        {
+            int rows = 5;
+            int columns = 1;
+            var grid = new Grid(rows, columns);
+            grid.MarkSquare(1, 0, HitResult.Hit);
+            var result = grid.GetAvailableSequences(2);
+            Assert.AreEqual(2, result.Count());
+            Assert.IsFalse(result.SelectMany(s => s).Contains(new Square(1, 0)));
+        }
+
+        [TestMethod]
+        public void GetAvailableSequencesReturnsTwoSequencesOfLength2ForGrid5Rows1ColumnAfterSquare1_0IsMarkedSunk()
+        {
+            int rows = 5;
+            int columns = 1;
+            var grid = new Grid(rows, columns);
+            grid.MarkSquare(1, 0, HitResult.Sunk);
+            var result = grid.GetAvailableSequences(2);
+            Assert.AreEqual(2, result.Count());
+            Assert.IsFalse(result.SelectMany(s => s).Contains(new Square(1, 0)));
+        }
     }
 }
