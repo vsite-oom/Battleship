@@ -9,10 +9,9 @@
             Line
         }
 
-        public Gunnery(GameRules gameRules, Fleet fleet)
+        public Gunnery(GameRules gameRules)
         {
             grid = new Grid(gameRules.GridRows, gameRules.GridColumns);
-            this.fleet = fleet;
             shootingTactics = new RandomShooting(grid);
             currentShootingTactics = CurrentShootingTactics.Random;
         }
@@ -63,7 +62,6 @@
         }
 
         private readonly Grid grid;
-        private readonly Fleet fleet;
         private IShootingTactics shootingTactics;
 
         public CurrentShootingTactics currentShootingTactics { get; private set; }
