@@ -26,7 +26,7 @@ namespace Vsite.Oom.Battleship.Model
             private readonly ISequenceSelector selector;
 
             
-            public Fleet CreateFleet(Fleet f)
+            public Fleet CreateFleet()
             {
                 var grid = new Grid(rules.GridRows, rules.GridColumns);
                 var fleet = new Fleet();
