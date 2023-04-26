@@ -107,7 +107,7 @@ namespace Vsite.Oom.Battleship.Model
                 LimitedQueue<Square> queue = new(lenght);
                 for (int i = 0; i < innerLoopLimit; ++i)
                 {
-                    if (squares[o, i] != null)
+                    if (squaresAccess(o, i) != null && squareAccess(o, i).SquareState == SquareState.Initial)
                     {
                         queue.Enqueue(squares[o, i]);
                         if (queue.Count == lenght)
@@ -125,6 +125,10 @@ namespace Vsite.Oom.Battleship.Model
             return result;
         }
 
+        private object squaresAccess(int o, int i)
+        {
+            throw new NotImplementedException();
+        }
 
         public void RemoveSquare(int row, int column)
         {

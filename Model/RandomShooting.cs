@@ -14,10 +14,16 @@ namespace Vsite.Oom.Battleship.Model
             this.shipLenghts = shipLenghts;
         }
         private readonly Grid grid;
-        private readonly IEnumerable<int> shipLenghts;  
+        private readonly IEnumerable<int> shipLenghts;
+        private Random random = new Random();
         public Square NextTarget()
         {
-            throw new NotImplementedException();
+            var shipLenght = shipLenghts.Max();
+            var availableSequences = grid.GetAvailableSquences(shipLenght);
+            var candidates = availableSequences.SelectMany(s => s);
+            int index = random.Next(candidates.Count());
+            return candidates.ElementAt(index);
         }
+
     }
 }

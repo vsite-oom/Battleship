@@ -66,6 +66,17 @@ namespace ModelTests
             var result = grid.GetAvailableSquences(3);
             Assert.AreEqual(3, result.Count());
         }
+        [TestMethod]
+        public void GetAvailableSquencesReturnsThreeSquencesOfLenght2ForGrid5Rows1ColumnAfterSquare1_0IsMarkedHit()
+        {
+            int rows = 5;
+            int columns = 1;
+            var grid = new Grid(rows, columns);
+            grid.MarkSquare(1, 0, HitResult.Hit);
+            var result = grid.GetAvailableSquences(2);
+            Assert.AreEqual(3, result.Count());
+            Assert.IsFalse(result.SelectMany(s => s).Contains(new Square(0, 0)));
+        }
 
     }
 }

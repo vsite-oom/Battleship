@@ -20,9 +20,8 @@ namespace Vsite.Oom.Battleship.Model
         public Gunnery(GameRules gameRules)
         {
             grid = new Grid(gameRules.GridRows, gameRules.GridColumns);
-            shootingTactics = new RandomShooting(grid, shipLenghts);
-            CurrentShootingTactics = CurrentShootingTactics.Random;
             shipLenghts = new List<int>(gameRules.ShipLenghts);
+            ChangeToRandom();
 
         }
 
@@ -99,20 +98,22 @@ namespace Vsite.Oom.Battleship.Model
 
         private void ChangeToRandom()
         {
+           
+            shootingTactics = new RandomShooting(grid, shipLenghts);
             CurrentShootingTactics = CurrentShootingTactics.Random;
-            //TODO: apply actual tactics
         }
 
         private void ChangeToLine()
         {
+            shootingTactics = new LineShooting(grid,hitSquares, shipLenghts);
             CurrentShootingTactics = CurrentShootingTactics.Line;
-            //TODO: apply actual tactics
+            
         }
 
         private void ChangeToZone()
         {
+            shootingTactics = new ZoneShooting(grid, lastTarget, shipLenghts);
             CurrentShootingTactics = CurrentShootingTactics.Zone;
-            //TODO: apply actual tactics
         }
 
         
