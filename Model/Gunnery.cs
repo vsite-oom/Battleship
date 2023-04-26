@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Runtime.CompilerServices;
 
 namespace Vsite.Oom.Battleship.Model
 {
@@ -16,13 +17,13 @@ namespace Vsite.Oom.Battleship.Model
             grid = new Grid(gameRules.GridRows, gameRules.GridColumns);
             shootingTactics = new RandomShooting(grid);
             currentShootingTactics = CurrentShootingTactics.Random;
+            shipLengths = new List<int>(gameRules.ShipLengts);
         }
 
         public Square nextTarget()
         {
-
-            targetSquares.Add(shootingTactics.NextTarget());
-            return targetSquares.Last();
+            lastTarget = shootingTactics.NextTarget();
+            return lastTarget;
         }
 
         public void ProcessHitResult(HitResult hitResult)
@@ -33,18 +34,23 @@ namespace Vsite.Oom.Battleship.Model
 
         private void RecordHitResult(HitResult hitResult)
         {
+            if (hitResult != HitResult.Missed)
+            {
+                hitSquares.Add(lastTarget);
+            }
             if (hitResult == HitResult.Sunk)
             {
-                foreach (var square in targetSquares)
+                foreach (var square in hitSquares)
                 {
                     grid.MarkSquare(square.Row, square.Column, HitResult.Sunk);
                 }
-                targetSquares.Clear();
+                shipLengths.Remove(hitSquares.Count);
+                hitSquares.Clear();
             }
             else
             {
-                var lastTarget = targetSquares.Last();
-                grid.MarkSquare(lastTarget.Row, lastTarget.Column, hitResult);
+                var last = hitSquares.Last();
+                grid.MarkSquare(last.Row, last.Column, hitResult);
             }
         }
 
@@ -95,9 +101,11 @@ namespace Vsite.Oom.Battleship.Model
         }
 
         private readonly Grid grid;
+        private List<int> shipLengths;
         private IShootingTactics shootingTactics;
 
-        List<Square> targetSquares = new List<Square>();
+        List<Square> hitSquares = new List<Square>();
+        Square lastTarget;
 
         public CurrentShootingTactics currentShootingTactics { get; private set; }
     }
