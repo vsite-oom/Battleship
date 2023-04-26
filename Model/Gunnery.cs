@@ -33,12 +33,26 @@ namespace Vsite.Oom.Battleship.Model
 
         public void ProcessHitResult(HitResult hitResult)
         {
-            RecordHitResult(hitResult);
+            //RecordHitResult(hitResult);
             ChangeTactics(hitResult);
         }
 
         private void RecordHitResult(HitResult hitResult)
         {
+            if (hitResult == HitResult.Sunk) 
+            {
+                foreach (var square in targetSquares)
+                {
+                    grid.MarkSquare(square.Row, square.Column, hitResult);
+                }
+                targetSquares.Clear();
+            }
+            else
+            {
+                var lastTarget = targetSquares.Last();
+                grid.MarkSquare(lastTarget.Row, lastTarget.Column, hitResult);
+            }
+
             var lastTarget = targetSquares.Last();
             grid.MarkSquare(lastTarget.Row, lastTarget.Column, hitResult);
 
@@ -51,7 +65,7 @@ namespace Vsite.Oom.Battleship.Model
                 case HitResult.Missed:
                     return;
                 case HitResult.Sunk:
-                    ChangeToRandom1();
+                    ChangeToRandom();
                     return;
                 case HitResult.Hit:
                     {
