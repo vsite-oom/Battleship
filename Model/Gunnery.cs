@@ -15,10 +15,10 @@ namespace Vsite.Oom.Battleship.Model
             Line
         }
 
-        public Gunnery(GameRules gameRules, Fleet fleet)
+        public Gunnery(GameRules gameRules)
         {
             grid = new Grid(gameRules.GridRows, gameRules.GridColumns);
-            this.fleet = fleet;
+            //this.fleet = fleet;
             shootingTactics = new RandomShooting(grid);
             currentShootingTactics = CurrentShootingTactics.Random;
         }
@@ -31,40 +31,40 @@ namespace Vsite.Oom.Battleship.Model
         public void ProcessHitResult(HitResult hitResult)
         {
 
-            if (hitResult == HitResult.Sunk)
-            {
-                currentShootingTactics = CurrentShootingTactics.Random;
-            }
+            //if (hitResult == HitResult.Sunk)
+            //{
+            //    currentShootingTactics = CurrentShootingTactics.Random;
+            //}
 
-            if (hitResult == HitResult.Hit && currentShootingTactics == CurrentShootingTactics.Zone)
-            {
-                currentShootingTactics = CurrentShootingTactics.Line;
-            }
+            //if (hitResult == HitResult.Hit && currentShootingTactics == CurrentShootingTactics.Zone)
+            //{
+            //    currentShootingTactics = CurrentShootingTactics.Line;
+            //}
 
-            if (hitResult == HitResult.Hit && currentShootingTactics == CurrentShootingTactics.Random)
-            {
-                currentShootingTactics = CurrentShootingTactics.Zone;
-            }
+            //if (hitResult == HitResult.Hit && currentShootingTactics == CurrentShootingTactics.Random)
+            //{
+            //    currentShootingTactics = CurrentShootingTactics.Zone;
+            //}
 
-            if (hitResult == HitResult.Hit && currentShootingTactics == CurrentShootingTactics.Line)
-            {
-                currentShootingTactics = CurrentShootingTactics.Line;
-            }
+            //if (hitResult == HitResult.Hit && currentShootingTactics == CurrentShootingTactics.Line)
+            //{
+            //    currentShootingTactics = CurrentShootingTactics.Line;
+            //}
 
-            if (hitResult == HitResult.Missed && currentShootingTactics == CurrentShootingTactics.Random)
-            {
-                currentShootingTactics = CurrentShootingTactics.Random;
-            }
+            //if (hitResult == HitResult.Missed && currentShootingTactics == CurrentShootingTactics.Random)
+            //{
+            //    currentShootingTactics = CurrentShootingTactics.Random;
+            //}
 
-            if (hitResult == HitResult.Missed && currentShootingTactics == CurrentShootingTactics.Zone)
-            {
-                currentShootingTactics = CurrentShootingTactics.Zone;
-            }
+            //if (hitResult == HitResult.Missed && currentShootingTactics == CurrentShootingTactics.Zone)
+            //{
+            //    currentShootingTactics = CurrentShootingTactics.Zone;
+            //}
 
-            if (hitResult == HitResult.Missed && currentShootingTactics == CurrentShootingTactics.Line)
-            {
-                currentShootingTactics = CurrentShootingTactics.Zone;
-            }
+            //if (hitResult == HitResult.Missed && currentShootingTactics == CurrentShootingTactics.Line)
+            //{
+            //    currentShootingTactics = CurrentShootingTactics.Zone;
+            //}
 
         }
 
