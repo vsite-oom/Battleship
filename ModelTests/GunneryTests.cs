@@ -11,7 +11,7 @@ namespace ModelTests
         {
             
             
-            var gunnery=new Gunnery(new GameRules(), new Fleet());
+            var gunnery=new Gunnery(new GameRules());
             Assert.AreEqual(CurrentShootingTacttics.Random, gunnery.CurrentShootingTacttics);
         }
 
@@ -21,7 +21,7 @@ namespace ModelTests
         {
 
 
-            var gunnery = new Gunnery(new GameRules(), new Fleet());
+            var gunnery = new Gunnery(new GameRules());
             gunnery.ProcessHitResult(HitResult.Sunk);
             Assert.AreEqual(CurrentShootingTacttics.Random, gunnery.CurrentShootingTacttics);
 
@@ -31,7 +31,7 @@ namespace ModelTests
         {
 
 
-            var gunnery = new Gunnery(new GameRules(), new Fleet());
+            var gunnery = new Gunnery(new GameRules());
             gunnery.ProcessHitResult(HitResult.Missed);
             Assert.AreEqual(CurrentShootingTacttics.Random, gunnery.CurrentShootingTacttics);
 
@@ -41,7 +41,7 @@ namespace ModelTests
         {
 
 
-            var gunnery = new Gunnery(new GameRules(), new Fleet());
+            var gunnery = new Gunnery(new GameRules());
             gunnery.ProcessHitResult(HitResult.Hit);
             Assert.AreEqual(CurrentShootingTacttics.Zone, gunnery.CurrentShootingTacttics);
 
@@ -51,7 +51,7 @@ namespace ModelTests
         {
 
 
-            var gunnery = new Gunnery(new GameRules(), new Fleet());
+            var gunnery = new Gunnery(new GameRules());
             gunnery.ProcessHitResult(HitResult.Hit);
             gunnery.ProcessHitResult(HitResult.Hit);
             Assert.AreEqual(CurrentShootingTacttics.Line, gunnery.CurrentShootingTacttics);
@@ -62,7 +62,7 @@ namespace ModelTests
         {
 
 
-            var gunnery = new Gunnery(new GameRules(), new Fleet());
+            var gunnery = new Gunnery(new GameRules());
             gunnery.ProcessHitResult(HitResult.Hit);
             gunnery.ProcessHitResult(HitResult.Missed);
             Assert.AreEqual(CurrentShootingTacttics.Zone, gunnery.CurrentShootingTacttics);
@@ -74,7 +74,7 @@ namespace ModelTests
         { 
 
 
-            var gunnery = new Gunnery(new GameRules(), new Fleet());
+            var gunnery = new Gunnery(new GameRules());
             gunnery.ProcessHitResult(HitResult.Hit);
             gunnery.ProcessHitResult(HitResult.Sunk);
             Assert.AreEqual(CurrentShootingTacttics.Random, gunnery.CurrentShootingTacttics);
@@ -86,7 +86,7 @@ namespace ModelTests
         {
 
 
-            var gunnery = new Gunnery(new GameRules(), new Fleet());
+            var gunnery = new Gunnery(new GameRules());
             gunnery.ProcessHitResult(HitResult.Hit);
             gunnery.ProcessHitResult(HitResult.Hit);
             gunnery.ProcessHitResult(HitResult.Sunk);
@@ -94,23 +94,24 @@ namespace ModelTests
             Assert.AreEqual(CurrentShootingTacttics.Random, gunnery.CurrentShootingTacttics);
 
         }
-
+        [TestMethod]
         public void CurrentShootingTacticsRemainsInLinearTacticAfterHit()
         {
 
 
-            var gunnery = new Gunnery(new GameRules(), new Fleet());
+            var gunnery = new Gunnery(new GameRules());
             gunnery.ProcessHitResult(HitResult.Hit);
             gunnery.ProcessHitResult(HitResult.Hit);
             gunnery.ProcessHitResult(HitResult.Hit);
             Assert.AreEqual(CurrentShootingTacttics.Line, gunnery.CurrentShootingTacttics);
 
         }
+        [TestMethod]
         public void CurrentShootingTacticsRemainsInLinearTacticAfterMissed()
         {
 
 
-            var gunnery = new Gunnery(new GameRules(), new Fleet());
+            var gunnery = new Gunnery(new GameRules());
             gunnery.ProcessHitResult(HitResult.Hit);
             gunnery.ProcessHitResult(HitResult.Hit);
             gunnery.ProcessHitResult(HitResult.Missed);

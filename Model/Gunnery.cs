@@ -19,7 +19,7 @@ namespace Vsite.Oom.Battleship.Model
         private IShootingTactics shootingTactics;
         public CurrentShootingTacttics CurrentShootingTacttics { get; set; }
 
-        public Gunnery(GameRules rules, Fleet fleet)
+        public Gunnery(GameRules rules)
         {
 
             grid = new Grid(rules.GridRows, rules.GridColumns);
