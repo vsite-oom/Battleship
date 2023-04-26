@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Vsite.Oom.Battleship.Model
 {
-    internal class SurroundingSquaresTerminator : ISquaresTerminator
+    public class SurroundingSquaresTerminator : ISquaresTerminator
     {
         public SurroundingSquaresTerminator(int gridRows, int gridColumns)
         {

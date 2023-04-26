@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Vsite.Oom.Battleship.Model
 {
-    internal class ZoneShooting
+    public class ZoneShooting
     {
         public ZoneShooting(Grid grid, Square firstHit)
         {

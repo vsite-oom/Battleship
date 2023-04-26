@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Vsite.Oom.Battleship.Model
 {
-    internal class RandomShooting : IShootingTactics
+    public class RandomShooting : IShootingTactics
     {
         public RandomShooting(Grid grid)
         {
