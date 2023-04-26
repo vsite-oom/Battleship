@@ -92,8 +92,20 @@ namespace Vsite.Oom.Battleship.Model
 
         private void RecordHitResult(HitResult hitResult)
         {
-            var lastTarget = targetSquares.Last();
-            grid.MarkSquare(lastTarget.Row, lastTarget.Column, hitResult);
+            if (hitResult == HitResult.Sunk)
+            {
+                foreach (var square in targetSquares)
+                {
+                    grid.MarkSquare(square.Row, square.Column, HitResult.Sunk);
+                }
+                targetSquares.Clear();
+            }
+            else
+            {
+                var lastTarget = targetSquares.Last();
+                grid.MarkSquare(lastTarget.Row, lastTarget.Column, hitResult);
+            }
+
         }
 
         List<Square> targetSquares = new List<Square>();
