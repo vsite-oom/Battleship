@@ -19,15 +19,16 @@ namespace Vsite.Oom.Battleship.Model
         public Gunnery(GameRules gameRules)
         {
             grid = new Grid(gameRules.GridRows, gameRules.GridColumns);
-            //this.fleet = fleet;
+            
             shootingTactics = new RandomShooting(grid);
             currentShootingTactics = CurrentShootingTactics.Random;
+            shipLenghts = new List<int>(gameRules.ShipLengths);
         }
 
         public Square nextTarget()
         {
-            targetSquares.Add(shootingTactics.NextTarget());
-            return targetSquares.Last();
+            LastTarget = shootingTactics.NextTarget();
+            return LastTarget;
         }
 
         public void ProcessHitResult(HitResult hitResult)
@@ -92,26 +93,35 @@ namespace Vsite.Oom.Battleship.Model
 
         private void RecordHitResult(HitResult hitResult)
         {
+            if (hitResult != HitResult.Missed)
+            {
+                hitSquares.Add(LastTarget);
+            }
+
             if (hitResult == HitResult.Sunk)
             {
-                foreach (var square in targetSquares)
+                foreach (var square in hitSquares)
                 {
                     grid.MarkSquare(square.Row, square.Column, HitResult.Sunk);
                 }
-                targetSquares.Clear();
+                shipLenghts.Remove(hitSquares.Count);
+                hitSquares.Clear();
             }
             else
             {
-                var lastTarget = targetSquares.Last();
+                var lastTarget = hitSquares.Last();
                 grid.MarkSquare(lastTarget.Row, lastTarget.Column, hitResult);
             }
 
         }
 
-        List<Square> targetSquares = new List<Square>();
+        List<Square> hitSquares = new List<Square>();
+        Square LastTarget;
 
         private readonly Grid grid;
-        private readonly Fleet fleet;
+        private List<int> shipLenghts;
+
+
         private IShootingTactics shootingTactics;
 
         public CurrentShootingTactics currentShootingTactics { get; private set; }
