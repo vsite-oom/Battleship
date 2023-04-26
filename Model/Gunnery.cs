@@ -1,4 +1,6 @@
-﻿namespace Vsite.Oom.Battleship.Model
+﻿using System.Diagnostics;
+
+namespace Vsite.Oom.Battleship.Model
 {
     public class Gunnery
     {
@@ -18,51 +20,73 @@
 
         public Square nextTarget()
         {
-            return shootingTactics.NextTarget();
+
+            targetSquares.Add(shootingTactics.NextTarget());
+            return targetSquares.Last();
         }
 
         public void ProcessHitResult(HitResult hitResult)
         {
-            
-            if (hitResult==HitResult.Sunk)
-            {
-                currentShootingTactics = CurrentShootingTactics.Random;
-            }
+            //RecordHitResult(hitResult);
+            ChangeTactics(hitResult);
+        }
 
-            if (hitResult==HitResult.Hit && currentShootingTactics == CurrentShootingTactics.Zone)
+        private void RecordHitResult(HitResult hitResult)
+        {
+            var lastTarget = targetSquares.Last();
+            grid.MarkSquare(lastTarget.Row, lastTarget.Column, hitResult);
+        }
+
+        private void ChangeTactics(HitResult hitResult)
+        {
+            switch (hitResult)
             {
-                currentShootingTactics = CurrentShootingTactics.Line;
+                case HitResult.Missed:
+                    return;
+                case HitResult.Sunk:
+                    ChangeToRandom();
+                    return;
+                case HitResult.Hit:
+                    switch (currentShootingTactics)
+                    {
+                        case CurrentShootingTactics.Random:
+                            ChangeToZone();
+                            return;
+                        case CurrentShootingTactics.Zone:
+                            ChangeToLine();
+                            return;
+                        case CurrentShootingTactics.Line:
+                            return;
+                        default:
+                            Debug.Assert(false, "Unsupported shooting tactics");
+                            break;
+                    }
+                    break;
+                default:
+                    Debug.Assert(false, "Unsupported hit result");
+                    break;
             }
-            
-            if (hitResult==HitResult.Hit && currentShootingTactics == CurrentShootingTactics.Random)
-            {
-                currentShootingTactics = CurrentShootingTactics.Zone;
-            }
-            
-            if (hitResult==HitResult.Hit && currentShootingTactics == CurrentShootingTactics.Line)
-            {
-                currentShootingTactics = CurrentShootingTactics.Line;
-            }
-            
-            if (hitResult==HitResult.Missed && currentShootingTactics == CurrentShootingTactics.Random)
-            {
-                currentShootingTactics = CurrentShootingTactics.Random;
-            }
-            
-            if (hitResult==HitResult.Missed && currentShootingTactics == CurrentShootingTactics.Zone)
-            {
-                currentShootingTactics = CurrentShootingTactics.Zone;
-            }
-            
-            if (hitResult==HitResult.Missed && currentShootingTactics == CurrentShootingTactics.Line)
-            {
-                currentShootingTactics = CurrentShootingTactics.Zone;
-            }
-            
+        }
+
+        private void ChangeToLine()
+        {
+            currentShootingTactics = CurrentShootingTactics.Line;
+        }
+
+        private void ChangeToZone()
+        {
+            currentShootingTactics = CurrentShootingTactics.Zone;
+        }
+
+        private void ChangeToRandom()
+        {
+            currentShootingTactics = CurrentShootingTactics.Random;
         }
 
         private readonly Grid grid;
         private IShootingTactics shootingTactics;
+
+        List<Square> targetSquares = new List<Square>();
 
         public CurrentShootingTactics currentShootingTactics { get; private set; }
     }
