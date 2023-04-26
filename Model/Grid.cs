@@ -51,6 +51,7 @@ namespace Vsite.Oom.Battleship.Model
             }
         }
 
+
         public Sequences GetAvailableSequences(int length)
         {
             var result = GetAvailableHorizontalSequences(length);
@@ -120,7 +121,7 @@ namespace Vsite.Oom.Battleship.Model
                 var queue = new LimitedQueue<Square>(length);
                 for (int i = 0; i < innerLoopLimit; ++i)
                 {
-                    if (squareAccess(o, i) != null)
+                    if (squareAccess(o, i) != null && squareAccess(o,i).SqureState==SqureState.Initial)
                     {
                         queue.Enqueue(squareAccess(o, i));
                         if (queue.Count == length)

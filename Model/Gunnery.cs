@@ -20,8 +20,7 @@ namespace Vsite.Oom.Battleship.Model
         {
             grid = new Grid(gameRules.GridRows, gameRules.GridColumns);
             shipLenghts = new List<int>(gameRules.ShipLengths);
-            shootingTactics = new RandomShooting(grid, shipLenghts);
-            currentShootingTactics = CurrentShootingTactics.Random;
+            ChangeToRandom();
             
             
         }
@@ -77,19 +76,21 @@ namespace Vsite.Oom.Battleship.Model
 
         private void ChangeToLine()
         {
+            shootingTactics = new LineShooting(grid, hitSquares, shipLenghts);
             currentShootingTactics = CurrentShootingTactics.Line;
             //TODO: Apply actual tactics
         }
 
         private void ChangeToZone()
         {
+            shootingTactics = new ZoneShooting(grid, LastTarget, shipLenghts);
             currentShootingTactics = CurrentShootingTactics.Zone;
-            //TODO: Apply actual tactics
         }
 
         private void ChangeToRandom()
         {
-            throw new NotImplementedException();
+            shootingTactics = new RandomShooting(grid, shipLenghts);
+            currentShootingTactics = CurrentShootingTactics.Random;
         }
 
         private void RecordHitResult(HitResult hitResult)
