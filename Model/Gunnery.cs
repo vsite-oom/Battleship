@@ -22,13 +22,14 @@ namespace Vsite.Oom.Battleship.Model
             grid = new Grid(gameRules.GridRows, gameRules.GridColumns);
             shootingTactics = new RandomShooting(grid);
             CurrentShootingTactics = CurrentShootingTactics.Random;
+            shipLenghts = new List<int>(gameRules.ShipLenghts);
 
         }
 
         public Square NextTarget()
         {
-            targetSquares.Add(shootingTactics.NextTarget());
-            return targetSquares.Last();
+            lastTarget = shootingTactics.NextTarget();
+            return lastTarget;
         }
 
         public void ProcessHitResult(HitResult hitResult)
@@ -39,21 +40,23 @@ namespace Vsite.Oom.Battleship.Model
 
         private void RecordHitResult(HitResult hitResult)
         {
-            if (hitResult == HitResult.Sunk) 
+            if (hitResult != HitResult.Missed) 
             {
-                foreach (var square in targetSquares)
+                foreach (var square in hitSquares)
                 {
                     grid.MarkSquare(square.Row, square.Column, hitResult);
                 }
-                targetSquares.Clear();
+                shipLenghts.Remove(hitSquares.Count);
+                hitSquares.Clear();
             }
             else
             {
-                var lastTarget = targetSquares.Last();
+               
+                var lastTarget = hitSquares.Last();
                 grid.MarkSquare(lastTarget.Row, lastTarget.Column, hitResult);
             }
 
-            var lastTarget = targetSquares.Last();
+            var lastTarget = hitSquares.Last();
             grid.MarkSquare(lastTarget.Row, lastTarget.Column, hitResult);
 
         }
@@ -112,9 +115,13 @@ namespace Vsite.Oom.Battleship.Model
         
 
         private readonly Grid grid;
+
+        private List<int> shipLenghts;
+
         private IShootingTactics shootingTactics;
 
-        List<Square> targetSquares = new List<Square>();
+        List<Square> hitSquares = new List<Square>();
+        Square lastTarget;
 
 
         public CurrentShootingTactics CurrentShootingTactics { get; private set; }
