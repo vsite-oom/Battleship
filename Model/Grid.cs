@@ -11,6 +11,14 @@ namespace Vsite.Oom.Battleship.Model
     using Sequences = IEnumerable<IEnumerable<Square>>;
     using SquareAccess = Func<int, int, Square>;
 
+    public enum Direction
+    {
+        Upwards,
+        Downwards,
+        Leftwards,
+        Rightwards
+    }
+
     public class Grid
     {
         public readonly int Rows;
@@ -93,6 +101,11 @@ namespace Vsite.Oom.Battleship.Model
             {
                 RemoveSquare(square.Row, square.Column);
             }
+        }
+
+        public SquareSequence GetAvailableSequence(Square reference, Direction direction)
+        {
+            throw new NotImplementedException();
         }
     }
 }
