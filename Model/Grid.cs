@@ -106,7 +106,7 @@
                 var queue = new LimitedQueue<Square>(length);
                 for (int i = 0; i < innerLoopLimit; ++i)
                 {
-                    if (squareaccess(o, i) != null)
+                    if (squareaccess(o, i) != null && squareaccess(o, i).SquareState == SquareState.Initial)
                     {
                         queue.Enqueue(squareaccess(o, i));
                         if (queue.Count == length)
