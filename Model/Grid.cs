@@ -118,5 +118,10 @@
             }
             return result;
         }
+
+        public void MarkSquare(int row, int column, HitResult hitResult)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
