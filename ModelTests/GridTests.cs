@@ -92,5 +92,58 @@ namespace ModelTests
             Assert.AreEqual(2, result.Count());
             Assert.IsFalse(result.SelectMany(s => s).Contains(new Square(1, 0)));
         }
+
+        [TestMethod]
+
+        public void GetAvailableSequencesReturnsThreeSquaresLeftFromSquare3_3()
+        {
+            var grid = new Grid(10, 10);
+
+            var result = grid.GetAvailableSequence(new Square(3, 3), Direction.Leftwards);
+            Assert.AreEqual(3, result.Count());
+            Assert.IsTrue(result.Contains(new Square(3, 0)));
+            Assert.IsTrue(result.Contains(new Square(3, 1)));
+            Assert.IsTrue(result.Contains(new Square(3, 2)));
+        }
+
+        [TestMethod]
+
+        public void GetAvailableSequencesReturnsThreeSquaresUpFromSquare3_3()
+        {
+            var grid = new Grid(10, 10);
+
+            var result = grid.GetAvailableSequence(new Square(3, 3), Direction.Upwards);
+            Assert.AreEqual(3, result.Count());
+            Assert.IsTrue(result.Contains(new Square(0, 3)));
+            Assert.IsTrue(result.Contains(new Square(1, 3)));
+            Assert.IsTrue(result.Contains(new Square(2, 3)));
+        }
+
+        [TestMethod]
+
+        public void GetAvailableSequencesReturnsSixSquaresRightFromSquare3_3()
+        {
+            var grid = new Grid(10, 10);
+
+            var result = grid.GetAvailableSequence(new Square(3, 3), Direction.Rightwards);
+            Assert.AreEqual(6, result.Count());
+            Assert.IsTrue(result.Contains(new Square(3, 4)));
+            Assert.IsTrue(result.Contains(new Square(3, 5)));
+            Assert.IsTrue(result.Contains(new Square(3, 9)));
+        }
+
+        [TestMethod]
+
+        public void GetAvailableSequencesReturnsSixSquaresDownFromSquare3_3()
+        {
+            var grid = new Grid(10, 10);
+
+            var result = grid.GetAvailableSequence(new Square(3, 3), Direction.Downwards);
+            Assert.AreEqual(6, result.Count());
+            Assert.IsTrue(result.Contains(new Square(4, 3)));
+            Assert.IsTrue(result.Contains(new Square(5, 3)));
+            Assert.IsTrue(result.Contains(new Square(9, 3)));
+        }
+
     }
 }

@@ -10,6 +10,14 @@ namespace Vsite.Oom.Battleship.Model
     using Sequences = IEnumerable<IEnumerable<Square>>;
     using SquareAccess = Func<int, int, Square>;
 
+    public enum Direction
+    {
+        Upwards,
+        Rightwards,
+        Downwards,
+        Leftwards
+    }
+
     public class Grid
     {
         public Grid(int rows, int columns)
@@ -73,7 +81,7 @@ namespace Vsite.Oom.Battleship.Model
                     else
                     {
                         queue.Clear();
-                        if (length > innerLoopLimit ) break;
+                        if (length > innerLoopLimit) break;
                     }
                 }
             }
@@ -85,7 +93,8 @@ namespace Vsite.Oom.Battleship.Model
             squares[row, column] = null;
         }
 
-        public void RemoveSquares(SquareSequence squaresToRemove)        {
+        public void RemoveSquares(SquareSequence squaresToRemove)
+        {
             foreach (var square in squaresToRemove)
             {
                 RemoveSquare(square.Row, square.Column);
@@ -96,5 +105,12 @@ namespace Vsite.Oom.Battleship.Model
         {
             squares[row, column].Mark(HitResult.Hit);
         }
+
+        public SquareSequence GetAvailableSequence(Square from, Direction direction)
+        {
+            throw new NotImplementedException();
+        }
+
+
     }
 }
