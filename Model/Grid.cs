@@ -121,7 +121,7 @@
 
         public void MarkSquare(int row, int column, HitResult hitResult)
         {
-            throw new NotImplementedException();
+            squares[row, column].Mark(hitResult);
         }
     }
 }
