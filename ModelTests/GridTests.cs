@@ -74,8 +74,8 @@ namespace ModelTests
             var grid = new Grid(rows, columns);
             grid.MarkSquare(1, 0, HitResult.Hit);
             var result = grid.GetAvailableSquences(2);
-            Assert.AreEqual(3, result.Count());
-            Assert.IsFalse(result.SelectMany(s => s).Contains(new Square(0, 0)));
+            Assert.AreEqual(2, result.Count());
+            Assert.IsFalse(result.SelectMany(s => s).Contains(new Square(1, 0)));
         }
 
     }

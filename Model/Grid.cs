@@ -146,5 +146,10 @@ namespace Vsite.Oom.Battleship.Model
         {
             squares[row, column].Mark(hitResult);
         }
+
+        public object GetAvailableSequences(int v)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
