@@ -26,7 +26,7 @@ namespace Vsite.Oom.Battleship.Model
 
         public void ProcessHitResult(HitResult hitResult)
         {
-            //RecordHitResult(hitResult);
+            // RecordHitResult(hitResult);
             ChangeTactics(hitResult);
         }
         private void RecordHitResult(HitResult hitResult)
@@ -100,7 +100,7 @@ namespace Vsite.Oom.Battleship.Model
         }
 
         private readonly Grid grid;
-        private List<int> shipLengths;
+        private readonly List<int> shipLengths;
 
         private IShootingTactics shootingTactics;
 
