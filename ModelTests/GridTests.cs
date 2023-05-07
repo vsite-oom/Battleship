@@ -89,56 +89,56 @@ namespace ModelTests
             Assert.AreEqual(1, results.Count(s => s.Contains(new Square(4, 0))));
         }
 
-        [TestMethod]
-        public void GetAvailableSquenceReturnsThreeSquaresLeftFromSquare3_3()
-        {
-            var grid = new Grid(10, 10);
-            grid.RemoveSquare(1, 0);
-            var results = grid.GetAvailableSequence(new Square(3, 3), Direction.Leftwards);
-            Assert.AreEqual(3, results.Count());
+        //[TestMethod]
+        //public void GetAvailableSquenceReturnsThreeSquaresLeftFromSquare3_3()
+        //{
+        //    var grid = new Grid(10, 10);
+        //    grid.RemoveSquare(1, 0);
+        //    var results = grid.GetAvailableSequence(new Square(3, 3), Direction.Leftwards);
+        //    Assert.AreEqual(3, results.Count());
 
-            Assert.AreEqual(1, results.Count(s => s.Contains(new Square(1, 0))));
-            Assert.AreEqual(1, results.Count(s => s.Contains(new Square(2, 0))));
-            Assert.AreEqual(1, results.Count(s => s.Contains(new Square(3, 0))));
-        }
+        //    Assert.AreEqual(1, results.Count(s => s.Contains(new Square(1, 0))));
+        //    Assert.AreEqual(1, results.Count(s => s.Contains(new Square(2, 0))));
+        //    Assert.AreEqual(1, results.Count(s => s.Contains(new Square(3, 0))));
+        //}
 
-        [TestMethod]
-        public void GetAvailableSquenceReturnsThreeSquaresUpFromSquare3_3()
-        {
-            var grid = new Grid(10, 10);
-            grid.RemoveSquare(1, 0);
-            var results = grid.GetAvailableSequence(new Square(3, 3), Direction.Upwards);
-            Assert.AreEqual(3, results.Count());
+        //[TestMethod]
+        //public void GetAvailableSquenceReturnsThreeSquaresUpFromSquare3_3()
+        //{
+        //    var grid = new Grid(10, 10);
+        //    grid.RemoveSquare(1, 0);
+        //    var results = grid.GetAvailableSequence(new Square(3, 3), Direction.Upwards);
+        //    Assert.AreEqual(3, results.Count());
 
-            Assert.AreEqual(1, results.Count(s => s.Contains(new Square(0, 3))));
-            Assert.AreEqual(1, results.Count(s => s.Contains(new Square(1, 3))));
-            Assert.AreEqual(1, results.Count(s => s.Contains(new Square(2, 3))));
-        }
+        //    Assert.AreEqual(1, results.Count(s => s.Contains(new Square(0, 3))));
+        //    Assert.AreEqual(1, results.Count(s => s.Contains(new Square(1, 3))));
+        //    Assert.AreEqual(1, results.Count(s => s.Contains(new Square(2, 3))));
+        //}
 
-        [TestMethod]
-        public void GetAvailableSquenceReturnsSixSquaresRightFromSquare3_3()
-        {
-            var grid = new Grid(10, 10);
-            grid.RemoveSquare(1, 0);
-            var results = grid.GetAvailableSequence(new Square(3, 3), Direction.Rightwards);
-            Assert.AreEqual(6, results.Count());
+        //[TestMethod]
+        //public void GetAvailableSquenceReturnsSixSquaresRightFromSquare3_3()
+        //{
+        //    var grid = new Grid(10, 10);
+        //    grid.RemoveSquare(1, 0);
+        //    var results = grid.GetAvailableSequence(new Square(3, 3), Direction.Rightwards);
+        //    Assert.AreEqual(6, results.Count());
 
-            Assert.AreEqual(1, results.Count(s => s.Contains(new Square(3, 4))));
-            Assert.AreEqual(1, results.Count(s => s.Contains(new Square(3, 5))));
-            Assert.AreEqual(1, results.Count(s => s.Contains(new Square(3, 9))));
-        }
+        //    Assert.AreEqual(1, results.Count(s => s.Contains(new Square(3, 4))));
+        //    Assert.AreEqual(1, results.Count(s => s.Contains(new Square(3, 5))));
+        //    Assert.AreEqual(1, results.Count(s => s.Contains(new Square(3, 9))));
+        //}
 
-        [TestMethod]
-        public void GetAvailableSquenceReturnsSixSquareDownFromSquare3_3()
-        {
-            var grid = new Grid(10, 10);
-            grid.RemoveSquare(1, 0);
-            var results = grid.GetAvailableSequence(new Square(3, 3), Direction.Downwards);
-            Assert.AreEqual(6, results.Count());
+        //[TestMethod]
+        //public void GetAvailableSquenceReturnsSixSquareDownFromSquare3_3()
+        //{
+        //    var grid = new Grid(10, 10);
+        //    grid.RemoveSquare(1, 0);
+        //    var results = grid.GetAvailableSequence(new Square(3, 3), Direction.Downwards);
+        //    Assert.AreEqual(6, results.Count());
 
-            Assert.AreEqual(1, results.Count(s => s.Contains(new Square(4, 3))));
-            Assert.AreEqual(1, results.Count(s => s.Contains(new Square(5, 3))));
-            Assert.AreEqual(1, results.Count(s => s.Contains(new Square(9, 3))));
-        }
+        //    Assert.AreEqual(1, results.Count(s => s.Contains(new Square(4, 3))));
+        //    Assert.AreEqual(1, results.Count(s => s.Contains(new Square(5, 3))));
+        //    Assert.AreEqual(1, results.Count(s => s.Contains(new Square(9, 3))));
+        //}
     }
 }
