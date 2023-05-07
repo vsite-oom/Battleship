@@ -63,7 +63,7 @@ namespace Vsite.Oom.Battleship.Model
                 {
                     if (squareAccess(o, i) != null)
                     {
-                        queue.Enqueue(squareAccess(0, i));
+                        queue.Enqueue(squareAccess(o, i));
                         if (queue.Count == lenght)
                         {
                             result.Add(queue.ToArray());
