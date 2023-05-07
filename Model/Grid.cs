@@ -107,5 +107,10 @@ namespace Vsite.Oom.Battleship.Model
         {
             throw new NotImplementedException();
         }
+
+        public void MarkSquare(int row, int col, HitResult hitResult)
+        {
+            squares[row, col].Mark(hitResult);
+        }
     }
 }
