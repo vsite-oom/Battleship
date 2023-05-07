@@ -17,20 +17,23 @@ namespace Vsite.Oom.Battleship.Model
     public class Gunnery
     {
         private readonly Grid grid;
-        private readonly IShootingTactics shootingTactics;
+        private List<int> shipLenghts;
         private readonly List<Square> targets = new();
+        public IShootingTactics shootingTactics;
+        Square target;
 
         public Gunnery(GameRules rules)
         {
             grid = new(rules.gridRows, rules.gridColumns);
-            shootingTactics = new RandomShooting(grid);
             CurrentShootingTactics = CurrentShootingTactics.Random;
+            ChangeTo(CurrentShootingTactics.Random);
         }
 
         public Square NextTarget()
         {
-            targets.Add(shootingTactics.AddNextTarget());
-            return targets.Last();
+
+            target = shootingTactics.AddNextTarget();
+            return target;
         }
 
         public void ProcessHitResult(HitResult hitResult)
@@ -72,6 +75,24 @@ namespace Vsite.Oom.Battleship.Model
 
         private void RecordHitResult(HitResult hitResult)
         {
+            if(hitResult != HitResult.Missed)
+            {
+                targets.Add(target);
+            }
+            if(hitResult == HitResult.Sank)
+            {
+                foreach(var sq in targets)
+                {
+                    grid.MarkSquare(sq.Row, sq.Column, hitResult);
+                }
+
+                shipLenghts.Remove(targets.Count());
+                targets.Clear();
+            }
+            else
+            {
+                grid.MarkSquare(target.Row, target.Column, hitResult);
+            }
             var prevTarget = targets.Last();
             grid.MarkSquare(prevTarget.Row, prevTarget.Column, hitResult);
         }
@@ -79,7 +100,21 @@ namespace Vsite.Oom.Battleship.Model
         private void ChangeTo(CurrentShootingTactics newTactic)
         {
             CurrentShootingTactics = newTactic;
-            // TODO: finish
+            switch(newTactic)
+            {
+                case CurrentShootingTactics.Line:
+                    shootingTactics = new LineShooting(grid, targets, shipLenghts);
+                    break;
+                case CurrentShootingTactics.Zone:
+                    shootingTactics = new ZoneShooting(grid, target, shipLenghts);
+                    break;
+                case CurrentShootingTactics.Random:
+                    shootingTactics = new RandomShooting(grid, shipLenghts);
+                    break;
+                default:
+                    Debug.Assert(false, "Tactic change not supported");
+                    break;
+            }
         }
 
         public CurrentShootingTactics CurrentShootingTactics { get; private set; }

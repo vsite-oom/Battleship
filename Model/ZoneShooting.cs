@@ -10,11 +10,13 @@ namespace Vsite.Oom.Battleship.Model
     {
         private readonly Grid grid;
         private readonly Square firstHit;
+        private readonly IEnumerable<int> shipLengths;
 
-        public ZoneShooting(Grid grid, Square firstHit)
+        public ZoneShooting(Grid grid, Square firstHit, IEnumerable<int> shipLengths)
         {
             this.grid = grid;
             this.firstHit = firstHit;
+            this.shipLengths = shipLengths;
         }
         public Square AddNextTarget()
         {
