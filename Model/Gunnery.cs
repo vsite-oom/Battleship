@@ -25,6 +25,7 @@ namespace Vsite.Oom.Battleship.Model
         public Gunnery(GameRules rules)
         {
             grid = new(rules.gridRows, rules.gridColumns);
+            shipLenghts = new List<int>(rules.shipLenghts);
             CurrentShootingTactics = CurrentShootingTactics.Random;
             ChangeTo(CurrentShootingTactics.Random);
         }
@@ -38,7 +39,7 @@ namespace Vsite.Oom.Battleship.Model
 
         public void ProcessHitResult(HitResult hitResult)
         {
-            RecordHitResult(hitResult);
+            // RecordHitResult(hitResult);
             ChangeTactic(hitResult);
         }
 

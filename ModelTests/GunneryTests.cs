@@ -41,7 +41,7 @@ namespace ModelTests
             Assert.AreEqual(CurrentShootingTactics.Zone, gunnery.CurrentShootingTactics);
             
             gunnery.ProcessHitResult(HitResult.Hit);
-            Assert.AreEqual(CurrentShootingTactics.Zone, gunnery.CurrentShootingTactics);
+            Assert.AreEqual(CurrentShootingTactics.Line, gunnery.CurrentShootingTactics);
         }
         
         [TestMethod]

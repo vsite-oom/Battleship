@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -106,7 +107,20 @@ namespace Vsite.Oom.Battleship.Model
 
         public SquareSequence GetAvailableSequence(Square reference, Direction direction)
         {
-            throw new NotImplementedException();
+            switch (direction)
+            {
+                case Direction.Upwards:
+                    return squares.Cast<Square>().Where(sq => sq != null && sq.Row < reference.Row && sq.Column == reference.Column);
+                case Direction.Downwards:
+                    return squares.Cast<Square>().Where(sq => sq != null && sq.Row > reference.Row && sq.Column == reference.Column);
+                case Direction.Leftwards:
+                    return squares.Cast<Square>().Where(sq => sq != null && sq.Row == reference.Row && sq.Column < reference.Column);
+                case Direction.Rightwards:
+                    return squares.Cast<Square>().Where(sq => sq != null && sq.Row == reference.Row && sq.Column > reference.Column);
+                default:
+                    Debug.Assert(false, "Direction not supported");
+                    return AvailableSquares();
+            }
         }
 
         public void MarkSquare(int row, int col, HitResult hitResult)

@@ -46,6 +46,7 @@ namespace Vsite.Oom.Battleship.Model
                     State = SquareState.Hit;
                     break;
                 case HitResult.Missed:
+                    State = SquareState.Missed;
                     break;
                 case HitResult.Sank:
                     State = SquareState.Sank;

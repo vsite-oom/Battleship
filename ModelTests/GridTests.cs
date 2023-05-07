@@ -155,6 +155,7 @@ namespace ModelTests
         {
             var grid = new Grid(10, 10);
             var result = grid.GetAvailableSequence(new Square(3, 3), Direction.Downwards);
+
             Assert.AreEqual(6, result.Count());
             Assert.IsTrue(result.Contains(new Square(4, 3)));
             Assert.IsTrue(result.Contains(new Square(5, 3)));
