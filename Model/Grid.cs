@@ -61,9 +61,10 @@ namespace Vsite.Oom.Battleship.Model
                 LimitedQueue<Square> queue = new(lenght);
                 for (int i = 0; i < innerLoopMax; ++i)
                 {
-                    if (squareAccess(o, i) != null)
+                    var sqAcc = squareAccess(o, i);
+                    if (sqAcc != null && sqAcc.State == Square.SquareState.Initial)
                     {
-                        queue.Enqueue(squareAccess(o, i));
+                        queue.Enqueue(sqAcc);
                         if (queue.Count == lenght)
                         {
                             result.Add(queue.ToArray());
