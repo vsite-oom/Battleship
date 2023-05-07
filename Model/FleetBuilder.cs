@@ -18,6 +18,9 @@ namespace Vsite.Oom.Battleship.Model
 
         }
 
+        public FleetBuilder(GameRules rules) : this(rules, new RandomSelector())
+        { 
+        }
         public Fleet CreateFleet()
         {
             var grid = new Grid(rules.gridRows, rules.gridColumns);
