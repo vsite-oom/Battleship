@@ -29,9 +29,20 @@ namespace Vsite.Oom.Battleship.Model
                     sequences.Add(seq);
                 }
             }
-
             var nextTargetSequence = sequences[random.Next(sequences.Count)];
-            return nextTargetSequence.First();
+            return GetNearestTarget(nextTargetSequence);
+        }
+
+        internal Square GetNearestTarget(IEnumerable<Square> seq)
+        {
+            var dist = int.MaxValue;
+            Square nearest = seq.First();
+            foreach(var sq in seq)
+            {
+                if (dist > Math.Abs(sq.Row - firstHit.Row + sq.Column - firstHit.Column))
+                    nearest = sq;
+            }
+            return nearest;
         }
     }
 }

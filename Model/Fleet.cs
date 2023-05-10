@@ -16,7 +16,17 @@ namespace Vsite.Oom.Battleship.Model
             ships.Add(new Ship(shipSquares));
         }
 
-
+        public HitResult Fire(Square target)
+        {
+            foreach (var ship in ships) {
+                var result = ship.Fire(target));
+                if (result != HitResult.Hit)
+                {
+                    return result ;
+                }
+            }
+            return HitResult.Missed;
+        }
     }
 
 }

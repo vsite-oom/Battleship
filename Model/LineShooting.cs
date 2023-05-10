@@ -17,9 +17,28 @@ namespace Vsite.Oom.Battleship.Model
             squares = new List<Square>(squaresHit);
             this.shipLengths = shipLengths;
         }
-        public Square AddNextTarget()
+            public Square AddNextTarget()
         {
-            throw new NotImplementedException();
+            squares = squares.OrderBy(x => x.Row + x.Column).ToList();
+            var sequences = new List<IEnumerable<Square>>();
+            
+            if(squares.First().Column == squares.Last().Column)
+            {
+                var s1 = grid.GetAvailableSequence(squares.First(), Direction.Upwards);
+                if (s1.Any()) sequences.Add(s1);
+            
+                var s2 = grid.GetAvailableSequence(squares.First(), Direction.Downwards);
+                if (s2.Any()) sequences.Add(s2);
+            }
+            else
+            {
+                var s1 = grid.GetAvailableSequence(squares.First(), Direction.Upwards);
+                if (s1.Any()) sequences.Add(s1);
+
+                var s2 = grid.GetAvailableSequence(squares.First(), Direction.Downwards);
+                if (s2.Any()) sequences.Add(s2);
+            }
+            return sequences.ElementAt(new Random().Next(sequences.Count())).First();
         }
     }
 }

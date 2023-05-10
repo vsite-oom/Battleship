@@ -115,13 +115,13 @@ namespace Vsite.Oom.Battleship.Model
             switch (direction)
             {
                 case Direction.Upwards:
-                    return squares.Cast<Square>().Where(sq => sq != null && sq.Row < reference.Row && sq.Column == reference.Column);
+                    return squares.Cast<Square>().Where(sq => sq.State == Square.SquareState.Initial && sq.Row < reference.Row && sq.Column == reference.Column);
                 case Direction.Downwards:
-                    return squares.Cast<Square>().Where(sq => sq != null && sq.Row > reference.Row && sq.Column == reference.Column);
+                    return squares.Cast<Square>().Where(sq => sq.State == Square.SquareState.Initial && sq.Row > reference.Row && sq.Column == reference.Column);
                 case Direction.Leftwards:
-                    return squares.Cast<Square>().Where(sq => sq != null && sq.Row == reference.Row && sq.Column < reference.Column);
+                    return squares.Cast<Square>().Where(sq => sq.State == Square.SquareState.Initial && sq.Row == reference.Row && sq.Column < reference.Column);
                 case Direction.Rightwards:
-                    return squares.Cast<Square>().Where(sq => sq != null && sq.Row == reference.Row && sq.Column > reference.Column);
+                    return squares.Cast<Square>().Where(sq => sq.State == Square.SquareState.Initial && sq.Row == reference.Row && sq.Column > reference.Column);
                 default:
                     Debug.Assert(false, "Direction not supported");
                     return AvailableSquares();
