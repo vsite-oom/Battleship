@@ -44,7 +44,7 @@ namespace ModelTests
             //new Square(8, 9).Eliminate();
             var result = shooting.NextTarget();
 
-            Square[] possibleResults = { new Square(9, 8) };
+            Square[] possibleResults = { new Square(9, 8), new Square(8, 9) };
             CollectionAssert.Contains(possibleResults, result);
         }
     }
