@@ -13,10 +13,13 @@ namespace Vsite.Oom.Battleship.Model
     {
         public Gunnery(GameRules gameRules)
         {
+            this.gameRules = gameRules;
             grid = new Grid(gameRules.GridRows, gameRules.GridColumns);
             shipLengths = new List<int>(gameRules.ShipLengths);
             ChangeToRandom();
         }
+
+        GameRules gameRules;
 
         public Square NextTarget()
         {
@@ -37,6 +40,11 @@ namespace Vsite.Oom.Battleship.Model
             }
             if (hitResult == HitResult.Sunk)
             {
+                var toEliminate = gameRules.Terminator.ToEliminate(hitSquares);
+                foreach (var square in toEliminate)
+                {
+                    grid.Eliminate(square.Row, square.Column);
+                }
                 foreach (var square in hitSquares)
                 {
                     grid.MarkSquare(square.Row, square.Column, HitResult.Sunk);

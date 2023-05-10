@@ -5,6 +5,7 @@ namespace Vsite.Oom.Battleship.Model
     public enum SquareState
     {
         Initial,
+        Eliminated,
         Missed,
         Hit,
         Sunk
@@ -42,6 +43,12 @@ namespace Vsite.Oom.Battleship.Model
                     break;
             }
         }
+
+        public void Eliminate()
+        {
+            SquareState = SquareState.Eliminated;
+        }
+
         public bool Equals(Square other)
         {
             if (GetType() != other.GetType())
