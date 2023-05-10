@@ -36,10 +36,12 @@ namespace ModelTests
             CollectionAssert.Contains(possibleResults, result);
         }
 
+        [TestMethod]
         public void NextTargetReturnsOneOfSurroundingSquaresForFirstSquare9_9WithSquare8_9Eliminated()
         {
             var shooting = new ZoneShooting(new Grid(10, 10), new Square(9, 9), new int[] { 5 });
-            //eliminate square
+            //Square eliminated = new Square(8, 9);
+            //new Square(8, 9).Eliminate();
             var result = shooting.NextTarget();
 
             Square[] possibleResults = { new Square(9, 8) };
