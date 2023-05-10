@@ -10,7 +10,8 @@ namespace Vsite.Oom.Battleship.Model
     Initial,
     Missed,
     Hit,
-    Sunk
+    Sunk,
+    Eliminated
     }
 
     public class Square:IEquatable<Square>
@@ -35,6 +36,10 @@ namespace Vsite.Oom.Battleship.Model
                 
             } ;
             
+        }
+        public  void Eliminate()
+        {
+            squareState = SquareState.Eliminated;
         }
         public bool Equals(Square other)
         {

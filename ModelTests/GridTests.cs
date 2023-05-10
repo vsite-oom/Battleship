@@ -72,6 +72,7 @@ namespace ModelTests
             Assert.AreEqual(1, result.Count(s => s.Contains(new Square(4, 0))));
             
         }
+        [TestMethod]
         public void GetAvaliableSequancesReturnstwoSequencesOfLength2ForGrid5Row1ColumnsAfterSquare1_0IsMarkedMissed() 
         { 
             int rows = 5; int columns = 1;
@@ -87,7 +88,7 @@ namespace ModelTests
             Assert.IsFalse(result.SelectMany(s => s).Contains(new Square(1, 0)));
 
         }
-
+        [TestMethod]
         public void GetAvaliableSequancesReturnstwoSequencesOfLength2ForGrid5Row1ColumnsAfterSquare1_0IsMarkedHit()
         {
             int rows = 5; int columns = 1;
@@ -103,6 +104,7 @@ namespace ModelTests
             Assert.IsFalse(result.SelectMany(s => s).Contains(new Square(1, 0)));
 
         }
+        [TestMethod]
         public void GetAvaliableSequancesReturnstwoSequencesOfLength2ForGrid5Row1ColumnsAfterSquare1_0IsMarkedSunk()
         {
             int rows = 5; int columns = 1;
@@ -119,5 +121,55 @@ namespace ModelTests
 
         }
 
+
+        [TestMethod]
+        public void GetAvailableSequenceReturnsThreeSquaresLeftFromSquare3_3()
+        {
+            int rows = 10;
+            int columns = 10;
+            var grid = new Grid(rows, columns);
+            var result = grid.GetAvailableSequence(new Square(3, 3), Direction.Leftwards);
+            Assert.AreEqual(3, result.Count());
+            Assert.IsTrue(result.Contains(new Square(3, 0)));
+            Assert.IsTrue(result.Contains(new Square(3, 1)));
+            Assert.IsTrue(result.Contains(new Square(3, 2)));
+        }
+        [TestMethod]
+        public void GetAvailableSequenceReturnsThreeSquaresUpFromSquare3_3()
+        {
+            int rows = 10;
+            int columns = 10;
+            var grid = new Grid(rows, columns);
+            var result = grid.GetAvailableSequence(new Square(3, 3), Direction.Upwards);
+            Assert.AreEqual(3, result.Count());
+            Assert.IsTrue(result.Contains(new Square(0, 3)));
+            Assert.IsTrue(result.Contains(new Square(1, 3)));
+            Assert.IsTrue(result.Contains(new Square(2, 3)));
+        }
+        [TestMethod]
+        public void GetAvailableSequenceReturnsSixSquaresRightFromSquare3_3()
+        {
+            int rows = 10;
+            int columns = 10;
+            var grid = new Grid(rows, columns);
+            var result = grid.GetAvailableSequence(new Square(3, 3), Direction.Rightwards);
+            Assert.AreEqual(6, result.Count());
+            Assert.IsTrue(result.Contains(new Square(3, 4)));
+            Assert.IsTrue(result.Contains(new Square(3, 5)));
+            Assert.IsTrue(result.Contains(new Square(3, 9)));
+            Assert.IsTrue(result.Contains(new Square(3, 9)));
+        }
+        [TestMethod]
+        public void GetAvailableSequenceReturnsSixSquaresDownFromSquare3_3()
+        {
+            int rows = 10;
+            int columns = 10;
+            var grid = new Grid(rows, columns);
+            var result = grid.GetAvailableSequence(new Square(3, 3), Direction.Downwards);
+            Assert.AreEqual(6, result.Count());
+            Assert.IsTrue(result.Contains(new Square(4, 3)));
+            Assert.IsTrue(result.Contains(new Square(5, 3)));
+            Assert.IsTrue(result.Contains(new Square(9, 3)));
+        }
     }
 }

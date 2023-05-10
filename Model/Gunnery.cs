@@ -20,14 +20,14 @@ namespace Vsite.Oom.Battleship.Model
 
         private List<int> shipLenghts;
         public CurrentShootingTacttics CurrentShootingTacttics { get; set; }
-
+        public GameRules GameRules { get; set; }
         List<Square> targetSquares= new List<Square>();
 
         public Gunnery(GameRules rules)
         {
-
-            grid = new Grid(rules.GridRows, rules.GridColumns);
-            shipLenghts = new List<int>(rules.ShipLenghts);
+            GameRules = rules;
+            grid = new Grid(GameRules.GridRows, GameRules.GridColumns);
+            shipLenghts = new List<int>(GameRules.ShipLenghts);
             CurrentShootingTacttics=ChangeToRandom();
             shootingTactics = new RandomShooting(grid,shipLenghts);
             //CurrentShootingTacttics = CurrentShootingTacttics.Random;
@@ -82,6 +82,10 @@ namespace Vsite.Oom.Battleship.Model
         {
             if (result == HitResult.Sunk) 
             {
+                GameRules.terminator.ToEliminate(targetSquares.Where(w => w.squareState == SquareState.Hit));
+                //foreach(var square in targetSquares){
+                //    grid.MarkSquare(square.row, square.column, result);
+                //}
                 foreach(var square in targetSquares){
                     grid.MarkSquare(square.row, square.column, result);
                 }

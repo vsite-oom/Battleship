@@ -11,11 +11,23 @@ using System.Threading.Tasks;
 namespace Vsite.Oom.Battleship.Model
 
 {
+    
+
     using SquareSequance = IEnumerable<Square>;
     using Sequances = IEnumerable<IEnumerable<Square>>;
     using squareAccess = Func<int, int, Square>;
+
+    public enum Direction
+    {
+        Upwards,
+        Rightwards,
+        Downwards,
+        Leftwards
+    }
     public class Grid
     {
+
+        
         readonly public int rows;
         readonly public int columns;
         private Square[,] squares;
@@ -46,8 +58,8 @@ namespace Vsite.Oom.Battleship.Model
 
 
         }
-        private bool IsSquareAvaliable(int row,int column) {
-            throw new NotImplementedException();
+        private bool IsSquareAvaliable(Square square) {
+            return square != null && square.squareState == SquareState.Initial;
         }
         private Sequances GetAvalableSequences(int outerloopLimitint, int innerLoopLimit, squareAccess sq, int length)
         {
@@ -58,7 +70,7 @@ namespace Vsite.Oom.Battleship.Model
                 var queue = new LimitedQueue<Square>(length);
                 for (int i = 0; i < innerLoopLimit; i++)
                 {
-                    if (sq(o, i) != null&&sq(o,i).squareState==SquareState.Initial)
+                    if (IsSquareAvaliable(sq(o,i)))
                     {
 
                         queue.Enqueue(sq(o, i));
@@ -101,6 +113,52 @@ namespace Vsite.Oom.Battleship.Model
         public void MarkSquare(int row, int column, HitResult result)
         {
             squares[row,column].Mark(result);
+        }
+
+        public SquareSequance GetAvailableSequence(Square from, Direction direction)
+        {
+            int row = from.row;
+            int endRow = row;
+            int deltaRow = 0;
+            if (direction == Direction.Upwards)
+            {
+                --row;
+                deltaRow = -1;
+                endRow = -1;
+            }
+            else if (direction == Direction.Downwards)
+            {
+                ++row;
+                deltaRow = +1;
+                endRow = rows;
+            }
+            int column = from.column;
+            int endColumn = column;
+            int deltaColumn = 0;
+            if (direction == Direction.Leftwards)
+            {
+                --column;
+                deltaColumn = -1;
+                endColumn = -1;
+            }
+            else if (direction == Direction.Rightwards)
+            {
+                ++column;
+                deltaColumn = +1;
+                endColumn = columns;
+            }
+            var result = new List<Square>();
+            while (row != endRow || column != endColumn)
+            {
+                if (squares[row, column].squareState != SquareState.Initial)
+                {
+                    break;
+                }
+                result.Add(squares[row, column]);
+                row += deltaRow;
+                column += deltaColumn;
+            }
+            return result;
         }
     }
 }
