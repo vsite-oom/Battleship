@@ -82,11 +82,12 @@ namespace Vsite.Oom.Battleship.Model
         {
             if (result == HitResult.Sunk) 
             {
-                GameRules.terminator.ToEliminate(targetSquares.Where(w => w.squareState == SquareState.Hit));
-                //foreach(var square in targetSquares){
-                //    grid.MarkSquare(square.row, square.column, result);
-                //}
-                foreach(var square in targetSquares){
+                var toEliminate=GameRules.terminator.ToEliminate(targetSquares.Where(w => w.squareState == SquareState.Hit));
+                foreach (var square in toEliminate)
+                {
+                    grid.Eliminate(square.row, square.column);
+                }
+                foreach (var square in targetSquares){
                     grid.MarkSquare(square.row, square.column, result);
                 }
                 shipLenghts.Remove(targetSquares.Count(c=>c.squareState==SquareState.Hit));
