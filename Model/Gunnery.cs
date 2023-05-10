@@ -29,7 +29,7 @@ namespace Vsite.Oom.Battleship.Model
 
         public void ProcessHitResult(HitResult hitResult)
         {
-            // RecordHitResult(hitResult);
+            RecordHitResult(hitResult);
             ChangeTactics(hitResult);
         }
         private void RecordHitResult(HitResult hitResult)
