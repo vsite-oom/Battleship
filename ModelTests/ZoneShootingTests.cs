@@ -1,0 +1,24 @@
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
+
+namespace ModelTests
+{
+    [TestClass]
+    public class ZoneShootingTests
+    {
+        [TestMethod]
+        public void NextTargetReturns1OfSurroundingSquaresForFirstSquare4_4()
+        {
+            Grid grid = new(10, 10);
+            ZoneShooting zShooting = new(grid, new Square(4, 4), new int[] { 5 });
+
+            var result = zShooting.AddNextTarget();
+            Square[] testData = { new Square(3, 4), new Square(4, 3), new Square(4, 5), new Square(5, 4) };
+
+            CollectionAssert.Contains(testData, result);
+
+
+        }
+    }
+    // dodati test za polje u kutu
+}

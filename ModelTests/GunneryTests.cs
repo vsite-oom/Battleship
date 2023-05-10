@@ -18,6 +18,7 @@ namespace ModelTests
         public void CurrentShootingTacticsRemainsRandomAfterMissedShot()
         {
             Gunnery gunnery = new(new GameRules());
+            gunnery.NextTarget();
             gunnery.ProcessHitResult(HitResult.Missed);
 
             Assert.AreEqual(CurrentShootingTactics.Random, gunnery.CurrentShootingTactics);
@@ -27,6 +28,7 @@ namespace ModelTests
         public void CurrentShootingTacticsChangesFromRandomToZoneAfterHit()
         {
             Gunnery gunnery = new(new GameRules());
+            gunnery.NextTarget();
             gunnery.ProcessHitResult(HitResult.Hit);
 
             Assert.AreEqual(CurrentShootingTactics.Zone, gunnery.CurrentShootingTactics);
@@ -37,6 +39,7 @@ namespace ModelTests
         {
             Gunnery gunnery = new(new GameRules());
 
+            gunnery.NextTarget();
             gunnery.ProcessHitResult(HitResult.Hit);
             Assert.AreEqual(CurrentShootingTactics.Zone, gunnery.CurrentShootingTactics);
             
@@ -49,9 +52,11 @@ namespace ModelTests
         {
             Gunnery gunnery = new(new GameRules());
 
+            gunnery.NextTarget();
             gunnery.ProcessHitResult(HitResult.Hit);
             Assert.AreEqual(CurrentShootingTactics.Zone, gunnery.CurrentShootingTactics);
             
+            gunnery.NextTarget();
             gunnery.ProcessHitResult(HitResult.Missed);
             Assert.AreEqual(CurrentShootingTactics.Zone, gunnery.CurrentShootingTactics);
         }
@@ -60,8 +65,11 @@ namespace ModelTests
         public void CurrentShootingChangesToRandomAfterSank()
         {
             var gunnery = new Gunnery(new GameRules());
+            gunnery.NextTarget();
             gunnery.ProcessHitResult(HitResult.Hit);
+            gunnery.NextTarget();
             gunnery.ProcessHitResult(HitResult.Hit);
+            gunnery.NextTarget();
             gunnery.ProcessHitResult(HitResult.Sank);
             Assert.AreEqual(CurrentShootingTactics.Random, gunnery.CurrentShootingTactics);
         }
@@ -70,6 +78,7 @@ namespace ModelTests
         public void CurrentShootingTacticsRemainsRandomAfterSank()
         {
             var gunnery = new Gunnery(new GameRules());
+            gunnery.NextTarget();
             gunnery.ProcessHitResult(HitResult.Sank);
             Assert.AreEqual(CurrentShootingTactics.Random, gunnery.CurrentShootingTactics);
         }
