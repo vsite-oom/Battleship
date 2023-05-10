@@ -9,8 +9,9 @@ namespace Vsite.Oom.Battleship.Model
     public class LineShooting : IShootingTactics
     {
         private readonly Grid grid;
-        private readonly List<Square> squaresHit;
+        private IEnumerable<Square> squaresHit;
         private readonly IEnumerable<int> shiplenghts;
+        private readonly Random random=new Random();
         public LineShooting(Grid grid,IEnumerable<Square> squaresHit, IEnumerable<int> shipLenghts)
         {
             this.shiplenghts = shipLenghts;
@@ -19,7 +20,37 @@ namespace Vsite.Oom.Battleship.Model
         }
         public Square NextTarget()
         {
-            throw new NotImplementedException();
+            squaresHit = squaresHit.OrderBy(s=>s.row+s.column);
+            var sequences = new List<IEnumerable<Square>>();
+            if (squaresHit.First().column == squaresHit.Last().column)
+            {
+                var s1=grid.GetAvailableSequence(squaresHit.First(), Direction.Upwards);
+                if(s1.Any())
+                {
+                    sequences.Add(s1);
+                }
+                var s2 = grid.GetAvailableSequence(squaresHit.Last(), Direction.Downwards);
+                if (s2.Any())
+                {
+                    sequences.Add(s2);
+                }
+               
+            }
+            else
+            {
+                var s1 = grid.GetAvailableSequence(squaresHit.First(), Direction.Leftwards);
+                if (s1.Any())
+                {
+                    sequences.Add(s1);
+                }
+                var s2 = grid.GetAvailableSequence(squaresHit.Last(), Direction.Rightwards);
+                if (s2.Any())
+                {
+                    sequences.Add(s2);
+                }
+                
+            }
+            return sequences[random.Next(sequences.Count)].First();
         }
     }
 }

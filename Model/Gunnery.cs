@@ -40,7 +40,7 @@ namespace Vsite.Oom.Battleship.Model
 
         public void ProcessHitResult(HitResult result)
         {
-            //RecordHitResult(result);
+            RecordHitResult(result);
 
             ChangeTactics(result);
             
@@ -53,7 +53,7 @@ namespace Vsite.Oom.Battleship.Model
         }
         public CurrentShootingTacttics ChangeToZone()
         {
-            //shootingTactics=new ZoneShooting(grid,targetSquares.Last(),shipLenghts);
+            shootingTactics=new ZoneShooting(grid,targetSquares.Last(),shipLenghts);
             return CurrentShootingTacttics.Zone;
         }
         public CurrentShootingTacttics ChangeToRandom()
@@ -82,7 +82,7 @@ namespace Vsite.Oom.Battleship.Model
         {
             if (result == HitResult.Sunk) 
             {
-                var toEliminate=GameRules.terminator.ToEliminate(targetSquares.Where(w => w.squareState == SquareState.Hit));
+                var toEliminate=GameRules.terminator.ToEliminate(targetSquares.Where(w => w.squareState != SquareState.Missed));
                 foreach (var square in toEliminate)
                 {
                     grid.Eliminate(square.row, square.column);
