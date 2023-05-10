@@ -35,5 +35,15 @@ namespace ModelTests
             Square[] possibleResults = { new Square(8, 9), new Square(9, 8) };
             CollectionAssert.Contains(possibleResults, result);
         }
+
+        public void NextTargetReturnsOneOfSurroundingSquaresForFirstSquare9_9WithSquare8_9Eliminated()
+        {
+            var shooting = new ZoneShooting(new Grid(10, 10), new Square(9, 9), new int[] { 5 });
+            //eliminate square
+            var result = shooting.NextTarget();
+
+            Square[] possibleResults = { new Square(9, 8) };
+            CollectionAssert.Contains(possibleResults, result);
+        }
     }
 }
