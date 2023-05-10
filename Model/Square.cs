@@ -7,6 +7,7 @@ namespace Vsite.Oom.Battleship.Model
         public enum SquareState
         {
             Initial,
+            Eliminated,
             Missed,
             Hit,
             Sank
@@ -55,6 +56,11 @@ namespace Vsite.Oom.Battleship.Model
                     Debug.Assert(false, "Hit result not supported");
                     break;
             }
+        }
+
+        public void Eliminate()
+        {
+            State = SquareState.Eliminated;
         }
     }
 }

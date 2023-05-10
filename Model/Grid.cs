@@ -132,5 +132,10 @@ namespace Vsite.Oom.Battleship.Model
         {
             squares[row, col].Mark(hitResult);
         }
+
+        public void Eliminate(int row, int col)
+        {
+            squares[row, col].Eliminate();
+        }
     }
 }

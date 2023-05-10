@@ -11,6 +11,7 @@ namespace Vsite.Oom.Battleship.Model
         private readonly Grid grid;
         private readonly Square firstHit;
         private readonly IEnumerable<int> shipLengths;
+        private readonly Random random = new();
 
         public ZoneShooting(Grid grid, Square firstHit, IEnumerable<int> shipLengths)
         {
@@ -20,7 +21,17 @@ namespace Vsite.Oom.Battleship.Model
         }
         public Square AddNextTarget()
         {
-            throw new NotImplementedException();
+            List<IEnumerable<Square>> sequences = new();
+            foreach(Direction direction in Enum.GetValues(typeof(Direction)))
+            {
+                var seq = grid.GetAvailableSequence(firstHit, direction);
+                if(seq.Count() > 0) {
+                    sequences.Add(seq);
+                }
+            }
+
+            var nextTargetSequence = sequences[random.Next(sequences.Count)];
+            return nextTargetSequence.First();
         }
     }
 }

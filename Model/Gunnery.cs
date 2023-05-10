@@ -20,12 +20,14 @@ namespace Vsite.Oom.Battleship.Model
         private List<int> shipLenghts;
         private readonly List<Square> targets = new();
         public IShootingTactics shootingTactics;
+        public GameRules gameRules;
         Square target;
 
         public Gunnery(GameRules rules)
         {
-            grid = new(rules.gridRows, rules.gridColumns);
-            shipLenghts = new List<int>(rules.shipLenghts);
+            this.gameRules = rules;
+            grid = new(gameRules.gridRows, gameRules.gridColumns);
+            shipLenghts = new List<int>(gameRules.shipLenghts);
             CurrentShootingTactics = CurrentShootingTactics.Random;
             ChangeTo(CurrentShootingTactics.Random);
         }
@@ -82,6 +84,11 @@ namespace Vsite.Oom.Battleship.Model
             }
             if(hitResult == HitResult.Sank)
             {
+                var toEliminate = gameRules.terminator.ToEliminate(targets);
+                foreach(var sq in toEliminate)
+                {
+                    grid.Eliminate(sq.Row, sq.Column);
+                }
                 foreach(var sq in targets)
                 {
                     grid.MarkSquare(sq.Row, sq.Column, hitResult);
