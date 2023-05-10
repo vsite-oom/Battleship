@@ -116,6 +116,9 @@ namespace Vsite.Oom.Battleship.Model
             throw new NotImplementedException();
         }
 
-
+        internal void Eliminate(int row, int column)
+        {
+            squares[row, column].Eliminate();
+        }
     }
 }
