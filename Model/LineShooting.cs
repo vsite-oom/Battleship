@@ -38,8 +38,7 @@ namespace Vsite.Oom.Battleship.Model
                 var s2 = grid.GetAvailableSequence(squares.Last(), Direction.Rightwards);
                 if (s2.Any()) sequences.Add(s2);
             }
-            var selectedSeq = sequences[new Random().Next(sequences.Count())];
-            return selectedSeq.First();
+            return sequences[new Random().Next(sequences.Count())].First();
         }
     }
 }

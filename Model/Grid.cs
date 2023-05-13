@@ -112,20 +112,30 @@ namespace Vsite.Oom.Battleship.Model
 
         public SquareSequence GetAvailableSequence(Square reference, Direction direction)
         {
+            SquareSequence res;
             switch (direction)
             {
                 case Direction.Upwards:
-                    return squares.Cast<Square>().Where(sq => sq.State == Square.SquareState.Initial && sq.Row < reference.Row && sq.Column == reference.Column);
+                    res = squares.Cast<Square>().Where(sq => sq.State == Square.SquareState.Initial && sq.Row < reference.Row && sq.Column == reference.Column);
+                    res = res.OrderBy(sq => sq.Row + sq.Column).Reverse();
+                    break;
                 case Direction.Downwards:
-                    return squares.Cast<Square>().Where(sq => sq.State == Square.SquareState.Initial && sq.Row > reference.Row && sq.Column == reference.Column);
+                    res = squares.Cast<Square>().Where(sq => sq.State == Square.SquareState.Initial && sq.Row > reference.Row && sq.Column == reference.Column);
+                    res.OrderBy(sq => sq.Row + sq.Column);
+                    break;
                 case Direction.Leftwards:
-                    return squares.Cast<Square>().Where(sq => sq.State == Square.SquareState.Initial && sq.Row == reference.Row && sq.Column < reference.Column);
+                    res = squares.Cast<Square>().Where(sq => sq.State == Square.SquareState.Initial && sq.Row == reference.Row && sq.Column < reference.Column);
+                    res = res.OrderBy(sq => sq.Row + sq.Column).Reverse();
+                    break;
                 case Direction.Rightwards:
-                    return squares.Cast<Square>().Where(sq => sq.State == Square.SquareState.Initial && sq.Row == reference.Row && sq.Column > reference.Column);
+                    res = squares.Cast<Square>().Where(sq => sq.State == Square.SquareState.Initial && sq.Row == reference.Row && sq.Column > reference.Column);
+                    res.OrderBy(sq => sq.Row + sq.Column);
+                    break;
                 default:
                     Debug.Assert(false, "Direction not supported");
                     return AvailableSquares();
             }
+            return res;
         }
 
         public void MarkSquare(int row, int col, HitResult hitResult)
