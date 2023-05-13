@@ -19,7 +19,7 @@ namespace Vsite.Oom.Battleship.Model
         public HitResult Fire(Square target)
         {
             foreach (var ship in ships) {
-                var result = ship.Fire(target));
+                var result = ship.Fire(target);
                 if (result != HitResult.Hit)
                 {
                     return result ;

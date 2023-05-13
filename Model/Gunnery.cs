@@ -93,7 +93,6 @@ namespace Vsite.Oom.Battleship.Model
                 {
                     grid.MarkSquare(sq.Row, sq.Column, hitResult);
                 }
-
                 shipLenghts.Remove(targets.Count());
                 targets.Clear();
             }
@@ -101,8 +100,6 @@ namespace Vsite.Oom.Battleship.Model
             {
                 grid.MarkSquare(target.Row, target.Column, hitResult);
             }
-            var prevTarget = targets.Last();
-            grid.MarkSquare(prevTarget.Row, prevTarget.Column, hitResult);
         }
 
         private void ChangeTo(CurrentShootingTactics newTactic)

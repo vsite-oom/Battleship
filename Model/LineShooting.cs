@@ -27,18 +27,19 @@ namespace Vsite.Oom.Battleship.Model
                 var s1 = grid.GetAvailableSequence(squares.First(), Direction.Upwards);
                 if (s1.Any()) sequences.Add(s1);
             
-                var s2 = grid.GetAvailableSequence(squares.First(), Direction.Downwards);
+                var s2 = grid.GetAvailableSequence(squares.Last(), Direction.Downwards);
                 if (s2.Any()) sequences.Add(s2);
             }
             else
             {
-                var s1 = grid.GetAvailableSequence(squares.First(), Direction.Upwards);
+                var s1 = grid.GetAvailableSequence(squares.First(), Direction.Leftwards);
                 if (s1.Any()) sequences.Add(s1);
 
-                var s2 = grid.GetAvailableSequence(squares.First(), Direction.Downwards);
+                var s2 = grid.GetAvailableSequence(squares.Last(), Direction.Rightwards);
                 if (s2.Any()) sequences.Add(s2);
             }
-            return sequences.ElementAt(new Random().Next(sequences.Count())).First();
+            var selectedSeq = sequences[new Random().Next(sequences.Count())];
+            return selectedSeq.First();
         }
     }
 }
