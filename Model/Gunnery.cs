@@ -16,8 +16,8 @@ namespace Vsite.Oom.Battleship.Model
         {
             this.gameRules = gameRules;
             grid = new Grid(gameRules.GridRows, gameRules.GridColumns);
+            shipLengths = new List<int>(gameRules.ShipLengths);
             ChangeToRandom();
-            CurrentShootingTactics = CurrentShootingTactics.Random;   
         }
 
         GameRules gameRules;
@@ -30,7 +30,7 @@ namespace Vsite.Oom.Battleship.Model
 
         public void ProcessHitResult(HitResult hitResult)
         {
-            //RecordHitResult(hitResult);
+            RecordHitResult(hitResult);
             ChangeTactics(hitResult);
         }
 
