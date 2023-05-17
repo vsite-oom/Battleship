@@ -9,7 +9,7 @@ namespace ModelTests
         [TestMethod]
         public void NextTargetReturns1OfSurroundingSquaresForFirstSquare4_4()
         {
-            Grid grid = new(10, 10);
+            RecordGrid grid = new(10, 10);
             ZoneShooting zShooting = new(grid, new Square(4, 4), new int[] { 5 });
 
             var result = zShooting.AddNextTarget();
@@ -20,7 +20,7 @@ namespace ModelTests
         [TestMethod]
         public void NextTargetReturns1OfSurroundingSquaresForFirstSquare9_0()
         {
-            Grid grid = new(10, 10);
+            RecordGrid grid = new(10, 10);
             ZoneShooting zShooting = new(grid, new Square(9, 0), new int[] { 5 });
 
             var result = zShooting.AddNextTarget();
