@@ -1,8 +1,10 @@
-﻿namespace Vsite.Oom.Battleship.Model
+﻿using System.Data;
+
+namespace Vsite.Oom.Battleship.Model
 {
-    using SquareSequence = IEnumerable<Square>;
     using Sequences = IEnumerable<IEnumerable<Square>>;
     using SquareAccess = Func<int, int, Square>;
+    using SquareSequence = IEnumerable<Square>;
 
     public enum Direction
     {
@@ -134,7 +136,48 @@
 
         public SquareSequence GetAvailableSequence(Square from, Direction direction)
         {
-            throw new NotImplementedException();
+            int row = from.Row;
+            int endRow = row;
+            int deltaRow = 0;
+            if (direction == Direction.Upwards)
+            {
+                --row;
+                deltaRow = -1;
+                endRow = -1;
+            }
+            else if (direction == Direction.Downwards)
+            {
+                ++row;
+                deltaRow = +1;
+                endRow = Rows;
+            }
+            int column = from.Column;
+            int endColumn = column;
+            int deltaColumn = 0;
+            if (direction == Direction.Leftwards)
+            {
+                --column;
+                deltaColumn = -1;
+                endColumn = -1;
+            }
+            else if (direction == Direction.Rightwards)
+            {
+                ++column;
+                deltaColumn = +1;
+                endColumn = Columns;
+            }
+            var result = new List<Square>();
+            while (row != endRow || column != endColumn)
+            {
+                if (squares[row, column].SquareState != SquareState.Initial)
+                {
+                    break;
+                }
+                result.Add(squares[row, column]);
+                row += deltaRow;
+                column += deltaColumn;
+            }
+            return result;
         }
     }
 }

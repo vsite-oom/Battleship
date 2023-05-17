@@ -150,5 +150,42 @@ namespace ModelTests
             Assert.IsTrue(result.Contains(new Square(5, 3)));
             Assert.IsTrue(result.Contains(new Square(9, 3)));
         }
+
+        [TestMethod]
+        public void GetAvailableSequenceReturnsZeroSquaresLeftFromSquare3_0()
+        {
+            int rows = 10;
+            int columns = 10;
+            var grid = new Grid(rows, columns);
+            var result = grid.GetAvailableSequence(new Square(3, 0), Direction.Leftwards);
+            Assert.AreEqual(0, result.Count());
+        }
+        [TestMethod]
+        public void GetAvailableSequenceReturnsZeroSquaresUpFromSquare0_3()
+        {
+            int rows = 10;
+            int columns = 10;
+            var grid = new Grid(rows, columns);
+            var result = grid.GetAvailableSequence(new Square(0, 3), Direction.Upwards);
+            Assert.AreEqual(0, result.Count());
+        }
+        [TestMethod]
+        public void GetAvailableSequenceReturnsZeroSquaresRightFromSquare3_9()
+        {
+            int rows = 10;
+            int columns = 10;
+            var grid = new Grid(rows, columns);
+            var result = grid.GetAvailableSequence(new Square(3, 9), Direction.Rightwards);
+            Assert.AreEqual(0, result.Count());
+        }
+        [TestMethod]
+        public void GetAvailableSequenceReturnsZeroSquaresDownFromSquare9_3()
+        {
+            int rows = 10;
+            int columns = 10;
+            var grid = new Grid(rows, columns);
+            var result = grid.GetAvailableSequence(new Square(9, 3), Direction.Downwards);
+            Assert.AreEqual(0, result.Count());
+        }
     }
 }
