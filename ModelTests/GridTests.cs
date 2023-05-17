@@ -19,7 +19,7 @@ namespace ModelTests
         [TestMethod] public void GetAvailableSequencesReturnsTwoSquencesOfLenght3ForGrid1Row4Columns() 
         {   int rows = 1;
             int columns = 4;
-            var grid = new FleetGrid(rows, columns);
+            var grid = new RecordGrid(rows, columns);
             var result = grid.GetAvailableSequences(3);
             Assert.AreEqual(2, result.Count()); 
             Assert.AreEqual(1, result.Count(s => s.Contains(new Square(0,0))));
@@ -30,7 +30,7 @@ namespace ModelTests
         [TestMethod] public void GetAvailableSequencesReturnsThreeSquencesOfLenght3ForGrid5Row1Columns() 
         {   int rows = 5;
             int columns = 1;
-            var grid = new FleetGrid(rows, columns);
+            var grid = new RecordGrid(rows, columns);
             var result = grid.GetAvailableSequences(3);
             Assert.AreEqual(3, result.Count()); 
         }
@@ -62,7 +62,7 @@ namespace ModelTests
         {
             int rows = 5;
             int columns = 1;
-            var grid = new FleetGrid(rows, columns);
+            var grid = new RecordGrid(rows, columns);
             grid.MarkSquare(1, 0,HitResult.Missed);
             var result = grid.GetAvailableSequences(2);
             Assert.AreEqual(2, result.Count());
@@ -74,7 +74,7 @@ namespace ModelTests
         {
             int rows = 5;
             int columns = 1;
-            var grid = new FleetGrid(rows, columns);
+            var grid = new RecordGrid(rows, columns);
             grid.MarkSquare(1, 0, HitResult.Hit);
             var result = grid.GetAvailableSequences(2);
             Assert.AreEqual(2, result.Count());
@@ -86,7 +86,7 @@ namespace ModelTests
         {
             int rows = 5;
             int columns = 1;
-            var grid = new FleetGrid(rows, columns);
+            var grid = new RecordGrid(rows, columns);
             grid.MarkSquare(1, 0, HitResult.Sunk);
             var result = grid.GetAvailableSequences(2);
             Assert.AreEqual(2, result.Count());
