@@ -78,15 +78,17 @@ namespace ModelTests
             Assert.IsFalse(result.SelectMany(s => s).Contains(new Square(1, 0)));
         }
         [TestMethod]
-        public void GetAvailableSquencesReturnsThreeSquencesOfLenght2ForGrid5Rows1ColumnAfterSquare1_0IsMarkedHit()
+        public void GetAvailableSquenceReturnsThreeSquaresLeftFromSquare3_3()
         {
-            int rows = 5;
-            int columns = 1;
+            int rows = 10;
+            int columns = 10;
             var grid = new Grid(rows, columns);
             grid.MarkSquare(1, 0, HitResult.Hit);
-            var result = grid.GetAvailableSquences(2);
-            Assert.AreEqual(2, result.Count());
-            Assert.IsFalse(result.SelectMany(s => s).Contains(new Square(1, 0)));
+            var result = grid.GetAvailableSequence(new Square (3, 3), Direction.Leftwards);
+            Assert.AreEqual(3, result.Count());
+            Assert.IsTrue(result.Contains(new Square (3, 0))); 
+            Assert.IsTrue(result.Contains(new Square (3, 1)));
+            Assert.IsTrue(result.Contains(new Square(3, 1)));
         }
 
     }

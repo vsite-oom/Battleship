@@ -162,7 +162,11 @@ namespace Vsite.Oom.Battleship.Model
         public SquareSequence GetAvailableSequences(Square from, int lenght, Direction direction) 
         { 
             throw new NotImplementedException(); 
-        }  
+        }
 
+        public object GetAvailableSequence(Square square, Direction leftwards)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
