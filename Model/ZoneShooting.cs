@@ -2,14 +2,14 @@
 {
     public class ZoneShooting : IShootingTactics
     {
-        public ZoneShooting(Grid grid, Square firstHit, IEnumerable<int> shipLengths)
+        public ZoneShooting(RecordGrid grid, Square firstHit, IEnumerable<int> shipLengths)
         {
             this.grid = grid;
             this.firstHit = firstHit;
             this.shipLengths = shipLengths;
         }
 
-        private readonly Grid grid;
+        private readonly RecordGrid grid;
         private readonly IEnumerable<int> shipLengths;
         private readonly Square firstHit;
         private readonly Random random = new Random();
