@@ -108,6 +108,11 @@ namespace Vsite.Oom.Battleship.Model
             //return result;
         }
 
+        private bool IsAvailable(Square square)
+        {
+            return square != null && square.SquareState == SquareState.Initial;
+        }
+
         private Sequences GetAvailableSequences(int outerLoopLimit, int innerLoopLimit, SquareAccess squareaccess, int length)
         {
             var result = new List<SquareSequence>();
@@ -116,7 +121,7 @@ namespace Vsite.Oom.Battleship.Model
                 var queue = new LimitedQueue<Square>(length);
                 for (int i = 0; i < innerLoopLimit; ++i)
                 {
-                    if (squareaccess(o, i) != null && squareaccess(o, i).SquareState == SquareState.Initial)
+                    if (IsAvailable(squareaccess(o, i)))
                     {
                         queue.Enqueue(squareaccess(o, i));
                         if (queue.Count == length)
