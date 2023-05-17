@@ -16,6 +16,7 @@
         {
             var gameRules = new GameRules();
             var gunnery = new Gunnery(gameRules);
+            gunnery.NextTarget();
             gunnery.ProcessHitResult(HitResult.Missed);
             Assert.AreEqual(CurrentShootingTactics.Random, gunnery.CurrentShootingTactics);
         }
@@ -25,6 +26,7 @@
         {
             var gameRules = new GameRules();
             var gunnery = new Gunnery(gameRules);
+            gunnery.NextTarget();
             gunnery.ProcessHitResult(HitResult.Hit);
             Assert.AreEqual(CurrentShootingTactics.Zone, gunnery.CurrentShootingTactics);
         }
@@ -34,6 +36,7 @@
         {
             var gameRules = new GameRules();
             var gunnery = new Gunnery(gameRules);
+            gunnery.NextTarget();
             gunnery.ProcessHitResult(HitResult.Sunk);
             Assert.AreEqual(CurrentShootingTactics.Random, gunnery.CurrentShootingTactics);
         }
@@ -43,7 +46,9 @@
         {
             var gameRules = new GameRules();
             var gunnery = new Gunnery(gameRules);
+            gunnery.NextTarget();
             gunnery.ProcessHitResult(HitResult.Hit);
+            gunnery.NextTarget();
             gunnery.ProcessHitResult(HitResult.Missed);
             Assert.AreEqual(CurrentShootingTactics.Zone, gunnery.CurrentShootingTactics);
         }
@@ -53,7 +58,9 @@
         {
             var gameRules = new GameRules();
             var gunnery = new Gunnery(gameRules);
+            gunnery.NextTarget();
             gunnery.ProcessHitResult(HitResult.Hit);
+            gunnery.NextTarget();
             gunnery.ProcessHitResult(HitResult.Sunk);
             Assert.AreEqual(CurrentShootingTactics.Random, gunnery.CurrentShootingTactics);
         }
@@ -63,7 +70,9 @@
         {
             var gameRules = new GameRules();
             var gunnery = new Gunnery(gameRules);
+            gunnery.NextTarget();
             gunnery.ProcessHitResult(HitResult.Hit);
+            gunnery.NextTarget();
             gunnery.ProcessHitResult(HitResult.Hit);
             Assert.AreEqual(CurrentShootingTactics.Line, gunnery.CurrentShootingTactics);
         }
@@ -73,8 +82,11 @@
         {
             var gameRules = new GameRules();
             var gunnery = new Gunnery(gameRules);
+            gunnery.NextTarget();
             gunnery.ProcessHitResult(HitResult.Hit);
+            gunnery.NextTarget();
             gunnery.ProcessHitResult(HitResult.Hit);
+            gunnery.NextTarget();
             gunnery.ProcessHitResult(HitResult.Missed);
             Assert.AreEqual(CurrentShootingTactics.Line, gunnery.CurrentShootingTactics);
         }
@@ -84,8 +96,11 @@
         {
             var gameRules = new GameRules();
             var gunnery = new Gunnery(gameRules);
+            gunnery.NextTarget();
             gunnery.ProcessHitResult(HitResult.Hit);
+            gunnery.NextTarget();
             gunnery.ProcessHitResult(HitResult.Hit);
+            gunnery.NextTarget();
             gunnery.ProcessHitResult(HitResult.Hit);
             Assert.AreEqual(CurrentShootingTactics.Line, gunnery.CurrentShootingTactics);
         }
@@ -95,7 +110,9 @@
         {
             var gameRules = new GameRules();
             var gunnery = new Gunnery(gameRules);
+            gunnery.NextTarget();
             gunnery.ProcessHitResult(HitResult.Hit);
+            gunnery.NextTarget();
             gunnery.ProcessHitResult(HitResult.Sunk);
             Assert.AreEqual(CurrentShootingTactics.Random, gunnery.CurrentShootingTactics);
         }
