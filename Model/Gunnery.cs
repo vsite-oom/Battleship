@@ -16,7 +16,7 @@ namespace Vsite.Oom.Battleship.Model
 
     public class Gunnery
     {
-        private readonly Grid grid;
+        private readonly RecordGrid grid;
         private List<int> shipLenghts;
         private readonly List<Square> targets = new();
         public IShootingTactics shootingTactics;

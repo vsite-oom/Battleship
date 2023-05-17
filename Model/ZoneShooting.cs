@@ -8,12 +8,12 @@ namespace Vsite.Oom.Battleship.Model
 {
     public class ZoneShooting : IShootingTactics
     {
-        private readonly Grid grid;
+        private readonly RecordGrid grid;
         private readonly Square firstHit;
         private readonly IEnumerable<int> shipLengths;
         private readonly Random random = new();
 
-        public ZoneShooting(Grid grid, Square firstHit, IEnumerable<int> shipLengths)
+        public ZoneShooting(RecordGrid grid, Square firstHit, IEnumerable<int> shipLengths)
         {
             this.grid = grid;
             this.firstHit = firstHit;
