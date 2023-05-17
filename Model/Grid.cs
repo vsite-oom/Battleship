@@ -14,193 +14,16 @@ namespace Vsite.Oom.Battleship.Model
         Leftwards
     }
 
-    //public class Grid
-    //{
-    //    public Grid(int rows, int columns)
-    //    {
-    //        Rows = rows;
-    //        Columns = columns;
-    //        squares = new Square[Rows, Columns];
-    //        for(int r = 0; r < Rows; ++r)
-    //        {
-    //            for(int c = 0; c < Columns; ++c)
-    //            {
-    //                squares[r, c] = new Square(r, c);
-    //            }
-    //        }
-    //    }
-
-    //    public readonly int Rows;
-    //    public readonly int Columns;
-
-    //    private readonly Square[,] squares;
-
-    //    public SquareSequence AvailableSquares()
-    //    {
-    //        return squares.Cast<Square>().Where(sq => sq != null);
-    //        //throw new NotImplementedException();
-    //    }
-
-    //    public void RemoveSquare(int row, int column)
-    //    {
-    //        squares[row, column] = null;
-    //    }
-
-    //    public void RemoveSquares(SquareSequence squaresToRemove)
-    //    {
-    //        foreach (var square in squaresToRemove)
-    //        {
-    //            RemoveSquare(square.Row, square.Column);
-    //        }
-    //    }
-
-    //    public Sequences GetAvailableSequences(int length)
-    //    {
-    //        var result = GetAvailableHorizontalSequences(length);
-    //        if (length == 1)
-    //        {
-    //            return result;
-    //        }
-    //        return GetAvailableHorizontalSequences(length).Concat(GetAvailableVerticalSequences(length));
-    //    }
-
-    //    private Sequences GetAvailableHorizontalSequences(int length) 
-    //    {
-    //        return GetAvailableSequences(Rows, Columns, (a, b) => squares[a, b], length);
-    //        //var result = new List<SquareSequence>();
-    //        //for (int r = 0; r < Rows; ++r)
-    //        //{
-    //        //    var queue = new LimitedQueue<Square>(length);
-    //        //    for (int c = 0; c < Columns; ++c)
-    //        //    {
-    //        //        if (squares[r, c] != null)
-    //        //        {
-    //        //            queue.Enqueue(squares[r, c]);
-    //        //            if (queue.Count == length)
-    //        //                result.Add(queue.ToArray());
-    //        //        }
-    //        //        else
-    //        //            queue.Clear();
-    //        //    }
-    //        //}
-    //        //return result;
-    //    }
-        
-    //    private Sequences GetAvailableVerticalSequences(int length) 
-    //    {
-    //        return GetAvailableSequences(Columns, Rows, (a, b)  => squares[b, a], length);
-    //        //var result = new List<SquareSequence>();
-    //        //for (int c = 0; c < Columns; ++c)
-    //        //{
-    //        //    var queue = new LimitedQueue<Square>(length);
-    //        //    for (int r = 0; r < Rows; ++r)
-    //        //    {
-    //        //        if (squares[r, c] != null)
-    //        //        {
-    //        //            queue.Enqueue(squares[r, c]);
-    //        //            if (queue.Count == length)
-    //        //                result.Add(queue.ToArray());
-    //        //        }
-    //        //        else
-    //        //            queue.Clear();
-    //        //    }
-    //        //}
-    //        //return result;
-    //    }
-
-    //    private bool IsAvailable(Square square)
-    //    {
-    //        return square != null && square.SquareState == SquareState.Initial;
-    //    }
-
-    //    private Sequences GetAvailableSequences(int outerLoopLimit, int innerLoopLimit, SquareAccess squareaccess, int length)
-    //    {
-    //        var result = new List<SquareSequence>();
-    //        for (int o = 0; o < outerLoopLimit; ++o)
-    //        {
-    //            var queue = new LimitedQueue<Square>(length);
-    //            for (int i = 0; i < innerLoopLimit; ++i)
-    //            {
-    //                if (IsAvailable(squareaccess(o, i)))
-    //                {
-    //                    queue.Enqueue(squareaccess(o, i));
-    //                    if (queue.Count == length)
-    //                        result.Add(queue.ToArray());
-    //                }
-    //                else
-    //                    queue.Clear();
-    //            }
-    //        }
-    //        return result;
-    //    }
-
-    //    public void MarkSquare(int row, int column, HitResult hitResult)
-    //    {
-    //        squares[row, column].Mark(hitResult);
-    //    }
-
-    //    public SquareSequence GetAvailableSequence(Square from, Direction direction)
-    //    {
-    //        int row = from.Row;
-    //        int endRow = row;
-    //        int deltaRow = 0;
-    //        if (direction == Direction.Upwards)
-    //        {
-    //            --row;
-    //            deltaRow = -1;
-    //            endRow = -1;
-    //        }
-    //        else if (direction == Direction.Downwards)
-    //        {
-    //            ++row;
-    //            deltaRow = +1;
-    //            endRow = Rows;
-    //        }
-    //        int column = from.Column;
-    //        int endColumn = column;
-    //        int deltaColumn = 0;
-    //        if (direction == Direction.Leftwards)
-    //        {
-    //            --column;
-    //            deltaColumn = -1;
-    //            endColumn = -1;
-    //        }
-    //        else if (direction == Direction.Rightwards)
-    //        {
-    //            ++column;
-    //            deltaColumn = +1;
-    //            endColumn = Columns;
-    //        }
-    //        var result = new List<Square>();
-    //        while (row != endRow || column != endColumn)
-    //        {
-    //            if (squares[row, column].SquareState != SquareState.Initial)
-    //            {
-    //                break;
-    //            }
-    //            result.Add(squares[row, column]);
-    //            row += deltaRow;
-    //            column += deltaColumn;
-    //        }
-    //        return result;
-    //    }
-
-    //    public void Eliminate(int row, int column)
-    //    {
-    //        squares[row, column].Eliminate();
-    //    }
-    //}  
-    
-    public class RecordGrid
+    public abstract class Grid
     {
-        public RecordGrid(int rows, int columns)
+        protected Grid(int rows, int columns)
         {
             Rows = rows;
             Columns = columns;
             squares = new Square[Rows, Columns];
-            for(int r = 0; r < Rows; ++r)
+            for (int r = 0; r < Rows; ++r)
             {
-                for(int c = 0; c < Columns; ++c)
+                for (int c = 0; c < Columns; ++c)
                 {
                     squares[r, c] = new Square(r, c);
                 }
@@ -210,26 +33,7 @@ namespace Vsite.Oom.Battleship.Model
         public readonly int Rows;
         public readonly int Columns;
 
-        private readonly Square[,] squares;
-
-        public SquareSequence AvailableSquares()
-        {
-            return squares.Cast<Square>().Where(sq => sq != null);
-            //throw new NotImplementedException();
-        }
-
-        public void RemoveSquare(int row, int column)
-        {
-            squares[row, column] = null;
-        }
-
-        public void RemoveSquares(SquareSequence squaresToRemove)
-        {
-            foreach (var square in squaresToRemove)
-            {
-                RemoveSquare(square.Row, square.Column);
-            }
-        }
+        protected readonly Square[,] squares;
 
         public Sequences GetAvailableSequences(int length)
         {
@@ -241,54 +45,18 @@ namespace Vsite.Oom.Battleship.Model
             return GetAvailableHorizontalSequences(length).Concat(GetAvailableVerticalSequences(length));
         }
 
-        private Sequences GetAvailableHorizontalSequences(int length) 
+        private Sequences GetAvailableHorizontalSequences(int length)
         {
             return GetAvailableSequences(Rows, Columns, (a, b) => squares[a, b], length);
-            //var result = new List<SquareSequence>();
-            //for (int r = 0; r < Rows; ++r)
-            //{
-            //    var queue = new LimitedQueue<Square>(length);
-            //    for (int c = 0; c < Columns; ++c)
-            //    {
-            //        if (squares[r, c] != null)
-            //        {
-            //            queue.Enqueue(squares[r, c]);
-            //            if (queue.Count == length)
-            //                result.Add(queue.ToArray());
-            //        }
-            //        else
-            //            queue.Clear();
-            //    }
-            //}
-            //return result;
-        }
-        
-        private Sequences GetAvailableVerticalSequences(int length) 
-        {
-            return GetAvailableSequences(Columns, Rows, (a, b)  => squares[b, a], length);
-            //var result = new List<SquareSequence>();
-            //for (int c = 0; c < Columns; ++c)
-            //{
-            //    var queue = new LimitedQueue<Square>(length);
-            //    for (int r = 0; r < Rows; ++r)
-            //    {
-            //        if (squares[r, c] != null)
-            //        {
-            //            queue.Enqueue(squares[r, c]);
-            //            if (queue.Count == length)
-            //                result.Add(queue.ToArray());
-            //        }
-            //        else
-            //            queue.Clear();
-            //    }
-            //}
-            //return result;
         }
 
-        private bool IsAvailable(Square square)
+        private Sequences GetAvailableVerticalSequences(int length)
         {
-            return square != null && square.SquareState == SquareState.Initial;
+            return GetAvailableSequences(Columns, Rows, (a, b) => squares[b, a], length);
         }
+
+        protected abstract bool IsAvailable(Square square);
+
 
         private Sequences GetAvailableSequences(int outerLoopLimit, int innerLoopLimit, SquareAccess squareaccess, int length)
         {
@@ -309,6 +77,23 @@ namespace Vsite.Oom.Battleship.Model
                 }
             }
             return result;
+        }
+    }
+
+    public class RecordGrid : Grid
+    {
+        public RecordGrid(int rows, int columns) : base(rows, columns)
+        {       
+        }
+
+        public SquareSequence AvailableSquares()
+        {
+            return squares.Cast<Square>().Where(sq => sq != null);
+        }
+
+        protected override bool IsAvailable(Square square)
+        {
+            return square.SquareState == SquareState.Initial;
         }
 
         public void MarkSquare(int row, int column, HitResult hitResult)
@@ -367,32 +152,16 @@ namespace Vsite.Oom.Battleship.Model
             squares[row, column].Eliminate();
         }
     }
-    
-    public class FleetGrid
+
+    public class FleetGrid : Grid
     {
-        public FleetGrid(int rows, int columns)
+        public FleetGrid(int rows, int columns) : base(rows, columns)
         {
-            Rows = rows;
-            Columns = columns;
-            squares = new Square[Rows, Columns];
-            for(int r = 0; r < Rows; ++r)
-            {
-                for(int c = 0; c < Columns; ++c)
-                {
-                    squares[r, c] = new Square(r, c);
-                }
-            }
         }
-
-        public readonly int Rows;
-        public readonly int Columns;
-
-        private readonly Square[,] squares;
 
         public SquareSequence AvailableSquares()
         {
             return squares.Cast<Square>().Where(sq => sq != null);
-            //throw new NotImplementedException();
         }
 
         public void RemoveSquare(int row, int column)
@@ -408,140 +177,9 @@ namespace Vsite.Oom.Battleship.Model
             }
         }
 
-        public Sequences GetAvailableSequences(int length)
+        protected override bool IsAvailable(Square square)
         {
-            var result = GetAvailableHorizontalSequences(length);
-            if (length == 1)
-            {
-                return result;
-            }
-            return GetAvailableHorizontalSequences(length).Concat(GetAvailableVerticalSequences(length));
-        }
-
-        private Sequences GetAvailableHorizontalSequences(int length) 
-        {
-            return GetAvailableSequences(Rows, Columns, (a, b) => squares[a, b], length);
-            //var result = new List<SquareSequence>();
-            //for (int r = 0; r < Rows; ++r)
-            //{
-            //    var queue = new LimitedQueue<Square>(length);
-            //    for (int c = 0; c < Columns; ++c)
-            //    {
-            //        if (squares[r, c] != null)
-            //        {
-            //            queue.Enqueue(squares[r, c]);
-            //            if (queue.Count == length)
-            //                result.Add(queue.ToArray());
-            //        }
-            //        else
-            //            queue.Clear();
-            //    }
-            //}
-            //return result;
-        }
-        
-        private Sequences GetAvailableVerticalSequences(int length) 
-        {
-            return GetAvailableSequences(Columns, Rows, (a, b)  => squares[b, a], length);
-            //var result = new List<SquareSequence>();
-            //for (int c = 0; c < Columns; ++c)
-            //{
-            //    var queue = new LimitedQueue<Square>(length);
-            //    for (int r = 0; r < Rows; ++r)
-            //    {
-            //        if (squares[r, c] != null)
-            //        {
-            //            queue.Enqueue(squares[r, c]);
-            //            if (queue.Count == length)
-            //                result.Add(queue.ToArray());
-            //        }
-            //        else
-            //            queue.Clear();
-            //    }
-            //}
-            //return result;
-        }
-
-        private bool IsAvailable(Square square)
-        {
-            return square != null && square.SquareState == SquareState.Initial;
-        }
-
-        private Sequences GetAvailableSequences(int outerLoopLimit, int innerLoopLimit, SquareAccess squareaccess, int length)
-        {
-            var result = new List<SquareSequence>();
-            for (int o = 0; o < outerLoopLimit; ++o)
-            {
-                var queue = new LimitedQueue<Square>(length);
-                for (int i = 0; i < innerLoopLimit; ++i)
-                {
-                    if (IsAvailable(squareaccess(o, i)))
-                    {
-                        queue.Enqueue(squareaccess(o, i));
-                        if (queue.Count == length)
-                            result.Add(queue.ToArray());
-                    }
-                    else
-                        queue.Clear();
-                }
-            }
-            return result;
-        }
-
-        public void MarkSquare(int row, int column, HitResult hitResult)
-        {
-            squares[row, column].Mark(hitResult);
-        }
-
-        public SquareSequence GetAvailableSequence(Square from, Direction direction)
-        {
-            int row = from.Row;
-            int endRow = row;
-            int deltaRow = 0;
-            if (direction == Direction.Upwards)
-            {
-                --row;
-                deltaRow = -1;
-                endRow = -1;
-            }
-            else if (direction == Direction.Downwards)
-            {
-                ++row;
-                deltaRow = +1;
-                endRow = Rows;
-            }
-            int column = from.Column;
-            int endColumn = column;
-            int deltaColumn = 0;
-            if (direction == Direction.Leftwards)
-            {
-                --column;
-                deltaColumn = -1;
-                endColumn = -1;
-            }
-            else if (direction == Direction.Rightwards)
-            {
-                ++column;
-                deltaColumn = +1;
-                endColumn = Columns;
-            }
-            var result = new List<Square>();
-            while (row != endRow || column != endColumn)
-            {
-                if (squares[row, column].SquareState != SquareState.Initial)
-                {
-                    break;
-                }
-                result.Add(squares[row, column]);
-                row += deltaRow;
-                column += deltaColumn;
-            }
-            return result;
-        }
-
-        public void Eliminate(int row, int column)
-        {
-            squares[row, column].Eliminate();
+            return square != null;
         }
     }
 }
