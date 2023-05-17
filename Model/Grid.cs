@@ -20,11 +20,11 @@ namespace Vsite.Oom.Battleship.Model
         Rightwards
     }
 
-    public class Grid
+    public abstract class Grid
     {
         public readonly int Rows;
         public readonly int Columns;
-        private readonly Square[,] squares;
+        protected readonly Square[,] squares;
 
         public Grid(int rows, int columns)
         {
@@ -42,7 +42,7 @@ namespace Vsite.Oom.Battleship.Model
 
         public SquareSequence AvailableSquares()
         {
-            return squares.Cast<Square>().Where(sq => sq != null);
+            return squares.Cast<Square>().Where(sq => IsAvailable(sq));
         }
 
         public Sequences GetAvailableSequences(int lenght)
@@ -54,10 +54,7 @@ namespace Vsite.Oom.Battleship.Model
             return result.Concat(GetAvailableVerticalSequences(lenght));
         }
 
-        private bool IsAvailable(Square square)
-        {
-            return square != null && square.State == Square.SquareState.Initial;
-        }
+        protected abstract bool IsAvailable(Square square);
 
         private Sequences GetAvailableSequences(int outerLoopMax, int innerLoopMax, SquareAccess squareAccess, int lenght)
         {
@@ -97,55 +94,5 @@ namespace Vsite.Oom.Battleship.Model
             return GetAvailableSequences(Columns, Rows, (a, b) => squares[b, a], lenght);
         }
 
-        public void RemoveSquare(int row, int column)
-        {
-            squares[row, column] = null;
-        }
-
-        public void RemoveSquares(SquareSequence squaresToRemove)
-        {
-            foreach (var square in squaresToRemove)
-            {
-                RemoveSquare(square.Row, square.Column);
-            }
-        }
-
-        public SquareSequence GetAvailableSequence(Square reference, Direction direction)
-        {
-            SquareSequence res;
-            switch (direction)
-            {
-                case Direction.Upwards:
-                    res = squares.Cast<Square>().Where(sq => sq.State == Square.SquareState.Initial && sq.Row < reference.Row && sq.Column == reference.Column);
-                    res = res.OrderBy(sq => sq.Row + sq.Column).Reverse();
-                    break;
-                case Direction.Downwards:
-                    res = squares.Cast<Square>().Where(sq => sq.State == Square.SquareState.Initial && sq.Row > reference.Row && sq.Column == reference.Column);
-                    res.OrderBy(sq => sq.Row + sq.Column);
-                    break;
-                case Direction.Leftwards:
-                    res = squares.Cast<Square>().Where(sq => sq.State == Square.SquareState.Initial && sq.Row == reference.Row && sq.Column < reference.Column);
-                    res = res.OrderBy(sq => sq.Row + sq.Column).Reverse();
-                    break;
-                case Direction.Rightwards:
-                    res = squares.Cast<Square>().Where(sq => sq.State == Square.SquareState.Initial && sq.Row == reference.Row && sq.Column > reference.Column);
-                    res.OrderBy(sq => sq.Row + sq.Column);
-                    break;
-                default:
-                    Debug.Assert(false, "Direction not supported");
-                    return AvailableSquares();
-            }
-            return res;
-        }
-
-        public void MarkSquare(int row, int col, HitResult hitResult)
-        {
-            squares[row, col].Mark(hitResult);
-        }
-
-        public void Eliminate(int row, int col)
-        {
-            squares[row, col].Eliminate();
-        }
     }
 }
