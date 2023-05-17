@@ -2,13 +2,13 @@
 {
     public class RandomShooting : IShootingTactics
     {
-        public RandomShooting(Grid grid, IEnumerable<int> shipLengths)
+        public RandomShooting(RecordGrid grid, IEnumerable<int> shipLengths)
         {
             this.grid = grid;
             this.shipLengths = shipLengths;
         }
 
-        private readonly Grid grid;
+        private readonly RecordGrid grid;
         private readonly IEnumerable<int> shipLengths;
         private Random random = new Random();
 
