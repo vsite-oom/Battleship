@@ -8,22 +8,23 @@ namespace Vsite.Oom.Battleship.Model
 {
     public class RandomShooting : IShootingTactics
     {
-        public RandomShooting(Grid grid, IEnumerable<int> shipLenghts) 
-        { 
+        public RandomShooting(Grid grid, IEnumerable<int> shipLengths)
+        {
             this.grid = grid;
-            this.shipLenghts = shipLenghts;
+            this.shipLengths = shipLengths;
         }
+
         private readonly Grid grid;
-        private readonly IEnumerable<int> shipLenghts;
+        private readonly IEnumerable<int> shipLengths;
         private Random random = new Random();
+
         public Square NextTarget()
         {
-            var shipLenght = shipLenghts.Max();
-            var availableSequences = grid.GetAvailableSquences(shipLenght);
+            var shipLength = shipLengths.Max();
+            var availableSequences = grid.GetAvailableSequences(shipLength);
             var candidates = availableSequences.SelectMany(s => s);
             int index = random.Next(candidates.Count());
             return candidates.ElementAt(index);
         }
-
     }
 }

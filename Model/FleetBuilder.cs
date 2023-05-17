@@ -13,22 +13,22 @@ namespace Vsite.Oom.Battleship.Model
             this.rules = rules;
             this.selector = selector;
         }
+
         public FleetBuilder(GameRules rules) : this(rules, new RandomSelector())
         {
-
         }
 
         private readonly GameRules rules;
         private readonly ISequenceSelector selector;
+
         public Fleet CreateFleet()
         {
             var grid = new Grid(rules.GridRows, rules.GridColumns);
             var fleet = new Fleet();
-
-            foreach (var shipLength in rules.ShipLenghts)
+            foreach (var shipLength in rules.ShipLengths)
             {
-                var candidates = grid.GetAvailableSquences(shipLength);
-                var selected = selector.Select((IEnumerable<IEnumerable<Square>>)candidates);
+                var candidates = grid.GetAvailableSequences(shipLength);
+                var selected = selector.Select(candidates);
                 fleet.CreateShip(selected);
                 var toEliminate = rules.Terminator.ToEliminate(selected);
                 grid.RemoveSquares(toEliminate);
