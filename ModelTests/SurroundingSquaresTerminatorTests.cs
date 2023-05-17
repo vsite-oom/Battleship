@@ -1,4 +1,6 @@
-﻿namespace ModelTests
+﻿using static Vsite.Oom.Battleship.Model.Grid;
+
+namespace ModelTests
 {
     [TestClass]
     public class SurroundingSquaresTerminatorTests

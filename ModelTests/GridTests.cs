@@ -73,7 +73,7 @@ namespace ModelTests
         {
             int rows = 5;
             int columns = 1;
-            var grid = new FleetGrid(rows, columns);
+            var grid = new RecordGrid(rows, columns);
             grid.MarkSquare(1, 0, HitResult.Missed);
             var result = grid.GetAvailableSequences(2);
             Assert.AreEqual(2, result.Count());
@@ -85,7 +85,7 @@ namespace ModelTests
         {
             int rows = 5;
             int columns = 1;
-            var grid = new FleetGrid(rows, columns);
+            var grid = new RecordGrid(rows, columns);
             grid.MarkSquare(1, 0, HitResult.Hit);
             var result = grid.GetAvailableSequences(2);
             Assert.AreEqual(2, result.Count());
@@ -97,7 +97,7 @@ namespace ModelTests
         {
             int rows = 5;
             int columns = 1;
-            var grid = new FleetGrid(rows, columns);
+            var grid = new RecordGrid(rows, columns);
             grid.MarkSquare(1, 0, HitResult.Sunk);
             var result = grid.GetAvailableSequences(2);
             Assert.AreEqual(2, result.Count());
