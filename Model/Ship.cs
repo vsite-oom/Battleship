@@ -9,5 +9,24 @@
         }
 
         public readonly IEnumerable<Square> Squares;
+
+        public HitResult Fire(Square target)
+        {
+            var found = Squares.FirstOrDefault(s => s == target);
+            if (found == null)
+            {
+                return HitResult.Missed;
+            }
+            found.Mark(HitResult.Hit);
+            if (Squares.All(s => s.SquareState == SquareState.Hit))
+            {
+                foreach (var square in Squares)
+                {
+                    square.Mark(HitResult.Sunk);
+                }
+                return HitResult.Sunk;
+            }
+            return HitResult.Hit;
+        }
     }
 }
