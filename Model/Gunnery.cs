@@ -15,7 +15,7 @@ namespace Vsite.Oom.Battleship.Model
         public Gunnery(GameRules gameRules)
         {
             this.gameRules = gameRules;
-            grid = new Grid(gameRules.GridRows, gameRules.GridColumns);
+            grid = new RecordGrid(gameRules.GridRows, gameRules.GridColumns);
             shipLengths = new List<int>(gameRules.ShipLengths);
             ChangeToRandom();
         }
@@ -109,7 +109,7 @@ namespace Vsite.Oom.Battleship.Model
             CurrentShootingTactics = CurrentShootingTactics.Random;
         }
 
-        private readonly Grid grid;
+        private readonly RecordGrid grid;
         private List<int> shipLengths;
 
         private IShootingTactics shootingTactics;

@@ -6,7 +6,7 @@
         [TestMethod]
         public void ToEliminateReturns18SquaresForShip4_3to4_6ForGrid10x10()
         {
-            var grid = new Grid(10, 10);
+            var grid = new FleetGrid(10, 10);
             Square[] squares = { new Square(4,3), new Square(4, 4), new Square(4, 5), new Square(4, 6) };
             var terminator = new SurroundingSquaresTerminator(10, 10);
             var toEliminate = terminator.ToEliminate(squares);
@@ -26,7 +26,7 @@
         [TestMethod]
         public void ToEliminateReturns8SquaresForShip0_3to0_4ForGrid10x10()
         {
-            var grid = new Grid(10, 10);
+            var grid = new FleetGrid(10, 10);
             Square[] squares = { new Square(0, 3), new Square(0, 4) };
             var terminator = new SurroundingSquaresTerminator(10, 10);
             var toEliminate = terminator.ToEliminate(squares);
@@ -44,7 +44,7 @@
         [TestMethod]
         public void ToEliminateReturns8SquaresForShip3_9to4_9ForGrid10x10()
         {
-            var grid = new Grid(10, 10);
+            var grid = new FleetGrid(10, 10);
             Square[] squares = { new Square(3, 9), new Square(4, 9) };
             var terminator = new SurroundingSquaresTerminator(10, 10);
             var toEliminate = terminator.ToEliminate(squares);
@@ -62,7 +62,7 @@
         [TestMethod]
         public void ToEliminateReturns12SquaresForShip7_5to9_5ForGrid10x10()
         {
-            var grid = new Grid(10, 10);
+            var grid = new FleetGrid(10, 10);
             Square[] squares = { new Square(7, 5), new Square(8, 5), new Square(9, 5) };
             var terminator = new SurroundingSquaresTerminator(10, 10);
             var toEliminate = terminator.ToEliminate(squares);
@@ -81,7 +81,7 @@
         [TestMethod]
         public void ToEliminateReturns9SquaresForShip5_0to5_1ForGrid10x10()
         {
-            var grid = new Grid(10, 10);
+            var grid = new FleetGrid(10, 10);
             Square[] squares = { new Square(5, 0), new Square(5, 1) };
             var terminator = new SurroundingSquaresTerminator(10, 10);
             var toEliminate = terminator.ToEliminate(squares);
@@ -99,7 +99,7 @@
         [TestMethod]
         public void ToEliminateReturns6SquaresForShip0_0To0_2ForGrid10x10()
         {
-            var grid = new Grid(10, 10);
+            var grid = new FleetGrid(10, 10);
             Square[] squares = { new Square(0, 0), new Square(0, 1) };
             var terminator = new SurroundingSquaresTerminator(10, 10);
             var toEliminate = terminator.ToEliminate(squares);
@@ -116,7 +116,7 @@
         [TestMethod]
         public void ToEliminateReturns6SquaresForShip8_9To9_9ForGrid10x10()
         {
-            var grid = new Grid(10, 10);
+            var grid = new FleetGrid(10, 10);
             Square[] squares = { new Square(8, 9), new Square(9, 9) };
             var terminator = new SurroundingSquaresTerminator(10, 10);
             var toEliminate = terminator.ToEliminate(squares);
