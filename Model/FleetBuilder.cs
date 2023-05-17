@@ -23,7 +23,7 @@ namespace Vsite.Oom.Battleship.Model
 
         public Fleet CreateFleet()
         {
-            var grid = new Grid(rules.GridRows, rules.GridColumns);
+            var grid = new FleetGrid(rules.GridRows, rules.GridColumns);
             var fleet = new Fleet();
             foreach (var shipLength in rules.ShipLengths)
             {

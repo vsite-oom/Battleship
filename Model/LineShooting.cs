@@ -9,14 +9,14 @@ namespace Vsite.Oom.Battleship.Model
 {
     public class LineShooting : IShootingTactics
     {
-        public LineShooting(Grid grid, IEnumerable<Square> squaresHit, IEnumerable<int> shipLengths)
+        public LineShooting(RecordGrid grid, IEnumerable<Square> squaresHit, IEnumerable<int> shipLengths)
         {
             this.grid = grid;
             squares = squaresHit;
             this.shipLengths = shipLengths;
         }
 
-        private readonly Grid grid;
+        private readonly RecordGrid grid;
         private IEnumerable<Square> squares;
         private readonly IEnumerable<int> shipLengths;
 

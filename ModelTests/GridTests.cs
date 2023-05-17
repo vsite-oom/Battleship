@@ -17,7 +17,7 @@ namespace ModelTests
         {
             int rows = 10;
             int columns = 10;
-            var grid = new Grid(rows, columns);
+            var grid = new FleetGrid(rows, columns);
             Assert.AreEqual(rows * columns, grid.AvailableSquares().Count());
         }
 
@@ -26,7 +26,7 @@ namespace ModelTests
         {
             int rows = 1;
             int columns = 4;
-            var grid = new Grid(rows, columns);
+            var grid = new FleetGrid(rows, columns);
             var result = grid.GetAvailableSequences(3);
             Assert.AreEqual(2, result.Count());
 
@@ -41,7 +41,7 @@ namespace ModelTests
         {
             int rows = 5;
             int columns = 1;
-            var grid = new Grid(rows, columns);
+            var grid = new FleetGrid(rows, columns);
             var result = grid.GetAvailableSequences(3);
             Assert.AreEqual(3, result.Count());
         }
@@ -51,7 +51,7 @@ namespace ModelTests
         {
             int rows = 1;
             int columns = 6;
-            var grid = new Grid(rows, columns);
+            var grid = new FleetGrid(rows, columns);
             grid.RemoveSquare(0, 2);
             var result = grid.GetAvailableSequences(2);
             Assert.AreEqual(3, result.Count());
@@ -62,7 +62,7 @@ namespace ModelTests
         {
             int rows = 5;
             int columns = 1;
-            var grid = new Grid(rows, columns);
+            var grid = new FleetGrid(rows, columns);
             grid.RemoveSquare(1, 0);
             var result = grid.GetAvailableSequences(2);
             Assert.AreEqual(2, result.Count());
@@ -73,7 +73,7 @@ namespace ModelTests
         {
             int rows = 5;
             int columns = 1;
-            var grid = new Grid(rows, columns);
+            var grid = new FleetGrid(rows, columns);
             grid.MarkSquare(1, 0, HitResult.Missed);
             var result = grid.GetAvailableSequences(2);
             Assert.AreEqual(2, result.Count());
@@ -85,7 +85,7 @@ namespace ModelTests
         {
             int rows = 5;
             int columns = 1;
-            var grid = new Grid(rows, columns);
+            var grid = new FleetGrid(rows, columns);
             grid.MarkSquare(1, 0, HitResult.Hit);
             var result = grid.GetAvailableSequences(2);
             Assert.AreEqual(2, result.Count());
@@ -97,7 +97,7 @@ namespace ModelTests
         {
             int rows = 5;
             int columns = 1;
-            var grid = new Grid(rows, columns);
+            var grid = new FleetGrid(rows, columns);
             grid.MarkSquare(1, 0, HitResult.Sunk);
             var result = grid.GetAvailableSequences(2);
             Assert.AreEqual(2, result.Count());
@@ -109,7 +109,7 @@ namespace ModelTests
         {
             int rows = 10;
             int columns = 10;
-            var grid = new Grid(rows, columns);
+            var grid = new RecordGrid(rows, columns);
             var result = grid.GetAvailableSequence(new Square(3, 3), Direction.Leftwards);
             Assert.AreEqual(3, result.Count());
             Assert.IsTrue(result.Contains(new Square(3, 0)));
@@ -121,7 +121,7 @@ namespace ModelTests
         {
             int rows = 10;
             int columns = 10;
-            var grid = new Grid(rows, columns);
+            var grid = new RecordGrid(rows, columns);
             var result = grid.GetAvailableSequence(new Square(3, 3), Direction.Upwards);
             Assert.AreEqual(3, result.Count());
             Assert.IsTrue(result.Contains(new Square(0, 3)));
@@ -133,7 +133,7 @@ namespace ModelTests
         {
             int rows = 10;
             int columns = 10;
-            var grid = new Grid(rows, columns);
+            var grid = new RecordGrid(rows, columns);
             var result = grid.GetAvailableSequence(new Square(3, 3), Direction.Rightwards);
             Assert.AreEqual(6, result.Count());
             Assert.IsTrue(result.Contains(new Square(3, 4)));
@@ -146,7 +146,7 @@ namespace ModelTests
         {
             int rows = 10;
             int columns = 10;
-            var grid = new Grid(rows, columns);
+            var grid = new RecordGrid(rows, columns);
             var result = grid.GetAvailableSequence(new Square(3, 3), Direction.Downwards);
             Assert.AreEqual(6, result.Count());
             Assert.IsTrue(result.Contains(new Square(4, 3)));
@@ -158,7 +158,7 @@ namespace ModelTests
         {
             int rows = 10;
             int columns = 10;
-            var grid = new Grid(rows, columns);
+            var grid = new RecordGrid(rows, columns);
             var result = grid.GetAvailableSequence(new Square(3, 0), Direction.Leftwards);
             Assert.AreEqual(0, result.Count());
         }
@@ -167,7 +167,7 @@ namespace ModelTests
         {
             int rows = 10;
             int columns = 10;
-            var grid = new Grid(rows, columns);
+            var grid = new RecordGrid(rows, columns);
             var result = grid.GetAvailableSequence(new Square(0, 3), Direction.Upwards);
             Assert.AreEqual(0, result.Count());
         }
@@ -176,7 +176,7 @@ namespace ModelTests
         {
             int rows = 10;
             int columns = 10;
-            var grid = new Grid(rows, columns);
+            var grid = new RecordGrid(rows, columns);
             var result = grid.GetAvailableSequence(new Square(3, 9), Direction.Rightwards);
             Assert.AreEqual(0, result.Count());
         }
@@ -185,7 +185,7 @@ namespace ModelTests
         {
             int rows = 10;
             int columns = 10;
-            var grid = new Grid(rows, columns);
+            var grid = new RecordGrid(rows, columns);
             var result = grid.GetAvailableSequence(new Square(9, 3), Direction.Downwards);
             Assert.AreEqual(0, result.Count());
         }
