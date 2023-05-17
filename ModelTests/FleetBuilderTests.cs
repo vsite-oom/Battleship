@@ -14,12 +14,12 @@ namespace ModelTests
             var fleet = builder.CreateFleet();
 
             Assert.IsNotNull(fleet);
-            Assert.AreEqual(gameRules.ShipLenghts.Count(), fleet.Ships.Count());
-            Assert.AreEqual(gameRules.ShipLenghts.Count(n => n == 5),fleet.Ships.Count(s => s.Squares.Count() == 5));
-            Assert.AreEqual(gameRules.ShipLenghts.Count(n => n == 4),fleet.Ships.Count(s => s.Squares.Count() == 4));
-            Assert.AreEqual(gameRules.ShipLenghts.Count(n => n == 3), fleet.Ships.Count(s => s.Squares.Count() == 3));
-            Assert.AreEqual(gameRules.ShipLenghts.Count(n => n == 2), fleet.Ships.Count(s => s.Squares.Count() == 2));
-            Assert.AreEqual(gameRules.ShipLenghts.Count(n => n == 1), fleet.Ships.Count(s => s.Squares.Count() == 1));
+            Assert.AreEqual(gameRules.ShipLengths.Count(), fleet.Ships.Count());
+            Assert.AreEqual(gameRules.ShipLengths.Count(n => n == 5),fleet.Ships.Count(s => s.Squares.Count() == 5));
+            Assert.AreEqual(gameRules.ShipLengths.Count(n => n == 4),fleet.Ships.Count(s => s.Squares.Count() == 4));
+            Assert.AreEqual(gameRules.ShipLengths.Count(n => n == 3), fleet.Ships.Count(s => s.Squares.Count() == 3));
+            Assert.AreEqual(gameRules.ShipLengths.Count(n => n == 2), fleet.Ships.Count(s => s.Squares.Count() == 2));
+            Assert.AreEqual(gameRules.ShipLengths.Count(n => n == 1), fleet.Ships.Count(s => s.Squares.Count() == 1));
 
         }
     }
