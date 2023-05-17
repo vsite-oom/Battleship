@@ -43,8 +43,13 @@ namespace Vsite.Oom.Battleship.Model
 
         protected readonly Square[,] squares;
 
+        public SquareSequence AvailableSquares()
+        {
+            return squares.Cast<Square>().Where(sq => IsAvailable());
+        }
 
-       
+
+
 
         public Sequences GetAvailableSequences(int length)
         {
@@ -102,10 +107,7 @@ namespace Vsite.Oom.Battleship.Model
 
         }
 
-        public SquareSequence AvailableSquares()
-        {
-            return squares.Cast<Square>().Where(sq => sq != null);
-        }
+        
 
         public void RemoveSquare(int row, int column)
         {
