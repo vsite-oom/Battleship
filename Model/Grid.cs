@@ -184,5 +184,10 @@ namespace Vsite.Oom.Battleship.Model
             }
             return result;
         }
+
+        public void Eliminate(int row, int column)
+        {
+            squares[row, column].Eliminate();
+        }
     }
 }
