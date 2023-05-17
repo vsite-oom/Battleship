@@ -11,19 +11,22 @@ namespace Vsite.Oom.Battleship.Model
 {
     public enum CurrentShootingTactics
     {
-        Random, 
+        Random,
         Zone,
         Line
     }
+
     public class Gunnery
     {
         public Gunnery(GameRules gameRules)
         {
+            this.gameRules = gameRules;
             grid = new Grid(gameRules.GridRows, gameRules.GridColumns);
-            shipLenghts = new List<int>(gameRules.ShipLenghts);
+            shipLengths = new List<int>(gameRules.ShipLengths);
             ChangeToRandom();
-
         }
+
+        GameRules gameRules;
 
         public Square NextTarget()
         {
@@ -33,34 +36,33 @@ namespace Vsite.Oom.Battleship.Model
 
         public void ProcessHitResult(HitResult hitResult)
         {
-            //RecordHitResult(hitResult);
+            RecordHitResult(hitResult);
             ChangeTactics(hitResult);
         }
-
         private void RecordHitResult(HitResult hitResult)
         {
             if (hitResult != HitResult.Missed)
-            
-              
-            
             {
+                hitSquares.Add(lastTarget);
+            }
+            if (hitResult == HitResult.Sunk)
+            {
+                var toEliminate = gameRules.Terminator.ToEliminate(hitSquares);
+                foreach (var square in toEliminate)
+                {
+                    grid.Eliminate(square.Row, square.Column);
+                }
                 foreach (var square in hitSquares)
                 {
-                    grid.MarkSquare(square.Row, square.Column, hitResult);
+                    grid.MarkSquare(square.Row, square.Column, HitResult.Sunk);
                 }
-                shipLenghts.Remove(hitSquares.Count);
+                shipLengths.Remove(hitSquares.Count);
                 hitSquares.Clear();
             }
-
             else
             {
-
-                grid.MarkSquare(hitSquares.Last().Row, hitSquares.Last().Column, hitResult);
+                grid.MarkSquare(lastTarget.Row, lastTarget.Column, hitResult);
             }
-
-            var lastTarget = hitSquares.Last();
-            grid.MarkSquare(lastTarget.Row, lastTarget.Column, hitResult);
-
         }
 
         private void ChangeTactics(HitResult hitResult)
@@ -73,21 +75,19 @@ namespace Vsite.Oom.Battleship.Model
                     ChangeToRandom();
                     return;
                 case HitResult.Hit:
+                    switch (CurrentShootingTactics)
                     {
-                        switch (CurrentShootingTactics)
-                        {
-                            case CurrentShootingTactics.Random:
-                                ChangeToZone();
-                                return;
-                            case CurrentShootingTactics.Zone:
-                                ChangeToLine();
-                                return;
-                            case CurrentShootingTactics.Line:
-                                return;
-                            default:
-                                Debug.Assert(false, "Unsupported shooting tactics");
-                                break;
-                        }
+                        case CurrentShootingTactics.Random:
+                            ChangeToZone();
+                            return;
+                        case CurrentShootingTactics.Zone:
+                            ChangeToLine();
+                            return;
+                        case CurrentShootingTactics.Line:
+                            return;
+                        default:
+                            Debug.Assert(false, "Unsupported shooting tactics");
+                            break;
                     }
                     break;
                 default:
@@ -96,37 +96,31 @@ namespace Vsite.Oom.Battleship.Model
             }
         }
 
-        private void ChangeToRandom()
-        {
-           
-            shootingTactics = new RandomShooting(grid, shipLenghts);
-            CurrentShootingTactics = CurrentShootingTactics.Random;
-        }
-
         private void ChangeToLine()
         {
-            shootingTactics = new LineShooting(grid,hitSquares, shipLenghts);
+            shootingTactics = new LineShooting(grid, hitSquares, shipLengths);
             CurrentShootingTactics = CurrentShootingTactics.Line;
-            
         }
 
         private void ChangeToZone()
         {
-            shootingTactics = new ZoneShooting(grid, lastTarget, shipLenghts);
+            shootingTactics = new ZoneShooting(grid, lastTarget, shipLengths);
             CurrentShootingTactics = CurrentShootingTactics.Zone;
         }
 
-        
+        private void ChangeToRandom()
+        {
+            shootingTactics = new RandomShooting(grid, shipLengths);
+            CurrentShootingTactics = CurrentShootingTactics.Random;
+        }
 
         private readonly Grid grid;
-
-        private List<int> shipLenghts;
+        private readonly List<int> shipLengths;
 
         private IShootingTactics shootingTactics;
 
         List<Square> hitSquares = new List<Square>();
         Square lastTarget;
-
 
         public CurrentShootingTactics CurrentShootingTactics { get; private set; }
     }
