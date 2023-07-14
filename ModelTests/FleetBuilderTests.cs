@@ -6,6 +6,7 @@ namespace ModelTests
     [TestClass]
     public class FleetBuilderTests
     {
+        
         [TestMethod]
         public void CreateFleetReturnsFleetWithRequestedShipLengths()
         {

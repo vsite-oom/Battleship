@@ -11,7 +11,7 @@
 
         public HitResult Fire(Square target)
         {
-            var found = Squares.FirstOrDefault(s => s == target);
+            var found = Squares.FirstOrDefault(s => s.Equals( target));
             if (found == null)
             {
                 return HitResult.Missed;
