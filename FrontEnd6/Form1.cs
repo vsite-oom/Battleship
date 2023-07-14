@@ -36,6 +36,8 @@ namespace FrontEnd6
         public Fleet fleetClient;
         public int shipCountClient;
         public int shipCountEnemy;
+        public Button button1;
+        public Button button2;
 
         public Form1()
         {
@@ -65,13 +67,13 @@ namespace FrontEnd6
             buttonTableLayoutPanel.Height = 50;  // You can adjust this height as necessary
 
 
-            Button button1 = new Button();
+            button1 = new Button();
             button1.Text = "Shuffle";
             button1.Dock = DockStyle.Fill;
             button1.Click += button1_Click;  // Link to existing button1_Click event handler
             buttonTableLayoutPanel.Controls.Add(button1, 0, 0);
 
-            Button button2 = new Button();
+            button2 = new Button();
             button2.Text = "Restart Game";
             button2.Dock = DockStyle.Fill;
             button2.Click += button2_Click;  // Link to existing button2_Click event handler
@@ -121,6 +123,7 @@ namespace FrontEnd6
 
         private void Button_Click(object sender, EventArgs e)
         {
+            button1.Enabled = false;
             GridButton button = sender as GridButton;
             //button.ChangeColor(Color.Gray);
             button.Enabled = false;
@@ -198,7 +201,7 @@ namespace FrontEnd6
         }
         private void RestartGame()
         {
-
+            button1.Enabled = true;
             rules = new GameRules();
             shipCountClient = rules.ShipLengths.Count();
             shipCountEnemy = rules.ShipLengths.Count();
