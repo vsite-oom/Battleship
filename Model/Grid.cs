@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Vsite.Oom.Battleship.Model
 {
-    public class FleetBuilder
+    public class Grid
     {
     }
 }
