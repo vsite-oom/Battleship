@@ -13,8 +13,28 @@ namespace Vsite.Oom.Battleship.Model.Tests
             int columns = 10;
             Grid grid = new Grid(rows, columns);
             Assert.AreEqual(50, grid.Squares.Count());
+        }
 
+        [TestMethod]
+        public void GetAvailablePlacementsForGrid1x5Returns3PlacementsForShipWith3Squares()
+        {
+            int rows = 1;
+            int columns = 5;
+            int shipLength = 3;
+            Grid grid = new(rows, columns);
 
+            Assert.AreEqual(3, grid.GetAvailablePlacements(shipLength).Count());
+        }
+
+        [TestMethod]
+        public void GetAvailablePlacementsForGrid7x1Returns6PlacementsForShipWith2Squares()
+        {
+            int rows = 7;
+            int columns = 1;
+            int shipLength = 2;
+            Grid grid = new(rows, columns);
+
+            Assert.AreEqual(6, grid.GetAvailablePlacements(shipLength).Count());
         }
     }
 }
