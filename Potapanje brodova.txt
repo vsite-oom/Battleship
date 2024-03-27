@@ -1,0 +1,16 @@
+Igra potapanja brodova
+
+Sudionici: 2 igrača
+
+1. Svaki igrač nacrta 2 mreže s 10 redaka i 10 stupaca: jednu na koju će slagati svoju flotu i drugu na kojoj će bilježiti rezultate svojih gađanja.
+2. Svaki igrač na jednu mrežu nacrta brodove u svojoj floti: 1 brod duljine 5 polja, 2 broda po 4 polja, 3 broda po 3 polja i 4 broda po 2 polja. Brodovi moraju biti vertikalno ili horizontalno složeni i ne smiju se dodirivati.
+3. Bira igrač koji prvi gađa.
+4. Prvi igrač bira polje koje će gađati i kaže drugom igraču redak i stupac (npr. C5)
+5. Drugi igrač provjeri u svojoj mreži s flotom ima li na tom polju brod. Ako nema, kaže "Promašaj", ako ima "Pogodak", a ako je to zadnje nepogođeno polje broda "Potonuo".
+6. Drugi igrač će zabilježiti rezultat u mreži s flotom.
+7. Prvi igrač će označiti rezultat gađanja na svojoj mreži za evidenciju.
+8. Igrači mijenjaju uloge.
+9. Koraci 4-8 se ponavljaju sve dok jednom igraču nisu potopljeni svi brodovi.
+10. Pobjednik je igrač koji ima nepotopljeni brod.
+
+
