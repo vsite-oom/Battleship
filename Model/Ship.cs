@@ -8,5 +8,6 @@ namespace Vsite.OOM.Battleship.Model
 {
     internal class Ship
     {
+
     }
 }
