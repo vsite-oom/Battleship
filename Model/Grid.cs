@@ -41,6 +41,8 @@ namespace Vsite.Oom.Battleship.Model
         public IEnumerable<IEnumerable<Square>> GetAvaliablePlacements(int length)
         {
             return GetHorizontalAvaliablePlacements(length);
+
+            // test .Aggregate(GetHorizontalAvaliablePlacements) za spajanje dvije kolekcije
         }
 
         private IEnumerable<IEnumerable<Square>> GetHorizontalAvaliablePlacements(int length)
