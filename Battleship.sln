@@ -3,7 +3,27 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.33502.453
 MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ModelTests", "ModelTests\ModelTests.csproj", "{199F7942-0C6E-4FA2-8277-01703DB0E2FD}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Model 1", "Model 1", "{2701EC55-DB71-4CF4-A510-23AE72A610E9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Model", "Model 3\Model.csproj", "{32A01B5E-B3ED-4EE9-A991-5CE4D35463C4}"
+EndProject
 Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{199F7942-0C6E-4FA2-8277-01703DB0E2FD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{199F7942-0C6E-4FA2-8277-01703DB0E2FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{199F7942-0C6E-4FA2-8277-01703DB0E2FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{199F7942-0C6E-4FA2-8277-01703DB0E2FD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{32A01B5E-B3ED-4EE9-A991-5CE4D35463C4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{32A01B5E-B3ED-4EE9-A991-5CE4D35463C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{32A01B5E-B3ED-4EE9-A991-5CE4D35463C4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{32A01B5E-B3ED-4EE9-A991-5CE4D35463C4}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
