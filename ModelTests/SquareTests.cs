@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Vsite.Oom.battleship.Model;
 
 namespace Vsite.Oom.Battleship.Model.Tests
 {
@@ -16,7 +17,7 @@ namespace Vsite.Oom.Battleship.Model.Tests
             int col = 8;
             var square = new Square(row, col);
             Assert.AreEqual(row, square.Row);
-            Assert.AreEqual(col, square.Col);
+            Assert.AreEqual(col, square.Column);
         }
     }
 }
