@@ -1,4 +1,5 @@
-﻿namespace Vsite.Oom.Battleship.Model
+﻿
+namespace Vsite.Oom.Battleship.Model
 {
     public class Grid
     {
@@ -25,5 +26,74 @@
 
         }
 
+        public IEnumerable<IEnumerable<Square>> GetAvailablePlacements(int shipSize)
+        {
+
+            return GetHorizontalAvailablePlacements(shipSize).Concat(GetVerticalAvailablePlacements(shipSize));
+        }
+
+        private IEnumerable<IEnumerable<Square>> GetHorizontalAvailablePlacements(int shipSize)
+        {
+            List<IEnumerable<Square>> result = new List<IEnumerable<Square>>();
+
+            for (int r = 0; r < rows; r++)
+            {
+                int counter = 0;
+                for (int c = 0; c < columns; c++)
+                {
+                    if (_squares[r, c] != null)
+                    {
+                        counter++;
+                        if (counter >= shipSize)
+                        {
+                            List<Square> temp = new List<Square>();
+                            for (int cl = c - shipSize + 1; cl <= c; cl++)
+                            {
+                                temp.Add(_squares[r, cl]!);
+                            }
+                            result.Add(temp);
+                        }
+                    }
+                    else
+                    {
+                        counter = 0;
+                    }
+
+                }
+            }
+            return result;
+        }
+
+
+        private IEnumerable<IEnumerable<Square>> GetVerticalAvailablePlacements(int shipSize)
+        {
+            List<IEnumerable<Square>> result = new List<IEnumerable<Square>>();
+
+            for (int c = 0; c < columns; c++)
+            {
+                int counter = 0;
+                for(int r = 0; r < rows; r++)
+                {
+                    if (_squares[r, c] != null)
+                    {
+                        counter++;
+                        if(counter >= shipSize)
+                        {
+                            List<Square> temp = new();
+                            for(int r1 = r - shipSize + 1; r1 <= r; r1++)
+                            {
+                                temp.Add(_squares[r1, c]!);
+                            }
+                            result.Add(temp);
+                        }
+                    }
+                    else
+                    {
+                        counter = 0;
+                    }
+                }
+            }
+            return result;
+        }
     }
 }
