@@ -1,7 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-
-namespace Vsite.Oom.Battleship.Model.Tests
+﻿namespace Vsite.Oom.Battleship.Model.Tests
 {
     [TestClass]
     public class SquareTests
@@ -15,7 +12,7 @@ namespace Vsite.Oom.Battleship.Model.Tests
 
             Assert.AreEqual(row, square.Row);
             Assert.AreEqual(col, square.Column);
-            
+
 
             
         }
