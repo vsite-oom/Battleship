@@ -8,7 +8,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		..\..\..\Users\Korisnik\Downloads\Potapanje brodova.txt = ..\..\..\Users\Korisnik\Downloads\Potapanje brodova.txt
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Model", "Model\Model.csproj", "{37B306F6-3E9D-49B1-8724-E8A53A39B1FA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Model", "Model\Model.csproj", "{37B306F6-3E9D-49B1-8724-E8A53A39B1FA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModelTests", "ModelTests\ModelTests.csproj", "{A5116867-2A87-44DA-A437-6A878CDF740F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -20,6 +22,10 @@ Global
 		{37B306F6-3E9D-49B1-8724-E8A53A39B1FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{37B306F6-3E9D-49B1-8724-E8A53A39B1FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{37B306F6-3E9D-49B1-8724-E8A53A39B1FA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A5116867-2A87-44DA-A437-6A878CDF740F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A5116867-2A87-44DA-A437-6A878CDF740F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A5116867-2A87-44DA-A437-6A878CDF740F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A5116867-2A87-44DA-A437-6A878CDF740F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
