@@ -15,7 +15,7 @@ namespace Vsite.Oom.Battleship.Model
             Rows = rows;
             Columns = columns;
 
-            // Rezerviranje prostora.
+            // Rezerviranje prostora za dvodimenzionalno polje squares.
             squares = new Square[Rows, Columns];
 
             // Inicijalizacija pojedinih polja.
