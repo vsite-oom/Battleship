@@ -82,5 +82,9 @@ namespace Vsite.Oom.Battleship.Model
             }
             return result;
         }
+        public void EliminateSquare(int row, int col)
+        {
+            squares[row, col] = null;
+        }
     }
 }
