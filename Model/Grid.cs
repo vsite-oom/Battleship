@@ -29,7 +29,7 @@ namespace Vsite.Oom.Battleship.Model
         public readonly int Rows;
         public readonly int Columns;
 
-        private readonly Square[,] squares;
+        private readonly Square?[,] squares;
 
         public IEnumerable<Square> Squares // sakrivamo implementaciju
         {
@@ -38,11 +38,9 @@ namespace Vsite.Oom.Battleship.Model
 
         }
 
-        public IEnumerable<IEnumerable<Square>> GetAvaliablePlacements(int length)
+        public IEnumerable<IEnumerable<Square>> GetAvailablePlacements(int length)
         {
-            return GetHorizontalAvaliablePlacements(length);
-
-            // test .Aggregate(GetHorizontalAvaliablePlacements) za spajanje dvije kolekcije
+            return GetHorizontalAvailablePlacements(length).Concat(GetAvailablePlacements(length));
         }
 
         private IEnumerable<IEnumerable<Square>> GetVerticalAvaliablePlacements(int length)
@@ -71,7 +69,7 @@ namespace Vsite.Oom.Battleship.Model
             return result;
         }
 
-        private IEnumerable<IEnumerable<Square>> GetHorizontalAvaliablePlacements(int length)
+        private IEnumerable<IEnumerable<Square>> GetHorizontalAvailablePlacements(int length)
         {
             List<IEnumerable<Square>>result=new List<IEnumerable<Square>>();
 
@@ -95,6 +93,11 @@ namespace Vsite.Oom.Battleship.Model
                 }
             }
             return result;
+        }
+
+        public void EliminateSquare(int row, int column)
+        {
+            squares[row, column] = null;
         }
     }
 }
