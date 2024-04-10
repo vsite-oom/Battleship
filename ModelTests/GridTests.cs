@@ -11,7 +11,7 @@ namespace Vsite.Oom.Battleship.Model.Tests
         {
             int rows = 5;
             int cols = 10;
-                
+
             var grid = new Grid(rows, cols);
 
             Assert.AreEqual(50, grid.Squares.Count());
