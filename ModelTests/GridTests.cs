@@ -50,7 +50,7 @@ namespace Vsite.Oom.Battleship.Model.Tests
             int shipLength = 4;
             var grid = new Grid(rows, cols);
 
-            Assert.AreEqual(6, grid.GetAvailablePlacements(shipLength).Count());
+            Assert.AreEqual(20, grid.GetAvailablePlacements(shipLength).Count());
 
         }
     }
