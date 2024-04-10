@@ -27,7 +27,7 @@ namespace Vsite.Oom.Battleship.Model
         public IEnumerable<IEnumerable<Square>> GetAvailablePlacements(int length)
         {
             //return GetHorizontalAvailablePlacements(length);
-            return GetVerticalAvailablePlacements(length);
+            return GetVerticalAvailablePlacements(length).Concat(GetHorizontalAvailablePlacements(length));
         }
 
         private IEnumerable<IEnumerable<Square>> GetHorizontalAvailablePlacements(int length)
