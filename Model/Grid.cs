@@ -1,4 +1,4 @@
-﻿using System.Reflection.Metadata.Ecma335;
+﻿using System.Linq;
 
 namespace Vsite.Oom.Battleship.Model
 {
@@ -31,13 +31,13 @@ namespace Vsite.Oom.Battleship.Model
                 return squares.Cast<Square>().Where(s => s != null);
             }
         }
-        
+
         public IEnumerable<IEnumerable<Square>> GetAvailablePlacements(int length)
         {
-            return GetHorizonalAvailablePlacements(length);
+            return GetHorizontalAvailablePlacements(length).Concat(GetVerticalAvailablePlacements(length));
         }
 
-        private IEnumerable<IEnumerable<Square>> GetHorizonalAvailablePlacements(int length)
+        private IEnumerable<IEnumerable<Square>> GetHorizontalAvailablePlacements(int length)
         {
             List<IEnumerable<Square>> result = new();
 
@@ -67,6 +67,37 @@ namespace Vsite.Oom.Battleship.Model
                 }
             }
 
+            return result;
+        }
+
+        private IEnumerable<IEnumerable<Square>> GetVerticalAvailablePlacements(int length)
+        {
+            List<IEnumerable<Square>> result = new List<IEnumerable<Square>>();
+
+            for (int c = 0; c < Columns; ++c)
+            {
+                int counter = 0;
+                for (int r = 0; r < Rows; ++r)
+                {
+                    if (squares[r, c] != null)
+                    {
+                        ++counter;
+                        if (counter >= length)
+                        {
+                            List<Square> temp = new List<Square>();
+                            for (int r1 = r - length + 1; r1 <= r; ++r1)
+                            {
+                                temp.Add(squares[r1, c]!);
+                            }
+                            result.Add(temp);
+                        }
+                    }
+                    else
+                    {
+                        counter = 0;
+                    }
+                }
+            }
             return result;
         }
     }
