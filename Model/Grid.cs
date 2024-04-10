@@ -38,25 +38,18 @@ namespace Vsite.Oom.Battleship.Model
 
             for (int r = 0; r < rows; r++)
             {
-                int counter = 0;
+                var limitedQueue = new LimitedQueue<Square>(shipSize);
                 for (int c = 0; c < columns; c++)
                 {
                     if (_squares[r, c] != null)
                     {
-                        counter++;
-                        if (counter >= shipSize)
-                        {
-                            List<Square> temp = new List<Square>();
-                            for (int cl = c - shipSize + 1; cl <= c; cl++)
-                            {
-                                temp.Add(_squares[r, cl]!);
-                            }
-                            result.Add(temp);
-                        }
+                        limitedQueue.Enqueue(_squares[r, c]!);
+                        if (limitedQueue.Count() == shipSize)
+                            result.Add(limitedQueue.ToArray());
                     }
                     else
                     {
-                        counter = 0;
+                        limitedQueue.Clear();
                     }
 
                 }
@@ -71,29 +64,39 @@ namespace Vsite.Oom.Battleship.Model
 
             for (int c = 0; c < columns; c++)
             {
-                int counter = 0;
-                for(int r = 0; r < rows; r++)
+                var limitedQueue = new LimitedQueue<Square>(shipSize);
+                for (int r = 0; r < rows; r++)
                 {
                     if (_squares[r, c] != null)
                     {
-                        counter++;
-                        if(counter >= shipSize)
-                        {
-                            List<Square> temp = new();
-                            for(int r1 = r - shipSize + 1; r1 <= r; r1++)
-                            {
-                                temp.Add(_squares[r1, c]!);
-                            }
-                            result.Add(temp);
-                        }
+                        limitedQueue.Enqueue(_squares[r, c]!);
+                        if (limitedQueue.Count() >= shipSize)
+                            result.Add(limitedQueue.ToArray());
                     }
                     else
                     {
-                        counter = 0;
+                        limitedQueue.Clear();
                     }
                 }
             }
             return result;
+        }
+
+        public void EleminateSquare(int row, int column)
+        {
+            _squares[row, column] = null;
+        }
+
+        private IEnumerable<IEnumerable<Square>> GetBidirectionalPositions(int shipSize)
+        {
+            List<IEnumerable<Square>> result = new List<IEnumerable<Square>>();
+
+            var x = columns;
+            var y = rows;
+
+            //HomeWork -> one method for everything :) 
+
+            throw new NotImplementedException();
         }
     }
 }
