@@ -35,13 +35,14 @@ namespace Vsite.OOM.Battleship.Model
         public IEnumerable<IEnumerable<Square>> GetHorizontalAvailablePlacements(int length)
         {
             List<IEnumerable<Square>> result=new List<IEnumerable<Square>>();
-            for(int r = 0; r < Rows;r++)
+            for(int r = 0; r < Rows;++r)
             {
                 int counter = 0;
-                for(int c = 0;c < Columns; c++)
+                for(int c = 0;c < Columns; ++c)
                 {
                     if (Squares[r, c] != null)
                     {
+                        
                         ++counter;
                         if(counter >= length)
                         {
