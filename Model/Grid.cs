@@ -45,6 +45,32 @@ namespace Vsite.Oom.Battleship.Model
             // test .Aggregate(GetHorizontalAvaliablePlacements) za spajanje dvije kolekcije
         }
 
+        private IEnumerable<IEnumerable<Square>> GetVerticalAvaliablePlacements(int length)
+        {
+            List<IEnumerable<Square>> result = new List<IEnumerable<Square>>();
+
+            for (int r = 0; r < Columns; r++)
+            {
+                var queue = new LimitedQueue<Square>(length);
+                for (int c = 0; c < Rows; c++)
+                {
+                    if (squares[r, c] != null)
+                    {
+                        queue.Enqueue(squares[r, c]!);
+                        if (queue.Count() == length)
+                        {
+                            result.Add(queue.ToArray());
+                        }
+                    }
+                    else
+                    {
+                        queue.Clear();
+                    }
+                }
+            }
+            return result;
+        }
+
         private IEnumerable<IEnumerable<Square>> GetHorizontalAvaliablePlacements(int length)
         {
             List<IEnumerable<Square>>result=new List<IEnumerable<Square>>();
