@@ -26,7 +26,6 @@ namespace Vsite.Oom.Battleship.Model
 
         public IEnumerable<IEnumerable<Square>> GetAvailablePlacements(int length)
         {
-            //return GetHorizontalAvailablePlacements(length);
             return GetVerticalAvailablePlacements(length).Concat(GetHorizontalAvailablePlacements(length));
         }
 
@@ -36,26 +35,21 @@ namespace Vsite.Oom.Battleship.Model
 
             for (int r = 0; r < Rows; r++)
             {
-                int counter = 0;
+                var queue = new LimitedQueue<Square>(length);
 
                 for (int c = 0;c < Columns; c++)
                 {
                     if (squares[r, c] != null)
                     {
-                        ++counter;
-                        if (counter >= length)
+                        queue.Enqueue(squares[r, c]!);
+                        if (queue.Count() >= length)
                         {
-                            List<Square> temp = new List<Square>();
-                            for (int c1 = c - length + 1; c1 <= c; ++c1)
-                            {
-                                temp.Add(squares[r, c1]!);
-                            }
-                            result.Add(temp);
+                            result.Add(queue.ToArray());
                         }
                     }
                     else
                     {
-                        counter = 0;
+                        queue.Clear();
                     }
                 }
             }
@@ -69,26 +63,22 @@ namespace Vsite.Oom.Battleship.Model
 
             for (int c = 0; c < Columns; c++)
             {
-                int counter = 0;
+                var queue = new LimitedQueue<Square>(length);
 
                 for (int r = 0; r < Rows; r++)
                 {
                     if (squares[r, c] != null)
                     {
-                        ++counter;
-                        if (counter >= length)
+                        queue.Enqueue(squares[r, c]!);
+                        if (queue.Count() >= length)
                         {
-                            List<Square> temp = new List<Square>();
-                            for (int r1 = r - length + 1; r1 <= r; ++r1)
-                            {
-                                temp.Add(squares[r1, c]!);
-                            }
-                            result.Add(temp);
+                            result.Add(queue.ToArray());
                         }
+
                     }
                     else
                     {
-                        counter = 0;
+                        queue.Clear();
                     }
                 }
             }
