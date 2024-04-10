@@ -36,5 +36,16 @@ namespace Vsite.Oom.Battleship.Model.Tests
 
             Assert.AreEqual(6, grid.GetAvailablePlacements(shipLength).Count());
         }
+
+        [TestMethod]
+        public void GetAvailablePlacementsForGrid5x5Returns20PlacementsForShipWith4Squares()
+        {
+            int rows = 5;
+            int columns = 5;
+            int shipLength = 4;
+            Grid grid = new(rows, columns);
+
+            Assert.AreEqual(20, grid.GetAvailablePlacements(shipLength).Count());
+        }
     }
 }
