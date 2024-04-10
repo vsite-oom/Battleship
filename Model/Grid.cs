@@ -60,25 +60,20 @@ namespace Vsite.Oom.Battleship.Model
 
             for (int r = 0; r < Rows; r++)  // Idemo po redovima.
             {
-                int counter = 0;  // Na pocetku reda imamo brojac kojeg postavljamo na 0.
+                var queue = new LimitedQueue<Square>(length);
                 for (int c = 0; c < Columns; c++)  // U svakom redu idemo polje po polje (stupac po stupac).
                 {
                     if (squares[r, c] != null)  // Ako je polje slobodno...
                     {
-                        ++counter;  // ...povećamo brojač.
-                        if (counter >= length)  // Ako je brojač veći ili jednak traženoj duljini...
+                        queue.Enqueue(squares[r, c]!);
+                        if (queue.Count() == length)
                         {
-                            List<Square> temp = new List<Square>();  // ...napravimo listu polja u koja stane brod.
-                            for (int c1 = c - length + 1; c1 <= c; ++c1)
-                            {
-                                temp.Add(squares[r, c1]!);
-                            }
-                            result.Add(temp);  // Dodamo listu u rezultat.
+                            result.Add(queue.ToArray());
                         }
                     }
                     else  // Ako smo naletili na eliminirano polje, brojač se vraća na 0.
                     {
-                        counter = 0;
+                        queue.Clear();
                     }
                 }
             }
@@ -91,25 +86,20 @@ namespace Vsite.Oom.Battleship.Model
 
             for (int c = 0; c < Columns; c++)  // Idemo po stupcima.
             {
-                int counter = 0;  // Na pocetku stupca imamo brojac kojeg postavljamo na 0.
+                var queue = new LimitedQueue<Square>(length);
                 for (int r = 0; r < Rows; r++)  // U svakom stupcu idemo polje po polje (red po red).
                 {
                     if (squares[r, c] != null)  // Ako je polje slobodno...
                     {
-                        ++counter;  // ...povećamo brojač.
-                        if (counter >= length)  // Ako je brojač veći ili jednak traženoj duljini...
+                        queue.Enqueue(squares[r, c]!);
+                        if (queue.Count() == length)
                         {
-                            List<Square> temp = new List<Square>();  // ...napravimo listu polja u koja stane brod.
-                            for (int r1 = r - length + 1; r1 <= r; ++r1)
-                            {
-                                temp.Add(squares[r1, c]!);
-                            }
-                            result.Add(temp);  // Dodamo listu u rezultat.
+                            result.Add(queue.ToArray());
                         }
                     }
                     else  // Ako smo naletili na eliminirano polje, brojač se vraća na 0.
                     {
-                        counter = 0;
+                        queue.Clear();
                     }
                 }
             }
