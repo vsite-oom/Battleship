@@ -7,15 +7,14 @@ namespace Vsite.Oom.Battleship.Model.Tests
     public class SquareTests
     {
         [TestMethod]
-        public void ConstructorCreatesSquareWithGivenRowAndColumnProvided()
+        public void ConstructorCreatesSquareWithRowAndColumnProvided()
         {
             int row = 4;
-            int col = 8;
-            var square = new Square(row, col);
+            int column = 8;
+            var square = new Square(row, column);
 
             Assert.AreEqual(row, square.Row);
-            Assert.AreEqual(col, square.Column);
-
+            Assert.AreEqual(column, square.Column);
         }
     }
 }
