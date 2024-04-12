@@ -34,51 +34,27 @@ namespace Vsite.Oom.Battleship.Model
 
         public IEnumerable<IEnumerable<Square>> GetAvailablePlacements(int length)
         {
-            return GetHorizontalAvailablePlacements(length).Concat(GetVerticalAvailablePlacements(length));
+
+            return GetAvailablePlacements(length, true).Concat(GetAvailablePlacements(length, false));
         }
 
-        private IEnumerable<IEnumerable<Square>> GetHorizontalAvailablePlacements(int length)
+        private IEnumerable<IEnumerable<Square>> GetAvailablePlacements(int length, bool isHorizontal)
         {
             List<IEnumerable<Square>> result = new();
 
-            for (int r = 0; r < Rows; r++)
+            for (int i = 0; i < (isHorizontal ? Rows : Columns); i++)
             {
                 var queue = new LimitedQueue<Square>(length);
 
-                for (int c = 0; c < Columns; c++)
+                for (int j = 0; j < (isHorizontal ? Columns : Rows); j++)
                 {
-                    if (squares[r, c] != null)
+                    int rowId = isHorizontal ? i : j;
+                    int colId = isHorizontal ? j : i;
+
+                    if (squares[rowId, colId] != null)
                     {
-                        queue.Enqueue(squares[r, c]!);
-                        
-                        if(queue.Count >= length)
-                        {
-                            result.Add(queue.ToArray());
-                        }
-                    }
-                    else
-                    {
-                        queue.Clear();
-                    }
-                }
-            }
+                        queue.Enqueue(squares[rowId, colId]!);
 
-            return result;
-        }
-
-        private IEnumerable<IEnumerable<Square>> GetVerticalAvailablePlacements(int length)
-        {
-            List<IEnumerable<Square>> result = new List<IEnumerable<Square>>();
-
-            for (int c = 0; c < Columns; ++c)
-            {
-                var queue = new LimitedQueue<Square>(length);
-
-                for (int r = 0; r < Rows; ++r)
-                {
-                    if (squares[r, c] != null)
-                    {
-                        queue.Enqueue(squares[r, c]!);
                         if (queue.Count >= length)
                         {
                             result.Add(queue.ToArray());
@@ -90,6 +66,7 @@ namespace Vsite.Oom.Battleship.Model
                     }
                 }
             }
+
             return result;
         }
         
