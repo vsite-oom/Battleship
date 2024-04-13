@@ -14,5 +14,18 @@ namespace Vsite.OOM.Battleship.Model
             fleetGrid = new Grid(gridRows, gridColumns);
             shipLengths = new List<int>(shipLength);
         }
+
+        public Fleet CreateFleet()
+        {
+            var fleet=new Fleet();
+            for(int i = 0; i < shipLengths.Count; ++i)
+            {
+                var candidates = fleetGrid.GetAvailablePlacements(shipLengths[i]);
+                var selectedIndex = random.Next(candidates.Count());
+                var selected = candidates.ElementAt(selectedIndex);
+                fleet.CreateShip(selected);
+            }
+            throw new NotImplementedException();
+        }
     }
 }
