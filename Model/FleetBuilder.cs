@@ -8,5 +8,15 @@ namespace Vsite.Oom.Battleship.Model
 {
     public class FleetBuilder
     {
+        public FleetBuilder(int gridRows, int gridColumns, int[] shiplengths)
+        {
+            fleetGrid = new Grid(gridRows, gridColumns);
+            this.shiplengths = new List<int>(shiplengths);
+        }
+
+        private readonly Grid fleetGrid;
+
+        private readonly List<int> shiplengths;
+       
     }
 }
