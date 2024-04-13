@@ -2,7 +2,7 @@
 using System;
 using vsite.oom.battleship.model;
 
-namespace vsite.oom.Battleship.model.Tests
+namespace Vsite.Oom.Battleship.Model.Tests
 {
     [TestClass]
     public class SquareTests

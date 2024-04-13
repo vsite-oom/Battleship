@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace vsite.oom.battleship.model
+namespace Vsite.Oom.Battleship.Model
 {
     public class Grid
     {
