@@ -7,7 +7,7 @@ namespace Vsite.Oom.Battleship.Model
 
         public IEnumerable<Ship> Ships { get { return ships; } }
 
-        public void CreateShip(List<Square> squares)
+        public void CreateShip(IEnumerable<Square> squares)
         {
             ships.Add(new Ship(squares));
         }
