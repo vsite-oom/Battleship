@@ -1,5 +1,8 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Vsite.OOM.Battleship.Model.Tests
 {
@@ -7,39 +10,72 @@ namespace Vsite.OOM.Battleship.Model.Tests
     public class GridTests
     {
         [TestMethod]
-        public void ConstructorSquareSum()
+        public void ConstructorCreatesGridWith50SquaresFor5RowsAnd10Columns()
         {
             int rows = 5;
-            int cols = 10;
-            var grid=new Grid(rows, cols);
-            Assert.AreEqual(rows * cols, grid.squares.Count());
+            int columns = 10;
+            Grid grid = new Grid(rows, columns);
+            Assert.AreEqual(50, grid.Squares.Count());
         }
+
         [TestMethod]
-        public void GetAvailableHorizontalPlacmentsTest()
+        public void GetAvailablePlacementsForGrid1x5Returns3PlacementsForShipWith3Squares()
         {
             int rows = 1;
-            int cols = 5;
+            int columns = 5;
             int shipLength = 3;
-            var grid = new Grid(rows, cols);
+            Grid grid = new(rows, columns);
+
             Assert.AreEqual(3, grid.GetAvailablePlacements(shipLength).Count());
         }
+
         [TestMethod]
-        public void GetAvailableVerticalPlacmentsTest()
+        public void GetAvailablePlacementsForGrid7x1Returns6PlacementsForShipWith2Squares()
         {
             int rows = 7;
-            int cols = 1;
+            int columns = 1;
             int shipLength = 2;
-            var grid = new Grid(rows, cols);
+            Grid grid = new(rows, columns);
+
             Assert.AreEqual(6, grid.GetAvailablePlacements(shipLength).Count());
         }
+
         [TestMethod]
-        public void GetAvailablPlacmentsTest()
+        public void GetAvailablePlacementsForGrid5x5Returns20PlacementsForShipWith4Squares()
         {
             int rows = 5;
-            int cols = 5;
+            int columns = 5;
             int shipLength = 4;
-            var grid = new Grid(rows, cols);
+            Grid grid = new(rows, columns);
+
             Assert.AreEqual(20, grid.GetAvailablePlacements(shipLength).Count());
+        }
+
+        [TestMethod]
+        public void GetAvailablePlacementsForGrid1x6Returns3PlacementsForShipWith2SquaresAfterSquareInColumn3IsEliminated()
+        {
+            int rows = 1;
+            int columns = 6;
+            int shipLength = 2;
+            Grid grid = new(rows, columns);
+
+            grid.EliminateSquare(0, 3);
+
+            Assert.AreEqual(3, grid.GetAvailablePlacements(shipLength).Count());
+        }
+
+        [TestMethod]
+        public void GetAvailablePlacementsForGrid8x1Returns3PlacementsForShipWith2SquaresAfterSquaresInRows3And5AreEliminated()
+        {
+            int rows = 8;
+            int columns = 1;
+            int shipLength = 2;
+            Grid grid = new(rows, columns);
+
+            grid.EliminateSquare(3, 0);
+            grid.EliminateSquare(5, 0);
+
+            Assert.AreEqual(3, grid.GetAvailablePlacements(shipLength).Count());
         }
     }
 }

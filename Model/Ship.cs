@@ -6,8 +6,15 @@ using System.Threading.Tasks;
 
 namespace Vsite.OOM.Battleship.Model
 {
-    internal class Ship
+    public class Ship
     {
-
+        private readonly IEnumerable<Square> squares;
+        public Ship(IEnumerable<Square> squares) {
+            this.squares = squares;
+        }
+        public bool Contains(int row, int column)
+        {
+            return squares.FirstOrDefault(sq=> sq.Row==row && sq.Column==column) != null;
+        }
     }
 }

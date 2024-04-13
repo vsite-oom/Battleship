@@ -6,7 +6,14 @@ using System.Threading.Tasks;
 
 namespace Vsite.OOM.Battleship.Model
 {
-    internal class Fleet
+    public class Fleet
     {
+        private List<Ship> ships = new List<Ship>();
+        public IEnumerable<Ship> Ships { get {  return ships; } }
+
+        public void CreateShip(List<Square> squares)
+        {
+            ships.Add(new Ship(squares));
+        }
     }
 }
