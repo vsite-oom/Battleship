@@ -4,7 +4,15 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <RootNamespace>Vsite.Oom.Batelship.Model</RootNamespace>
+    <RootNamespace>Vsite.Oom.Battleship.Model</RootNamespace>
   </PropertyGroup>
+
+  <ItemGroup>
+    <EditorConfigFiles Remove="C:\Users\Korisnik\Source\Repos\Battleship\Model\.editorconfig" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="C:\Users\Korisnik\Source\Repos\Battleship\Model\.editorconfig" />
+  </ItemGroup>
 
 </Project>
