@@ -1,7 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-
-namespace Vsite.Oom.Battleship.Model.Tests
+﻿namespace Vsite.Oom.Battleship.Model.Tests
 {
     [TestClass]
     public class GridTests

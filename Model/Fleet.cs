@@ -1,10 +1,9 @@
-﻿using System.Net.Mail;
-using System.Threading.Channels;
-
-namespace Vsite.Oom.Battleship.Model
+﻿namespace Vsite.Oom.Battleship.Model
 {
     public class Fleet
     {
-        
+        private List<Ship> ships = new List<Ship>();
+
+        public IEnumerable<Ship> Ships { get {  return ships; } }
     }
 }
