@@ -19,7 +19,7 @@ namespace Vsite.Oom.Battleship.Model.Tests
         }
 
         [TestMethod]
-        public void GetAvailablePlacementsForGrid1x5ReturnsXPlacementsForShipWith3Squares()
+        public void GetAvailablePlacementsForGrid1x5Returns3PlacementsForShipWith3Squares()
         {
             int shipLength = 3;
             var grid = new Grid(1, 5);
