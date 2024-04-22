@@ -21,10 +21,11 @@ namespace Vsite.Oom.Battleship.Model.Tests
         public void ForSquares3x9to4x9Returns18SquaresIncludingSurroundingSquares()
         {
             var eliminator = new SquareEliminator();
-            var shipSquares = new List<Square> { new Square(3, 9), new Square(4, 9) };
+            var shipSquares = new List<Square> {new Square(3, 9), new Square(4, 9) };
 
 
-            Assert.AreEqual(18, eliminator.ToEliminate(shipSquares, 10, 10).Count());
+            var toEliminate = eliminator.ToEliminate(shipSquares, 10, 10);
+            Assert.AreEqual(8, toEliminate.Count());
         }
     }
 }
