@@ -8,10 +8,10 @@ namespace vste.oom.battleship.model
 {
 	public class FleetBuilder
 	{
-		public FleetBuilder(int gridRows, int gridColums, int[] shipLengths) 
+		public FleetBuilder(int gridRows, int gridColums, int[] shipLengths)
 		{
 			fleetGrid = new Grid(gridRows, gridColums);
-			this.shipLengths=new List<int>(shipLengths.OrderByDescending(length => length));
+			this.shipLengths = new List<int>(shipLengths.OrderByDescending(length => length));
 		}
 
 		private readonly Grid fleetGrid;
@@ -28,12 +28,19 @@ namespace vste.oom.battleship.model
 
 				fleet.CreateShip(selected);
 
+				var toEliminate = eliminator.ToEliminate(selected, fleetGrid.Rows, fleetGrid.Columns);
+				foreach(var coordinate in toEliminate)
+				{
+					fleetGrid.EliminateSquare(coordinate.Row, coordinate.Column);
+				}
 
 			}
 
 			return fleet;
 		}
 
-		private readonly Random random;
+		private readonly Random random = new Random();
+
+		private readonly SquareEliminator eliminator = new SquareEliminator();
 	}
 }

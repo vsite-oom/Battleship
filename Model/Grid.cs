@@ -71,5 +71,10 @@ namespace vste.oom.battleship.model
 			}
 			return result;
 		}
+
+		public void EliminateSquare(int row, int column)
+		{
+			squares[row, column] = null;
+		}
 	}
 }
