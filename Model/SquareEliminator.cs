@@ -3,7 +3,7 @@ namespace Vsite.Oom.Battleship.Model
 {
     public class SquareEliminator
     {
-        public IEnumerable<SquareCoordinates> ToELiminate(List<Square> shipSquares, int rows, int columns)
+        public IEnumerable<SquareCoordinates> ToEliminate(IEnumerable<Square> shipSquares, int rows, int columns)
         {
             var first = shipSquares.First();
             int firstRow = first.Row;
