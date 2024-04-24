@@ -30,13 +30,18 @@ namespace Vsite.OOM.Battleship.Model
 
                 fleet.CreateShip(selected);
 
-
+                var toEliminate=eliminator.ToEliminate(selected,fleetGrid.Rows, fleetGrid.Columns);
+                foreach(var coords in toEliminate)
+                {
+                    fleetGrid.EliminateSquare(coords.row, coords.col);
+                }
 
             }
 
             return fleet;
         }
 
-        private readonly Random random;
+        private readonly Random random = new Random();
+        private readonly SquareEliminator eliminator=new SquareEliminator();
     }
 }
