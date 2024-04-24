@@ -9,7 +9,7 @@ namespace Vsite.Oom.Battleship.Model.Tests
         [TestMethod]
         public void EnqueueInsertsItemToQueue()
         {
-            var queue = new LimitedQueue<int>(3);
+            var queue = new LimitedQueue<int>(3);  // Radi jednostavnosti smo napravili LimitedQueue s int umjesto Square.
 
             Assert.AreEqual(0, queue.Count);
 
@@ -30,9 +30,9 @@ namespace Vsite.Oom.Battleship.Model.Tests
 
             Assert.AreEqual(3, queue.Count);
 
-            queue.Enqueue(4);
-            Assert.AreEqual(3, queue.Count);
-            Assert.IsFalse(queue.Contains(1));
+            queue.Enqueue(4);  // Kad pokušamo ubaciti 4. element u red duljine 3...
+            Assert.AreEqual(3, queue.Count);  // ...duljina mu mora ostati 3.
+            Assert.IsFalse(queue.Contains(1));  // Provjerimo da se broj 1 više ne nalazi u redu (FIFO).
 
             queue.Enqueue(5);
             Assert.AreEqual(3, queue.Count);

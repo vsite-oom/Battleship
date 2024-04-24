@@ -9,16 +9,19 @@ namespace Vsite.Oom.Battleship.Model
 {
     public class LimitedQueue<T> : Queue<T>
     {
-        public LimitedQueue(int maxItems)
+        public LimitedQueue(int maxItems)  // Konstruktor prima duljinu queuea (duljinu broda).
         {
             this.maxItems = maxItems;
         }
         
         private readonly int maxItems;
 
+        // Ako ne napišemo override, onda u potpunosti skrivamo
+        // istoimenu metodu iz bazne klase, ali u tom slučaju
+        // trebamo napisati 'new' da ne dobivamo warning:
         public new void Enqueue(T item)
         {
-            while (Count >= maxItems)
+            while (Count >= maxItems)  // Count je property klase Queue.
             {
                 Dequeue();
             }

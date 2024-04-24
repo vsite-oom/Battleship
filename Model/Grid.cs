@@ -65,15 +65,15 @@ namespace Vsite.Oom.Battleship.Model
                 {
                     if (squares[r, c] != null)  // Ako je polje slobodno...
                     {
-                        queue.Enqueue(squares[r, c]!);
-                        if (queue.Count() == length)
+                        queue.Enqueue(squares[r, c]!);  // ...dodamo ga u red.
+                        if (queue.Count() == length)  // Ako smo dosegli traženi broj polja u redu...
                         {
-                            result.Add(queue.ToArray());
+                            result.Add(queue.ToArray());  // ...kopiramo elemente reda u niz i dodamo u result.
                         }
                     }
-                    else  // Ako smo naletili na eliminirano polje, brojač se vraća na 0.
+                    else  // Ako smo naletili na eliminirano polje...
                     {
-                        queue.Clear();
+                        queue.Clear();  // ...ispraznimo red i krećemo iz početka.
                     }
                 }
             }
@@ -91,22 +91,22 @@ namespace Vsite.Oom.Battleship.Model
                 {
                     if (squares[r, c] != null)  // Ako je polje slobodno...
                     {
-                        queue.Enqueue(squares[r, c]!);
-                        if (queue.Count() == length)
+                        queue.Enqueue(squares[r, c]!);  // ...dodamo ga u red.
+                        if (queue.Count() == length)  // Ako smo dosegli traženi broj polja u redu...
                         {
-                            result.Add(queue.ToArray());
+                            result.Add(queue.ToArray());  // ...kopiramo elemente reda u niz i dodamo u result.
                         }
                     }
-                    else  // Ako smo naletili na eliminirano polje, brojač se vraća na 0.
+                    else  // Ako smo naletili na eliminirano polje...
                     {
-                        queue.Clear();
+                        queue.Clear();  // ...ispraznimo red i krećemo iz početka.
                     }
                 }
             }
             return result;
         }
 
-        public void EliminateSquare(int row, int column)
+        public void EliminateSquare(int row, int column)  // Metoda za eliminiranje polja na koja smo postavili brod.
         {
             squares[row, column] = null;
         }
