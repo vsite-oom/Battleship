@@ -16,5 +16,12 @@ namespace Vsite.OOM.Battleship.Model
             Row = row;
             Column = column;
         }
+        
+        private bool hit = false;
+        public bool IsHit => hit;
+        public void Hit()
+        {
+            hit = true;
+        }
     }
 }
