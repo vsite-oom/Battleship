@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 
 namespace vste.oom.battleship.model
 {
@@ -15,5 +16,14 @@ namespace vste.oom.battleship.model
 		}
 		public readonly int Row;
 		public readonly int Column;
+
+		public void Hit()
+		{
+			hit = true;
+		}
+
+		public bool isHit => hit;
+
+		private bool hit = false;
 	}
 }
