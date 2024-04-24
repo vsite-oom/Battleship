@@ -10,5 +10,13 @@
 
         public readonly int Row;
         public readonly int Column;
+
+        public void Hit()
+        {
+            hit = true;
+        }
+
+        private bool hit = false;
+        public bool IsHit => hit;
     }
 }
