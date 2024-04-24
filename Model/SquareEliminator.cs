@@ -8,34 +8,36 @@ namespace Vsite.OOM.Battleship.Model
 {
     public class SquareEliminator
     {
-        public IEnumerable<SquareCoordinate> ToEliminate(List<Square> shipSquares, int rows,int columns)
+        public IEnumerable<SquareCoordinate> ToEliminate(IEnumerable<Square> shipSquares, int rows, int columns)
         {
-            var first=shipSquares.First();
-            var last=shipSquares.Last();
-            int firstRow=first.Row;
-            int firstCol=first.Column;
-            int lastRow=last.Row;
-            int lastCol=last.Column;
+            var first = shipSquares.First();
+            int firstRow = first.Row;
+            int firstColumn = first.Column;
             if (firstRow > 0)
             {
                 --firstRow;
             }
-            if (firstCol > 0)
+            if (firstColumn > 0)
             {
-                --firstCol;
+                --firstColumn;
             }
-            if(lastRow < rows-1)
+
+            var last = shipSquares.Last();
+            int lastRow = last.Row;
+            int lastColumn = last.Column;
+            if (lastRow < rows - 1)
             {
                 ++lastRow;
             }
-            if (lastCol < columns)
+            if (lastColumn < columns - 1)
             {
-                ++lastCol;
+                ++lastColumn;
             }
-            var result=new List<SquareCoordinate>();
-            for(int r = firstRow; r < lastRow; ++r)
+
+            var result = new List<SquareCoordinate>();
+            for (int r = firstRow; r <= lastRow; ++r)
             {
-                for(int c = firstCol; c < lastCol; ++c)
+                for (int c = firstColumn; c <= lastColumn; ++c)
                 {
                     result.Add(new SquareCoordinate(r, c));
                 }
