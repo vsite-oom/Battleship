@@ -49,7 +49,7 @@
             int cols = 6;
             int shipLength = 2;
             var grid = new Grid(rows, cols);
-            grid.EleminateSquare(0, 3);
+            grid.EliminateSquare(0, 3);
 
             Assert.AreEqual(3, grid.GetAvailablePlacements(shipLength).Count());
         }
@@ -60,8 +60,8 @@
             int cols = 1;
             int shipLength = 2;
             var grid = new Grid(rows, cols);
-            grid.EleminateSquare(3, 0);
-            grid.EleminateSquare(5, 0);
+            grid.EliminateSquare(3, 0);
+            grid.EliminateSquare(5, 0);
 
             Assert.AreEqual(3, grid.GetAvailablePlacements(shipLength).Count());
         }

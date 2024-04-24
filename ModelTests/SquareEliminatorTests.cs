@@ -22,7 +22,7 @@ namespace Vsite.Oom.Battleship.Model.Tests
             var toEliminate = eliminator.ToEliminate(shipSquares, 10, 10);
             Assert.AreEqual(8, toEliminate.Count());
 
-            //TODO
+             
         }
     }
 }
