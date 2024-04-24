@@ -33,7 +33,7 @@ namespace Vsite.Oom.Battleship.Model
         }
 
         /// <summary>
-        /// Function that has function delegate to access grid squares.
+        /// Function that has function delegate to access grid Squares.
         /// In above call we first get horizontal positions, then we transpose (r -> c, c -> r) our 2d matrix with Squares,
         /// and get positions for new matrix. (in short, we iterate 2 times trough rows to get positions, first time for horizontal positions,
         /// but second time we transpose matrix for vertical positions)

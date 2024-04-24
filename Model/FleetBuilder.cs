@@ -4,13 +4,14 @@
     {
         //FirstPart -> Initialization of game; 
 
-        private Grid fleetGrid;
+        private Grid? fleetGrid;
         private readonly List<int> shipLengths;
         private readonly Random random = new Random();
         private readonly SquareEliminator eliminator = new SquareEliminator();
 
         public FleetBuilder(int gridRows, int gridColumns, int[] shipLengths)
         {
+            fleetGrid = new Grid(gridRows, gridColumns);
             this.shipLengths = new List<int>(shipLengths.OrderByDescending(length => length));
         }
 
@@ -18,13 +19,11 @@
         {
             var fleet = new Fleet();
 
-            fleetGrid = new Grid(fleetGrid.Rows, fleetGrid.Columns);
-
             try
             {
                 foreach (var shipPositions in shipLengths)
                 {
-                    var candidates = fleetGrid.GetAvailablePlacements((shipPositions));
+                    var candidates = fleetGrid?.GetAvailablePlacements((shipPositions));
                     var selectedIndex = random!.Next(candidates.Count());
                     var selected = candidates.ElementAt(selectedIndex);
                     fleet.CreateShip(selected);
@@ -38,8 +37,9 @@
 
                 }
             }
-            catch (Exception)
+            catch (NullReferenceException)
             {
+                var noviGrid = new Grid(fleetGrid!.Rows, fleetGrid!.Columns);
                 return CreateFleet();
             }
 

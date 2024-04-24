@@ -20,5 +20,20 @@ namespace Vsite.Oom.Battleship.Model.Tests
 
             
         }
+
+        [TestMethod]
+        public void CreateFleetBuildsFleetWithShipsOfLengthProvided()
+        {
+            int rows = 10;
+            int cols = 10;
+            int[] shipLengths = { 2, 2, 2, 2, 3, 3, 3, 4, 4, 5 };
+
+            FleetBuilder builder = new FleetBuilder(rows, cols, shipLengths);
+            var fleet = builder.CreateFleet();
+
+            Assert.AreEqual(4, fleet.Ships.Count(s => s.Squares.Count() == 2));
+
+
+        }
     }
 }
