@@ -1,15 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Vsite.Oom.Battleship.Model
+﻿namespace Vsite.Oom.Battleship.Model
 {
     public class Ship
     {
-        public Ship(IEnumerable<Square> squares) 
-        { 
+        public enum HitResult
+        {
+            Missed,
+            Hit,
+            Sunken
+        }
+
+        public Ship(IEnumerable<Square> squares)
+        {
             Squares = squares;
         }
 
@@ -18,6 +19,15 @@ namespace Vsite.Oom.Battleship.Model
         public bool Contains(int row, int column)
         {
             return Squares.FirstOrDefault(sq => sq.Row == row && sq.Column == column) != null;
+        }
+
+        public HitResult Hit(int row, int column)
+        {
+            if (Contains(row, column) == false)
+            {
+                return HitResult.Missed;
+            }
+            throw new NotImplementedException();
         }
     }
 }

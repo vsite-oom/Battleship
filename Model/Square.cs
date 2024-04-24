@@ -1,4 +1,6 @@
-﻿namespace Vsite.Oom.Battleship.Model
+﻿using System.Runtime.InteropServices;
+
+namespace Vsite.Oom.Battleship.Model
 {
     public class Square
     {
@@ -10,5 +12,13 @@
 
         public readonly int Row;
         public readonly int Column;
+
+        public void Hit()
+        {
+            hit = true;
+        }
+
+        private bool hit = false;
     }
+
 }
