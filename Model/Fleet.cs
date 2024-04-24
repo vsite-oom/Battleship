@@ -11,5 +11,11 @@ namespace Vsite.Oom.Battleship.Model
         private List<Ship> ships = new List<Ship>();
 
         public IEnumerable<Ship> Ships { get { return ships; } }
+
+        public void CreateShip(List<Square> squares)
+        {
+            var ship = new Ship(squares);
+            ships.Add(ship);  // "Mogli smo dodati kroz konstruktor, ali smo radi preglednosti ovako napravili".
+        }
     }
 }
