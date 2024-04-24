@@ -2,16 +2,16 @@
 {
     public class Ship
     {
-        private readonly IEnumerable<Square> squares;
+        public readonly IEnumerable<Square> Squares;
 
         public Ship(IEnumerable<Square> squares)
         {
-            this.squares = squares;
+            Squares = squares;
         }
 
         public bool Contains(int row, int column)
         {
-            return squares.FirstOrDefault(s => s.Row == row && s.Column == column) is not null;
+            return Squares.FirstOrDefault(s => s.Row == row && s.Column == column) is not null;
         }
     }
 }

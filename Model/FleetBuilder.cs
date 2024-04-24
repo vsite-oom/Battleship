@@ -5,6 +5,7 @@
         private readonly Grid fleetGrid;
         private readonly List<int> shipLengths;
         private readonly Random random = new();
+        private readonly SquareEliminator eliminator = new();
 
         public FleetBuilder(int gridRows, int gridColumns, int[] shipLengths)
         {
@@ -23,6 +24,12 @@
                 var selected = candidates.ElementAt(selectedIndex);
 
                 fleet.CreateShip(selected);
+
+                var toEliminate = eliminator.ToEliminate(selected, fleetGrid.Rows, fleetGrid.Columns);
+                foreach (var coordinate in toEliminate)
+                {
+                    fleetGrid.EliminateSquare(coordinate.Row, coordinate.Column);
+                }
             }
 
             return fleet;
