@@ -21,6 +21,7 @@ namespace Vsite.Oom.Battleship.Model
         public Fleet CreateFleet()
         {
             var fleet = new Fleet();
+            //doma dodati petlju ako je null onda pozvati ponovo jer  više nema mjesta za brodove, tako da generira cijelu ploču ponovo
             for (int i = 0; i < shiplengths.Count; i++)
             {
                 var candidates = fleetGrid.GetVerticalAvailablePlacements(shiplengths[i]);
@@ -29,13 +30,20 @@ namespace Vsite.Oom.Battleship.Model
 
                 fleet.CreateShip(selected);
 
+                var toEliminate = eliminator.ToEliminate(selected, fleetGrid.Rows, fleetGrid.Columns);
+                foreach(var coordinate in toEliminate)
+                {
+                    fleetGrid.EliminateSquare(coordinate.Row, coordinate.Column);
+                }
 
             }
 
             return fleet;
         }
 
-        private readonly Random random;
+        private readonly Random random = new Random();
+
+        private readonly SquareEliminator eliminator = new SquareEliminator();
        
     }
 }
