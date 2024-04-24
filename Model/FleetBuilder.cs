@@ -24,13 +24,18 @@
 
                 fleet.CreateShip(selected);
 
-
-
+                var toEliminate = eliminator.ToEliminate(selected, fleetGrid.Rows, fleetGrid.Columns);
+                foreach (var coordinate in toEliminate)
+                {
+                    fleetGrid.EleminateSquare(coordinate.Row, coordinate.Column);
+                }
             }
 
             return fleet;
         }
 
-        private readonly Random random;
+        private readonly Random random = new Random();
+
+        private readonly SquareEliminator eliminator = new SquareEliminator();
     }
 }
