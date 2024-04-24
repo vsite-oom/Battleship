@@ -2,7 +2,7 @@
 {
     public class SquareEliminator
     {
-        public IEnumerable<SquareCoordinate> ToEliminate(List<Square> shipSquares, int rows, int columns)
+        public IEnumerable<SquareCoordinate> ToEliminate(IEnumerable<Square> shipSquares, int rows, int columns)
         {
             var first = shipSquares.First();
             int firstRow = first.Row;

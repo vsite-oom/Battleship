@@ -74,8 +74,6 @@ namespace Vsite.Oom.Battleship.Model
             return result;
         }
 
-
-
         public void EleminateSquare(int row, int column)
         {
             _squares[row, column] = null;
