@@ -22,7 +22,7 @@ namespace Vsite.Oom.Battleship.Model
         public Fleet CreateFleet()
         {
             var fleet = new Fleet();
-
+            
             for (int i = 0; i < shipLengths.Count; ++i)
             {
                 var candidates = fleetGrid.GetAvailablePlacements(shipLengths[i]);
@@ -30,11 +30,19 @@ namespace Vsite.Oom.Battleship.Model
                 var selected = candidates.ElementAt(selectedIndex);
 
                 fleet.CreateShip(selected);
+
+                var toEliminate = eliminator.ToEliminate(selected, fleetGrid.Rows, fleetGrid.Columns);
+                foreach (var coordinate in toEliminate)
+                {
+                    fleetGrid.EliminateSquare(coordinate.Row, coordinate.Column);
+                }
             }
 
             return fleet;
         }
 
-        private readonly Random random;  // "Da ne inicijalizira svaki puta daj generator slučajnih brojeva unutar metode staviti ćemo ga kao member klase."
+        private readonly Random random = new Random();  // "Da ne inicijalizira svaki puta daj generator slučajnih brojeva unutar metode staviti ćemo ga kao member klase."
+
+        private readonly SquareEliminator eliminator = new SquareEliminator();
     }
 }

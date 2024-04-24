@@ -11,7 +11,7 @@ namespace Vsite.Oom.Battleship.Model
     // Prijašnjih godina su se koristili Squareovi, ali to je kompliciralo kod."
     public class SquareEliminator
     {
-        public  IEnumerable<SquareCoordinate> ToEliminate(List<Square> shipSquares, int rows, int columns)
+        public  IEnumerable<SquareCoordinate> ToEliminate(IEnumerable<Square> shipSquares, int rows, int columns)
         {
             // Grid vraća već sortirane Squareove od najlijevijeg, najgornjeg, prema dolje, pa ovdje možemo pretpostaviti da će nam prvi imati najmanje koordinate.
             var first = shipSquares.First();
