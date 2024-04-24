@@ -10,7 +10,8 @@ namespace Vsite.Oom.Battleship.Model
     {
         private readonly Grid fleetGrid;
         private readonly List<int> shipLengths;
-        private readonly Random random;
+        private readonly Random random = new Random();
+        private readonly SquareEliminator eliminator = new SquareEliminator();
         public FleetBuilder(int gridRows, int gridColumns, int[] shipLengths)
         {
             fleetGrid = new Grid(gridRows, gridColumns);
@@ -19,6 +20,7 @@ namespace Vsite.Oom.Battleship.Model
 
         public Fleet CreateFleet()
         {
+            //dodati provjeru: ukoliko nema mjesta za brod, kreni ispočetka (fleetBuilder prebaciti isto)
             var fleet = new Fleet();
             for(int i=0; i<shipLengths.Count; ++i)
             {
@@ -27,7 +29,11 @@ namespace Vsite.Oom.Battleship.Model
                 var selected = candidates.ElementAt(selectedIndex);
                 fleet.CreateShip(selected);
 
-
+                var toEliminate = eliminator.ToEliminate(selected, fleetGrid.Rows, fleetGrid.Columns);
+                foreach (var coordinate in toEliminate)
+                {
+                    fleetGrid.EliminateSquare(coordinate.Row, coordinate.Column);
+                }
             }
             return fleet;
         }
