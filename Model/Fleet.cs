@@ -1,15 +1,14 @@
-﻿namespace Vsite.Oom.Battleship.Model
+﻿namespace Vsite.Oom.Battleship.Model;
+
+public class Fleet
 {
-    public class Fleet
+    private readonly List<Ship> ships = new();
+
+    public IEnumerable<Ship> Ships => ships;
+
+    public void CreateShip(IEnumerable<Square> squares)
     {
-        private List<Ship> ships = new List<Ship>();
-
-        public IEnumerable<Ship> Ships { get { return ships; } }
-
-        public void CreateShip(IEnumerable<Square> squares)
-        {
-            var ship = new Ship(squares);
-            ships.Add(ship);
-        }
+        var ship = new Ship(squares);
+        ships.Add(ship);
     }
 }

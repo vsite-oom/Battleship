@@ -1,21 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace Vsite.Oom.Battleship.Model;
 
-namespace Vsite.Oom.Battleship.Model
+public class LimitedQueue<T>(int maxItems) : Queue<T>
 {
-    public class LimitedQueue<T>(int maxItems) : Queue<T>
-    {
-        private readonly int maxItems = maxItems;
+    private readonly int maxItems = maxItems;
 
-        public new void Enqueue(T item)
-        {
-            if(Count >= maxItems)
-                Dequeue();
-            base.Enqueue(item);
-        }
-        
+    public new void Enqueue(T item)
+    {
+        if (Count >= maxItems)
+            Dequeue();
+        base.Enqueue(item);
     }
 }

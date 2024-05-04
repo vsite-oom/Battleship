@@ -1,49 +1,47 @@
-﻿namespace Vsite.Oom.Battleship.Model
+﻿namespace Vsite.Oom.Battleship.Model;
+
+public class FleetBuilder
 {
-    public class FleetBuilder
+    private readonly SquareEliminator eliminator = new();
+    //FirstPart -> Initialization of game; 
+
+    private readonly Grid? fleetGrid;
+    private readonly Random random = new();
+
+    private readonly List<int> shipLengths;
+
+    public FleetBuilder(int gridRows, int gridColumns, int[] shipLengths)
     {
-        //FirstPart -> Initialization of game; 
+        fleetGrid = new Grid(gridRows, gridColumns);
+        this.shipLengths = new List<int>(shipLengths.OrderByDescending(length => length));
+    }
 
-        private Grid? fleetGrid;
-        private readonly List<int> shipLengths;
-        private readonly Random random = new Random();
-        private readonly SquareEliminator eliminator = new SquareEliminator();
+    public Fleet CreateFleet()
+    {
+        var fleet = new Fleet();
 
-        public FleetBuilder(int gridRows, int gridColumns, int[] shipLengths)
+        try
         {
-            fleetGrid = new Grid(gridRows, gridColumns);
-            this.shipLengths = new List<int>(shipLengths.OrderByDescending(length => length));
+            foreach (var shipPositions in shipLengths)
+            {
+                var candidates = fleetGrid?.GetAvailablePlacements(shipPositions);
+                var selectedIndex = random.Next(candidates!.Count());
+                if (candidates == null)
+                    continue;
+                var selected = candidates.ElementAt(selectedIndex);
+                fleet.CreateShip(selected);
+
+                var toEliminate = eliminator.ToEliminate(selected, fleetGrid!.Rows, fleetGrid!.Columns);
+
+                foreach (var coordinate in toEliminate) fleetGrid.EleminateSquare(coordinate.Row, coordinate.Column);
+            }
+        }
+        catch (NullReferenceException)
+        {
+            var noviGrid = new Grid(fleetGrid!.Rows, fleetGrid!.Columns);
+            return CreateFleet();
         }
 
-        public Fleet CreateFleet()
-        {
-            var fleet = new Fleet();
-
-            try
-            {
-                foreach (var shipPositions in shipLengths)
-                {
-                    var candidates = fleetGrid?.GetAvailablePlacements((shipPositions));
-                    var selectedIndex = random!.Next(candidates.Count());
-                    var selected = candidates.ElementAt(selectedIndex);
-                    fleet.CreateShip(selected);
-
-                    var toEliminate = eliminator.ToEliminate(selected, fleetGrid.Rows, fleetGrid.Columns);
-
-                    foreach (var coordinate in toEliminate)
-                    {
-                        fleetGrid.EleminateSquare(coordinate.Row, coordinate.Column);
-                    }
-
-                }
-            }
-            catch (NullReferenceException)
-            {
-                var noviGrid = new Grid(fleetGrid!.Rows, fleetGrid!.Columns);
-                return CreateFleet();
-            }
-
-            return fleet;
-        }
+        return fleet;
     }
 }

@@ -1,25 +1,21 @@
-﻿namespace Vsite.Oom.Battleship.Model
+﻿namespace Vsite.Oom.Battleship.Model;
+
+public class Square
 {
-    public class Square
+    public readonly int Column;
+
+    public readonly int Row;
+
+    public Square(int row, int column)
     {
+        Row = row;
+        Column = column;
+    }
 
-        public Square(int row, int column)
-        {
-            this.Row = row;
-            this.Column = column;
-        }
+    public bool IsHit { get; private set; }
 
-        public readonly int Row;
-        public readonly int Column;
-
-        private bool hit = false;
-        public bool IsHit => hit;
-
-        public void Hit()
-        {
-            hit = true;
-        }
-
-        
+    public void Hit()
+    {
+        IsHit = true;
     }
 }

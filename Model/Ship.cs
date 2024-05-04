@@ -1,38 +1,30 @@
-﻿using System.Collections.Immutable;
+﻿namespace Vsite.Oom.Battleship.Model;
 
-namespace Vsite.Oom.Battleship.Model
+public enum HitResult
 {
-    public enum HitResult
+    Missed,
+    Hit,
+    Sunken
+}
+
+public class Ship
+{
+    public readonly IEnumerable<Square> Squares;
+
+    public Ship(IEnumerable<Square> squares)
     {
-        Missed,
-        Hit,
-        Sunken
+        Squares = squares;
     }
 
-    public class Ship
+    public bool Contains(int row, int column)
     {
-        public Ship(IEnumerable<Square> squares)
-        {
-            Squares = squares;
-        }
-
-        public readonly IEnumerable<Square> Squares;
-
-        public bool Contains(int row, int column)
-        {
-            return Squares.FirstOrDefault(sq => sq.Row == row && sq.Column == column) != null;
-        }
-
-        public HitResult Hit(int row, int column)
-        {
-
-            if(!Contains(row, column))
-            {
-                return HitResult.Missed;
-            }
-
-            throw new NotImplementedException();
-        }
+        return Squares.FirstOrDefault(sq => sq.Row == row && sq.Column == column) != null;
     }
 
+    public HitResult Hit(int row, int column)
+    {
+        if (!Contains(row, column)) return HitResult.Missed;
+
+        throw new NotImplementedException();
+    }
 }

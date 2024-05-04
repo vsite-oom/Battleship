@@ -1,102 +1,100 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace Vsite.Oom.Battleship.Model.Tests;
 
-namespace Vsite.Oom.Battleship.Model.Tests
+[TestClass]
+public class SquareEliminatorTests
 {
-    [TestClass]
-    public class SquareEliminatorTests
+    [TestMethod]
+    public void ForSquares4x3To4x6Returns18SquaresIncludingSurroundingSquares()
     {
-        [TestMethod]
-        public void ForSquares4x3To4x6Returns18SquaresIncludingSurroundingSquares()
+        var eliminator = new SquareEliminator();
+        var shipSquares = new List<Square>
         {
-            var eliminator = new SquareEliminator();
-            var shipSquares = new List<Square> 
-            { 
-                new Square(4, 3),
-                new Square(4, 4),
-                new Square(4, 5),
-                new Square(4, 6)
-            };
+            new(4, 3),
+            new(4, 4),
+            new(4, 5),
+            new(4, 6)
+        };
 
-            Assert.AreEqual(18, eliminator.ToEliminate(shipSquares, 10, 10).Count());
-        }
-        [TestMethod]
-        public void ForSquares3x9To4x9Returns8SquaresIncludingSurroundingSquares()
-        {
-            var eliminator = new SquareEliminator();
-            var shipSquares = new List<Square>
-            {
-                new Square(3, 9), 
-                new Square(4, 9)
-            };
+        Assert.AreEqual(18, eliminator.ToEliminate(shipSquares, 10, 10).Count());
+    }
 
-            var toEliminate = eliminator.ToEliminate(shipSquares, 10, 10);
-            Assert.AreEqual(8, toEliminate.Count());
-        }
+    [TestMethod]
+    public void ForSquares3x9To4x9Returns8SquaresIncludingSurroundingSquares()
+    {
+        var eliminator = new SquareEliminator();
+        var shipSquares = new List<Square>
+        {
+            new(3, 9),
+            new(4, 9)
+        };
 
-        [TestMethod]
-        public void ForSquares0x3To0x4Returns8SquaresIncludingSurroundingSquares()
+        var toEliminate = eliminator.ToEliminate(shipSquares, 10, 10);
+        Assert.AreEqual(8, toEliminate.Count());
+    }
+
+    [TestMethod]
+    public void ForSquares0x3To0x4Returns8SquaresIncludingSurroundingSquares()
+    {
+        var eliminator = new SquareEliminator();
+        var shipSquares = new List<Square>
         {
-            var eliminator = new SquareEliminator();
-            var shipSquares = new List<Square>
-            {
-                new Square(0, 3),
-                new Square(0, 4)
-            };
-            var toEliminate = eliminator.ToEliminate(shipSquares, 10, 10);
-            Assert.AreEqual(8, toEliminate.Count());
-        }
-        [TestMethod]
-        public void ForSquares5x0To5x1Returns9SquaresIncludingSurroundingSquares()
+            new(0, 3),
+            new(0, 4)
+        };
+        var toEliminate = eliminator.ToEliminate(shipSquares, 10, 10);
+        Assert.AreEqual(8, toEliminate.Count());
+    }
+
+    [TestMethod]
+    public void ForSquares5x0To5x1Returns9SquaresIncludingSurroundingSquares()
+    {
+        var eliminator = new SquareEliminator();
+        var shipSquares = new List<Square>
         {
-            var eliminator = new SquareEliminator();
-            var shipSquares = new List<Square>
-            {
-                new Square(5, 0), 
-                new Square(5, 1)
-            };
-            var toEliminate = eliminator.ToEliminate(shipSquares, 10, 10);
-            Assert.AreEqual(9, toEliminate.Count());
-        }
-        [TestMethod]
-        public void ForSquares7x5To9x5Returns12SquaresIncludingSurroundingSquares()
+            new(5, 0),
+            new(5, 1)
+        };
+        var toEliminate = eliminator.ToEliminate(shipSquares, 10, 10);
+        Assert.AreEqual(9, toEliminate.Count());
+    }
+
+    [TestMethod]
+    public void ForSquares7x5To9x5Returns12SquaresIncludingSurroundingSquares()
+    {
+        var eliminator = new SquareEliminator();
+        var shipSquares = new List<Square>
         {
-            var eliminator = new SquareEliminator();
-            var shipSquares = new List<Square>
-            {
-                new Square(7, 5), 
-                new Square(8, 5), 
-                new Square(9, 5)
-            };
-            var toEliminate = eliminator.ToEliminate(shipSquares, 10, 10);
-            Assert.AreEqual(12, toEliminate.Count());
-        }
-        [TestMethod]
-        public void ForSquares0x0To0x1Returns6SquaresIncludingSurroundingSquares()
+            new(7, 5),
+            new(8, 5),
+            new(9, 5)
+        };
+        var toEliminate = eliminator.ToEliminate(shipSquares, 10, 10);
+        Assert.AreEqual(12, toEliminate.Count());
+    }
+
+    [TestMethod]
+    public void ForSquares0x0To0x1Returns6SquaresIncludingSurroundingSquares()
+    {
+        var eliminator = new SquareEliminator();
+        var shipSquares = new List<Square>
         {
-            var eliminator = new SquareEliminator();
-            var shipSquares = new List<Square>
-            {
-                new Square(0, 0), 
-                new Square(0, 1)
-            };
-            var toEliminate = eliminator.ToEliminate(shipSquares, 10, 10);
-            Assert.AreEqual(6, toEliminate.Count());
-        }
-        [TestMethod]
-        public void ForSquares8x9To9x9Returns6SquaresIncludingSurroundingSquares()
+            new(0, 0),
+            new(0, 1)
+        };
+        var toEliminate = eliminator.ToEliminate(shipSquares, 10, 10);
+        Assert.AreEqual(6, toEliminate.Count());
+    }
+
+    [TestMethod]
+    public void ForSquares8x9To9x9Returns6SquaresIncludingSurroundingSquares()
+    {
+        var eliminator = new SquareEliminator();
+        var shipSquares = new List<Square>
         {
-            var eliminator = new SquareEliminator();
-            var shipSquares = new List<Square>
-            {
-                new Square(8, 9), 
-                new Square(9, 9)
-            };
-            var toEliminate = eliminator.ToEliminate(shipSquares, 10, 10);
-            Assert.AreEqual(6, toEliminate.Count());
-        }
+            new(8, 9),
+            new(9, 9)
+        };
+        var toEliminate = eliminator.ToEliminate(shipSquares, 10, 10);
+        Assert.AreEqual(6, toEliminate.Count());
     }
 }
