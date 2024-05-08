@@ -15,10 +15,10 @@ namespace Vsite.Oom.Battleship.Model
 
         public void Hit()
         {
-            hit = true;
+            IsHit = true;
         }
 
-        private bool hit = false;
+        public bool IsHit = false;
     }
 
 }

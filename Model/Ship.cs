@@ -1,13 +1,14 @@
 ﻿namespace Vsite.Oom.Battleship.Model
 {
+    public enum HitResult
+    {
+        Missed,
+        Hit,
+        Sunken
+    }
+
     public class Ship
     {
-        public enum HitResult
-        {
-            Missed,
-            Hit,
-            Sunken
-        }
 
         public Ship(IEnumerable<Square> squares)
         {
@@ -23,11 +24,19 @@
 
         public HitResult Hit(int row, int column)
         {
-            if (Contains(row, column) == false)
+            var square = Squares.FirstOrDefault(sq => sq.Row == row && sq.Column == column);
+            if (square == null)
             {
                 return HitResult.Missed;
             }
-            throw new NotImplementedException();
+
+            square.Hit();
+
+            if (Squares.All(sq => sq.IsHit))
+            {
+                return HitResult.Sunken;
+            }
+            return HitResult.Hit;
         }
     }
 }
