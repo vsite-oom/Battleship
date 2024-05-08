@@ -15,5 +15,9 @@ namespace Vsite.OOM.Battleship.Model
         {
             ships.Add(new Ship(squares));
         }
+        public HitResult Hit(int r, int c)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
