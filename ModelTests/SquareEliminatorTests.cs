@@ -14,8 +14,27 @@ namespace Vsite.Oom.Battleship.Model.Tests
 
             var shipSquares = new List<Square> { new Square(4, 3), new Square(4, 4), new Square(4, 5), new Square(4, 6) };
 
-            Assert.AreEqual(18, eliminator.ToEliminate(shipSquares, 10, 10).Count());  // Na osnovu polja koja smo proslijedili za brod vraća koordinate svih polja koja treba eliminirati.
+            var toEliminate = eliminator.ToEliminate(shipSquares, 10, 10);  // Na osnovu polja koja smo proslijedili za brod vraća koordinate svih polja koja treba eliminirati.
+           
+            Assert.AreEqual(18, toEliminate.Count());  
 
+            var corners = new List<SquareCoordinate> { new SquareCoordinate(3, 2),
+                                                       new SquareCoordinate(3, 7),
+                                                       new SquareCoordinate(5, 2),
+                                                       new SquareCoordinate(5, 7) };
+            foreach (var coordinate in toEliminate)
+            {
+                foreach (var corner in corners)
+                {
+                    if (coordinate.Row == corner.Row && coordinate.Column == corner.Column)
+                    {
+                        corners.Remove(corner);
+                        break;
+                    }
+                }
+            }
+            
+            Assert.AreEqual(0, corners.Count());  // Check if boundary coordinates are included (we check only corners, not all.)
         }
 
         [TestMethod]
@@ -26,9 +45,26 @@ namespace Vsite.Oom.Battleship.Model.Tests
             var shipSquares = new List<Square> { new Square(3, 9), new Square(4, 9) };
 
             var toEliminate = eliminator.ToEliminate(shipSquares, 10, 10);
+           
             Assert.AreEqual(8, toEliminate.Count());
 
-            //TODO: check if boundary coordinates are included
+            var corners = new List<SquareCoordinate> { new SquareCoordinate(2, 8), 
+                                                       new SquareCoordinate(2, 9),
+                                                       new SquareCoordinate(5, 8),
+                                                       new SquareCoordinate(5, 9) };
+            foreach (var coordinate in toEliminate)
+            {
+                foreach (var corner in corners)
+                {
+                    if (coordinate.Row == corner.Row && coordinate.Column == corner.Column)
+                    {
+                        corners.Remove(corner);
+                        break;
+                    }
+                }
+            }
+            
+            Assert.AreEqual(0, corners.Count());
         }
 
         [TestMethod]
@@ -38,8 +74,27 @@ namespace Vsite.Oom.Battleship.Model.Tests
 
             var shipSquares = new List<Square> { new Square(0, 3), new Square(0, 4) };
 
-            Assert.AreEqual(8, eliminator.ToEliminate(shipSquares, 10, 10).Count());
+            var toEliminate = eliminator.ToEliminate(shipSquares, 10, 10);
 
+            Assert.AreEqual(8, toEliminate.Count());
+
+            var corners = new List<SquareCoordinate> { new SquareCoordinate(0, 2),
+                                                       new SquareCoordinate(0, 5),
+                                                       new SquareCoordinate(1, 2),
+                                                       new SquareCoordinate(1, 5) };
+            foreach (var coordinate in toEliminate)
+            {
+                foreach (var corner in corners)
+                {
+                    if (coordinate.Row == corner.Row && coordinate.Column == corner.Column)
+                    {
+                        corners.Remove(corner);
+                        break;
+                    }
+                }
+            }
+
+            Assert.AreEqual(0, corners.Count());
         }
 
         [TestMethod]
@@ -49,8 +104,27 @@ namespace Vsite.Oom.Battleship.Model.Tests
 
             var shipSquares = new List<Square> { new Square(5, 0), new Square(5, 1) };
 
-            Assert.AreEqual(9, eliminator.ToEliminate(shipSquares, 10, 10).Count());
+            var toEliminate = eliminator.ToEliminate(shipSquares, 10, 10);
 
+            Assert.AreEqual(9, toEliminate.Count());
+
+            var corners = new List<SquareCoordinate> { new SquareCoordinate(4, 0),
+                                                       new SquareCoordinate(4, 2),
+                                                       new SquareCoordinate(6, 0),
+                                                       new SquareCoordinate(6, 2) };
+            foreach (var coordinate in toEliminate)
+            {
+                foreach (var corner in corners)
+                {
+                    if (coordinate.Row == corner.Row && coordinate.Column == corner.Column)
+                    {
+                        corners.Remove(corner);
+                        break;
+                    }
+                }
+            }
+
+            Assert.AreEqual(0, corners.Count());
         }
 
         [TestMethod]
@@ -60,8 +134,27 @@ namespace Vsite.Oom.Battleship.Model.Tests
 
             var shipSquares = new List<Square> { new Square(7, 5), new Square(8, 5), new Square(9, 5) };
 
-            Assert.AreEqual(12, eliminator.ToEliminate(shipSquares, 10, 10).Count());
+            var toEliminate = eliminator.ToEliminate(shipSquares, 10, 10);
 
+            Assert.AreEqual(12, toEliminate.Count());
+
+            var corners = new List<SquareCoordinate> { new SquareCoordinate(6, 4),
+                                                       new SquareCoordinate(6, 6),
+                                                       new SquareCoordinate(9, 4),
+                                                       new SquareCoordinate(9, 6) };
+            foreach (var coordinate in toEliminate)
+            {
+                foreach (var corner in corners)
+                {
+                    if (coordinate.Row == corner.Row && coordinate.Column == corner.Column)
+                    {
+                        corners.Remove(corner);
+                        break;
+                    }
+                }
+            }
+
+            Assert.AreEqual(0, corners.Count());
         }
 
         [TestMethod]
@@ -71,8 +164,26 @@ namespace Vsite.Oom.Battleship.Model.Tests
 
             var shipSquares = new List<Square> { new Square(0, 0), new Square(0, 1) };
 
-            Assert.AreEqual(6, eliminator.ToEliminate(shipSquares, 10, 10).Count());
+            var toEliminate = eliminator.ToEliminate(shipSquares, 10, 10);
 
+            Assert.AreEqual(6, toEliminate.Count());
+
+            var corners = new List<SquareCoordinate> { new SquareCoordinate(0, 2),
+                                                       new SquareCoordinate(1, 0),
+                                                       new SquareCoordinate(1, 2) };
+            foreach (var coordinate in toEliminate)
+            {
+                foreach (var corner in corners)
+                {
+                    if (coordinate.Row == corner.Row && coordinate.Column == corner.Column)
+                    {
+                        corners.Remove(corner);
+                        break;
+                    }
+                }
+            }
+
+            Assert.AreEqual(0, corners.Count());
         }
 
         [TestMethod]
@@ -82,8 +193,26 @@ namespace Vsite.Oom.Battleship.Model.Tests
 
             var shipSquares = new List<Square> { new Square(8, 9), new Square(9, 9) };
 
-            Assert.AreEqual(6, eliminator.ToEliminate(shipSquares, 10, 10).Count());
+            var toEliminate = eliminator.ToEliminate(shipSquares, 10, 10);
 
+            Assert.AreEqual(6, toEliminate.Count());
+
+            var corners = new List<SquareCoordinate> { new SquareCoordinate(7, 8),
+                                                       new SquareCoordinate(7, 9),
+                                                       new SquareCoordinate(9, 8) };
+            foreach (var coordinate in toEliminate)
+            {
+                foreach (var corner in corners)
+                {
+                    if (coordinate.Row == corner.Row && coordinate.Column == corner.Column)
+                    {
+                        corners.Remove(corner);
+                        break;
+                    }
+                }
+            }
+
+            Assert.AreEqual(0, corners.Count());
         }
     }
 }
