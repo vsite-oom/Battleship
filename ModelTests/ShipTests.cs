@@ -9,9 +9,55 @@ namespace Vsite.Oom.Battleship.Model.Tests
         [TestMethod]
         public void ConstructorCreatesShipWithSquaresProvidedd()
         {
-            var squares = new List<Square>{new Square(1, 3), new Square(1, 4), new Square(1, 5)};
+            var squares = new List<Square> { new Square(1, 3), new Square(1, 4), new Square(1, 5) };
             var ship = new Ship(squares);
             Assert.IsTrue(ship.Contains(1, 4));
         }
+        [TestMethod]
+        public void HitMethodReturnsMissedIfSquareIsNotPartOfShip()
+        {
+            var squares = new List<Square> { new Square(1, 3), new Square(1, 4), new Square(1, 5) };
+            var ship = new Ship(squares);
+
+            Assert.AreEqual(HitResult.Missed, ship.Hit(2, 4));
+        }
+        [TestMethod]
+        public void HitMethodReturnsHitIfSquareIsPartOfShip()
+        {
+            var squares = new List<Square> { new Square(1, 3), new Square(1, 4), new Square(1, 5) };
+            var ship = new Ship(squares);
+
+            Assert.AreEqual(HitResult.Hit, ship.Hit(1, 3));
+            Assert.AreEqual(HitResult.Hit, ship.Hit(1, 5));
+
+
+        }
+        [TestMethod]
+        public void HitMethodReturnsSunkenAfterLastSquareIsHitAgain()
+        {
+            var squares = new List<Square> { new Square(1, 3), new Square(1, 4), new Square(1, 5) };
+            var ship = new Ship(squares);
+            Assert.AreEqual(HitResult.Hit, ship.Hit(1, 3));
+            Assert.AreEqual(HitResult.Hit, ship.Hit(1, 5));
+
+            Assert.AreEqual(HitResult.Hit, ship.Hit(1, 3));
+
+        }
+        [TestMethod]
+        public void HitMethodReturnsSunkenAfterShipIsSunkenButSquareIsHitAgain()
+        {
+            var squares = new List<Square> { new Square(1, 3), new Square(1, 4), new Square(1, 5) };
+            var ship = new Ship(squares);
+            Assert.AreEqual(HitResult.Hit, ship.Hit(1, 3));
+            Assert.AreEqual(HitResult.Hit, ship.Hit(1, 5));
+
+            Assert.AreEqual(HitResult.Hit, ship.Hit(1, 3));
+
+        }
+
+
+
+
+
     }
 }
