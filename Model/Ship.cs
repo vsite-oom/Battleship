@@ -21,11 +21,19 @@
 
 		public hitResult Hit(int row, int column)
 		{
+			var square=Squares.FirstOrDefault(sq=>sq.Row == row && sq.Column == column);
 			if (Contains(row, column) == false)
 			{
 				return hitResult.Missed;
 			}
-			throw new NotImplementedException();
+			square.Hit();
+
+			if (Squares.All(sq => sq.isHit))
+			{
+				return hitResult.Sunken;
+			}
+			return hitResult.Hit;
 		}
+
 	}
 }
