@@ -26,9 +26,15 @@ namespace Vsite.Oom.Battleship.Model
 
         public HitResult Hit(int row, int column)
         {
+            var square = Squares.FirstOrDefault(sq => sq.Row == row && sq.Column == column);
             if (Contains(row, column) == false)
             {
                 return HitResult.Missed;
+            }
+            square.Hit();
+            if(Squares.All(sq => sq.IsHit))
+            {
+                return HitResult.Sunken;
             }
             return HitResult.Hit;
         }
