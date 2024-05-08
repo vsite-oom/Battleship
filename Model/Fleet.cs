@@ -17,5 +17,11 @@ namespace Vsite.Oom.Battleship.Model
             var ship = new Ship(squares);
             ships.Add(ship);
         }
+
+        public HitResult Hit(int row, int column)
+        {
+            //napraviti doma
+            throw new NotImplementedException();
+        }
     }
 }
