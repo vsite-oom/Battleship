@@ -26,7 +26,7 @@ namespace Vsite.OOM.Battleship.Model.Tests
             var builder = new FleetBuilder(rows, cols, shipLen);
             var fleet = builder.CreateFleet();
 
-            Assert.AreEqual(4, fleet.Ships.Count());
+            Assert.AreEqual(4, fleet.Ships.Count(s => s.Squares.Count() == 2));
         }
     }
 }
