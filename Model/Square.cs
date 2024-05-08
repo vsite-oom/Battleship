@@ -1,12 +1,10 @@
-﻿using System.Runtime.InteropServices;
-
-namespace Vsite.Oom.Battleship.Model
+﻿namespace Vsite.Oom.Battleship.Model
 {
     public class Square
     {
         public Square(int row, int column)
         {
-            Row = row; 
+            Row = row;
             Column = column;
         }
 
@@ -15,10 +13,10 @@ namespace Vsite.Oom.Battleship.Model
 
         public void Hit()
         {
-            IsHit = true;
+            hit = true;
         }
 
-        public bool IsHit = false;
+        private bool hit = false;
+        public bool IsHit => hit;
     }
-
 }
