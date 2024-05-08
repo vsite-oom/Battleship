@@ -17,5 +17,10 @@ namespace vste.oom.battleship.model
 			var ship=new Ship(squares);
 			ships.Add(ship);
 		}
+
+		public hitResult Hit(int row, int column)
+		{
+			throw new NotImplementedException();
+		}
 	}
 }
