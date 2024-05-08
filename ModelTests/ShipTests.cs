@@ -29,8 +29,16 @@ namespace Vsite.Oom.Battleship.Model.Tests
 
             Assert.AreEqual(HitResult.Hit, ship.Hit(1, 3));
             Assert.AreEqual(HitResult.Hit, ship.Hit(1, 5));
+        }
+        [TestMethod]
+        public void HitMethodReturnsSunkenIfLastSquareIsHit()
+        {
+            var squares = new List<Square> { new Square(1, 3), new Square(1, 4), new Square(1, 5) };
+            var ship = new Ship(squares);
 
-
+            Assert.AreEqual(HitResult.Hit, ship.Hit(1, 3));
+            Assert.AreEqual(HitResult.Hit, ship.Hit(1, 5));
+            Assert.AreEqual(HitResult.Sunken, ship.Hit(1, 4));
         }
         [TestMethod]
         public void HitMethodReturnsSunkenAfterLastSquareIsHitAgain()
@@ -39,25 +47,9 @@ namespace Vsite.Oom.Battleship.Model.Tests
             var ship = new Ship(squares);
             Assert.AreEqual(HitResult.Hit, ship.Hit(1, 3));
             Assert.AreEqual(HitResult.Hit, ship.Hit(1, 5));
+            Assert.AreEqual(HitResult.Sunken, ship.Hit(1, 4));
 
-            Assert.AreEqual(HitResult.Hit, ship.Hit(1, 3));
-
+            Assert.AreEqual(HitResult.Sunken, ship.Hit(1, 3));
         }
-        [TestMethod]
-        public void HitMethodReturnsSunkenAfterShipIsSunkenButSquareIsHitAgain()
-        {
-            var squares = new List<Square> { new Square(1, 3), new Square(1, 4), new Square(1, 5) };
-            var ship = new Ship(squares);
-            Assert.AreEqual(HitResult.Hit, ship.Hit(1, 3));
-            Assert.AreEqual(HitResult.Hit, ship.Hit(1, 5));
-
-            Assert.AreEqual(HitResult.Hit, ship.Hit(1, 3));
-
-        }
-
-
-
-
-
     }
 }

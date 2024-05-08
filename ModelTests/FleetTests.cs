@@ -24,11 +24,16 @@ namespace Vsite.Oom.Battleship.Model.Tests
         [TestMethod]
         public void HitMethodReturnsMissedForSquareNotInAnyShip()
         {
-            var fleet = new Fleet();
-            var squares = new List<Square> { new Square(1, 3), new Square(1, 4), new Square(1, 5) };
-            fleet.CreateShip(squares);
-            
-            
+            var fleet = CreateFleet();
+            Assert.AreEqual(HitResult.Missed, fleet.Hit(2, 4));
+        }
+        [TestMethod]
+        public void HitMethodReturnsHitForSquareInOneOfShip()
+        {
+            var fleet = CreateFleet();
+            Assert.AreEqual(HitResult.Hit, fleet.Hit(1, 3));
+            Assert.AreEqual(HitResult.Hit, fleet.Hit(1, 4));
+            Assert.AreEqual(HitResult.Hit, fleet.Hit(8, 4));
         }
         [TestMethod]
         public void HitMethodReturnsSunkenAfterLastSquareInFirstShipIsHit()
@@ -38,11 +43,8 @@ namespace Vsite.Oom.Battleship.Model.Tests
             Assert.AreEqual(HitResult.Hit, fleet.Hit(1, 3));
             Assert.AreEqual(HitResult.Hit, fleet.Hit(1, 4));
             Assert.AreEqual(HitResult.Sunken, fleet.Hit(1, 5));
-
-
-            
-            
-        }[TestMethod]
+        }
+        [TestMethod]
         public void HitMethodReturnsSunkenAfterLastSquareInSecondShipIsHit()
         {
             var fleet = CreateFleet();
@@ -53,10 +55,6 @@ namespace Vsite.Oom.Battleship.Model.Tests
 
             Assert.AreEqual(HitResult.Hit, fleet.Hit(8, 5));
             Assert.AreEqual(HitResult.Sunken, fleet.Hit(8, 4));
-
-
-            
-            
         }
 
 
