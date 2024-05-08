@@ -1,6 +1,4 @@
-﻿using System.Runtime.InteropServices;
-
-namespace Vsite.Oom.Battleship.Model
+﻿namespace Vsite.Oom.Battleship.Model
 {
     public class Square
     {
@@ -15,10 +13,10 @@ namespace Vsite.Oom.Battleship.Model
 
         public void Hit()
         {
-            IsHit = true;
+            hit = true;
         }
 
-        public bool IsHit = false;
+        private bool hit = false;
+        public bool IsHit => hit;
     }
-
 }
