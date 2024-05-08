@@ -66,6 +66,5 @@ public class ShipTests
         Assert.AreEqual(HitResult.Sunken, ship.Hit(1, 4));
 
         Assert.AreEqual(HitResult.Sunken, ship.Hit(1, 5));
-
     }
 }

@@ -28,4 +28,48 @@ public class FleetTests
 
         Assert.AreEqual(1, fleet.Ships.Count());
     }
+
+    [TestMethod]
+    public void HitMethodReturnsMissedForSquareNotInAnyShip()
+    {
+        Fleet fleet = CreateFleet();
+
+        Assert.AreEqual(HitResult.Missed, fleet.Hit(0, 0));
+        
+    }
+
+    [TestMethod]
+    public void HitMethodReturnsHitForSquareBelongingToAnyShip()
+    {
+        Fleet fleet = CreateFleet();
+
+        Assert.AreEqual(HitResult.Hit, fleet.Hit(1, 3));
+        Assert.AreEqual(HitResult.Hit, fleet.Hit(8, 4));
+        Assert.AreEqual(HitResult.Hit, fleet.Hit(1, 4));
+    }
+
+    [TestMethod]
+    public void HitMethodReturnsSunkenAfterLastSquareInFirstShipIsHit()
+    {
+        Fleet fleet = CreateFleet();
+
+        Assert.AreEqual(HitResult.Hit, fleet.Hit(1, 3));
+        Assert.AreEqual(HitResult.Hit, fleet.Hit(1, 4));
+        Assert.AreEqual(HitResult.Sunken, fleet.Hit(1, 5));
+
+        Assert.AreEqual(HitResult.Hit, fleet.Hit(8, 5));
+        Assert.AreEqual(HitResult.Sunken, fleet.Hit(8, 4));
+    }
+
+
+    private static Fleet CreateFleet()
+    {
+        var fleet = new Fleet();
+        var ship1 = new List<Square> { new(1, 3), new(1, 4), new(1, 5) };
+        fleet.CreateShip(ship1);
+        var ship2 = new List<Square> { new(8, 4), new(8, 5) };
+        fleet.CreateShip(ship2);
+
+        return fleet;
+    }
 }
