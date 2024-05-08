@@ -30,5 +30,72 @@ namespace Vsite.Oom.Battleship.Model.Tests
             fleet.CreateShip(squares);
             Assert.AreEqual(1, fleet.Ships.Count());
         }
+
+        [TestMethod]
+        public void HitMethodReturnsMissedForSquareNotInAnyShip()
+        {
+            var fleet = CreateFleet();
+
+            Assert.AreEqual(HitResult.Missed, fleet.Hit(0,0));
+        }
+        
+        [TestMethod]
+        public void HitMethodReturnsHitForSquareBelongingToAnyShip()
+        {
+            var fleet = CreateFleet();
+
+            Assert.AreEqual(HitResult.Hit, fleet.Hit(1,3));
+            Assert.AreEqual(HitResult.Hit, fleet.Hit(1,4));
+            Assert.AreEqual(HitResult.Hit, fleet.Hit(8,4));
+        }
+                
+        [TestMethod]
+        public void HitMethodReturnsSunkenAfterLastSqaureInFirstShipIsHit()
+        {
+            var fleet = CreateFleet();
+
+            Assert.AreEqual(HitResult.Hit, fleet.Hit(1,3));
+            Assert.AreEqual(HitResult.Hit, fleet.Hit(1,4));
+            Assert.AreEqual(HitResult.Sunken, fleet.Hit(1,5));
+        }
+                        
+        [TestMethod]
+        public void HitMethodReturnsSunkenAfterLastSqaureInSecondShipIsHit()
+        {
+            var fleet = CreateFleet();
+
+            Assert.AreEqual(HitResult.Hit, fleet.Hit(1, 3));
+            Assert.AreEqual(HitResult.Hit, fleet.Hit(1, 4));
+            Assert.AreEqual(HitResult.Sunken, fleet.Hit(1, 5));
+
+            Assert.AreEqual(HitResult.Hit, fleet.Hit(8,4));
+            Assert.AreEqual(HitResult.Sunken, fleet.Hit(8,5));
+        }
+
+
+
+
+        private Fleet CreateFleet()
+        {
+            var fleet = new Fleet();
+
+            var ship1 = new List<Square>
+            {
+                new Square(1, 3),
+                new Square(1, 4),
+                new Square(1, 5)
+            };
+
+            fleet.CreateShip(ship1);
+
+            var ship2 = new List<Square>
+            {
+                new Square(8, 4),
+                new Square(8, 5)
+            };
+
+            fleet.CreateShip(ship2);
+            return fleet;
+        }
     }
 }

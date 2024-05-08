@@ -1,4 +1,5 @@
 ﻿
+
 namespace Vsite.Oom.Battleship.Model
 {
     public class Fleet
@@ -10,6 +11,11 @@ namespace Vsite.Oom.Battleship.Model
         public void CreateShip(IEnumerable<Square> squares)
         {
             ships.Add(new Ship(squares));
+        }
+
+        public HitResult Hit(int row, int column)
+        {
+            throw new NotImplementedException();
         }
     }
 }
