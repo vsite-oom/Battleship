@@ -1,0 +1,21 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Vsite.Oom.Battleship.Model
+{
+    public class InlineTargetSelector : ITargetSelector
+    {
+        public SquareCoordinate Next()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void ProcessHitResult(HitResult hitResult)
+        {
+            throw new NotImplementedException();
+        }
+    }
+}
