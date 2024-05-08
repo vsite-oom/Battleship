@@ -11,4 +11,61 @@ public class ShipTests
 
         Assert.IsTrue(ship.Contains(1, 4));
     }
+
+    [TestMethod]
+    public void HitMethodReturnsMissedIfSquareIsNotPartOfShip()
+    {
+        var squares = new List<Square> { new(1, 3), new(1, 4), new(1, 5) };
+        var ship = new Ship(squares);
+
+        Assert.AreEqual(HitResult.Missed, ship.Hit(2, 4));
+    }
+
+    [TestMethod]
+    public void HitMethodReturnsHitIfSquareIsPartOfShip()
+    {
+        var squares = new List<Square> { new(1, 3), new(1, 4), new(1, 5) };
+        var ship = new Ship(squares);
+
+        Assert.AreEqual(HitResult.Hit, ship.Hit(1, 3));
+        Assert.AreEqual(HitResult.Hit, ship.Hit(1, 5));
+    }
+
+    [TestMethod]
+    public void HitMethodReturnsSunkenAfterLastSquareIsHit()
+    {
+        var squares = new List<Square> { new(1, 3), new(1, 4), new(1, 5) };
+        var ship = new Ship(squares);
+
+        Assert.AreEqual(HitResult.Hit, ship.Hit(1, 3));
+        Assert.AreEqual(HitResult.Hit, ship.Hit(1, 5));
+
+        Assert.AreEqual(HitResult.Sunken, ship.Hit(1, 4));
+    }
+
+    [TestMethod]
+    public void HitMethodReturnsHitAfterSquareIsHitAgain()
+    {
+        var squares = new List<Square> { new(1, 3), new(1, 4), new(1, 5) };
+        var ship = new Ship(squares);
+
+        Assert.AreEqual(HitResult.Hit, ship.Hit(1, 3));
+        Assert.AreEqual(HitResult.Hit, ship.Hit(1, 5));
+
+        Assert.AreEqual(HitResult.Hit, ship.Hit(1, 3));
+    }
+
+    [TestMethod]
+    public void HitMethodReturnsHitAfterShipIsSunkenButSquareIsHitAgain()
+    {
+        var squares = new List<Square> { new(1, 3), new(1, 4), new(1, 5) };
+        var ship = new Ship(squares);
+
+        Assert.AreEqual(HitResult.Hit, ship.Hit(1, 3));
+        Assert.AreEqual(HitResult.Hit, ship.Hit(1, 5));
+        Assert.AreEqual(HitResult.Sunken, ship.Hit(1, 4));
+
+        Assert.AreEqual(HitResult.Sunken, ship.Hit(1, 5));
+
+    }
 }
