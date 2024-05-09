@@ -18,7 +18,20 @@ namespace Vsite.OOM.Battleship.Model
         public ShootingTactics shootingTactics { get; private set; } = ShootingTactics.Random;
         public void ProcessHitResult(HitResult hitResult)
         {
-            throw new NotImplementedException();
+            switch (hitResult)
+            {
+                case HitResult.Sunken:
+                    {
+                        shootingTactics = ShootingTactics.Random;
+                        break;
+                    }
+                case HitResult.Hit:
+                    {
+                        shootingTactics = (shootingTactics == ShootingTactics.Random) ?
+                            shootingTactics = ShootingTactics.Surronding : shootingTactics = ShootingTactics.Inline;
+                        break;
+                    }
+            }
         }
         public Gunnery(int rows, int columns, IEnumerable<int> shipLengths)
         {
