@@ -78,6 +78,7 @@ namespace Vsite.Oom.Battleship.Model.Tests
             var ship2 = new List<Square> { new Square(8, 4), new Square(8, 5) };
 
             fleet.CreateShip(ship2);
+            
             return fleet;
         }
     }

@@ -18,9 +18,16 @@ namespace Vsite.Oom.Battleship.Model
             ships.Add(ship);  // "Mogli smo dodati kroz konstruktor, ali smo radi preglednosti ovako napravili".
         }
 
-        public HitResult Hit(int vrow, int column)
+        public HitResult Hit(int row, int column)
         {
-            throw new NotImplementedException();  // TODO: implementirati za DZ da prođu svi testovi
+            foreach (var ship in ships)
+            {
+                if (ship.Contains(row, column))
+                {
+                    return ship.Hit(row, column);
+                }
+            }
+            return HitResult.Missed;
         }
     }
 }
