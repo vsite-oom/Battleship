@@ -26,7 +26,49 @@ namespace Vsite.Oom.Battleship.Model
         }
         public void ProcessHitResult(HitResult hitResult)
         {
-            
+            switch (ShootingTactics)
+            {
+                case ShootingTactics.Random:
+                    {
+                        if (hitResult == HitResult.Missed)
+                        {
+                            ShootingTactics = ShootingTactics.Random;
+                        }
+                        else if (hitResult == HitResult.Hit)
+                        {
+                            ShootingTactics = ShootingTactics.Surrounding;
+                        }
+                        break;
+                    }
+                case ShootingTactics.Surrounding:
+                    {
+                        if (hitResult == HitResult.Missed)
+                        {
+                            ShootingTactics = ShootingTactics.Surrounding;
+                        }
+                        else if (hitResult == HitResult.Hit)
+                        {
+                            ShootingTactics = ShootingTactics.Inline;
+                        }
+                        else if (hitResult == HitResult.Sunken)
+                        {
+                            ShootingTactics = ShootingTactics.Random;
+                        }
+                        break;
+                    }
+                case ShootingTactics.Inline:
+                    {
+                        if (hitResult == HitResult.Missed || hitResult == HitResult.Hit)
+                        {
+                            ShootingTactics = ShootingTactics.Inline;
+                        }
+                        else if (hitResult == HitResult.Sunken)
+                        {
+                            ShootingTactics = ShootingTactics.Random;
+                        }
+                        break;
+                    }
+            }
         }
 
         public ShootingTactics ShootingTactics { get; private set; } = ShootingTactics.Random;  // Initially it will be random.

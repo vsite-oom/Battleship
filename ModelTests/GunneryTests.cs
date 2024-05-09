@@ -33,6 +33,7 @@ namespace Vsite.Oom.Battleship.Model.Tests
         public void ShootingTacticsRemainsSurroundingIfNextSquareIsMissed()
         {
             var gunnery = new Gunnery(10, 10, new List<int> { 1, 2, 3 });
+            gunnery.ProcessHitResult(HitResult.Hit);
             Assert.AreEqual(ShootingTactics.Surrounding, gunnery.ShootingTactics);
             gunnery.ProcessHitResult(HitResult.Missed);
             Assert.AreEqual(ShootingTactics.Surrounding, gunnery.ShootingTactics);
