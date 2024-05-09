@@ -30,11 +30,7 @@ namespace Vsite.Oom.Battleship.Model
             {
                 case ShootingTactics.Random:
                     {
-                        if (hitResult == HitResult.Missed)
-                        {
-                            ShootingTactics = ShootingTactics.Random;
-                        }
-                        else if (hitResult == HitResult.Hit)
+                        if (hitResult == HitResult.Hit)
                         {
                             ShootingTactics = ShootingTactics.Surrounding;
                         }
@@ -42,11 +38,7 @@ namespace Vsite.Oom.Battleship.Model
                     }
                 case ShootingTactics.Surrounding:
                     {
-                        if (hitResult == HitResult.Missed)
-                        {
-                            ShootingTactics = ShootingTactics.Surrounding;
-                        }
-                        else if (hitResult == HitResult.Hit)
+                        if (hitResult == HitResult.Hit)
                         {
                             ShootingTactics = ShootingTactics.Inline;
                         }
@@ -58,11 +50,7 @@ namespace Vsite.Oom.Battleship.Model
                     }
                 case ShootingTactics.Inline:
                     {
-                        if (hitResult == HitResult.Missed || hitResult == HitResult.Hit)
-                        {
-                            ShootingTactics = ShootingTactics.Inline;
-                        }
-                        else if (hitResult == HitResult.Sunken)
+                        if (hitResult == HitResult.Sunken)
                         {
                             ShootingTactics = ShootingTactics.Random;
                         }
