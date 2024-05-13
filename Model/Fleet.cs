@@ -1,6 +1,6 @@
 ﻿
-
 namespace Vsite.Oom.Battleship.Model
+
 {
     public class Fleet
     {
@@ -16,7 +16,26 @@ namespace Vsite.Oom.Battleship.Model
 
         public HitResult Hit(int row, int column)
         {
-            throw new NotImplementedException(); // domaca zadaca
+            foreach (var ship in ships)
+            {
+                foreach (var square in ship.Squares)
+                {
+                    if (square.Row == row && square.Column == column)
+                    {
+                        if (square.IsHit)
+                            continue;
+
+                        square.Hit();
+
+                        if (ship.Squares.All(s => s.IsHit))
+                            return HitResult.Sunken; 
+
+                        return HitResult.Hit;
+                    }
+                }
+            }
+
+            return HitResult.Missed;
         }
     }
 }
