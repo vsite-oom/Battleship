@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Vsite.Oom.Battleship.Model
+﻿namespace Vsite.Oom.Battleship.Model
 {   
     public enum ShootingTactics
     {
@@ -13,7 +6,7 @@ namespace Vsite.Oom.Battleship.Model
         Surrounding,
         Inline
     }
-    public class Gunnery // domaca zadaca
+    public class Gunnery  
     {
         public Gunnery(int rows, int columns, IEnumerable<int> shipLengths)
         {
@@ -30,7 +23,6 @@ namespace Vsite.Oom.Battleship.Model
         {
             if (hitResult == HitResult.Missed)
             {
-                // Nema promjene ako je promašaj
                 return;
             }
 
