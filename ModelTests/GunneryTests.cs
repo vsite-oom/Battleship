@@ -1,7 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-
-namespace Vsite.Oom.Battleship.Model.Tests
+﻿namespace Vsite.Oom.Battleship.Model.Tests
 {
     [TestClass]
     public class GunneryTests
@@ -9,10 +6,9 @@ namespace Vsite.Oom.Battleship.Model.Tests
         [TestMethod]
         public void InitialShootingTacticsIsRandom()
         {
-            var gunnery = new Gunnery(10, 10, new List<int> { 1,2,3});
+            var gunnery = new Gunnery(10, 10, new List<int> { 1, 2, 3 });
             Assert.AreEqual(ShootingTactics.Random, gunnery.ShootingTactics);
         }
-
         [TestMethod]
         public void ShootingTacticsRemainsRandomIfHitResultIsMissed()
         {
@@ -20,7 +16,6 @@ namespace Vsite.Oom.Battleship.Model.Tests
             gunnery.ProcessHitResult(HitResult.Missed);
             Assert.AreEqual(ShootingTactics.Random, gunnery.ShootingTactics);
         }
-
         [TestMethod]
         public void ShootingTacticsChangesToSurroundingAfterFirstSquareIsHit()
         {
@@ -28,9 +23,8 @@ namespace Vsite.Oom.Battleship.Model.Tests
             gunnery.ProcessHitResult(HitResult.Hit);
             Assert.AreEqual(ShootingTactics.Surrounding, gunnery.ShootingTactics);
         }
-
         [TestMethod]
-        public void ShootingTacticsRemainsSorroundingIfNextSquareIsMissed()
+        public void ShootingTacticsRemainsSurroundingIfNextSquareIsMissed()
         {
             var gunnery = new Gunnery(10, 10, new List<int> { 1, 2, 3 });
             gunnery.ProcessHitResult(HitResult.Hit);
@@ -38,9 +32,8 @@ namespace Vsite.Oom.Battleship.Model.Tests
             gunnery.ProcessHitResult(HitResult.Missed);
             Assert.AreEqual(ShootingTactics.Surrounding, gunnery.ShootingTactics);
         }
-
         [TestMethod]
-        public void ShootingTacticsChangesFromSurroundingToInLineAfterSecondSquareIsHit()
+        public void ShootingTacticsChangesFromSurroundingToInlineAfterSecondSquareIsHit()
         {
             var gunnery = new Gunnery(10, 10, new List<int> { 1, 2, 3 });
             gunnery.ProcessHitResult(HitResult.Hit);
@@ -48,9 +41,8 @@ namespace Vsite.Oom.Battleship.Model.Tests
             gunnery.ProcessHitResult(HitResult.Hit);
             Assert.AreEqual(ShootingTactics.Inline, gunnery.ShootingTactics);
         }
-
         [TestMethod]
-        public void ShootingTacticsRemainsInLineAfterThirdSquareIsHit()
+        public void ShootingTacticsRemainsInlineAfterThirdSquareIsHit()
         {
             var gunnery = new Gunnery(10, 10, new List<int> { 1, 2, 3 });
             gunnery.ProcessHitResult(HitResult.Hit);
@@ -60,9 +52,8 @@ namespace Vsite.Oom.Battleship.Model.Tests
             gunnery.ProcessHitResult(HitResult.Hit);
             Assert.AreEqual(ShootingTactics.Inline, gunnery.ShootingTactics);
         }
-
         [TestMethod]
-        public void ShootingTacticsRemainsInLineAfterThirdSquareIsMisse()
+        public void ShootingTacticsRemainsInlineAfterThirdSquareIsMissed()
         {
             var gunnery = new Gunnery(10, 10, new List<int> { 1, 2, 3 });
             gunnery.ProcessHitResult(HitResult.Hit);
@@ -72,9 +63,8 @@ namespace Vsite.Oom.Battleship.Model.Tests
             gunnery.ProcessHitResult(HitResult.Missed);
             Assert.AreEqual(ShootingTactics.Inline, gunnery.ShootingTactics);
         }
-
         [TestMethod]
-        public void ShootingChangesToRandomAfterShipIsSunken()
+        public void ShootingTacticsChangesToRandomAfterShipIsSunken()
         {
             var gunnery = new Gunnery(10, 10, new List<int> { 1, 2, 3 });
             gunnery.ProcessHitResult(HitResult.Hit);

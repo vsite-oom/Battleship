@@ -8,9 +8,21 @@ namespace Vsite.Oom.Battleship.Model
 {
     public class RandomTargetSelector : ITargetSelector
     {
+        private int rows;
+        private int columns;
+        private readonly Random random = new Random();
+
+        public RandomTargetSelector(int rows, int columns)
+        {
+            this.rows = rows;
+            this.columns = columns;
+        }
+
         public SquareCoordinate Next()
         {
-            throw new NotImplementedException();
+            LastHitCoordinate = new SquareCoordinate(random.Next(rows), random.Next(columns));
+            return LastHitCoordinate;
         }
+        public SquareCoordinate LastHitCoordinate { get; private set; }
     }
 }

@@ -6,14 +6,14 @@
         [TestMethod]
         public void ConstructorCreatesShipWithSquaresProvided()
         {
-            var squares = new List<Square>{new Square(1, 3), new Square(1, 4), new Square(1, 5)};
+            var squares = new List<Square> { new Square(1, 3), new Square(1, 4), new Square(1, 5) };
             var ship = new Ship(squares);
 
             Assert.IsTrue(ship.Contains(1, 4));
         }
 
         [TestMethod]
-        public void HitMethodReturnsMissedIfSquareIsNotPartOfShip()
+        public void HitMetodReturnsMissedIfSquareIsNotPartOfShip()
         {
             var squares = new List<Square> { new Square(1, 3), new Square(1, 4), new Square(1, 5) };
             var ship = new Ship(squares);
@@ -22,7 +22,7 @@
         }
 
         [TestMethod]
-        public void HitMethodReturnsHitIfSquareIsPartOfShip()
+        public void HitMetodReturnsHitIfSquareIsPartOfShip()
         {
             var squares = new List<Square> { new Square(1, 3), new Square(1, 4), new Square(1, 5) };
             var ship = new Ship(squares);
@@ -32,19 +32,7 @@
         }
 
         [TestMethod]
-        public void ShipMethodReturnsSunkenAfterLastSquareIsHit()
-        {
-            var squares = new List<Square> { new Square(1, 3), new Square(1, 4), new Square(1, 5) };
-            var ship = new Ship(squares);
-
-            Assert.AreEqual(HitResult.Hit, ship.Hit(1, 3));
-            Assert.AreEqual(HitResult.Hit, ship.Hit(1, 5));
-
-            Assert.AreEqual(HitResult.Sunken, ship.Hit(1, 4));
-        }
-
-        [TestMethod]
-        public void ShipMethodReturnsSunkenAfterLastSquareIsHitAgain()
+        public void HitMetodReturnsSunkenAfterLastSquareIsHit()
         {
             var squares = new List<Square> { new Square(1, 3), new Square(1, 4), new Square(1, 5) };
             var ship = new Ship(squares);
@@ -56,7 +44,7 @@
         }
 
         [TestMethod]
-        public void ShipMethodReturnsSunkenShipIsSunkenButSquareIsHitAgain()
+        public void HitMetodReturnsHitAfterSquareIsHitAgain()
         {
             var squares = new List<Square> { new Square(1, 3), new Square(1, 4), new Square(1, 5) };
             var ship = new Ship(squares);
@@ -64,12 +52,11 @@
             Assert.AreEqual(HitResult.Hit, ship.Hit(1, 3));
             Assert.AreEqual(HitResult.Hit, ship.Hit(1, 5));
 
-            Assert.AreEqual(HitResult.Sunken, ship.Hit(1, 4));
-            Assert.AreEqual(HitResult.Sunken, ship.Hit(1, 5));
+            Assert.AreEqual(HitResult.Hit, ship.Hit(1, 3));
         }
 
         [TestMethod]
-        public void ShipMethodReturnsSunkenAfterShipIsSunkenButSquareIsHitAgain()
+        public void HitMetodReturnsSunkenAfterShipIsSunkenButSquareIsHitAgain()
         {
             var squares = new List<Square> { new Square(1, 3), new Square(1, 4), new Square(1, 5) };
             var ship = new Ship(squares);
