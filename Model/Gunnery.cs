@@ -15,22 +15,22 @@ namespace Vsite.Oom.Battleship
     }
     public class Gunnery
     {
-        public Gunnery(int rows, int columns, IEnumerable<int>shipLengths)
+        private readonly Grid recordGrid;
+        private ITargetSelector targetSelector = new RandomTargetSelector();
+        public ShootingTactics ShootingTactics { get; private set; } = ShootingTactics.Random;
+        public Gunnery(int rows, int columns, IEnumerable<int> shipLengths)
         {
             recordGrid = new Grid(rows, columns);
         }
+
         public SquareCoordinate Next()
         {
             throw new NotImplementedException();
         }
-
         public void ProcessHitResult(HitResult hitResult)
         {
+            
             throw new NotImplementedException();
         }
-        public ShootingTactics ShootingTactics { get; private set; } = ShootingTactics.Random;
-        private readonly Grid recordGrid;
-
-        private ITargetSelector targetSelector=new RandomTargetSelector();
     }
 }
