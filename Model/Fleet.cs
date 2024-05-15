@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿// Ignore Spelling: Vsite Oom
 namespace Vsite.Oom.Battleship.Model
 {
     public class Fleet

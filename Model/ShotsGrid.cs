@@ -1,4 +1,5 @@
-﻿namespace Vsite.Oom.Battleship.Model
+﻿// Ignore Spelling: Vsite Oom
+namespace Vsite.Oom.Battleship.Model
 {
     public class ShotsGrid : Grid
     {
@@ -10,6 +11,11 @@
         protected override bool IsSquareAvailable(int row, int column)
         {
             return squares[row, column]?.SquareState == SquareState.Intact;
+        }
+
+        public Square GetSquare(int row, int column)
+        {
+            return squares[row, column]!;
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿namespace Vsite.Oom.Battleship.Model
+﻿// Ignore Spelling: Vsite Oom
+namespace Vsite.Oom.Battleship.Model
 {
     public abstract class Grid
     {

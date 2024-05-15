@@ -1,4 +1,4 @@
-﻿
+﻿// Ignore Spelling: Vsite Oom
 namespace Vsite.Oom.Battleship.Model
 {
     public class SquareEliminator
