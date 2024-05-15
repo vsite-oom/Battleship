@@ -42,7 +42,7 @@ namespace Vsite.Oom.Battleship.Model.Tests
         {
             Fleet fleet = CreateFleet();
             Assert.AreEqual(HitResult.Hit, fleet.Hit(1, 3));
-            Assert.AreEqual(HitResult.Hit, fleet.Hit(8, 4));
+            Assert.AreEqual(HitResult.Hit, fleet.Hit(1, 4));
             Assert.AreEqual(HitResult.Sunken, fleet.Hit(1, 5));
         }        
         

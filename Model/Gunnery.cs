@@ -14,6 +14,8 @@ namespace Vsite.Oom.Battleship.Model
         public Gunnery(int rows, int columns, IEnumerable<int> shipLengths)
         {
             recordGrid = new Grid(rows, columns);
+            this.shipLengths = new List<int>(shipLengths.OrderDescending());
+            targetSelector = new RandomTargetSelector(recordGrid, this.shipLengths[0]);
         }
 
         public Square Next()
@@ -43,7 +45,6 @@ namespace Vsite.Oom.Battleship.Model
                             Debug.Assert(false);
                             return;
                     }
-                    return;
                 case HitResult.Sunken:
                     ChangeTacticsToRandom();
                     return;
@@ -53,7 +54,7 @@ namespace Vsite.Oom.Battleship.Model
         private void ChangeTacticsToRandom()
         {
             ShootingTactics = ShootingTactics.Random;
-            targetSelector = new RandomTargetSelector();
+            targetSelector = new RandomTargetSelector(recordGrid, shipLengths[0]);
         }
 
         private void ChangeTacticsToInline()
@@ -72,9 +73,11 @@ namespace Vsite.Oom.Battleship.Model
 
         private readonly Grid recordGrid;
 
-        private ITargetSelector targetSelector = new RandomTargetSelector();
+        private ITargetSelector targetSelector;
 
         private Square target;
+
+        private readonly List<int> shipLengths = [];
 
     }
 }
