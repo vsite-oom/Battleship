@@ -15,7 +15,7 @@ namespace Vsite.OOM.Battleship.Model
     }
     public class Gunnery
     {
-        public readonly Grid recordGrid;
+        public readonly FleetGrid recordGrid;
         public ShootingTactics shootingTactics { get; private set; } = ShootingTactics.Random;
         private ITargetSelector targetSelector;
         public List<int> shipLengths;
@@ -46,7 +46,7 @@ namespace Vsite.OOM.Battleship.Model
         }
         public Gunnery(int rows, int columns, IEnumerable<int> shipLengths)
         {
-            recordGrid=new Grid(rows, columns);
+            recordGrid=new FleetGrid(rows, columns);
             this.shipLengths =new List<int>(shipLengths.OrderDescending());
             targetSelector = new RandomTargetSelector(recordGrid, this.shipLengths[0]);
         }
