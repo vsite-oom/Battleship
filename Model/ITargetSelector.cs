@@ -8,6 +8,6 @@ namespace vste.oom.battleship.model
 {
 	public interface ITargetSelector
 	{
-		SquareCoordinate Next();
+		Square Next();
 	}
 }
