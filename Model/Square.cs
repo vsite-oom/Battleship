@@ -9,21 +9,39 @@ namespace vste.oom.battleship.model
 {
 	public class Square
 	{
+		public enum SquareState
+		{
+			Intact,
+			Eliminated,
+			Missed,
+			Hit,
+			Sunken
+		}
 		public Square(int row, int column)
 		{
 			Row = row;
 			Column = column;
+			squareState = SquareState.Intact;
 		}
 		public readonly int Row;
 		public readonly int Column;
 
 		public void Hit()
 		{
-			hit = true;
+			squareState = SquareState.Hit;
 		}
 
-		public bool isHit => hit;
+		public void ChangeState(SquareState newState)
+		{
+			if (newState > (int)SquareState)
+			{
+				squareState = newState;
+			}
+		}
 
-		private bool hit = false;
+		public bool isHit => (int)squareState>=(int)SquareState.Hit;
+
+
+		public SquareState squareState { get; private set; }
 	}
 }
