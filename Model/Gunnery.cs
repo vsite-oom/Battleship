@@ -19,6 +19,8 @@ namespace vste.oom.battleship.model
 		public Gunnery(int rows, int columns, IEnumerable<int> shipLengths)
 		{
 			recordGrid = new Grid(rows, columns);
+			this.shipLengths = new List<int>(shipLengths.OrderDescending());
+			targetSelector = new RandomTargetSelector(recordGrid, this.shipLengths[0]);
 		}
 		public Square Next()
 		{
@@ -44,16 +46,17 @@ namespace vste.oom.battleship.model
 			else if (hitResult == hitResult.Sunken)
 			{
 				shootingTacticts = shootingTacticts.Random;
-				targetSelector = new RandomTargetSelector();
+				targetSelector = new RandomTargetSelector(recordGrid, shipLengths[0]);
 			}
 		}
 		public shootingTacticts shootingTacticts { get; private set; } = shootingTacticts.Random;
 
-
-
 		private readonly Grid recordGrid;
+
+		private readonly List<int> shipLengths = [];
+
 		private Square target;
 
-		private ITargetSelector targetSelector = new RandomTargetSelector();
+		private ITargetSelector targetSelector;
 	}
 }
