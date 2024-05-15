@@ -10,12 +10,12 @@ namespace Vsite.Oom.Battleship.Model
     {
         public FleetBuilder(int gridRows, int gridColumns, int[] shipLengths)
         {
-            fleetGrid = new Grid(gridRows, gridColumns);
+            fleetGrid = new FleetGrid(gridRows, gridColumns);
             this.shipLengths = new List<int>(shipLengths.OrderByDescending(length => length));
         }
 
 
-        private readonly Grid fleetGrid;
+        private readonly FleetGrid fleetGrid;
 
         private readonly List<int> shipLengths; // "readonly ne znači da se njen sadržaj ne može mijenjati. Jedino ne možemo pozvati konstruktor s novom listom."
 
