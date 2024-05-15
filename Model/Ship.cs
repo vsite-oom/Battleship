@@ -31,10 +31,6 @@ public class Ship
 
         square.Hit();
 
-        if (Squares.All(sq => sq.IsHit))
-        {
-            return HitResult.Sunken;
-        }
-        return HitResult.Hit;
+        return Squares.All(sq => sq.IsHit) ? HitResult.Sunken : HitResult.Hit;
     }
 }

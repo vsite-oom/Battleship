@@ -1,4 +1,6 @@
-﻿namespace Vsite.Oom.Battleship.Model
+﻿using System.Diagnostics;
+
+namespace Vsite.Oom.Battleship.Model
 {
     public enum ShootingTactics
     {
@@ -23,8 +25,31 @@
 
         public void ProcessHitResult(HitResult hitResult)
         {
-            //TODO: HIT Processing results for tactics
-        }
 
+            switch (hitResult)
+            {
+                case HitResult.Missed:
+                    return;
+                case HitResult.Hit:
+                    switch (ShootingTactics)
+                    {
+                        case ShootingTactics.Random:
+                            ShootingTactics = ShootingTactics.Surrounding;
+                            return;
+                        case ShootingTactics.Surrounding:
+                            ShootingTactics = ShootingTactics.Inline;
+                            break;
+                        case ShootingTactics.Inline:
+                            return;
+                        default:
+                            Debug.Assert(false);
+                            return;
+                    }
+                    return;
+                case HitResult.Sunken:
+                    ShootingTactics = ShootingTactics.Random;
+                    return;
+            }
+        }
     }
 }

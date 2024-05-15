@@ -15,10 +15,10 @@ public class Fleet
     public HitResult Hit(int row, int column)
     {
         HitResult hitResult = HitResult.Missed;
-        foreach(var ship in ships)
+        foreach (var ship in ships)
         {
             hitResult = ship.Hit(row, column);
-            if(hitResult == HitResult.Hit || hitResult == HitResult.Sunken)
+            if (hitResult == HitResult.Hit || hitResult == HitResult.Sunken)
             {
                 return hitResult;
             }

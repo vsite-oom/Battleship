@@ -24,8 +24,8 @@ public class SquareEliminator
 
         var result = new List<SquareCoordinate>();
         for (var r = firstRow; r <= lastRow; ++r)
-        for (var c = firstColumn; c <= lastColumn; ++c)
-            result.Add(new SquareCoordinate(r, c));
+            for (var c = firstColumn; c <= lastColumn; ++c)
+                result.Add(new SquareCoordinate(r, c));
         return result;
     }
 }

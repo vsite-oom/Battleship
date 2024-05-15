@@ -15,8 +15,8 @@ public class Grid
         _squares = new Square[rows, columns];
 
         for (var r = 0; r < rows; r++)
-        for (var c = 0; c < columns; c++)
-            _squares[r, c] = new Square(r, c);
+            for (var c = 0; c < columns; c++)
+                _squares[r, c] = new Square(r, c);
     }
 
     public IEnumerable<Square> Squares

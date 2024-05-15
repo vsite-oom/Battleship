@@ -4,6 +4,7 @@
     {
         public SquareCoordinate Next()
         {
+
             throw new NotImplementedException();
         }
     }
