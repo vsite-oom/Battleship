@@ -2,7 +2,7 @@
 {
     public class RandomTargetSelector : ITargetSelector
     {
-        public SquareCoordinates Next()
+        public Square Next()
         {
             throw new NotImplementedException();
         }
