@@ -1,55 +1,81 @@
-﻿namespace Vsite.Oom.Battleship.Model
-{   
+﻿using System.Diagnostics;
+
+namespace Vsite.Oom.Battleship.Model
+{
     public enum ShootingTactics
     {
-        Random, 
+        Random,
         Surrounding,
         Inline
     }
-    public class Gunnery  
+
+    public class Gunnery
     {
         public Gunnery(int rows, int columns, IEnumerable<int> shipLengths)
         {
-            recordGrid = new Grid(rows, columns);
-            targetSelector = new RandomTargetSelector(rows, columns);
+            recordGrid = new FleetGreed(rows, columns);
+            this.shipLengths = new List<int>(shipLengths.OrderByDescending(length => length));
+            targetSelector = new RandomTargetSelector(recordGrid, this.shipLengths[0]);
         }
 
-        public SquareCoordinate Next()  
+        public Square Next()
         {
-            return targetSelector.Next();
+            target = targetSelector.Next();
+            return target;
         }
 
         public void ProcessHitResult(HitResult hitResult)
         {
-            if (hitResult == HitResult.Missed)
-            {
-                return;
-            }
 
-            if (hitResult == HitResult.Hit)
+            switch (hitResult)
             {
-                if (ShootingTactics == ShootingTactics.Random)
-                {
-                    ShootingTactics = ShootingTactics.Surrounding;
-                    targetSelector = new SurroundingTargetSelector(targetSelector.LastHitCoordinate);
-                }
-                else if (ShootingTactics == ShootingTactics.Surrounding)
-                {
-                    ShootingTactics = ShootingTactics.Inline;
-                    targetSelector = new InlineTargetSelector(targetSelector.LastHitCoordinate);
-                }
+                case HitResult.Missed:
+                    return;
+                case HitResult.Hit:
+                    switch (ShootingTactics)
+                    {
+                        case ShootingTactics.Random:
+                            ChangeTacticsToSurrounding();
+                            return;
+                        case ShootingTactics.Surrounding:
+                            ChangeTacticsToInline();
+                            break;
+                        case ShootingTactics.Inline:
+                            return;
+                        default:
+                            Debug.Assert(false);
+                            return;
+                    }
+                    return;
+                case HitResult.Sunken:
+                    ChangeTacticsToRandom();
+                    return;
             }
-            else if (hitResult == HitResult.Sunken)
-            {
-                ShootingTactics = ShootingTactics.Random;
-                targetSelector = new RandomTargetSelector(recordGrid.Rows, recordGrid.Columns);
-            }
+        }
+
+        private void ChangeTacticsToRandom()
+        {
+            ShootingTactics = ShootingTactics.Random;
+            targetSelector = new RandomTargetSelector(recordGrid);
+        }
+
+        private void ChangeTacticsToSurrounding()
+        {
+            ShootingTactics = ShootingTactics.Surrounding;
+            targetSelector = new SurroundingTargetSelector();
+        }
+
+        private void ChangeTacticsToInline()
+        {
+            ShootingTactics = ShootingTactics.Inline;
+            targetSelector = new InlineTargetSelector();
         }
 
         public ShootingTactics ShootingTactics { get; private set; } = ShootingTactics.Random;
 
-        private readonly Grid recordGrid;
-        private ITargetSelector targetSelector;
-
+        private readonly FleetGreed recordGrid;
+        private readonly List<int> shipLengths;
+        private Square target;
+        private ITargetSelector targetSelector = new RandomTargetSelector();
     }
 }

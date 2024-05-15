@@ -6,6 +6,14 @@ using System.Threading.Tasks;
 
 namespace Vsite.Oom.Battleship.Model
 {
+    public enum SquareState
+    {
+        Intact,
+        Eliminated,
+        Missed,
+        Hit,
+        Sunken
+    }
     public class Square
     {
         public Square(int row, int column) 
@@ -25,5 +33,7 @@ namespace Vsite.Oom.Battleship.Model
         public bool IsHit => hit;
 
         private bool hit = false;
+
+
     }
 }
