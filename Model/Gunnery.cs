@@ -16,7 +16,7 @@ namespace Vsite.Oom.Battleship.Model
     public class Gunnery
     {
         private readonly List<int> shipLengths = [];
-        private readonly Grid recordGrid;
+        private readonly FleetGrid recordGrid;
         private Square target;
         private ITargetSelector targetSelector;
 
@@ -24,7 +24,7 @@ namespace Vsite.Oom.Battleship.Model
 
         public Gunnery(int rows, int columns, IEnumerable<int> shipLengths)
         {
-            recordGrid = new Grid(rows, columns);
+            recordGrid = new FleetGrid(rows, columns);
             this.shipLengths = new List<int>(shipLengths.OrderDescending());
 
             targetSelector = new RandomTargetSelector(recordGrid, this.shipLengths[0]);

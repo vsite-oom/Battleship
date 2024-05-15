@@ -4,14 +4,14 @@ using System;
 namespace Vsite.Oom.Battleship.Model.Tests
 {
     [TestClass]
-    public class GridTests
+    public class FleetGridTests
     {
         [TestMethod]
         public void ConstructorCreatesGridWith50SquaresFor5RowsAnd10Columns()
         {
             int rows = 5;
             int columns = 10;
-            Grid grid = new Grid(rows, columns);
+            FleetGrid grid = new FleetGrid(rows, columns);
             Assert.AreEqual(50, grid.Squares.Count());
         }
 
@@ -21,7 +21,7 @@ namespace Vsite.Oom.Battleship.Model.Tests
             int rows = 1;
             int columns = 5;
             int shipLength = 3;
-            Grid grid = new(rows, columns);
+            FleetGrid grid = new(rows, columns);
 
             Assert.AreEqual(3, grid.GetAvailablePlacements(shipLength).Count());
         }
@@ -32,7 +32,7 @@ namespace Vsite.Oom.Battleship.Model.Tests
             int rows = 7;
             int columns = 1;
             int shipLength = 2;
-            Grid grid = new(rows, columns);
+            FleetGrid grid = new(rows, columns);
 
             Assert.AreEqual(6, grid.GetAvailablePlacements(shipLength).Count());
         }
@@ -43,7 +43,7 @@ namespace Vsite.Oom.Battleship.Model.Tests
             int rows = 5;
             int columns = 5;
             int shipLength = 4;
-            Grid grid = new(rows, columns);
+            FleetGrid grid = new(rows, columns);
 
             Assert.AreEqual(20, grid.GetAvailablePlacements(shipLength).Count());
         }
@@ -54,7 +54,7 @@ namespace Vsite.Oom.Battleship.Model.Tests
             int rows = 1;
             int columns = 6;
             int shipLength = 2;
-            Grid grid = new(rows, columns);
+            FleetGrid grid = new(rows, columns);
 
             grid.EliminateSquare(0, 3);
 
@@ -67,7 +67,7 @@ namespace Vsite.Oom.Battleship.Model.Tests
             int rows = 8;
             int columns = 1;
             int shipLength = 2;
-            Grid grid = new(rows, columns);
+            FleetGrid grid = new(rows, columns);
 
             grid.EliminateSquare(3, 0);
             grid.EliminateSquare(5, 0);
