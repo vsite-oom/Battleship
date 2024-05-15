@@ -22,7 +22,7 @@ namespace Vsite.OOM.Battleship.Model
         public List<int> shipLengths;
         private Square target;
         private readonly SquareEliminator eliminator=new SquareEliminator();
-        //private  shipSquares;
+        private List<Square> shipSquares = new List<Square>();
 
         public void ProcessHitResult(HitResult hitResult)
         {
@@ -66,7 +66,7 @@ namespace Vsite.OOM.Battleship.Model
             shipSquares.Add(target);
             foreach(var square in shipSquares)
             {
-                square.ChangeState(SquareState.Sunk);
+                square.changeState(SquareState.Sunk);
             }
             var toEliminate= eliminator.ToEliminate(shipSquares,recordGrid.Rows,recordGrid.Columns);
             foreach(var square in toEliminate)
