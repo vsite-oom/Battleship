@@ -13,7 +13,7 @@ namespace Vsite.Oom.Battleship.Model
     {
         public Gunnery(int rows, int columns, IEnumerable<int> shipLengths)
         {
-            recordGrid = new FleetGrid(rows, columns);
+            recordGrid = new ShotsGrid(rows, columns);
             this.shipLengths = new List<int>(shipLengths.OrderDescending());
             targetSelector = new RandomTargetSelector(recordGrid, this.shipLengths[0]);
         }
@@ -26,6 +26,7 @@ namespace Vsite.Oom.Battleship.Model
 
         public void ProcessHitResult(HitResult hitResult)
         {
+            RecordTargetResult(hitResult);
             switch (hitResult)
             {
                 case HitResult.Missed:
@@ -51,6 +52,42 @@ namespace Vsite.Oom.Battleship.Model
             }
         }
 
+        private void RecordTargetResult(HitResult hitResult)
+        {
+
+            switch (hitResult)
+            {
+                case HitResult.Missed:
+                    target.ChangeState(SquareState.Missed);
+                    return;
+                case HitResult.Hit:
+                    target.ChangeState(SquareState.Hit);
+                    shipSquares.Add(target);
+                    return;
+                case HitResult.Sunken:
+                    MarkShipSunken();
+                    return;
+                    
+            }
+        }
+
+        private void MarkShipSunken()
+        {
+            shipSquares.Add(target);
+            foreach (var square in shipSquares)
+            {
+                square.ChangeState(SquareState.Sunken);
+            }
+            var toEliminate = eliminator.ToEliminate(shipSquares, recordGrid.Rows, recordGrid.Columns);
+            
+            foreach(var square in toEliminate)
+            {
+                recordGrid.GetSquare(square.Row, square.Column).ChangeState(SquareState.Eliminated);
+            }
+            
+            shipSquares.Clear();
+        }
+
         private void ChangeTacticsToRandom()
         {
             ShootingTactics = ShootingTactics.Random;
@@ -71,13 +108,17 @@ namespace Vsite.Oom.Battleship.Model
 
         public ShootingTactics ShootingTactics { get; private set; } = ShootingTactics.Random;
 
-        private readonly FleetGrid recordGrid;
+        private readonly ShotsGrid recordGrid;
 
         private ITargetSelector targetSelector;
+
+        private List<Square> shipSquares = new List<Square>();
 
         private Square target;
 
         private readonly List<int> shipLengths = [];
+
+        private readonly SquareEliminator eliminator = new SquareEliminator();
 
     }
 }
