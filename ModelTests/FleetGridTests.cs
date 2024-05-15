@@ -51,7 +51,7 @@ public class FleetGridTests
         var cols = 6;
         var shipLength = 2;
         var grid = new FleetGrid(rows, cols);
-        grid.EleminateSquare(0, 3);
+        grid.EliminateSquare(0, 3);
 
         Assert.AreEqual(3, grid.GetAvailablePlacements(shipLength).Count());
     }
@@ -65,8 +65,8 @@ public class FleetGridTests
         var cols = 1;
         var shipLength = 2;
         var grid = new FleetGrid(rows, cols);
-        grid.EleminateSquare(3, 0);
-        grid.EleminateSquare(5, 0);
+        grid.EliminateSquare(3, 0);
+        grid.EliminateSquare(5, 0);
 
         Assert.AreEqual(3, grid.GetAvailablePlacements(shipLength).Count());
     }

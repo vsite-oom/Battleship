@@ -33,7 +33,7 @@ public class FleetBuilder
 
                 var toEliminate = eliminator.ToEliminate(selected, fleetGrid!.Rows, fleetGrid!.Columns);
 
-                foreach (var coordinate in toEliminate) fleetGrid.EleminateSquare(coordinate.Row, coordinate.Column);
+                foreach (var coordinate in toEliminate) fleetGrid.EliminateSquare(coordinate.Row, coordinate.Column);
             }
         }
         catch (NullReferenceException)
