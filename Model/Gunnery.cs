@@ -16,6 +16,7 @@ namespace Vsite.Oom.Battleship.Model
     public class Gunnery
     {
         private readonly Grid recordGrid;
+        private Square target;
         private ITargetSelector targetSelector = new RandomTargetSelector();
 
         public ShootingTactics ShootingTactics { get; private set; } = ShootingTactics.Random;
@@ -25,9 +26,10 @@ namespace Vsite.Oom.Battleship.Model
             recordGrid = new Grid(rows, columns);
         }
 
-        public SquareCoordinate Next()
+        public Square Next()
         {
-            throw new NotImplementedException();
+            target = targetSelector.Next();
+            return target;
         }
 
         public void ProcessHit(HitResult hitResult)
@@ -38,15 +40,18 @@ namespace Vsite.Oom.Battleship.Model
                 {
                     case ShootingTactics.Random:
                         ShootingTactics = ShootingTactics.Surrounding;
+                        targetSelector = new SurroundingTargetSelector();
                         break;
                     case ShootingTactics.Surrounding:
                         ShootingTactics = ShootingTactics.Inline;
+                        targetSelector = new InlineTargetSelector();
                         break;
                 }
             }
             else if (hitResult == HitResult.Sunken)
             {
                 ShootingTactics = ShootingTactics.Random;
+                targetSelector = new RandomTargetSelector();
             }
         }
     }

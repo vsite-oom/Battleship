@@ -2,6 +2,6 @@
 {
     public interface ITargetSelector
     {
-        SquareCoordinate Next();
+        Square Next();
     }
 }
