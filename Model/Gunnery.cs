@@ -36,7 +36,7 @@ namespace Vsite.Oom.Battleship.Model
 
         public void ProcessHit(HitResult hitResult)
         {
-
+            RecordTargetResult(hitResult);
 
             if (hitResult == HitResult.Hit)
             {
@@ -59,11 +59,48 @@ namespace Vsite.Oom.Battleship.Model
                 targetSelector = new RandomTargetSelector();
 
             }
-            public ShootingTactics ShootingTactics { get; private set; } = ShootingTactics.Random;
+private void RecordTargetResult(HitResult hitResult)
+        {
+           switch (hitResult)
+                {
+                    case HitResult.Missed:
+                     targetChangeState(SquareState.Missed);
+                        return;
 
-            private readonly FleetGrid recordGrid;
+                    case HitResult.Hit:
+                        target.ChangeState(SquareState.Hit);
+                        return;
+                        
+               
+                case HitResult.Sunken:
+                   MarkShipAsSunken();
+                    return;
+            }
+        }
+private void MarkShipAsSunken()
+        {
+            shipSquares.Add(target);
+            foreach (var square in shipSquares)
+                {
+                square.ChangeState(SquareState.Sunken);
+            }
+            
+            var ToEliminate = eliminator.ToEliminate(shipSquares, recordGrid.Rows, recordGrid.Columns);
+                foreach (var square in ToEliminate)
+                {
+                recordGrid.GetSquare(square.Row, square.Column).ChangeState(SquareState.Eliminated);
+            }
+            shipSquares.Clear();
+        }
+
+        public ShootingTactics ShootingTactics { get; private set; } = ShootingTactics.Random;
+
+            private readonly ShortsGrid shortsGrid;
 
             private ITargetSelector targetSelector = new RandomTargetSelector();
+            private List<Square> shipSquares = new List<Square>();
+        private readonly SquareEliminator eliminator = new SquareEliminator();
+
         }
 
 

@@ -19,7 +19,10 @@ namespace Vsite.Oom.Battleship.Model
         }
 
         
-
+        public Square GetSquare(int row, int column)
+        {
+            return squares[row, column]!
+        }
 
     }
 }

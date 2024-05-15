@@ -23,7 +23,7 @@ namespace Vsite.Oom.Battleship.Model
 
         }
 
-        private readonly FleetGrid grid;
+        private readonly ShortsGrid grid;
         private readonly int shipLength;
         private readonly Random random = new Random();
 
