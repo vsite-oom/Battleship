@@ -8,10 +8,10 @@ namespace Vsite.OOM.Battleship.Model
 {
     public class RandomTargetSelector : ITargetSelector
     {
-        private readonly FleetGrid grid;
+        private readonly ShotsGrid grid;
         private readonly int shipLength;
         private readonly Random random=new Random();
-        public RandomTargetSelector(FleetGrid grid, int shipLength) {
+        public RandomTargetSelector(ShotsGrid grid, int shipLength) {
             this.grid = grid;
             this.shipLength = shipLength;
         }
