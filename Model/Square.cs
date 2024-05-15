@@ -20,6 +20,7 @@ namespace Vsite.Oom.Battleship.Model
         {
             Row = row;
             Column = column;
+            SquareState = SquareState.Intact;
         }
 
         public readonly int Row;
@@ -27,13 +28,11 @@ namespace Vsite.Oom.Battleship.Model
 
         public void Hit() 
         {
-            hit = true;
+            SquareState = SquareState.Hit;
         }
 
-        public bool IsHit => hit;
+        public bool IsHit => (int)SquareState >= (int)SquareState.Hit;
 
-        private bool hit = false;
-
-
+        public SquareState SquareState { get; private  set; }
     }
 }
