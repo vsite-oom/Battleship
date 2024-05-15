@@ -26,26 +26,27 @@ namespace Vsite.Oom.Battleship.Model
 
         public void ProcessHitResult(HitResult hitResult)
         {
-            RecordTargetResult(hitResult);
             switch (hitResult)
             {
                 case HitResult.Missed:
+                    RecordTargetResult(hitResult);
                     return;
                 case HitResult.Hit:
                     switch (ShootingTactics)
                     {
                         case ShootingTactics.Random:
-                            ChangeTacticsToSurrounding();
+                            ChangeTacticsToSorruounding();
                             return;
                         case ShootingTactics.Surrounding:
                             ChangeTacticsToInline();
-                            return;
+                            break;
                         case ShootingTactics.Inline:
                             return;
                         default:
                             Debug.Assert(false);
                             return;
                     }
+                    return;
                 case HitResult.Sunken:
                     ChangeTacticsToRandom();
                     return;
@@ -54,7 +55,6 @@ namespace Vsite.Oom.Battleship.Model
 
         private void RecordTargetResult(HitResult hitResult)
         {
-
             switch (hitResult)
             {
                 case HitResult.Missed:
@@ -67,7 +67,6 @@ namespace Vsite.Oom.Battleship.Model
                 case HitResult.Sunken:
                     MarkShipSunken();
                     return;
-                    
             }
         }
 
@@ -79,12 +78,10 @@ namespace Vsite.Oom.Battleship.Model
                 square.ChangeState(SquareState.Sunken);
             }
             var toEliminate = eliminator.ToEliminate(shipSquares, recordGrid.Rows, recordGrid.Columns);
-            
-            foreach(var square in toEliminate)
+            foreach (var square in toEliminate)
             {
                 recordGrid.GetSquare(square.Row, square.Column).ChangeState(SquareState.Eliminated);
             }
-            
             shipSquares.Clear();
         }
 
@@ -100,25 +97,19 @@ namespace Vsite.Oom.Battleship.Model
             targetSelector = new InlineTargetSelector();
         }
 
-        private void ChangeTacticsToSurrounding()
+        private void ChangeTacticsToSorruounding()
         {
             ShootingTactics = ShootingTactics.Surrounding;
-            targetSelector = new SurroundingTargetSelector();
+            targetSelector = new InlineTargetSelector();
         }
 
         public ShootingTactics ShootingTactics { get; private set; } = ShootingTactics.Random;
 
         private readonly ShotsGrid recordGrid;
-
-        private ITargetSelector targetSelector;
-
-        private List<Square> shipSquares = new List<Square>();
-
-        private Square target;
-
         private readonly List<int> shipLengths = [];
-
+        private List<Square> shipSquares = new List<Square>();
+        private ITargetSelector targetSelector;
+        private Square target;
         private readonly SquareEliminator eliminator = new SquareEliminator();
-
     }
 }
