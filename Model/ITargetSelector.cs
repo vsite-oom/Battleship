@@ -8,6 +8,6 @@ namespace Vsite.Oom.Battleship.Model
 {
     internal interface ITargetSelector
     {
-        SquareCoordinate Next();
+        Square Next();
     }
 }

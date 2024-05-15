@@ -20,9 +20,10 @@ namespace Vsite.Oom.Battleship.Model
             recordGrid = new Grid(rows, columns);
         }
 
-        public SquareCoordinate Next()
+        public Square Next()
         {
-            throw new NotImplementedException();
+            target = targetSelector.Next();
+            return target;
         }
         public void ProcessHitResult(HitResult hitResult)
         {
@@ -33,6 +34,7 @@ namespace Vsite.Oom.Battleship.Model
                         if (hitResult == HitResult.Hit)
                         {
                             ShootingTactics = ShootingTactics.Surrounding;
+                            targetSelector = new SurroundingTargetSelector();
                         }
                         break;
                     }
@@ -41,10 +43,12 @@ namespace Vsite.Oom.Battleship.Model
                         if (hitResult == HitResult.Hit)
                         {
                             ShootingTactics = ShootingTactics.Inline;
+                            targetSelector = new InlineTargetSelector();
                         }
                         else if (hitResult == HitResult.Sunken)
                         {
                             ShootingTactics = ShootingTactics.Random;
+                            targetSelector = new RandomTargetSelector();
                         }
                         break;
                     }
@@ -53,6 +57,7 @@ namespace Vsite.Oom.Battleship.Model
                         if (hitResult == HitResult.Sunken)
                         {
                             ShootingTactics = ShootingTactics.Random;
+                            targetSelector = new RandomTargetSelector();
                         }
                         break;
                     }
@@ -62,6 +67,8 @@ namespace Vsite.Oom.Battleship.Model
         public ShootingTactics ShootingTactics { get; private set; } = ShootingTactics.Random;  // Initially it will be random.
 
         private readonly Grid recordGrid;
+
+        private Square target;
 
         private ITargetSelector targetSelector = new RandomTargetSelector();
     }
