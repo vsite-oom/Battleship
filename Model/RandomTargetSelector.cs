@@ -3,7 +3,7 @@
 {
     public class RandomTargetSelector : ITargetSelector
     {
-        public RandomTargetSelector(FleetGreed grid, int ShipLength)
+        public RandomTargetSelector(ShotsGrid grid, int ShipLength)
         {
             this.grid = grid;
             this.shipLength = shipLength;

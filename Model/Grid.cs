@@ -2,12 +2,12 @@
 {
     public abstract class Grid
     {
-        public Grid(int rows, int columns)
+        public Grid(int rows, int columns)  
         {
             Rows = rows;
             Columns = columns;
 
-            squares = new Square[Rows, Columns];
+            squares = new Square?[Rows, Columns];
 
             for (int r = 0; r < Rows; r++)
             {
@@ -20,11 +20,11 @@
 
         public readonly int Rows;
         public readonly int Columns;
-        protected readonly Square[,] squares;
+        protected readonly Square?[,] squares;
 
         public virtual IEnumerable<Square> Squares
         {
-            get { return squares.Cast<Square>(); }
+            get { return squares.Cast<Square?>().Where(s => s != null).Cast<Square>(); }
         }
 
         public IEnumerable<IEnumerable<Square>> GetAvailablePlacements(int length)
@@ -43,9 +43,9 @@
                 var queue = new LimitedQueue<Square>(length);
                 for (int c = 0; c < Columns; ++c)
                 {
-                    if (IsSquareAvailable(r,c))
+                    if (IsSquareAvailable(r, c))
                     {
-                        queue.Enqueue(squares[r, c]);
+                        queue.Enqueue(squares[r, c]!);
                         if (queue.Count == length)
                         {
                             result.Add(queue.ToArray());
@@ -69,9 +69,9 @@
                 var queue = new LimitedQueue<Square>(length);
                 for (int r = 0; r < Rows; ++r)
                 {
-                    if (IsSquareAvailable(r,c))
+                    if (IsSquareAvailable(r, c))
                     {
-                        queue.Enqueue(squares[r, c]);
+                        queue.Enqueue(squares[r, c]!);
                         if (queue.Count == length)
                         {
                             result.Add(queue.ToArray());

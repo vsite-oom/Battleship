@@ -8,7 +8,7 @@
 
         public override IEnumerable<Square> Squares
         {
-            get { return squares.Cast<Square>().Where(s => s != null); }
+            get { return squares.Cast<Square?>().Where(s => s != null).Cast<Square>(); }
         }
 
         public void EliminateSquare(int row, int column)
@@ -16,7 +16,7 @@
             squares[row, column] = null;
         }
 
-        protected override bool IsSquareAvailable(int row, int column)
+        public override bool IsSquareAvailable(int row, int column)
         {
             return squares[row, column] != null;
         }
