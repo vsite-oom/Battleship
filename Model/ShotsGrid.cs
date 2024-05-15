@@ -20,5 +20,9 @@ namespace vsite.oom.battleship.model
         {
             return squares[row, column]?.SquareState == SquareState.Intact;
         }
+        public Square GetSquare(int row, int column)
+        {
+            return squares[row, column]!;
+        }
     }
 }

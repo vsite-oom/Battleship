@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -28,9 +29,11 @@ namespace vsite.oom.battleship.model
         }
         public void ProcessHitResult(HitResult hitResult)
         {
+            RecordTargetResult(hitResult);
             switch(hitResult)
             {
                 case HitResult.Missed:
+                    target.ChangeState(SquareState.Missed);
                     return;
                 case HitResult.Hit:
                     switch (ShootingTactics)
@@ -44,11 +47,44 @@ namespace vsite.oom.battleship.model
                         case ShootingTactics.Inline:
                             return;
                         default:
-
+                            Debug.Assert(false);
                             return;
                     }
             }
         }
+
+        private void RecordTargetResult(HitResult hitResult)
+        {
+            switch (hitResult)
+            {
+                case HitResult.Missed:
+                    target.ChangeState(SquareState.Missed);
+                    return;
+                case HitResult.Hit:
+                    target.ChangeState(SquareState.Hit);
+                    shipSquares.Add(target);
+                    return;
+                case HitResult.Sunken:
+                    MarkShipSunken(target);
+                    return;
+            }
+        }
+
+        private void MarkShipSunken(Square target)
+        {
+            shipSquares.Add(target);
+            foreach (var square in shipSquares)
+            {
+                square.ChangeState(SquareState.Sunken);
+            }
+            eliminator.ToEliminate(shipSquares, recordGrid.Rows, recordGrid.Columns);
+            foreach(var square in shipSquares)
+            {
+                recordGrid.GetSquare(square.Row, square.Column).ChangeState(SquareState.Sunken);
+            }
+            shipSquares.Clear();
+        }
+
         private void ChangeTacticsToRandom()
         {
             ShootingTactics = ShootingTactics.Random;
@@ -65,9 +101,11 @@ namespace vsite.oom.battleship.model
             targetSelector = new SurroundingTargetSelector();
         }
         public ShootingTactics ShootingTactics { get; private set; } = ShootingTactics.Random;
-        private readonly FleetGrid recordGrid;
+        private readonly ShotsGrid recordGrid;
+        private List<Square> shipSquares = new List<Square>();
         private Square target;
         private readonly List<int> shipLengths;
         private ITargetSelector targetSelector;
+        private readonly SquareEliminator eliminator = new SquareEliminator();
     }
 }
