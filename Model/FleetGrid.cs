@@ -10,10 +10,6 @@ namespace Vsite.OOM.Battleship.Model
 {
     public class FleetGrid : Grid
     {
-        public readonly int Rows;
-        public readonly int Columns;
-        private readonly Square?[,] squares;
-
         public FleetGrid(int rows, int columns) : base(rows, columns) 
         {
             
