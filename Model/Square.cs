@@ -33,7 +33,7 @@ namespace Vsite.Oom.Battleship.Model
 
         public void ChangeState(SquareState newState)
         {
-          if ((int)newState > (int)SquareState)) {
+          if ((int)newState > (int)SquareState) {
 
                 SquareState = newState;
             }
