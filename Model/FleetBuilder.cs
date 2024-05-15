@@ -27,7 +27,7 @@
                 var toEliminate = eliminator.ToEliminate(selected, fleetGrid.Rows, fleetGrid.Columns);
                 foreach (var coordinate in toEliminate)
                 {
-                    fleetGrid.EleminateSquare(coordinate.Row, coordinate.Column);
+                    fleetGrid.EliminateSquare(coordinate.Row, coordinate.Column);
                 }
             }
 
