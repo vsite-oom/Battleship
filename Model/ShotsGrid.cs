@@ -4,7 +4,6 @@ public class ShotsGrid(int rows, int columns) : Grid(rows, columns)
 {
     public override bool IsSquareAvailable(int row, int column)
     {
-        throw new NotImplementedException();
+        return _squares[row, column]?.SquareState == SquareState.Intact;
     }
-    
 }
