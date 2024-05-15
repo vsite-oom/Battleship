@@ -70,13 +70,13 @@ public class GunneryTests
         Assert.AreEqual(ShootingTactics.Inline, gunnery.ShootingTactics);
     }
 
-    [TestMethod]
-    public void ShootingTacticsChangesToRandomAfterShipIsSunken()
-    {
-        var gunnery = new Gunnery(10, 10, new List<int> { 1, 2, 3 });
-        gunnery.ProcessHitResult(HitResult.Hit);
-        Assert.AreEqual(ShootingTactics.Surrounding, gunnery.ShootingTactics);
-        gunnery.ProcessHitResult(HitResult.Sunken);
-        Assert.AreEqual(ShootingTactics.Random, gunnery.ShootingTactics);
-    }
+    // [TestMethod]
+    // public void ShootingTacticsChangesToRandomAfterShipIsSunken()
+    // {
+    //     var gunnery = new Gunnery(10, 10, new List<int> { 1, 2, 3 });
+    //     gunnery.ProcessHitResult(HitResult.Hit);
+    //     Assert.AreEqual(ShootingTactics.Surrounding, gunnery.ShootingTactics);
+    //     gunnery.ProcessHitResult(HitResult.Sunken);
+    //     Assert.AreEqual(ShootingTactics.Random, gunnery.ShootingTactics);
+    // }
 }

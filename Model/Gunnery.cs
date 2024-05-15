@@ -12,17 +12,19 @@ public enum ShootingTactics
 
 public class Gunnery
 {
-    private readonly FleetGrid _recordFleetGrid;
+    private readonly ShotsGrid _recordGrid;
     private Square? target;
     private ITargetSelector targetSelector;
     private readonly List<int> shipLengths = [];
+    private List<Square> shipSquares = [];
+    private SquareEliminator SquareEliminator = new SquareEliminator();
 
     public Gunnery(int rows, int columns, IEnumerable<int> shipLengths)
     {
-        _recordFleetGrid = new FleetGrid(rows, columns);
+        _recordGrid = new ShotsGrid(rows, columns);
         this.shipLengths = new List<int>(shipLengths.OrderDescending());
 
-        targetSelector = new RandomTargetSelector(_recordFleetGrid, this.shipLengths[0]);
+        targetSelector = new RandomTargetSelector(_recordGrid, this.shipLengths[0]);
     }
 
     public ShootingTactics ShootingTactics { get; private set; } = ShootingTactics.Random;
@@ -35,7 +37,7 @@ public class Gunnery
 
     public void ProcessHitResult(HitResult hitResult)
     {
-        
+        RecordTargetResult(hitResult);
         switch (hitResult)
         {
             case HitResult.Missed:
@@ -61,10 +63,42 @@ public class Gunnery
         }
     }
 
+    private void RecordTargetResult(HitResult hitResult)
+    {
+        switch (hitResult)
+        {
+            case HitResult.Missed: target?.ChangeState(SquareState.Missed);
+                return;
+            case HitResult.Hit: target?.ChangeState((SquareState.Hit));
+                shipSquares.Add(target);
+                return;
+            case HitResult.Sunken: MarkShipSunken();
+                return;
+        }
+        
+    }
+
+    private void MarkShipSunken()
+    {
+        shipSquares.Add(target);
+        foreach (var square in shipSquares)
+        {
+            square.ChangeState(SquareState.Sunken);
+        }
+
+        var toEliminate = SquareEliminator.ToEliminate(shipSquares, _recordGrid.Rows, _recordGrid.Columns);
+        foreach (var square in toEliminate)
+        {
+            _recordGrid.GetSquare(square.Row, square.Column).ChangeState(SquareState.Eliminated);
+        }
+        
+        shipSquares.Clear();
+    }
+
     private void ChangeTacticsToRandom()
     {
         ShootingTactics = ShootingTactics.Random;
-        targetSelector = new RandomTargetSelector(_recordFleetGrid, this.shipLengths[0]);
+        targetSelector = new RandomTargetSelector(_recordGrid, this.shipLengths[0]);
     }
 
     private void ChangeTacticsToSurrounding()
