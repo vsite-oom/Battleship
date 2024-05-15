@@ -26,7 +26,7 @@ namespace Vsite.Oom.Battleship.Model
 
         public void ProcessHitResult(HitResult hitResult)
         {
-            RecordTargetResult
+            RecordTargetResult(hitResult);
             switch (hitResult)
             {
                 case HitResult.Missed:
