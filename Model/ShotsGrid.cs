@@ -7,9 +7,9 @@
         
         }
 
-        protected override bool IsSqaureAvailable(int row, int column)
+        protected override bool IsSquareAvailable(int row, int column)
         {
-            
+            return squares[row, column]?.SquareState == SquareState.Intact;
         }
     }
 }

@@ -53,7 +53,7 @@ namespace Vsite.Oom.Battleship.Model.Tests
         }
         
         [TestMethod]
-        public void GetAvailablePlacementsForGrid1x6Returns3PlacementsForShipWith2SquaresAfterSquaerInColumn3IsEliminated()
+        public void GetAvailablePlacementsForGrid1x6Returns3PlacementsForShipWith2SquaresAfterSquareInColumn3IsEliminated()
         {
             int rows = 1;
             int cols = 6;
@@ -66,7 +66,7 @@ namespace Vsite.Oom.Battleship.Model.Tests
         }
         
         [TestMethod]
-        public void GetAvailablePlacementsForGrid8x1Returns3PlacementsForShipWith2SquaresAfterSquaerInRows3And5AreEliminated()
+        public void GetAvailablePlacementsForGrid8x1Returns3PlacementsForShipWith2SquaresAfterSquareInRows3And5AreEliminated()
         {
             int rows = 8;
             int cols = 1;

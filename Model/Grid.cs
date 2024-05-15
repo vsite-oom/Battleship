@@ -28,7 +28,7 @@
             return GetVerticalAvailablePlacements(length).Concat(GetHorizontalAvailablePlacements(length));
         }
 
-        protected abstract bool IsSqaureAvailable(int row, int column);
+        protected abstract bool IsSquareAvailable(int row, int column);
 
         private IEnumerable<IEnumerable<Square>> GetHorizontalAvailablePlacements(int length)
         {
@@ -40,7 +40,7 @@
 
                 for (int c = 0; c < Columns; c++)
                 {
-                    if (IsSqaureAvailable(r, c))
+                    if (IsSquareAvailable(r, c))
                     {
                         queue.Enqueue(squares[r, c]!);
                         if (queue.Count() >= length)
@@ -67,7 +67,7 @@
 
                 for (int r = 0; r < Rows; r++)
                 {
-                    if (IsSqaureAvailable(r, c))
+                    if (IsSquareAvailable(r, c))
                     {
                         queue.Enqueue(squares[r, c]!);
                         if (queue.Count() >= length)

@@ -6,7 +6,7 @@ namespace Vsite.Oom.Battleship.Model.Tests
     public class FleetTests
     {
         [TestMethod]
-        public void ConstrucorCreatesEmptyFleet()
+        public void ConstructorCreatesEmptyFleet()
         {
             var fleet = new Fleet();
 
