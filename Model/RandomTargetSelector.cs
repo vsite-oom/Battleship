@@ -17,7 +17,7 @@
             return candidates.ElementAt(selectedIndex);
         }
 
-        private readonly FleetGreed grid;
+        private readonly FleetGrid grid;
         private readonly int shipLength;
         private readonly Random random = new Random();
     }
