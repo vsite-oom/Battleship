@@ -15,7 +15,13 @@ namespace Vsite.Oom.Battleship.Model
 
         public HitResult Hit(int row, int column)
         {
-            throw new NotImplementedException();
+            foreach (Ship ship in ships)
+            {
+                HitResult hitResult = ship.Hit(row, column);
+                if (hitResult != HitResult.Missed)
+                    return hitResult;
+            }
+            return HitResult.Missed;
         }
     }
 }
