@@ -68,5 +68,33 @@ namespace vste.oom.battleship.model
 			return result;
 		}
 
+
+		private IEnumerable<IEnumerable<Square>> GetVericalAvailablePlacemets(int length)
+		{
+			List<IEnumerable<Square>> result = new List<IEnumerable<Square>>();
+
+			for (int c = 0; c < Columns; c++)
+			{
+				var queue = new LimitedQueue<Square>(length);
+				for (int r = 0; r < Rows; r++)
+				{
+					if (IsSquareAvailable(r, c))
+					{
+						queue.Enqueue(squares[r, c]!);
+						if (queue.Count >= length)
+						{
+							result.Add(queue.ToArray());
+						}
+					}
+					else
+					{
+						queue.Clear();
+					}
+				}
+
+			}
+			return result;
+		}
+
 	}
 }

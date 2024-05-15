@@ -18,7 +18,7 @@ namespace vste.oom.battleship.model
 
 		public Gunnery(int rows, int columns, IEnumerable<int> shipLengths)
 		{
-			recordGrid = new FleetGrid(rows, columns);
+			recordGrid = new ShotsGrid(rows, columns);
 			this.shipLengths = new List<int>(shipLengths.OrderDescending());
 			targetSelector = new RandomTargetSelector(recordGrid, this.shipLengths[0]);
 		}
@@ -29,6 +29,7 @@ namespace vste.oom.battleship.model
 		}
 		public void ProcessHitResult(hitResult hitResult)
 		{
+			RecordTargetResult(hitResult);
 			if (hitResult == hitResult.Hit)
 			{
 				switch (shootingTacticts)
@@ -49,14 +50,53 @@ namespace vste.oom.battleship.model
 				targetSelector = new RandomTargetSelector(recordGrid, shipLengths[0]);
 			}
 		}
+
+		private void RecordTargetResult(hitResult hitResult)
+		{
+			switch (hitResult)
+			{
+				case hitResult.Missed:
+					target.ChangeState(SquareState.Missed);
+					return;
+				case hitResult.Hit:
+					target.ChangeState(SquareState.Hit);
+					shipSquares.Add(target);
+					return;
+				case hitResult.Sunken:
+					MarkShipSunken();
+					return;
+
+
+			}
+		}
+
+		private void MarkShipSunken()
+		{
+			shipSquares.Add(target);
+			foreach (var square in shipSquares)
+			{
+				square.ChangeState(SquareState.Sunken);
+			}
+			var ToEliminate = eliminator.ToEliminate(shipSquares, recordGrid.Rows, recordGrid.Columns);
+			foreach(var square in shipSquares)
+			{
+				recordGrid.GetSquare(square.Row, square.Column).ChangeState(SquareState.Eliminated);
+			}
+			shipSquares.Clear();
+		}
+
 		public shootingTacticts shootingTacticts { get; private set; } = shootingTacticts.Random;
 
-		private readonly FleetGrid recordGrid;
+		private readonly ShotsGrid recordGrid;
 
 		private readonly List<int> shipLengths = [];
+
+		private List<Square> shipSquares = new List<Square>();
 
 		private Square target;
 
 		private ITargetSelector targetSelector;
+
+		private readonly SquareEliminator eliminator = new SquareEliminator();
 	}
 }

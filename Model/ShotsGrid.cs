@@ -16,5 +16,10 @@ namespace vste.oom.battleship.model
 		{
 			return squares[row, column]?.squareState == SquareState.Intact;
 		}
+
+		public Square GetSquare(int row, int column)
+		{
+			return squares[row, column]!;
+		}
 	}
 }
