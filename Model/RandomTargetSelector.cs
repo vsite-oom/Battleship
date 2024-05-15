@@ -8,7 +8,7 @@ namespace Vsite.OOM.Battleship.Model
 {
     public class RandomTargetSelector : ITargetSelector
     {
-        public SquareCoordinate Next()
+        public Square Next()
         {
             throw new NotImplementedException();
         }

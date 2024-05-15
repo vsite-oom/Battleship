@@ -8,7 +8,7 @@ namespace Vsite.OOM.Battleship.Model
 {
     internal class InlineTargetSelector : ITargetSelector
     {
-        public SquareCoordinate Next()
+        public Square Next()
         {
             throw new NotImplementedException();
         }
