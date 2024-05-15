@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Vsite.Oom.Battleship.Model;
 
-namespace Vsite.Oom.Battleship
+namespace Vsite.Oom.Battleship.Model
 {
     public enum ShootingTactics
     {
@@ -23,14 +23,27 @@ namespace Vsite.Oom.Battleship
             recordGrid = new Grid(rows, columns);
         }
 
-        public SquareCoordinate Next()
+        public Square Next()
         {
-            throw new NotImplementedException();
+            target=targetSelector.Next();
+            return target;
         }
         public void ProcessHitResult(HitResult hitResult)
         {
             
-            throw new NotImplementedException();
+            switch (ShootingTactics)
+            {
+                case ShootingTactics.Random:
+                    targetSelector = new RandomTargetSelector();
+                    break;
+                case ShootingTactics.Surrounding:
+                    targetSelector = new SurroundingTargetSelector();
+                    break;
+                case ShootingTactics.Inline:
+                    targetSelector = new InlineTargetSelector();
+                    break;
+            }
         }
+
     }
 }
