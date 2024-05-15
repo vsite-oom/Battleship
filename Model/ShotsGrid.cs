@@ -8,7 +8,7 @@
 
         protected override bool IsSquareAvailable(int row, int column)
         {
-            throw new NotImplementedException();
+            return squares[row, column]?.SquareState == SquareState.Intact;
         }
     }
 }
