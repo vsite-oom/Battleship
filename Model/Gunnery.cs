@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System.Data.Common;
+using System.Diagnostics;
 
 namespace Vsite.Oom.Battleship.Model;
 
@@ -12,12 +13,16 @@ public enum ShootingTactics
 public class Gunnery
 {
     private readonly Grid recordGrid;
-    private Square target;
-    private ITargetSelector targetSelector = new RandomTargetSelector();
+    private Square? target;
+    private ITargetSelector targetSelector;
+    private readonly List<int> shipLengths = [];
 
     public Gunnery(int rows, int columns, IEnumerable<int> shipLengths)
     {
         recordGrid = new Grid(rows, columns);
+        this.shipLengths = new List<int>(shipLengths.OrderDescending());
+
+        targetSelector = new RandomTargetSelector(recordGrid, this.shipLengths[0]);
     }
 
     public ShootingTactics ShootingTactics { get; private set; } = ShootingTactics.Random;
@@ -49,8 +54,6 @@ public class Gunnery
                         Debug.Assert(false);
                         return;
                 }
-
-                return;
             case HitResult.Sunken:
                 ChangeTacticsToRandom();
                 return;
@@ -60,7 +63,7 @@ public class Gunnery
     private void ChangeTacticsToRandom()
     {
         ShootingTactics = ShootingTactics.Random;
-        targetSelector = new RandomTargetSelector();
+        targetSelector = new RandomTargetSelector(recordGrid, this.shipLengths[0]);
     }
 
     private void ChangeTacticsToSurrounding()
