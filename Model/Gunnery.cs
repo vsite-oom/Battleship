@@ -17,8 +17,8 @@ namespace Vsite.OOM.Battleship.Model
     {
         public readonly Grid recordGrid;
         public ShootingTactics shootingTactics { get; private set; } = ShootingTactics.Random;
-        private ITargetSelector targetSelector=new RandomTargetSelector();
-        private Square target;
+        private ITargetSelector targetSelector;
+        public List<int> shipLengths;
 
         public void ProcessHitResult(HitResult hitResult)
         {
@@ -29,13 +29,14 @@ namespace Vsite.OOM.Battleship.Model
                 case HitResult.Sunken:
                     {
                         shootingTactics = ShootingTactics.Random;
-                        targetSelector = new RandomTargetSelector();
+                        changeTargetSelector();
                         return;
                     }
                 case HitResult.Hit:
                     {
                         shootingTactics = (shootingTactics == ShootingTactics.Random) ?
                             shootingTactics = ShootingTactics.Surronding : shootingTactics = ShootingTactics.Inline;
+                        changeTargetSelector();
                         return;
                     }
                 default:
@@ -46,11 +47,24 @@ namespace Vsite.OOM.Battleship.Model
         public Gunnery(int rows, int columns, IEnumerable<int> shipLengths)
         {
             recordGrid=new Grid(rows, columns);
+            this.shipLengths =new List<int>(shipLengths.OrderDescending());
+            targetSelector = new RandomTargetSelector(recordGrid, this.shipLengths[0]);
         }
         public Square Next()
         {
             return targetSelector.Next();
         }
-        
+        public void changeTargetSelector()
+        {
+            switch (shootingTactics)
+            {
+                case ShootingTactics.Random: targetSelector = new RandomTargetSelector(recordGrid, shipLengths[0]); break;
+                case ShootingTactics.Surronding: targetSelector = new SurrondingTargetSelector(); break;
+                case ShootingTactics.Inline: targetSelector = new InlineTargetSelector(); break;
+                default:
+                    Debug.Assert(false);
+                    return;
+            }
+        }
     }
 }
