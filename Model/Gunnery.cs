@@ -12,17 +12,17 @@ public enum ShootingTactics
 
 public class Gunnery
 {
-    private readonly Grid recordGrid;
+    private readonly FleetGrid _recordFleetGrid;
     private Square? target;
     private ITargetSelector targetSelector;
     private readonly List<int> shipLengths = [];
 
     public Gunnery(int rows, int columns, IEnumerable<int> shipLengths)
     {
-        recordGrid = new Grid(rows, columns);
+        _recordFleetGrid = new FleetGrid(rows, columns);
         this.shipLengths = new List<int>(shipLengths.OrderDescending());
 
-        targetSelector = new RandomTargetSelector(recordGrid, this.shipLengths[0]);
+        targetSelector = new RandomTargetSelector(_recordFleetGrid, this.shipLengths[0]);
     }
 
     public ShootingTactics ShootingTactics { get; private set; } = ShootingTactics.Random;
@@ -35,6 +35,7 @@ public class Gunnery
 
     public void ProcessHitResult(HitResult hitResult)
     {
+        
         switch (hitResult)
         {
             case HitResult.Missed:
@@ -63,7 +64,7 @@ public class Gunnery
     private void ChangeTacticsToRandom()
     {
         ShootingTactics = ShootingTactics.Random;
-        targetSelector = new RandomTargetSelector(recordGrid, this.shipLengths[0]);
+        targetSelector = new RandomTargetSelector(_recordFleetGrid, this.shipLengths[0]);
     }
 
     private void ChangeTacticsToSurrounding()

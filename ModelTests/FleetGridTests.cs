@@ -1,7 +1,7 @@
 ﻿namespace Vsite.Oom.Battleship.Model.Tests;
 
 [TestClass]
-public class GridTests
+public class FleetGridTests
 {
     [TestMethod]
     public void ConstructorCreatesGridWith50SquaresFor5RowsAnd10Columns()
@@ -9,7 +9,7 @@ public class GridTests
         var rows = 5;
         var cols = 10;
 
-        var grid = new Grid(rows, cols);
+        var grid = new FleetGrid(rows, cols);
 
         Assert.AreEqual(50, grid.Squares.Count());
     }
@@ -18,7 +18,7 @@ public class GridTests
     public void GetAvailablePlacementsForGrid1x5Returns3PlacementsForShipWith3Squares()
     {
         var shipLength = 3;
-        var grid = new Grid(1, 5);
+        var grid = new FleetGrid(1, 5);
 
         Assert.AreEqual(3, grid.GetAvailablePlacements(shipLength).Count());
     }
@@ -29,7 +29,7 @@ public class GridTests
         var rows = 7;
         var cols = 1;
         var shipLength = 2;
-        var grid = new Grid(rows, cols);
+        var grid = new FleetGrid(rows, cols);
         Assert.AreEqual(6, grid.GetAvailablePlacements(shipLength).Count());
     }
 
@@ -39,7 +39,7 @@ public class GridTests
         var rows = 5;
         var cols = 5;
         var shipLength = 4;
-        var grid = new Grid(rows, cols);
+        var grid = new FleetGrid(rows, cols);
         Assert.AreEqual(20, grid.GetAvailablePlacements(shipLength).Count());
     }
 
@@ -50,7 +50,7 @@ public class GridTests
         var rows = 1;
         var cols = 6;
         var shipLength = 2;
-        var grid = new Grid(rows, cols);
+        var grid = new FleetGrid(rows, cols);
         grid.EleminateSquare(0, 3);
 
         Assert.AreEqual(3, grid.GetAvailablePlacements(shipLength).Count());
@@ -64,7 +64,7 @@ public class GridTests
         var rows = 8;
         var cols = 1;
         var shipLength = 2;
-        var grid = new Grid(rows, cols);
+        var grid = new FleetGrid(rows, cols);
         grid.EleminateSquare(3, 0);
         grid.EleminateSquare(5, 0);
 

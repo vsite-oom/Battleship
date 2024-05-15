@@ -1,13 +1,13 @@
 ﻿namespace Vsite.Oom.Battleship.Model;
 
-public class Grid
+public class FleetGrid
 {
     private readonly Square?[,] _squares;
     public readonly int Columns;
     public readonly int Rows;
 
 
-    public Grid(int rows, int columns)
+    public FleetGrid(int rows, int columns)
     {
         Rows = rows;
         Columns = columns;
@@ -75,7 +75,7 @@ public class Grid
         return result;
     }
 
-    public void EleminateSquare(int row, int column)
+    public void EliminateSquare(int row, int column)
     {
         _squares[row, column] = null;
     }

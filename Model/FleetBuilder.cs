@@ -5,14 +5,14 @@ public class FleetBuilder
     private readonly SquareEliminator eliminator = new();
     //FirstPart -> Initialization of game; 
 
-    private readonly Grid? fleetGrid;
+    private readonly FleetGrid? fleetGrid;
     private readonly Random random = new();
 
     private readonly List<int> shipLengths;
 
     public FleetBuilder(int gridRows, int gridColumns, int[] shipLengths)
     {
-        fleetGrid = new Grid(gridRows, gridColumns);
+        fleetGrid = new FleetGrid(gridRows, gridColumns);
         this.shipLengths = new List<int>(shipLengths.OrderByDescending(length => length));
     }
 
@@ -38,7 +38,7 @@ public class FleetBuilder
         }
         catch (NullReferenceException)
         {
-            var noviGrid = new Grid(fleetGrid!.Rows, fleetGrid!.Columns);
+            var noviGrid = new FleetGrid(fleetGrid!.Rows, fleetGrid!.Columns);
             return CreateFleet();
         }
 
