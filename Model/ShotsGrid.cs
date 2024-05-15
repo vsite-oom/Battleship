@@ -14,7 +14,7 @@ namespace Vsite.OOM.Battleship.Model
 
         protected override bool IsSquareAvailable(int row, int col)
         {
-            throw new NotImplementedException();
+            return squares[row,col]?.State==SquareState.Intact;
         }
     }
 }
