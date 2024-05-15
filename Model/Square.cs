@@ -7,16 +7,17 @@ using System.Xml.Serialization;
 
 namespace vste.oom.battleship.model
 {
+	public enum SquareState
+	{
+		Intact,
+		Eliminated,
+		Missed,
+		Hit,
+		Sunken
+	}
 	public class Square
 	{
-		public enum SquareState
-		{
-			Intact,
-			Eliminated,
-			Missed,
-			Hit,
-			Sunken
-		}
+
 		public Square(int row, int column)
 		{
 			Row = row;
@@ -33,13 +34,13 @@ namespace vste.oom.battleship.model
 
 		public void ChangeState(SquareState newState)
 		{
-			if (newState > (int)SquareState)
+			if ((int)newState > (int)squareState)
 			{
 				squareState = newState;
 			}
 		}
 
-		public bool isHit => (int)squareState>=(int)SquareState.Hit;
+		public bool isHit => (int)squareState >= (int)SquareState.Hit;
 
 
 		public SquareState squareState { get; private set; }
