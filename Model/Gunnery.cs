@@ -1,4 +1,6 @@
-﻿namespace Vsite.Oom.Battleship.Model
+﻿using System.Diagnostics;
+
+namespace Vsite.Oom.Battleship.Model
 {
     public enum ShootingTactics
     {
@@ -14,14 +16,56 @@
             recordGrid = new Grid(rows, columns);
         }
 
-        public SquareCoordinate Next()
+        public Square Next()
         {
-            throw new NotImplementedException();
+            target = targetSelector.Next();
+            return target;
         }
 
         public void ProcessHitResult(HitResult hitResult)
         {
+            switch (hitResult)
+            {
+                case HitResult.Missed:
+                    return;
+                case HitResult.Hit:
+                    switch (ShootingTactics)
+                    {
+                        case ShootingTactics.Random:
+                            ChangeTacticsToSurrounding();
+                            return;
+                        case ShootingTactics.Surrounding:
+                            ChangeTacticsToInline();
+                            return;
+                        case ShootingTactics.Inline:
+                            return;
+                        default:
+                            Debug.Assert(false);
+                            return;
+                    }
+                    return;
+                case HitResult.Sunken:
+                    ChangeTacticsToRandom();
+                    return;
+            }
+        }
 
+        private void ChangeTacticsToRandom()
+        {
+            ShootingTactics = ShootingTactics.Random;
+            targetSelector = new RandomTargetSelector();
+        }
+
+        private void ChangeTacticsToInline()
+        {
+            ShootingTactics = ShootingTactics.Inline;
+            targetSelector = new InlineTargetSelector();
+        }
+
+        private void ChangeTacticsToSurrounding()
+        {
+            ShootingTactics = ShootingTactics.Surrounding;
+            targetSelector = new SurroundingTargetSelector();
         }
 
         public ShootingTactics ShootingTactics { get; private set; } = ShootingTactics.Random;
@@ -29,6 +73,8 @@
         private readonly Grid recordGrid;
 
         private ITargetSelector targetSelector = new RandomTargetSelector();
+
+        private Square target;
 
     }
 }
