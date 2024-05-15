@@ -13,8 +13,8 @@ namespace Vsite.Oom.Battleship.Model
     {
         public Gunnery(int rows, int columns, IEnumerable<int> shipLengths)
         {
-            recordGrid = new FleetGrid(rows, columns);
-            this
+            recordGrid = new ShotsGrid(rows, columns);
+            this.shipLengths = shipLengths;
         }
 
         public Square Next()
@@ -25,10 +25,12 @@ namespace Vsite.Oom.Battleship.Model
 
         public void ProcessHitResult(HitResult hitResult)
         {
+            RecordTargetResult(hitResult);
 
             switch (hitResult)
             {
                 case HitResult.Missed:
+                    target.ChangeState(SquareState.Missed);
                     return;
                 case HitResult.Hit:
                     switch (ShootingTactics)
@@ -46,11 +48,27 @@ namespace Vsite.Oom.Battleship.Model
                     }
                     return;
                 case HitResult.Sunken:
-                    ChangeTacticsToRandom();
+                    MarkShipSunken();
                     return;
             }
         }
 
+        private void MarkShipSunken()
+        {
+            shipSquares.Add(target);
+            foreach (var square in shipSquares)
+            {
+                square.ChangeState(SquareState.Sunken);
+            }
+            var toEliminate = eliminator.ToEliminate(shipSquares, recordGrid.Rows, recordGrid.Columns);
+            foreach (var square in toEliminate)
+            {
+                recordGrid.GetSquare(square.Row, square.Column).ChangeState(SquareState.Eliminated);
+            }
+            shipSquares.Clear();
+        }
+
+        private void RecordTargetResult
         private void ChangeTacticsToRandom()
         {
             ShootingTactics = ShootingTactics.Random;
@@ -68,8 +86,12 @@ namespace Vsite.Oom.Battleship.Model
 
         public ShootingTactics ShootingTactics { get; private set; } = ShootingTactics.Random;
 
-        private readonly FleetGrid recordGrid;
+        private readonly ShotsGrid recordGrid;
 
         private ITargetSelector targetSelector = new RandomTargetSelector();
+
+        private List<squares>shipSquares=new List<Square>();
+
+        private readonly SquareEliminator eliminator= new SquareEliminator();
     }
 }
