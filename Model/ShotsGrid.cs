@@ -15,5 +15,10 @@ namespace Vsite.Oom.Battleship.Model
         {
             return squares[row, column]?.SquareState == SquareState.Intact;
         }
+
+        public Square GetSquare(int row, int column)
+        {
+            return squares[row, column]!;
+        }
     }
 }
