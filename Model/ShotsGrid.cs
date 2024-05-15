@@ -3,17 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Vsite.Oom.Battleship.Model;
 
 namespace vsite.oom.battleship.model
 {
-    public enum SquareState
-    {
-        Intact,
-        Eliminated,
-        Missed,
-        Hit,
-        Sunken
-    }
+
 
     public class ShotsGrid : Grid
     {
@@ -24,9 +18,7 @@ namespace vsite.oom.battleship.model
 
         protected override bool isSquareAvailable(int row, int column)
         {
-            throw new NotImplementedException();
+            return squares[row, column]?.SquareState == SquareState.Intact;
         }
-
-
     }
 }
