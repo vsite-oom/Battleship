@@ -18,7 +18,7 @@ namespace vsite.oom.battleship.model
     {
         public Gunnery(int rows, int columns, IEnumerable<int> shipLengths)
         {
-            recordGrid = new FleetGrid(rows, columns);
+            recordGrid = new ShotsGrid(rows, columns);
             this.shipLengths = new List<int>(shipLengths.OrderByDescending(s => s));
             targetSelector = new RandomTargetSelector(recordGrid, this.shipLengths[0]);
         }
