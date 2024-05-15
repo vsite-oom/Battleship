@@ -5,14 +5,14 @@ using vste.oom.battleship.model;
 namespace vsite.oom.battleship.model.tests
 {
 	[TestClass]
-	public class GridTests
+	public class FleetGridTests
 	{
 		[TestMethod]
 		public void ContructorCreatesGridWith50SquaresOr5RowsAnd10Columns()
 		{
 			int rows = 5;
 			int cols = 10;
-			var grid = new Grid(rows, cols);
+			var grid = new FleetGrid(rows, cols);
 
 			Assert.AreEqual(50, grid.Squares.Count());
 		}
@@ -22,7 +22,7 @@ namespace vsite.oom.battleship.model.tests
 			int rows = 1;
 			int cols = 5;
 			int shipLength = 3;
-			var grid = new Grid(rows, cols);
+			var grid = new FleetGrid(rows, cols);
 
 			Assert.AreEqual(3, grid.GetAvailablePlacements(shipLength).Count());
 		}

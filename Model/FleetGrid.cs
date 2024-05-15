@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace vste.oom.battleship.model
 {
-	public class Grid
+	public class FleetGrid
 	{
-		public Grid(int rows, int columns)
+		public FleetGrid(int rows, int columns)
 		{
 			Rows= rows;
 			Columns= columns;
