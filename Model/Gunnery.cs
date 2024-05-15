@@ -1,55 +1,77 @@
 ﻿using System.Diagnostics;
 
-namespace Vsite.Oom.Battleship.Model
+namespace Vsite.Oom.Battleship.Model;
+
+public enum ShootingTactics
 {
-    public enum ShootingTactics
+    Random,
+    Surrounding,
+    Inline
+}
+
+public class Gunnery
+{
+    private readonly Grid recordGrid;
+    private Square target;
+    private ITargetSelector targetSelector = new RandomTargetSelector();
+
+    public Gunnery(int rows, int columns, IEnumerable<int> shipLengths)
     {
-        Random,
-        Surrounding,
-        Inline
+        recordGrid = new Grid(rows, columns);
     }
-    public class Gunnery
+
+    public ShootingTactics ShootingTactics { get; private set; } = ShootingTactics.Random;
+
+    public Square Next()
     {
-        private readonly Grid recordGrid;
-        private ITargetSelector targetSelector = new RandomTargetSelector();
-        public ShootingTactics ShootingTactics { get; private set; } = ShootingTactics.Random;
+        target = targetSelector.Next();
+        return target;
+    }
 
-        public Gunnery(int rows, int columns, IEnumerable<int> shipLengths)
+    public void ProcessHitResult(HitResult hitResult)
+    {
+        switch (hitResult)
         {
-            recordGrid = new Grid(rows, columns);
-        }
-        public SquareCoordinate Next()
-        {
-            throw new NotImplementedException();
-        }
+            case HitResult.Missed:
+                return;
+            case HitResult.Hit:
+                switch (ShootingTactics)
+                {
+                    case ShootingTactics.Random:
+                        ChangeTacticsToSurrounding();
+                        return;
+                    case ShootingTactics.Surrounding:
+                        ChangeTacticsToInline();
+                        return;
+                    case ShootingTactics.Inline:
+                        return;
+                    default:
+                        Debug.Assert(false);
+                        return;
+                }
 
-        public void ProcessHitResult(HitResult hitResult)
-        {
-
-            switch (hitResult)
-            {
-                case HitResult.Missed:
-                    return;
-                case HitResult.Hit:
-                    switch (ShootingTactics)
-                    {
-                        case ShootingTactics.Random:
-                            ShootingTactics = ShootingTactics.Surrounding;
-                            return;
-                        case ShootingTactics.Surrounding:
-                            ShootingTactics = ShootingTactics.Inline;
-                            break;
-                        case ShootingTactics.Inline:
-                            return;
-                        default:
-                            Debug.Assert(false);
-                            return;
-                    }
-                    return;
-                case HitResult.Sunken:
-                    ShootingTactics = ShootingTactics.Random;
-                    return;
-            }
+                return;
+            case HitResult.Sunken:
+                ChangeTacticsToRandom();
+                return;
         }
+    }
+
+    private void ChangeTacticsToRandom()
+    {
+        ShootingTactics = ShootingTactics.Random;
+        targetSelector = new RandomTargetSelector();
+    }
+
+    private void ChangeTacticsToSurrounding()
+    {
+        ShootingTactics = ShootingTactics.Surrounding;
+        targetSelector = new SurroundingTargetSelector();
+    }
+
+    private void ChangeTacticsToInline()
+    {
+        ShootingTactics = ShootingTactics.Inline;
+        targetSelector = new InlineTargetSelector();
     }
 }

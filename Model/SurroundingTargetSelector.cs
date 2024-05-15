@@ -1,10 +1,9 @@
-﻿namespace Vsite.Oom.Battleship.Model
+﻿namespace Vsite.Oom.Battleship.Model;
+
+public class SurroundingTargetSelector : ITargetSelector
 {
-    public class SurroundingTargetSelector : ITargetSelector
+    public Square Next()
     {
-        public SquareCoordinate Next()
-        {
-            throw new NotImplementedException();
-        }
+        throw new NotImplementedException();
     }
 }

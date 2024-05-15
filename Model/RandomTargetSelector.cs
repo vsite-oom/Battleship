@@ -1,11 +1,9 @@
-﻿namespace Vsite.Oom.Battleship.Model
-{
-    public class RandomTargetSelector : ITargetSelector
-    {
-        public SquareCoordinate Next()
-        {
+﻿namespace Vsite.Oom.Battleship.Model;
 
-            throw new NotImplementedException();
-        }
+public class RandomTargetSelector : ITargetSelector
+{
+    public Square Next()
+    {
+        throw new NotImplementedException();
     }
 }

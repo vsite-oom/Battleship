@@ -1,8 +1,6 @@
-﻿namespace Vsite.Oom.Battleship.Model
-{
-    public interface ITargetSelector
-    {
-        SquareCoordinate Next();
+﻿namespace Vsite.Oom.Battleship.Model;
 
-    }
+public interface ITargetSelector
+{
+    Square Next();
 }

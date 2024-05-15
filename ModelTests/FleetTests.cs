@@ -32,16 +32,15 @@ public class FleetTests
     [TestMethod]
     public void HitMethodReturnsMissedForSquareNotInAnyShip()
     {
-        Fleet fleet = CreateFleet();
+        var fleet = CreateFleet();
 
         Assert.AreEqual(HitResult.Missed, fleet.Hit(0, 0));
-        
     }
 
     [TestMethod]
     public void HitMethodReturnsHitForSquareBelongingToAnyShip()
     {
-        Fleet fleet = CreateFleet();
+        var fleet = CreateFleet();
 
         Assert.AreEqual(HitResult.Hit, fleet.Hit(1, 3));
         Assert.AreEqual(HitResult.Hit, fleet.Hit(8, 4));
@@ -51,7 +50,7 @@ public class FleetTests
     [TestMethod]
     public void HitMethodReturnsSunkenAfterLastSquareInFirstShipIsHit()
     {
-        Fleet fleet = CreateFleet();
+        var fleet = CreateFleet();
 
         Assert.AreEqual(HitResult.Hit, fleet.Hit(1, 3));
         Assert.AreEqual(HitResult.Hit, fleet.Hit(1, 4));
