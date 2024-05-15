@@ -32,7 +32,22 @@ namespace Vsite.Oom.Battleship.Model
 
         public void ProcessHit(HitResult hitResult)
         {
-
+            if (hitResult == HitResult.Hit)
+            {
+                switch (ShootingTactics)
+                {
+                    case ShootingTactics.Random:
+                        ShootingTactics = ShootingTactics.Surrounding;
+                        break;
+                    case ShootingTactics.Surrounding:
+                        ShootingTactics = ShootingTactics.Inline;
+                        break;
+                }
+            }
+            else if (hitResult == HitResult.Sunken)
+            {
+                ShootingTactics = ShootingTactics.Random;
+            }
         }
     }
 }
