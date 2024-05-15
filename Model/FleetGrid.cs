@@ -7,13 +7,13 @@ using Vsite.Oom.Batelship.Model;
 
 namespace Vsite.Oom.Battleship.Model
 {
-    public class Grid
+    public class FleetGrid
     {
         public readonly int Rows;
         public readonly int Columns;
         private readonly Square?[,] squares;
 
-        public Grid(int rows, int columns)
+        public FleetGrid(int rows, int columns)
         {
             Rows = rows;
             Columns = columns;

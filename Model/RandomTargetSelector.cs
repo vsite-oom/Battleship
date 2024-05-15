@@ -9,7 +9,7 @@ namespace Vsite.Oom.Battleship.Model
     public class RandomTargetSelector : ITargetSelector
     {
 
-        public RandomTargetSelector(Grid grid, int shipLength )
+        public RandomTargetSelector(FleetGrid grid, int shipLength )
         {
            this.grid = grid;
            this.shipLength = shipLength;
@@ -23,7 +23,7 @@ namespace Vsite.Oom.Battleship.Model
 
         }
 
-        private readonly Grid grid;
+        private readonly FleetGrid grid;
         private readonly int shipLength;
         private readonly Random random = new Random();
 

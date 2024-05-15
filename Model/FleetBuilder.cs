@@ -10,11 +10,11 @@ namespace Vsite.Oom.Battleship.Model
     {
         public FleetBuilder(int gridRows, int gridColumns, int[] shiplengths)
         {
-            fleetGrid = new Grid(gridRows, gridColumns);
+            fleetGrid = new FleetGrid(gridRows, gridColumns);
             this.shiplengths = new List<int>(shiplengths.OrderByDescending(length => length));
         }
 
-        private readonly Grid fleetGrid;
+        private readonly FleetGrid fleetGrid;
 
         private readonly List<int> shiplengths;
 
