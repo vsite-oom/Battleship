@@ -81,6 +81,7 @@ namespace Vsite.OOM.Battleship.Model
             recordGrid=new ShotsGrid(rows, columns);
             this.shipLengths =new List<int>(shipLengths.OrderDescending());
             targetSelector = new RandomTargetSelector(recordGrid, this.shipLengths[0]);
+            target = targetSelector.Next();
         }
         public Square Next()
         {
