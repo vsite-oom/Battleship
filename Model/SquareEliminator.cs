@@ -4,9 +4,8 @@ using System.Linq;
 using System.Runtime.ExceptionServices;
 using System.Text;
 using System.Threading.Tasks;
-using Vsite.Oom.Battleship.Model;
 
-namespace Vsite.Oom.Battleship
+namespace Vsite.Oom.Battleship.Model
 {
     public class SquareEliminator
     {

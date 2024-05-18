@@ -3,24 +3,26 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Vsite.Oom.Battleship.Model;
 
-namespace Vsite.Oom.Battleship
+namespace Vsite.Oom.Battleship.Model
 {
     public class ShotsGrid : Grid
     {
-        public ShotsGrid(int rows, int columns):base(rows, columns)
+        public ShotsGrid(int rows, int columns) : base(rows, columns)
         {
         }
-    }
-        protected override bool IsSquareAvaiable(int row, int column)
+
+        protected override bool IsSquareAvailable(int row, int column)
         {
             return squares[row, column]?.SquareState == SquareState.Intact;
         }
-    public Square GetSquare(int row, int column)
-    {
-        return squares[row, column]!;
+
+        public Square GetSquare(int row, int column)
+        {
+            return squares[row, column]!;
+        }
     }
-    
-    
 }
+    
+    
+

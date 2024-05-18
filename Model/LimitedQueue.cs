@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Vsite.Oom.Battleship
+namespace Vsite.Oom.Battleship.Model
 {
     public class LimitedQueue<T> : Queue<T>
     {
@@ -12,7 +12,7 @@ namespace Vsite.Oom.Battleship
         {
             this.maxItems = maxItems;
         }
-        private int maxItems;
+        private readonly int maxItems;
 
         public new void Enqueue(T item)
         {

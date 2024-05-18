@@ -6,16 +6,17 @@ using System.Threading.Tasks;
 
 namespace Vsite.Oom.Battleship.Model
 {
+    public enum SquareState
+    {
+        Intact,
+        Eliminated,
+        Missed,
+        Hit,
+        Sunken
+    }
+
     public class Square
     {
-        public enum SquareState
-        {
-            Intact,
-            Eliminated,
-            Missed,
-            Hit,
-            Sunken
-        }
         public Square(int row, int column)
         {
             Row = row;
@@ -28,18 +29,20 @@ namespace Vsite.Oom.Battleship.Model
 
         public void Hit()
         {
-            SquareState=SquareState.Hit;
+            SquareState = SquareState.Hit;
         }
+
         public void ChangeState(SquareState newState)
         {
-            if (int) newState > (int)SquareState)
+            if ((int)newState > (int)SquareState)
             {
                 SquareState = newState;
             }
         }
-        public bool IsHit => (int)SquareState>=(int)SquareState.Hit;
-        
 
-        public SquareState SquareState { get; private set; } 
+        public bool IsHit => (int)SquareState >= (int)SquareState.Hit;
+
+        public SquareState SquareState { get; private set; }
     }
 }
+
