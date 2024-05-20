@@ -1,4 +1,5 @@
-﻿namespace Vsite.Oom.Battleship.Model
+﻿
+namespace Vsite.Oom.Battleship.Model
 {
     public enum SquareState
     {
@@ -8,9 +9,10 @@
         Hit,
         Sunken
     }
+
     public class Square
     {
-        public Square(int row, int column) 
+        public Square(int row, int column)
         {
             Row = row;
             Column = column;
@@ -20,23 +22,21 @@
         public readonly int Row;
         public readonly int Column;
 
-        public void Hit() 
+        public void Hit()
         {
             SquareState = SquareState.Hit;
         }
 
         public void ChangeState(SquareState newState)
         {
-            if ((int)newState  > (int)SquareState)
+            if ((int)newState > (int)SquareState)
             {
                 SquareState = newState;
             }
         }
 
-
-
         public bool IsHit => (int)SquareState >= (int)SquareState.Hit;
 
-        public SquareState SquareState { get; private  set; }
+        public SquareState SquareState { get; private set; }
     }
 }

@@ -1,14 +1,16 @@
-﻿namespace Vsite.Oom.Battleship.Model
+﻿
+namespace Vsite.Oom.Battleship.Model
 {
     public class FleetBuilder
     {
         public FleetBuilder(int gridRows, int gridColumns, int[] shipLengths)
         {
-            fleetGrid = new FleetGreed(gridRows, gridColumns);
+            fleetGrid = new FleetGrid(gridRows, gridColumns);
             this.shipLengths = new List<int>(shipLengths.OrderByDescending(length => length));
         }
 
-        private readonly FleetGreed fleetGrid;
+        private readonly FleetGrid fleetGrid;
+
         private readonly List<int> shipLengths;
 
         public Fleet CreateFleet()
@@ -34,9 +36,7 @@
         }
 
         private readonly Random random = new Random();
+
         private readonly SquareEliminator eliminator = new SquareEliminator();
     }
 }
-
-
-

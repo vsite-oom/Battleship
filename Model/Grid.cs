@@ -1,13 +1,14 @@
-﻿namespace Vsite.Oom.Battleship.Model
+﻿
+namespace Vsite.Oom.Battleship.Model
 {
     public abstract class Grid
     {
-        public Grid(int rows, int columns)  
+        protected Grid(int rows, int columns)
         {
             Rows = rows;
             Columns = columns;
 
-            squares = new Square?[Rows, Columns];
+            squares = new Square[Rows, Columns];
 
             for (int r = 0; r < Rows; r++)
             {
@@ -20,11 +21,12 @@
 
         public readonly int Rows;
         public readonly int Columns;
+
         protected readonly Square?[,] squares;
 
         public virtual IEnumerable<Square> Squares
         {
-            get { return squares.Cast<Square?>().Where(s => s != null).Cast<Square>(); }
+            get { return squares.Cast<Square>(); }
         }
 
         public IEnumerable<IEnumerable<Square>> GetAvailablePlacements(int length)
@@ -32,7 +34,7 @@
             return GetHorizontalAvailablePlacements(length).Concat(GetVerticalAvailablePlacements(length));
         }
 
-        public abstract bool IsSquareAvailable(int row, int column);
+        protected abstract bool IsSquareAvailable(int row, int column);
 
         private IEnumerable<IEnumerable<Square>> GetHorizontalAvailablePlacements(int length)
         {
@@ -46,7 +48,7 @@
                     if (IsSquareAvailable(r, c))
                     {
                         queue.Enqueue(squares[r, c]!);
-                        if (queue.Count == length)
+                        if (queue.Count() == length)
                         {
                             result.Add(queue.ToArray());
                         }
@@ -72,7 +74,7 @@
                     if (IsSquareAvailable(r, c))
                     {
                         queue.Enqueue(squares[r, c]!);
-                        if (queue.Count == length)
+                        if (queue.Count() == length)
                         {
                             result.Add(queue.ToArray());
                         }
@@ -85,5 +87,6 @@
             }
             return result;
         }
+
     }
 }

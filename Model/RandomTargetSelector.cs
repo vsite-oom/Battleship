@@ -1,9 +1,9 @@
-﻿namespace Vsite.Oom.Battleship.Model  
-
+﻿
+namespace Vsite.Oom.Battleship.Model
 {
     public class RandomTargetSelector : ITargetSelector
     {
-        public RandomTargetSelector(ShotsGrid grid, int ShipLength)
+        public RandomTargetSelector(ShotsGrid grid, int shipLength)
         {
             this.grid = grid;
             this.shipLength = shipLength;
@@ -17,7 +17,7 @@
             return candidates.ElementAt(selectedIndex);
         }
 
-        private readonly FleetGrid grid;
+        private readonly ShotsGrid grid;
         private readonly int shipLength;
         private readonly Random random = new Random();
     }

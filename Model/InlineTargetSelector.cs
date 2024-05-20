@@ -1,9 +1,9 @@
-﻿namespace Vsite.Oom.Battleship.Model
+﻿
+namespace Vsite.Oom.Battleship.Model
 {
-    // provjeri
     public class InlineTargetSelector : ITargetSelector
     {
-        public SquareCoordinate Next()
+        public Square Next()
         {
             throw new NotImplementedException();
         }

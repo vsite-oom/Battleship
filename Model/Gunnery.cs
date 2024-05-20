@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿
+using System.Diagnostics;
 
 namespace Vsite.Oom.Battleship.Model
 {
@@ -14,7 +15,7 @@ namespace Vsite.Oom.Battleship.Model
         public Gunnery(int rows, int columns, IEnumerable<int> shipLengths)
         {
             recordGrid = new ShotsGrid(rows, columns);
-            this.shipLengths = new List<int>(shipLengths.OrderByDescending(length => length));
+            this.shipLengths = new List<int>(shipLengths.OrderDescending());
             targetSelector = new RandomTargetSelector(recordGrid, this.shipLengths[0]);
         }
 
@@ -30,7 +31,6 @@ namespace Vsite.Oom.Battleship.Model
             switch (hitResult)
             {
                 case HitResult.Missed:
-                    target.ChangeState(SquareState.Missed);
                     return;
                 case HitResult.Hit:
                     switch (ShootingTactics)
@@ -40,14 +40,13 @@ namespace Vsite.Oom.Battleship.Model
                             return;
                         case ShootingTactics.Surrounding:
                             ChangeTacticsToInline();
-                            break;
+                            return;
                         case ShootingTactics.Inline:
                             return;
                         default:
                             Debug.Assert(false);
                             return;
                     }
-                    return;
                 case HitResult.Sunken:
                     ChangeTacticsToRandom();
                     return;
@@ -63,6 +62,7 @@ namespace Vsite.Oom.Battleship.Model
                     return;
                 case HitResult.Hit:
                     target.ChangeState(SquareState.Hit);
+                    shipSquares.Add(target);
                     return;
                 case HitResult.Sunken:
                     MarkShipSunken();
@@ -88,7 +88,7 @@ namespace Vsite.Oom.Battleship.Model
         private void ChangeTacticsToRandom()
         {
             ShootingTactics = ShootingTactics.Random;
-            targetSelector = new RandomTargetSelector(recordGrid, ShipLengths[0]);
+            targetSelector = new RandomTargetSelector(recordGrid, shipLengths[0]);
         }
 
         private void ChangeTacticsToSurrounding()
@@ -106,10 +106,15 @@ namespace Vsite.Oom.Battleship.Model
         public ShootingTactics ShootingTactics { get; private set; } = ShootingTactics.Random;
 
         private readonly ShotsGrid recordGrid;
-        private readonly List<int> shipLengths;
+
+        private readonly List<int> shipLengths = [];
+
         private List<Square> shipSquares = new List<Square>();
+
         private Square target;
+
         private ITargetSelector targetSelector;
+
         private readonly SquareEliminator eliminator = new SquareEliminator();
     }
 }
