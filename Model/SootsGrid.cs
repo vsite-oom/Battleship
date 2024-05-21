@@ -6,23 +6,18 @@ using System.Threading.Tasks;
 
 namespace Vsite.Oom.Battleship.Model
 {
-    public class SootsGrid: Grid
-    {   
-        public SootsGrid(int rows, int columns) : base(rows, columns)
-        {
-            
-        }
+    public class ShotsGrid : Grid
+    {
+        public ShotsGrid(int rows, int columns) : base(rows, columns) { }
 
-        protected override bool IsSquareAvailble(int row, int column)
+        protected override bool IsSquareAvailable(int row, int column)
         {
             return squares[row, column]?.SquareState == SquareState.Intact;
         }
 
-        
         public Square GetSquare(int row, int column)
         {
-            return squares[row, column]!
+            return squares[row, column]!;
         }
-
     }
 }

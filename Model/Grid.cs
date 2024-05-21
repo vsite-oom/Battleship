@@ -7,11 +7,9 @@ using Vsite.Oom.Batelship.Model;
 
 namespace Vsite.Oom.Battleship.Model
 {
-    public class Grid
+    public abstract class Grid
     {
-        
-
-        public Grid(int rows, int columns)
+        protected Grid(int rows, int columns)
         {
             Rows = rows;
             Columns = columns;
@@ -26,42 +24,38 @@ namespace Vsite.Oom.Battleship.Model
                 }
             }
         }
+
         public readonly int Rows;
         public readonly int Columns;
+
         protected readonly Square?[,] squares;
 
         public virtual IEnumerable<Square> Squares
         {
-            get
-            {
-                return squares.Cast<Square>();
-            }
+            get { return squares.Cast<Square>(); }
         }
 
         public IEnumerable<IEnumerable<Square>> GetAvailablePlacements(int length)
         {
-            return GetHorizontalAvailablePlacements(length).Concat(GetVerticalAvailablePlacements(length));
+            return GetVerticalAvailablePlacements(length).Concat(GetHorizontalAvailablePlacements(length));
         }
 
-        private abstract bool IsSquareAvailble(int row, int column);
+        protected abstract bool IsSquareAvailable(int row, int column);
 
-        private IEnumerable<IEnumerable<Square>> GetAvailablePlacements(int length, bool isHorizontal)
+        private IEnumerable<IEnumerable<Square>> GetHorizontalAvailablePlacements(int length)
         {
             List<IEnumerable<Square>> result = new List<IEnumerable<Square>>();
 
-            for (int i = 0; i < (isHorizontal ? Rows : Columns); ++i)
+            for (int r = 0; r < Rows; r++)
             {
                 var queue = new LimitedQueue<Square>(length);
 
-                for (int j = 0; j < (isHorizontal ? Columns : Rows); ++j)
+                for (int c = 0; c < Columns; c++)
                 {
-                    int row = isHorizontal ? i : j;
-                    int col = isHorizontal ? j : i;
-
-                    if (squares[row, col] != null)
+                    if (IsSquareAvailable(r, c))
                     {
-                        queue.Enqueue(squares[row, col]!);
-                        if (queue.Count >= length)
+                        queue.Enqueue(squares[r, c]!);
+                        if (queue.Count() >= length)
                         {
                             result.Add(queue.ToArray());
                         }
@@ -75,15 +69,32 @@ namespace Vsite.Oom.Battleship.Model
             return result;
         }
 
-        public IEnumerable<IEnumerable<Square>> GetHorizontalAvailablePlacements(int length)
+        private IEnumerable<IEnumerable<Square>> GetVerticalAvailablePlacements(int length)
         {
-            return GetAvailablePlacements(length, true);
+            List<IEnumerable<Square>> result = new List<IEnumerable<Square>>();
+
+            for (int c = 0; c < Columns; c++)
+            {
+                var queue = new LimitedQueue<Square>(length);
+
+                for (int r = 0; r < Rows; r++)
+                {
+                    if (IsSquareAvailable(r, c))
+                    {
+                        queue.Enqueue(squares[r, c]!);
+                        if (queue.Count() >= length)
+                        {
+                            result.Add(queue.ToArray());
+                        }
+
+                    }
+                    else
+                    {
+                        queue.Clear();
+                    }
+                }
+            }
+            return result;
         }
-
-        public IEnumerable<IEnumerable<Square>> GetVerticalAvailablePlacements(int length)
-        {
-            return GetAvailablePlacements(length, false);
-        }
-
-
     }
+}

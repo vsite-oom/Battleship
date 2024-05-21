@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Diagnostics;
 
 namespace Vsite.Oom.Battleship.Model
 {
@@ -16,92 +11,105 @@ namespace Vsite.Oom.Battleship.Model
 
     public class Gunnery
     {
-        private readonly FleetGrid recordGrid;
-        private ITargetSelector targetSelector = new RandomTargetSelector();
-
-        public ShootingTactics ShootingTactics { get; private set; } = ShootingTactics.Random;
-
         public Gunnery(int rows, int columns, IEnumerable<int> shipLengths)
         {
-            recordGrid = new FleetGrid(rows, columns);
+            recordGrid = new ShotsGrid(rows, columns);
             this.shipLengths = new List<int>(shipLengths.OrderDescending());
             targetSelector = new RandomTargetSelector(recordGrid, this.shipLengths[0]);
         }
 
         public Square Next()
         {
-            targetSelector.Next();
+            target = targetSelector.Next();
             return target;
         }
 
-        public void ProcessHit(HitResult hitResult)
+        public void ProcessHitResult(HitResult hitResult)
         {
-            RecordTargetResult(hitResult);
-
-            if (hitResult == HitResult.Hit)
+            switch (hitResult)
             {
-
-                switch (ShootingTactics)
-                {
-                    case ShootingTactics.Random:
-                        ShootingTactics = ShootingTactics.Surrounding;
-                        targetSelector = new SurroundingSelector();
-                        break;
-                    case ShootingTactics.Surrounding:
-                        ShootingTactics = ShootingTactics.Inline;
-                        targetSelector = new InlineTargetSelector();
-                        break;
-                }
-            }
-            else if (hitResult == HitResult.Sunken)
-            {
-                ShootingTactics = ShootingTactics.Random;
-                targetSelector = new RandomTargetSelector();
-
-            }
-private void RecordTargetResult(HitResult hitResult)
-        {
-           switch (hitResult)
-                {
-                    case HitResult.Missed:
-                     targetChangeState(SquareState.Missed);
-                        return;
-
-                    case HitResult.Hit:
-                        target.ChangeState(SquareState.Hit);
-                        return;
-                        
-               
+                case HitResult.Missed:
+                    RecordTargetResult(hitResult);
+                    return;
+                case HitResult.Hit:
+                    switch (ShootingTactics)
+                    {
+                        case ShootingTactics.Random:
+                            ChangeTacticsToSorruounding();
+                            return;
+                        case ShootingTactics.Surrounding:
+                            ChangeTacticsToInline();
+                            break;
+                        case ShootingTactics.Inline:
+                            return;
+                        default:
+                            Debug.Assert(false);
+                            return;
+                    }
+                    return;
                 case HitResult.Sunken:
-                   MarkShipAsSunken();
+                    ChangeTacticsToRandom();
                     return;
             }
         }
-private void MarkShipAsSunken()
+
+        private void RecordTargetResult(HitResult hitResult)
+        {
+            switch (hitResult)
+            {
+                case HitResult.Missed:
+                    target.ChangeState(SquareState.Missed);
+                    return;
+                case HitResult.Hit:
+                    target.ChangeState(SquareState.Hit);
+                    shipSquares.Add(target);
+                    return;
+                case HitResult.Sunken:
+                    MarkShipSunken();
+                    return;
+            }
+        }
+
+        private void MarkShipSunken()
         {
             shipSquares.Add(target);
             foreach (var square in shipSquares)
-                {
+            {
                 square.ChangeState(SquareState.Sunken);
             }
-            
-            var ToEliminate = eliminator.ToEliminate(shipSquares, recordGrid.Rows, recordGrid.Columns);
-                foreach (var square in ToEliminate)
-                {
+            var toEliminate = eliminator.ToEliminate(shipSquares, recordGrid.Rows, recordGrid.Columns);
+            foreach (var square in toEliminate)
+            {
                 recordGrid.GetSquare(square.Row, square.Column).ChangeState(SquareState.Eliminated);
             }
             shipSquares.Clear();
         }
 
-        public ShootingTactics ShootingTactics { get; private set; } = ShootingTactics.Random;
-
-            private readonly ShortsGrid shortsGrid;
-
-            private ITargetSelector targetSelector = new RandomTargetSelector();
-            private List<Square> shipSquares = new List<Square>();
-        private readonly SquareEliminator eliminator = new SquareEliminator();
-
+        private void ChangeTacticsToRandom()
+        {
+            ShootingTactics = ShootingTactics.Random;
+            targetSelector = new RandomTargetSelector(recordGrid, shipLengths[0]);
         }
 
+        private void ChangeTacticsToInline()
+        {
+            ShootingTactics = ShootingTactics.Inline;
+            targetSelector = new InlineTargetSelector();
+        }
 
+        private void ChangeTacticsToSorruounding()
+        {
+            ShootingTactics = ShootingTactics.Surrounding;
+            targetSelector = new InlineTargetSelector();
+        }
+
+        public ShootingTactics ShootingTactics { get; private set; } = ShootingTactics.Random;
+
+        private readonly ShotsGrid recordGrid;
+        private readonly List<int> shipLengths = [];
+        private List<Square> shipSquares = new List<Square>();
+        private ITargetSelector targetSelector;
+        private Square target;
+        private readonly SquareEliminator eliminator = new SquareEliminator();
+    }
 }

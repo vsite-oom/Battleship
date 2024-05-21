@@ -8,30 +8,31 @@ namespace Vsite.Oom.Battleship.Model
 {
     public class FleetBuilder
     {
-        public FleetBuilder(int gridRows, int gridColumns, int[] shiplengths)
+        public FleetBuilder(int gridRows, int gridColumns, int[] shipLengths)
         {
             fleetGrid = new FleetGrid(gridRows, gridColumns);
-            this.shiplengths = new List<int>(shiplengths.OrderByDescending(length => length));
+            this.shipLengths = new List<int>(shipLengths.OrderByDescending(length => length));
         }
 
         private readonly FleetGrid fleetGrid;
 
-        private readonly List<int> shiplengths;
+        private readonly List<int> shipLengths;
 
         public Fleet CreateFleet()
         {
             var fleet = new Fleet();
-            //doma dodati petlju ako je null onda pozvati ponovo jer  više nema mjesta za brodove, tako da generira cijelu ploču ponovo
-            for (int i = 0; i < shiplengths.Count; i++)
+
+            for (int i = 0; i < shipLengths.Count; ++i)
             {
-                var candidates = fleetGrid.GetVerticalAvailablePlacements(shiplengths[i]);
+                var candidates = fleetGrid.GetAvailablePlacements(shipLengths[i]);
                 var selectedIndex = random.Next(candidates.Count());
                 var selected = candidates.ElementAt(selectedIndex);
 
                 fleet.CreateShip(selected);
 
                 var toEliminate = eliminator.ToEliminate(selected, fleetGrid.Rows, fleetGrid.Columns);
-                foreach(var coordinate in toEliminate)
+
+                foreach (var coordinate in toEliminate)
                 {
                     fleetGrid.EliminateSquare(coordinate.Row, coordinate.Column);
                 }
@@ -44,6 +45,6 @@ namespace Vsite.Oom.Battleship.Model
         private readonly Random random = new Random();
 
         private readonly SquareEliminator eliminator = new SquareEliminator();
-       
     }
+
 }
