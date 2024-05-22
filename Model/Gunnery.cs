@@ -82,7 +82,7 @@ namespace Vsite.Oom.Battleship.Model
             var toEliminate = eliminator.ToEliminate(shipSquares, recordGrid.Rows, recordGrid.Columns);
             foreach (var square in toEliminate)
             {
-                recordGrid.GetSquare(square.Row, square.Column).ChangeState(SquareState.Eliminated);
+                recordGrid.ChangeSquareState(square.Row, square.Column, SquareState.Eliminated);
             }
             shipSquares.Clear();
         }
