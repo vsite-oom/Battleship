@@ -93,12 +93,12 @@ namespace vsite.oom.battleship.model
         private void ChangeTacticsToSurrounding()
         {
             ShootingTactics = ShootingTactics.Surrounding;
-            targetSelector = new SurroundingTargetSelector();
+            targetSelector = new SurroundingTargetSelector(recordGrid, target, shipLengths[0]);
         }
         private void ChangeTacticsToInline()
         {
             ShootingTactics = ShootingTactics.Surrounding;
-            targetSelector = new SurroundingTargetSelector();
+            targetSelector = new SurroundingTargetSelector(recordGrid, target, shipLengths[0]);
         }
         public ShootingTactics ShootingTactics { get; private set; } = ShootingTactics.Random;
         private readonly ShotsGrid recordGrid;
