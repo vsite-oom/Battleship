@@ -80,7 +80,7 @@ namespace vste.oom.battleship.model
 			var ToEliminate = eliminator.ToEliminate(shipSquares, recordGrid.Rows, recordGrid.Columns);
 			foreach(var square in shipSquares)
 			{
-				recordGrid.GetSquare(square.Row, square.Column).ChangeState(SquareState.Eliminated);
+				recordGrid.ChangeSquareState(square.Row, square.Column, SquareState.Eliminated);
 			}
 			shipSquares.Clear();
 		}
