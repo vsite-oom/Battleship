@@ -33,6 +33,11 @@
 
             if (Squares.All(sq => sq.IsHit))
             {
+                foreach (var sq in Squares)
+                {
+                    sq.ChangeState(SquareState.Sunken);
+                }
+
                 return HitResult.Sunken;
             }
             return HitResult.Hit;
