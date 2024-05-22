@@ -93,7 +93,7 @@ namespace Vsite.Oom.Battleship.Model
         private void ChangeTacticsToSurrounding()
         {
             ShootingTactics = ShootingTactics.Surrounding;
-            targetSelector = new SurroundingTargetSelector();
+            targetSelector = new SurroundingTargetSelector(recordGrid, target, shipLengths[0]);
         }
 
         private void ChangeTacticsToInline()
