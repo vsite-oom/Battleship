@@ -1,8 +1,19 @@
 ﻿// Ignore Spelling: Vsite Oom
+
 namespace Vsite.Oom.Battleship.Model
 {
+        
+    public enum Direction
+        {
+            Upwards,
+            Rightwards,
+            Downwards,
+            Leftwards
+        }
+
     public class ShotsGrid : Grid
     {
+
         public ShotsGrid(int rows, int columns) : base(rows, columns) 
         { 
         
@@ -22,5 +33,12 @@ namespace Vsite.Oom.Battleship.Model
         {
             squares[row, column]!.ChangeState(newState);
         }
+
+        //TODO: Implement ShotsGridTests for method GetSquaresInDirection
+        public IEnumerable<Square> GetSquaresInDirection(int row, int col, Direction upwards)
+        {
+            throw new NotImplementedException();
+        }
+
     }
 }
