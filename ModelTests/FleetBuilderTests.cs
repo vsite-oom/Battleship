@@ -11,7 +11,7 @@ namespace vste.oom.battleship.model.tests
 		{
 			int rows = 10;
 			int columns = 10;
-			int[] shipLengths = [2, 2, 2, 2, 3, 3, 3, 4, 4, 5];
+			int[] shipLengths = new int[] { 2, 2, 2, 2, 3, 3, 3, 4, 4, 5 };
 
 			var builder = new FleetBuilder(rows, columns, shipLengths);
 			var fleet= builder.CreateFleet();
@@ -24,7 +24,7 @@ namespace vste.oom.battleship.model.tests
 		{
 			int rows = 10;
 			int columns = 10;
-			int[] shipLengths = [2, 2, 2, 2, 3, 3, 3, 4, 4, 5];
+			int[] shipLengths = new int[] { 2, 2, 2, 2, 3, 3, 3, 4, 4, 5 };
 
 			var builder = new FleetBuilder(rows, columns, shipLengths);
 			var fleet= builder.CreateFleet();
@@ -57,7 +57,7 @@ namespace vste.oom.battleship.model.tests
 
 			Assert.AreEqual(2, fleet.Ships.Count(s => s.Squares.Count() == 4));
 		}
-		
+
 		[TestMethod]
 		public void CreateFleetBuildsFleetWithShipsOfLengthProvidedFor5()
 		{

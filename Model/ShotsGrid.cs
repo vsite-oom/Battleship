@@ -8,6 +8,13 @@ namespace vste.oom.battleship.model
 {
 	public class ShotsGrid : Grid
 	{
+		public enum Direction
+		{
+			Upwards,
+			Rightwards,
+			Leftwards,
+			Downwards
+		}
 		public ShotsGrid(int rows, int columns):base(rows,columns) 
 		{ 
 
@@ -25,6 +32,11 @@ namespace vste.oom.battleship.model
 		public void ChangeSquareState(int row, int column, SquareState newState)
 		{
 			squares[row, column]!.ChangeState(newState);
+		}
+
+		public IEnumerable<Square> GetSquaresInDirection(int row, int column, Direction upwards)
+		{
+			throw new NotImplementedException();
 		}
 	}
 }
