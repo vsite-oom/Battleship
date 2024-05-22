@@ -21,5 +21,8 @@ namespace Vsite.OOM.Battleship.Model
         {
             return squares[row, col]!;
         }
+        public void ChangeSquareState(int row, int col,SquareState newState) {
+            squares[row, col]!.changeState(newState);
+        }
     }
 }

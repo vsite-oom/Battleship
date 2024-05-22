@@ -35,6 +35,9 @@ namespace Vsite.OOM.Battleship.Model
 
             if (Squares.All(sq => sq.IsHit))
             {
+                foreach(var sq in Squares) {
+                    sq.changeState(SquareState.Sunk);
+                }
                 return HitResult.Sunken;
             }
             return HitResult.Hit;
