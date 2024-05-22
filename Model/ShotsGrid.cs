@@ -24,5 +24,10 @@ namespace vsite.oom.battleship.model
         {
             return squares[row, column]!;
         }
+
+        public void CHangeSquareState(int row, int column, SquareState newState)
+        {
+            squares[row, column]!.ChangeState(newState);
+        }
     }
 }
