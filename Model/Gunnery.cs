@@ -35,7 +35,7 @@ namespace Vsite.Oom.Battleship.Model
                     switch (ShootingTactics)
                     {
                         case ShootingTactics.Random:
-                            ChangeTacticsToSorruounding();
+                            ChangeTacticsToSurrounding();
                             return;
                         case ShootingTactics.Surrounding:
                             ChangeTacticsToInline();
@@ -97,10 +97,10 @@ namespace Vsite.Oom.Battleship.Model
             targetSelector = new InlineTargetSelector();
         }
 
-        private void ChangeTacticsToSorruounding()
+        private void ChangeTacticsToSurrounding()
         {
             ShootingTactics = ShootingTactics.Surrounding;
-            targetSelector = new InlineTargetSelector();
+            targetSelector = new SurroundingTargetSelector(recordGrid, target, shipLengths[0]);
         }
 
         public ShootingTactics ShootingTactics { get; private set; } = ShootingTactics.Random;
