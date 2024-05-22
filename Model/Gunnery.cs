@@ -102,7 +102,7 @@ namespace Vsite.Oom.Battleship.Model
         private void ChangeTacticsToSorruounding()
         {
             ShootingTactics = ShootingTactics.Surrounding;
-            targetSelector = new InlineTargetSelector();
+            targetSelector = new SurroundingTargetSelector(recordGrid, target, shipLengths[0]);
         }
 
         public ShootingTactics ShootingTactics { get; private set; } = ShootingTactics.Random;
