@@ -36,7 +36,7 @@ namespace vste.oom.battleship.model
 				{
 					case shootingTacticts.Random:
 						shootingTacticts = shootingTacticts.Surrounding;
-						targetSelector = new SurroundingTargetSelector();
+						targetSelector = new SurroundingTargetSelector(recordGrid,target, shipLengths[0]);
 						break;
 					case shootingTacticts.Surrounding:
 						shootingTacticts = shootingTacticts.Inline;
