@@ -11,11 +11,11 @@ namespace Vsite.Oom.Battleship.Model
 
         public Square Next()
         {
-            var placements = grid.GetAvailablePlacements(shipLength);
-            var candidates = placements.SelectMany(s => s);
+            //var placements = grid.GetAvailablePlacements(shipLength);
+            //var candidates = placements.SelectMany(s => s);
 
-            var selectedIndex = random.Next(candidates.Count());
-            return candidates.ElementAt(selectedIndex);
+            //var selectedIndex = random.Next(candidates.Count());
+            //return candidates.ElementAt(selectedIndex);
 
             //TODO: Implement square target by count of how many
             var availablePlacements = grid.GetAvailablePlacements(shipLength);
