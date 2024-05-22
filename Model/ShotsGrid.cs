@@ -9,9 +9,9 @@
             return squares[row, column]?.SquareState == SquareState.Intact;
         }
 
-        public Square GetSquare(int row, int column)
+        public void ChangeSquareState(int row, int column, SquareState newState)
         {
-            return squares[row, column]!;
+            squares[row, column]!.ChangeState(newState);
         }
     }
 }
