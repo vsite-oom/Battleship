@@ -92,7 +92,7 @@ namespace Vsite.OOM.Battleship.Model
             switch (shootingTactics)
             {
                 case ShootingTactics.Random: targetSelector = new RandomTargetSelector(recordGrid, shipLengths[0]); break;
-                case ShootingTactics.Surronding: targetSelector = new SurrondingTargetSelector(); break;
+                case ShootingTactics.Surronding: targetSelector = new SurrondingTargetSelector(recordGrid,target, shipLengths[0]); break;
                 case ShootingTactics.Inline: targetSelector = new InlineTargetSelector(); break;
                 default:
                     Debug.Assert(false);
