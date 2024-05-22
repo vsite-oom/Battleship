@@ -38,7 +38,7 @@ namespace Vsite.Oom.Battleship.Model
                         if (hitResult == HitResult.Hit)
                         {
                             ShootingTactics = ShootingTactics.Surrounding;
-                            targetSelector = new SurroundingTargetSelector();
+                            targetSelector = new SurroundingTargetSelector(recordGrid, target, shipLengths[0]);
                         }
                         break;
                     }
