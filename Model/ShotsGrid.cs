@@ -6,6 +6,14 @@ using System.Threading.Tasks;
 
 namespace Vsite.OOM.Battleship.Model
 {
+    public enum Direction
+    {
+        Upwards,
+        Downwards, 
+        Left, 
+        Right
+
+    }
     public class ShotsGrid : Grid
     {
         public ShotsGrid(int rows, int columns) : base(rows, columns)
@@ -23,6 +31,10 @@ namespace Vsite.OOM.Battleship.Model
         }
         public void ChangeSquareState(int row, int col,SquareState newState) {
             squares[row, col]!.changeState(newState);
+        }
+
+        public IEnumerable<Square> GetSquaresInDirection(int row,int col,Direction dir) {
+            throw new NotImplementedException();
         }
     }
 }
