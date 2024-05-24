@@ -34,7 +34,72 @@ namespace Vsite.OOM.Battleship.Model
         }
 
         public IEnumerable<Square> GetSquaresInDirection(int row,int col,Direction dir) {
-            throw new NotImplementedException();
+            List<Square> squares = new List<Square>();
+
+            switch (dir)
+            {
+                case Direction.Upwards:
+                {
+                    for (int i = row - 1; i >= 0; --i)
+                    {
+                        if (GetSquare(i, col).State == SquareState.Intact)
+                        {
+                            squares.Add(GetSquare(i, col));
+                        }
+                        else
+                        {
+                            return squares;
+                        }
+                    }
+                    return squares;
+                }
+                case Direction.Downwards:
+                {
+                    for (int i = row + 1; i <= Rows-1; ++i)
+                    {
+                        if (GetSquare(i, col).State == SquareState.Intact)
+                        {
+                            squares.Add(GetSquare(i, col));
+                        }
+                        else
+                        {
+                            return squares;
+                        }
+                    }
+                    return squares;
+                }
+                case Direction.Left:
+                {
+                     for (int i = col - 1; i >= 0; --i)
+                     {
+                        if (GetSquare(row, i).State == SquareState.Intact)
+                        {
+                            squares.Add(GetSquare(row, i));
+                        }
+                        else
+                        {
+                            return squares;
+                        }
+                     }
+                        return squares;
+                }
+                case Direction.Right:
+                {
+                    for (int i = col + 1; i <= Columns-1; ++i)
+                    {
+                        if (GetSquare(i, col).State == SquareState.Intact)
+                        {
+                            squares.Add(GetSquare(i, col));
+                        }
+                        else
+                        {
+                            return squares;
+                        }
+                    }
+                    return squares;
+                }
+                default: { throw new Exception(); }
+            }
         }
     }
 }
