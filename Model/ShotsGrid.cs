@@ -1,4 +1,6 @@
-﻿
+﻿using System.Collections.Generic;
+using System.Linq;
+
 namespace Vsite.Oom.Battleship.Model
 {
     public enum Direction
@@ -8,6 +10,7 @@ namespace Vsite.Oom.Battleship.Model
         Downards,
         Leftwards,
     }
+
     public class ShotsGrid : Grid
     {
         public ShotsGrid(int rows, int columns) : base(rows, columns)
@@ -26,8 +29,39 @@ namespace Vsite.Oom.Battleship.Model
 
         public IEnumerable<Square> GetSquaresInDirection(int row, int column, Direction direction)
         {
-            throw new NotImplementedException(); // za zadacu
-        }
+            var squaresInDirection = new List<Square>();
 
+            switch (direction)
+            {
+                case Direction.Upwards:
+                    for (int r = row - 1; r >= 0; r--)
+                    {
+                        squaresInDirection.Add(squares[r, column]);
+                    }
+                    break;
+                case Direction.Rightwards:
+                    for (int c = column + 1; c < Columns; c++)
+                    {
+                        squaresInDirection.Add(squares[row, c]);
+                    }
+                    break;
+                case Direction.Downards:
+                    for (int r = row + 1; r < Rows; r++)
+                    {
+                        squaresInDirection.Add(squares[r, column]);
+                    }
+                    break;
+                case Direction.Leftwards:
+                    for (int c = column - 1; c >= 0; c--)
+                    {
+                        squaresInDirection.Add(squares[row, c]);
+                    }
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(direction), direction, null);
+            }
+
+            return squaresInDirection;
+        }
     }
 }
