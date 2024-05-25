@@ -3,9 +3,6 @@ using System.Linq;
 
 namespace Vsite.Oom.Battleship.Model.Tests
 {
-
-
-
     [TestClass]
     public class SurroundingTargetSelectorTests
     {
