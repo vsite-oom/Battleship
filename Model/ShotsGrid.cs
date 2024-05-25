@@ -11,4 +11,9 @@ public class ShotsGrid(int rows, int columns) : Grid(rows, columns)
     {
         return _squares[row, column]!;
     }
+
+    public void ChangeSquareState(int row, int column, SquareState newState)
+    {
+        _squares[row, column]!.ChangeState(newState);
+    }
 }

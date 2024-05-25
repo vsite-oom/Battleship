@@ -28,6 +28,12 @@ public class Ship
 
         square.Hit();
 
-        return Squares.All(sq => sq.IsHit) ? HitResult.Sunken : HitResult.Hit;
+        if (Squares.All(sq => sq.IsHit))
+        {
+            foreach (var sq in Squares) sq.ChangeState(SquareState.Sunken);
+            return HitResult.Sunken;
+        }
+
+        return HitResult.Hit;
     }
 }
