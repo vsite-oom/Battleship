@@ -25,11 +25,15 @@ namespace Vsite.Oom.Battleship.Model.Tests
         {
             var grid = new ShotsGrid(10, 10);
             var squareHit = grid.Squares.FirstOrDefault(s => s.Row == 3 && s.Column == 4);
+
             squareHit!.ChangeState(SquareState.Hit);
             int shipLen = 5;
+
             var selector = new SurroundingTargetSelector(grid, squareHit, shipLen);
+
             var target = selector.Next();
             var candidates = CreateCanditates(grid, [new(2, 4), new(3, 5), new(4, 4), new(3, 3)]);
+
             Assert.IsTrue(candidates.Contains(target));
         }
     }
