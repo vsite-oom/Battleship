@@ -70,7 +70,7 @@ public class Gunnery
             case HitResult.Missed: target?.ChangeState(SquareState.Missed);
                 return;
             case HitResult.Hit: target?.ChangeState((SquareState.Hit));
-                shipSquares.Add(target);
+                shipSquares.Add(target!);
                 return;
             case HitResult.Sunken: MarkShipSunken();
                 return;
@@ -80,7 +80,7 @@ public class Gunnery
 
     private void MarkShipSunken()
     {
-        shipSquares.Add(target);
+        shipSquares.Add(target!);
         foreach (var square in shipSquares)
         {
             square.ChangeState(SquareState.Sunken);
@@ -89,7 +89,7 @@ public class Gunnery
         var toEliminate = SquareEliminator.ToEliminate(shipSquares, _recordGrid.Rows, _recordGrid.Columns);
         foreach (var square in toEliminate)
         {
-            _recordGrid.GetSquare(square.Row, square.Column).ChangeState(SquareState.Eliminated);
+            _recordGrid.ChangeSquareState(square.Row, square.Column, SquareState.Eliminated);
         }
         
         shipSquares.Clear();
@@ -104,7 +104,7 @@ public class Gunnery
     private void ChangeTacticsToSurrounding()
     {
         ShootingTactics = ShootingTactics.Surrounding;
-        targetSelector = new SurroundingTargetSelector();
+        targetSelector = new SurroundingTargetSelector(_recordGrid, target!, shipLengths[0]);
     }
 
     private void ChangeTacticsToInline()
