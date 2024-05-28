@@ -12,7 +12,15 @@ namespace Vsite.Oom.Battleship.Model.Tests
             var gunnery = new Gunnery(10, 10, new List<int> { 1, 2, 3 });
             Assert.AreEqual(ShootingTactics.Random, gunnery.ShootingTactics);
         }
-        
+        [TestMethod]
+        public void ShootingTacticsRemainsRandomIfHitResultIsMissed()
+        {
+            var gunnery = new Gunnery(10, 10, new List<int> { 1, 2, 3 });
+            gunnery.Next();
+            gunnery.ProcessHitResult(HitResult.Missed);
+            Assert.AreEqual(ShootingTactics.Random, gunnery.ShootingTactics);
+        }
+
         [TestMethod]
 
 

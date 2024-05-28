@@ -28,7 +28,7 @@ namespace Vsite.Oom.Battleship.Model.Tests
         {
             
 
-            }
+            
             var grid = new ShotsGrid(10, 10);
             var squareHit = grid.Squares.FirstOrDefault(s=>s.Row == 3 && s.Column == 4);
             
