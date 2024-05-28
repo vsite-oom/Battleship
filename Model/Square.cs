@@ -36,5 +36,21 @@
             }
         }
 
+
+        public override bool Equals(object obj)
+        {
+            if (obj == null || GetType() != obj.GetType())
+            {
+                return false;
+            }
+
+            Square other = (Square)obj;
+            return Row == other.Row && Column == other.Column;
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(Row, Column);
+        } 
     }
 }
