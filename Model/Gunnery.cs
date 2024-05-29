@@ -47,7 +47,7 @@ namespace Vsite.Oom.Battleship.Model
                         if (hitResult == HitResult.Hit)
                         {
                             ShootingTactics = ShootingTactics.Inline;
-                            targetSelector = new InlineTargetSelector();
+                            targetSelector = new InlineTargetSelector(recordGrid, shipSquares, shipLengths[0]);
                         }
                         else if (hitResult == HitResult.Sunken)
                         {
