@@ -46,6 +46,57 @@ namespace Vsite.Oom.Battleship.Model.Tests
             var Squares = grid.GetSquaresDirection(row, column, Direction.Leftwards);
             Assert.AreEqual(1, Squares.Count());
         }
+        [TestMethod]
+        public void GetSquaresInDirectionReturns3SquaresAboveSquare3x3IfSquare1x3IsHit()
+        {
+            var grid = new ShotsGrid(10, 10);
+            int row = 3;
+            int column = 3;
+            grid.CHangeSquareState(1, 3, SquareState.Hit);
+            var Squares = grid.GetSquaresDirection(row, column, Direction.Upwards);
+            Assert.AreEqual(1, Squares.Count());
+        }
+        [TestMethod]
+        public void GetSquaresInDirectionReturns3SquaresAboveSquare3x3IfSquare2x3IsHit()
+        {
+            var grid = new ShotsGrid(10, 10);
+            int row = 3;
+            int column = 3;
+            grid.CHangeSquareState(1, 3, SquareState.Hit);
+            var Squares = grid.GetSquaresDirection(row, column, Direction.Upwards);
+            Assert.AreEqual(0, Squares.Count());
+        }
+        [TestMethod]
+        public void GetSquaresInDirectionReturns2SquaresRightFromSquare3x5IfSquare3x5IsHit()
+        {
+            var grid = new ShotsGrid(10, 10);
+            int row = 3;
+            int column = 5;
+            grid.CHangeSquareState(3, 8, SquareState.Hit);
+            var Squares = grid.GetSquaresDirection(row, column, Direction.Rightwards);
+            Assert.AreEqual(4, Squares.Count());
+        }
+        [TestMethod]
+        public void GetSquaresInDirectionReturns1SquaresBelowSquare7x5IfSquare9x5IsHit()
+        {
+            var grid = new ShotsGrid(10, 10);
+            int row = 7;
+            int column = 5;
+            grid.CHangeSquareState(9, 5, SquareState.Hit);
+            var Squares = grid.GetSquaresDirection(row, column, Direction.Downwards);
+            Assert.AreEqual(1, Squares.Count());
+        }
+
+        [TestMethod]
+        public void GetSquaresInDirectionReturns0SquareLeftFromSquare7x1IfSquare7x0IsHit()
+        {
+            var grid = new ShotsGrid(10, 10);
+            int row = 7;
+            int column = 1;
+            grid.CHangeSquareState(7, 0, SquareState.Hit);
+            var Squares = grid.GetSquaresDirection(row, column, Direction.Leftwards);
+            Assert.AreEqual(0, Squares.Count());
+        }
 
     }
 }
