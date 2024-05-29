@@ -52,7 +52,7 @@ namespace Vsite.Oom.Battleship.Model
                         break;
                     case ShootingTactics.Surrounding:
                         ShootingTactics = ShootingTactics.Inline;
-                        targetSelector = new InlineTargetSelector();
+                        targetSelector = new InlineTargetSelector(recordGrid, shipSquares, shipLengths[0]);
                         break;
                 }
             }
