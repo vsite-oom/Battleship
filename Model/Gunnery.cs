@@ -40,7 +40,7 @@ namespace vste.oom.battleship.model
 						break;
 					case shootingTacticts.Surrounding:
 						shootingTacticts = shootingTacticts.Inline;
-						targetSelector = new InlineTargetSelector();
+						targetSelector = new InlineTargetSelector(recordGrid, shipSquares, shipLengths[0]);
 						break;
 				}
 			}
