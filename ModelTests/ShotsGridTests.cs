@@ -44,6 +44,6 @@ namespace Vsite.Oom.Battleship.Model.Tests
           int column = 1;
           var squares = grid.GetSquaresInDirection(row, column, Direction.Leftwards);
           Assert.AreEqual(1, squares.Count());
-      }  // DZ implementirati da testovi prolaze
+      }
     }
 }

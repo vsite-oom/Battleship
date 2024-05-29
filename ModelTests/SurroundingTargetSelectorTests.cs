@@ -30,6 +30,6 @@ namespace Vsite.Oom.Battleship.Model.Tests
 
             var candidates = CreateCandidates(grid, [new(2, 4), new(3, 5), new(4, 4), new(3, 3)]);
             Assert.IsTrue(candidates.Contains(target));
-        }// DZ implementirati
+        }
     }
 }
