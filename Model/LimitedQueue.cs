@@ -4,16 +4,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Vsite.Oom.Batelship.Model
+namespace Vsite.Oom.Battleship.Model
 {
     public class LimitedQueue<T> : Queue<T>
     {
-        private readonly int maxItems;
-
         public LimitedQueue(int maxItems)
         {
             this.maxItems = maxItems;
         }
+
+        private readonly int maxItems;
 
         public new void Enqueue(T item)
         {
@@ -21,7 +21,6 @@ namespace Vsite.Oom.Batelship.Model
             {
                 Dequeue();
             }
-
             base.Enqueue(item);
         }
     }

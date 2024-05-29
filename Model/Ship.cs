@@ -12,6 +12,7 @@ namespace Vsite.Oom.Battleship.Model
         Hit,
         Sunken
     }
+
     public class Ship
     {
         public Ship(IEnumerable<Square> squares)

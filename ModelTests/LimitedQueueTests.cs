@@ -1,6 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
-using Vsite.Oom.Batelship.Model;
+using Vsite.Oom.Battleship.Model;
 
 namespace Vsite.Oom.Battleship.Model.Tests
 {

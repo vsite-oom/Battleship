@@ -26,27 +26,26 @@ namespace Vsite.Oom.Battleship.Model
 
         public void ProcessHitResult(HitResult hitResult)
         {
+            RecordTargetResult(hitResult);
             switch (hitResult)
             {
                 case HitResult.Missed:
-                    RecordTargetResult(hitResult);
                     return;
                 case HitResult.Hit:
                     switch (ShootingTactics)
                     {
                         case ShootingTactics.Random:
-                            ChangeTacticsToSorruounding();
+                            ChangeTacticsToSurrounding();
                             return;
                         case ShootingTactics.Surrounding:
                             ChangeTacticsToInline();
-                            break;
+                            return;
                         case ShootingTactics.Inline:
                             return;
                         default:
                             Debug.Assert(false);
                             return;
                     }
-                    return;
                 case HitResult.Sunken:
                     ChangeTacticsToRandom();
                     return;
@@ -80,7 +79,7 @@ namespace Vsite.Oom.Battleship.Model
             var toEliminate = eliminator.ToEliminate(shipSquares, recordGrid.Rows, recordGrid.Columns);
             foreach (var square in toEliminate)
             {
-                recordGrid.ChangeSquareState(square.Row, square.Column).ChangeState(SquareState.Eliminated);
+                recordGrid.ChangeSquareState(square.Row, square.Column, SquareState.Eliminated);
             }
             shipSquares.Clear();
         }
@@ -91,25 +90,30 @@ namespace Vsite.Oom.Battleship.Model
             targetSelector = new RandomTargetSelector(recordGrid, shipLengths[0]);
         }
 
+        private void ChangeTacticsToSurrounding()
+        {
+            ShootingTactics = ShootingTactics.Surrounding;
+            targetSelector = new SurroundingTargetSelector(recordGrid, target, shipLengths[0]);
+        }
+
         private void ChangeTacticsToInline()
         {
             ShootingTactics = ShootingTactics.Inline;
             targetSelector = new InlineTargetSelector();
         }
 
-        private void ChangeTacticsToSorruounding()
-        {
-            ShootingTactics = ShootingTactics.Surrounding;
-            targetSelector = new SurroundingSelector(recordGrid, target, shipLengths[0]);
-        }
-
         public ShootingTactics ShootingTactics { get; private set; } = ShootingTactics.Random;
 
         private readonly ShotsGrid recordGrid;
+
         private readonly List<int> shipLengths = [];
+
         private List<Square> shipSquares = new List<Square>();
-        private ITargetSelector targetSelector;
+
         private Square target;
+
+        private ITargetSelector targetSelector;
+
         private readonly SquareEliminator eliminator = new SquareEliminator();
     }
 }

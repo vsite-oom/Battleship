@@ -4,11 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+
 namespace Vsite.Oom.Battleship.Model
 {
     public class Fleet
     {
-        private List<Ship> ships = new List<Ship>();
+        private readonly List<Ship> ships = [];
 
         public IEnumerable<Ship> Ships { get { return ships; } }
 
@@ -18,7 +19,7 @@ namespace Vsite.Oom.Battleship.Model
             ships.Add(ship);
         }
 
-        public object Hit(int row, int column)
+        public HitResult Hit(int row, int column)
         {
             foreach (var ship in ships)
             {
