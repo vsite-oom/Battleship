@@ -87,9 +87,9 @@ namespace Vsite.OOM.Battleship.Model
                 {
                     for (int i = col + 1; i <= Columns-1; ++i)
                     {
-                        if (GetSquare(i, col).State == SquareState.Intact)
+                        if (GetSquare(row, i).State == SquareState.Intact)
                         {
-                            squares.Add(GetSquare(i, col));
+                            squares.Add(GetSquare(row, i));
                         }
                         else
                         {
