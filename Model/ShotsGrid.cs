@@ -52,6 +52,10 @@ public class ShotsGrid : Grid
         {
             tempRow += rowDirection;
             tempCol += colDirection;
+            if (GetSquare(tempRow, tempCol).SquareState != SquareState.Intact)
+            {
+                return result;
+            }
             result.Add(new Square(tempRow, tempCol));
         }
 
