@@ -22,7 +22,7 @@ namespace Vsite.Oom.Battleship.Model.Tests
         }
 
         [TestMethod]
-        public void OneOfSquaresAroundSquare3x4()
+        public void OneOfFourSquaresAroundSquare3x4()
         {
             var grid = new ShotsGrid(10, 10);
             var squareHit = grid.Squares.FirstOrDefault(s => s.Row == 3 && s.Column == 4);
@@ -32,6 +32,33 @@ namespace Vsite.Oom.Battleship.Model.Tests
             var target = selector.Next();
             var candidates = CreateCandidates(grid, new List<SquareCoordinate> { new SquareCoordinate(2, 4), new SquareCoordinate(3, 5), new SquareCoordinate(4, 4), new SquareCoordinate(3, 3) });
             Assert.IsTrue(candidates.Contains(target));
+        }
+        
+        public void OneOfThreeSquaresAroundSquare3x4AfterSquare3x5IsHit()
+        {
+            var grid = new ShotsGrid(10, 10);
+            var squareHit = grid.Squares.FirstOrDefault(s => s.Row == 3 && s.Column == 4);
+            squareHit.ChangeState(SquareState.Hit);
+            int shipLength = 5;
+            var selector = new SurroundingTargetSelector(grid, squareHit, shipLength);
+            var target = selector.Next();
+            var candidates = CreateCandidates(grid, new List<SquareCoordinate> { new SquareCoordinate(2, 4), new SquareCoordinate(4, 4), new SquareCoordinate(3, 3) });
+            Assert.IsTrue(candidates.Contains(target));
+            
+        }        
+        public void OneOfThreeSquaresAroundSquare3x4AfterSquare3x3IsHit()
+        {
+            var grid = new ShotsGrid(10, 10);
+            var squareHit = grid.Squares.FirstOrDefault(s => s.Row == 3 && s.Column == 4);
+            squareHit.ChangeState(SquareState.Hit);
+            int shipLength = 5;
+            var selector = new SurroundingTargetSelector(grid, squareHit, shipLength);
+            grid.CHangeSquareState(3, 5, SquareState.Missed);
+            grid.CHangeSquareState(3, 3, SquareState.Missed);
+            grid.CHangeSquareState(2, 4, SquareState.Missed);
+            var target = selector.Next();
+            Assert.IsTrue(target.Row == 4 && target.Column ==4);
+            
         }
     }
 }
