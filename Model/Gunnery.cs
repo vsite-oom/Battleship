@@ -110,6 +110,6 @@ public class Gunnery
     private void ChangeTacticsToInline()
     {
         ShootingTactics = ShootingTactics.Inline;
-        targetSelector = new InlineTargetSelector();
+        targetSelector = new InlineTargetSelector(_recordGrid, shipSquares, shipLengths[0]);
     }
 }
