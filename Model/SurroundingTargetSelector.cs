@@ -16,18 +16,17 @@ public class SurroundingTargetSelector : ITargetSelector
     public Square Next()
     {
         List<IEnumerable<Square>> squares = new List<IEnumerable<Square>>();
-        var up = _grid.GetSquaresInDirection(_firstHit.Row, _firstHit.Column, Direction.Upwards);
-        if (up.Count() > 0) squares.Add(up);
-        var left= _grid.GetSquaresInDirection(_firstHit.Row, _firstHit.Column, Direction.Left);
-        if (left.Count() > 0) squares.Add(left);
-        var right = _grid.GetSquaresInDirection(_firstHit.Row, _firstHit.Column, Direction.Right);
-        if (right.Count() > 0) squares.Add(right);
-        var down = _grid.GetSquaresInDirection(_firstHit.Row, _firstHit.Column, Direction.Downwards);
-        if (down.Count() > 0) squares.Add(down);
 
+        foreach (Direction direction in Enum.GetValues(typeof(Direction)))
+        {
+            var squaresInDirection = _grid.GetSquaresInDirection(_firstHit.Row, _firstHit.Column, direction);
+            if(squaresInDirection.Count() > 0 )
+                squares.Add(squaresInDirection);
+        }
 
+        var longest = squares.OrderByDescending(s => s.Count()).First();
 
-        throw new NotImplementedException();
+        return longest.First();
     }
 
     public void ProcesshitResult(HitResult hitResult)

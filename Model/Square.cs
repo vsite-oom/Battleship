@@ -35,4 +35,18 @@ public class Square
             SquareState = newState;
         }
     }
+
+    public override bool Equals(object? obj)
+    {
+        if (obj is Square other)
+        {
+            return Row == other.Row && Column == other.Column && SquareState == other.SquareState;
+        }
+        return false;
+    }
+
+    public override int GetHashCode()
+    {
+        return HashCode.Combine(Row, Column, SquareState);
+    }
 }

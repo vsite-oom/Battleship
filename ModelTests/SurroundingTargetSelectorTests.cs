@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 namespace Vsite.Oom.Battleship.Model.Tests
 {
     [TestClass]
-    public class SurrondingTargetSelectorTests
+    public class SurroundingTargetSelectorTests
     {
-        private IEnumerable<Square> CreateCanditates(ShotsGrid grid, IEnumerable<SquareCoordinate> coords)
+        private IEnumerable<Square> CreateCandidates(ShotsGrid grid, IEnumerable<SquareCoordinate> coord)
         {
             List<Square> result = new List<Square>();
-            foreach (var c in coords)
+            foreach (var c in coord)
             {
                 var square = grid.Squares.FirstOrDefault(s => s.Row == c.Row && s.Column == c.Column);
                 result.Add(square!);
@@ -25,15 +25,13 @@ namespace Vsite.Oom.Battleship.Model.Tests
         {
             var grid = new ShotsGrid(10, 10);
             var squareHit = grid.Squares.FirstOrDefault(s => s.Row == 3 && s.Column == 4);
-
             squareHit!.ChangeState(SquareState.Hit);
-            int shipLen = 5;
-
-            var selector = new SurroundingTargetSelector(grid, squareHit, shipLen);
-
+            int shipLength = 5;
+            var selector = new SurroundingTargetSelector(grid, squareHit, shipLength);
             var target = selector.Next();
-            var candidates = CreateCanditates(grid, [new(2, 4), new(3, 5), new(4, 4), new(3, 3)]);
 
+            var candidates = CreateCandidates(grid, [new(2, 4), new(3, 5), new(4, 4), new(3, 3)]);
+            
             Assert.IsTrue(candidates.Contains(target));
         }
     }
