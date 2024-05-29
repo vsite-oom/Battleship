@@ -57,9 +57,13 @@ namespace Vsite.Oom.Battleship.Model
             };
 
             while (tempRow > 0 && tempRow < _rows - 1 && tempCol > 0 && tempCol < _columns - 1)
-            {
+            {                
                 tempRow += rowDir;
                 tempCol += colDir;
+
+                if (!IsSquareAvailable(tempRow, tempCol))
+                    break;
+
                 squares.Add(new Square(tempRow, tempCol));
             }
 
