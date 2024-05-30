@@ -11,72 +11,57 @@ namespace Vsite.Oom.Battleship.Model
         public InlineTargetSelector(ShotsGrid grid, IEnumerable<Square> squaresHit, int shipLength)
         {
             this.grid = grid;
-            this.squaresHit = squaresHit;
             this.shipLength = shipLength;
-           
+            this.squaresHit = squaresHit;
         }
 
         private readonly ShotsGrid grid;
-        private readonly List<Square> squaresHit;
+        private readonly IEnumerable<Square> squaresHit;
         private readonly int shipLength;
-        private readonly Random random = new Random();
+        private readonly Random random;
 
         public Square Next()
         {
-            var sorted = squaresHit.OrderBy(square => square.Row + square.Column);
+            var sorted = squaresHit.OrderBy(sq => sq.Row + sq.Column);
             var directionCandidates = new List<IEnumerable<Square>>();
-            
-            //Horizontalno
+            // Horizontal
             if (sorted.First().Row == sorted.Last().Row)
             {
                 var left = grid.GetSquaresInDirection(sorted.First().Row, sorted.First().Column, Direction.Leftwards);
-                if(left.Any())
+                if (left.Any())
                 {
                     directionCandidates.Add(left);
                 }
-
-                var right = grid.GetSquaresInDirection(sorted.First().Row, sorted.First().Column, Direction.Rightwards);
+                var right = grid.GetSquaresInDirection(sorted.Last().Row, sorted.Last().Column, Direction.Rightwards);
                 if (right.Any())
                 {
                     directionCandidates.Add(right);
                 }
-
             }
-            //Vertikalno
+            // Vertical
             else
             {
-
-                var left = grid.GetSquaresInDirection(sorted.First().Row, sorted.First().Column, Direction.Upwards);
-                if (left.Any())
+                var up = grid.GetSquaresInDirection(sorted.First().Row, sorted.First().Column, Direction.Upwards);
+                if (up.Any())
                 {
                     directionCandidates.Add(up);
                 }
-
-                var right = grid.GetSquaresInDirection(sorted.First().Row, sorted.First().Column, Direction.Downwards);
-                if (right.Any())
+                var down = grid.GetSquaresInDirection(sorted.Last().Row, sorted.Last().Column, Direction.Downwards);
+                if (down.Any())
                 {
                     directionCandidates.Add(down);
                 }
-
             }
-
-
-            var groupByLength = directionCandidates.GroupBy(l => l.Count());
-            var sortedByLength = groupByLength.OrderByDescending(g => g.Key);
-            var longestDirections = sortedByLength.First();
-            var candidates = longestDirections.Count();
+            var groupedByLength = directionCandidates.GroupBy(l => l.Count());
+            var sortedByLength = groupedByLength.OrderByDescending(g => g.Key);
+            var longestDIrections = sortedByLength.First();
+            var candidates = longestDIrections.Count();
             if (candidates == 1)
             {
-                return longestDirections.First().First();
+                return longestDIrections.First().First();
             }
-            int selectedIndex = random.Next(candidates);
-            return longestDirections.ElementAt(selectedIndex).First();
-
-        }
-
-        public void ProcessHitResult(HitResult hitResult)
-        {
-            throw new NotImplementedException();
+            int selectedIndex = random.Next();
+            return longestDIrections.ElementAt(selectedIndex).First();
         }
     }
 }

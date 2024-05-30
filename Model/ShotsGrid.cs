@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+
 namespace Vsite.Oom.Battleship.Model
 {
     public enum Direction
@@ -60,10 +61,9 @@ namespace Vsite.Oom.Battleship.Model
                     limit = -1;
                     break;
             }
-            for (int r = row, c = column; r != limit && c != limit; r += deltaRow, c += deltaColumn)
+            for (int r = row, c = column; r != limit && c != limit && IsSquareAvailable(r, c); r += deltaRow, c += deltaColumn)
             {
-                if (IsSquareAvailable(r, c))
-                    result.Add(squares[r, c]!);
+                result.Add(squares[r, c]!);
             }
             return result;
         }
