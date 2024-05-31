@@ -35,40 +35,41 @@ namespace Vsite.Oom.Battleship.Model
             squares[row, column]!.ChangeState(newState);
         }
 
-        public IEnumerable<Square> GetSquaresInDirection(int row, int column, Direction dir)
+        public IEnumerable<Square> GetSquaresInDirection(int row, int column, Direction direction)
         {
-            List<Square> squares = new();
+            var result = new List<Square>();
 
-            int tempRow = row;
-            int tempCol = column;
-
-            int rowDir = dir switch
+            int deltaRow = 0;
+            int deltaColumn = 0;
+            int limit = 0;
+            switch (direction)
             {
-                Direction.Upwards => -1,
-                Direction.Downwards => 1,
-                _ => 0
-            };
-
-            int colDir = dir switch
-            {
-                Direction.Rightwards => 1,
-                Direction.Leftwards => -1,
-                _ => 0
-            };
-
-            while (tempRow > 0 && tempRow < _rows - 1 && tempCol > 0 && tempCol < _columns - 1)
-            {                
-                tempRow += rowDir;
-                tempCol += colDir;
-
-                if (!IsSquareAvailable(tempRow, tempCol))
+                case Direction.Upwards:
+                    --row;
+                    deltaRow = -1;
+                    limit = -1;
                     break;
-
-                squares.Add(new Square(tempRow, tempCol));
+                case Direction.Rightwards:
+                    ++column;
+                    deltaColumn = +1;
+                    limit = Columns;
+                    break;
+                case Direction.Downwards:
+                    ++row;
+                    deltaRow = +1;
+                    limit = Rows;
+                    break;
+                case Direction.Leftwards:
+                    --column;
+                    deltaColumn = -1;
+                    limit = -1;
+                    break;
             }
-
-            return squares;
-
+            for (int r = row, c = column; r != limit && c != limit && IsSquareAvailable(r, c); r += deltaRow, c += deltaColumn)
+            {
+                result.Add(squares[r, c]!);
+            }
+            return result;
         }
     }
 }
