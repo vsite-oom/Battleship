@@ -48,16 +48,17 @@ namespace Vsite.Oom.Battleship.Model
                 {
                     case ShootingTactics.Random:
                         ShootingTactics = ShootingTactics.Surrounding;
-                        targetSelector = new SurroundingTargetSelector(recordGrid, target, shipLengths[0]);
+                        targetSelector = new SurroundingTargetSelector(recordGrid, target, shipLengths.Max());
                         break;
                     case ShootingTactics.Surrounding:
                         ShootingTactics = ShootingTactics.Inline;
-                        targetSelector = new InlineTargetSelector(recordGrid, shipSquares, shipLengths[0]);
+                        targetSelector = new InlineTargetSelector(recordGrid, shipSquares, shipLengths.Max());
                         break;
                 }
             }
             else if (hitResult == HitResult.Sunken)
             {
+                if (shipLengths.Count == 0) return;
                 ShootingTactics = ShootingTactics.Random;
                 targetSelector = new RandomTargetSelector(recordGrid, shipLengths[0]);
             }
@@ -69,9 +70,11 @@ namespace Vsite.Oom.Battleship.Model
             {
                 case HitResult.Missed:
                     target.ChangeState(SquareState.Missed);
+                    recordGrid.ChangeSquareState(target.Row, target.Column, SquareState.Missed);
                     break;
                 case HitResult.Hit:
                     target.ChangeState(SquareState.Hit);
+                    recordGrid.ChangeSquareState(target.Row, target.Column, SquareState.Hit);
                     shipSquares.Add(target);
                     break;
                 case HitResult.Sunken:
@@ -93,6 +96,7 @@ namespace Vsite.Oom.Battleship.Model
             {
                 recordGrid.ChangeSquareState(square.Row, square.Column, SquareState.Eliminated);
             }
+            shipLengths.Remove(shipSquares.Count);
             shipSquares.Clear();
         }
     }
