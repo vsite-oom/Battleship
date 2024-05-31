@@ -37,6 +37,11 @@ namespace Vsite.Oom.Battleship.Model
             target = targetSelector.Next();
             return target;
         }
+                
+        public void SetTarget(int row, int column)
+        {
+            target = new Square(row, column);
+        }
 
         public void ProcessHit(HitResult hitResult)
         {
