@@ -14,13 +14,12 @@
         public readonly int Row;
         public readonly int Column;
         public bool IsHit => (int)SquareState >= (int)SquareState.Hit;
-        public SquareState SquareState { get; set; }
+        public virtual SquareState SquareState { get; set; } = SquareState.Intact;
 
         public Square(int row, int column)
         {
             Row = row;
             Column = column;
-            SquareState = SquareState.Intact;
         }
 
         public void Hit()
