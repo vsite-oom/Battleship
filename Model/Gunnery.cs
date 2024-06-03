@@ -90,7 +90,6 @@ namespace Vsite.Oom.Battleship.Model
 
         private void MarkShipSunken()
         {
-            shipSquares.Add(target);
             foreach (var square in shipSquares)
             {
                 square.ChangeState(SquareState.Sunken);
