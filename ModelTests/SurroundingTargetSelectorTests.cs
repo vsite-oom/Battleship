@@ -12,9 +12,6 @@ namespace Vsite.Oom.Battleship.Model.Tests
         [TestMethod]
         public void NextReturnsOneOfSquaresAroundSquare3x4()
         {
-            
-
-            
             var grid = new ShotsGrid(10, 10);
             var squareHit = grid.Squares.FirstOrDefault(s=>s.Row == 3 && s.Column == 4);
             
@@ -32,8 +29,6 @@ namespace Vsite.Oom.Battleship.Model.Tests
         public void NextReturnsOneOfFourSquaresAroundSquare3x4()
         {
             
-
-            
             var grid = new ShotsGrid(10, 10);
             var squareHit = grid.Squares.FirstOrDefault(s=>s.Row == 3 && s.Column == 4);
             
@@ -50,9 +45,6 @@ namespace Vsite.Oom.Battleship.Model.Tests
         [TestMethod]
         public void NextReturnsOneOfThreeSquaresAroundSquare3x4AfterSquare3x5IsMissed()
         {
-            
-
-            
             var grid = new ShotsGrid(10, 10);
             var squareHit = grid.Squares.FirstOrDefault(s=>s.Row == 3 && s.Column == 4);
             
@@ -70,9 +62,6 @@ namespace Vsite.Oom.Battleship.Model.Tests
         [TestMethod]
         public void NextReturnsOneOfTwoSquaresAroundSquare3x4AfterSquare3x3AreMissed()
         {
-            
-
-           
             var grid = new ShotsGrid(10, 10);
             var squareHit = grid.Squares.FirstOrDefault(s=>s.Row == 3 && s.Column == 4);
             
@@ -92,8 +81,6 @@ namespace Vsite.Oom.Battleship.Model.Tests
         public void NextReturnsTheOnlySquareAroundSquare3x4AfterSquare3x3AreMissedAnd2x4AreMissed()
         {
             
-
-           
             var grid = new ShotsGrid(10, 10);
             var squareHit = grid.Squares.FirstOrDefault(s=>s.Row == 3 && s.Column == 4);
             
