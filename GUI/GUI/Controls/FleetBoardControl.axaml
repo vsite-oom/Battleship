@@ -1,0 +1,61 @@
+﻿<UserControl x:Class="Vsite.Oom.Battleship.GUI.Controls.FleetBoardControl"
+             xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:models="clr-namespace:Vsite.Oom.Battleship.GUI.Models"
+             xmlns:viewModels="clr-namespace:Vsite.Oom.Battleship.GUI.ViewModels"
+             x:Name="FleetBoard"
+             Padding="20,10,20,20"
+             x:DataType="viewModels:GameViewModel"
+             Background="{DynamicResource Accent}"
+             CornerRadius="10"
+             mc:Ignorable="d">
+  <Grid RowDefinitions="Auto, *">
+    <Label Grid.Row="0"
+           HorizontalAlignment="Center"
+           Content="Fleet" FontSize="36" FontWeight="SemiBold" />
+    <ItemsControl Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Top" ItemsSource="{Binding ElementName=FleetBoard, Path=Source}">
+      <ItemsControl.ItemTemplate>
+        <DataTemplate>
+
+          <ItemsControl HorizontalAlignment="Center" VerticalAlignment="Center" Background="Gray" ItemsSource="{Binding .}">
+            <ItemsControl.ItemsPanel>
+              <ItemsPanelTemplate>
+                <StackPanel Orientation="Horizontal" />
+              </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+
+            <ItemsControl.ItemTemplate>
+              <DataTemplate x:DataType="models:DisplaySquare">
+                <Border Name="ShipCell"
+                        Width="{Binding ElementName=FleetBoard, Path=CellSize}"
+                        Height="{Binding ElementName=FleetBoard, Path=CellSize}"
+                        Background="{StaticResource CellColor}"
+                        BorderThickness="1" CornerRadius="2">
+                  <Interaction.Behaviors>
+                    <!--  Ship  -->
+                    <DataTriggerBehavior Binding="{Binding IsShip}" ComparisonCondition="Equal" Value="True">
+                      <ChangePropertyAction PropertyName="Background" TargetObject="{Binding #ShipCell}" Value="{StaticResource ShipColor}" />
+                    </DataTriggerBehavior>
+
+                    <!--  Missed  -->
+                    <DataTriggerBehavior Binding="{Binding SquareState}" ComparisonCondition="Equal" Value="Missed">
+                      <ChangePropertyAction PropertyName="Background" TargetObject="{Binding #ShipCell}" Value="{StaticResource MissedColor}" />
+                    </DataTriggerBehavior>
+
+                    <!--  Hit  -->
+                    <DataTriggerBehavior Binding="{Binding SquareState}" ComparisonCondition="Equal" Value="Hit">
+                      <ChangePropertyAction PropertyName="Background" TargetObject="{Binding #ShipCell}" Value="{StaticResource HitColor}" />
+                    </DataTriggerBehavior>
+                  </Interaction.Behaviors>
+                </Border>
+              </DataTemplate>
+            </ItemsControl.ItemTemplate>
+          </ItemsControl>
+
+        </DataTemplate>
+      </ItemsControl.ItemTemplate>
+    </ItemsControl>
+  </Grid>
+</UserControl>
