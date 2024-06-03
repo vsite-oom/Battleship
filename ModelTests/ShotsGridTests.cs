@@ -56,17 +56,16 @@ namespace Vsite.Oom.Battleship.Model.Tests
             grid.ChangeSquareState(1, 3, SquareState.Hit);
             var squares = grid.GetSquaresInDirection(row, column, Direction.Upwards);
             Assert.AreEqual(1, squares.Count());
-        } 
+        }
         [TestMethod]
-        public void GetSquaresInDirectionReturns0SquareAboveSquare3x3IfSquare2x3IsHit()
-
+        public void GetSquaresInDirectionReturns0SquaresAboveSquare3x3IfSqure2x3IsHit()
         {
-            var grid= new ShotsGrid(10, 10);
-            int row= 3;
-            int column= 3;
+            var grid = new ShotsGrid(10, 10);
+            int row = 3;
+            int column = 3;
             grid.ChangeSquareState(2, 3, SquareState.Hit);
             var squares = grid.GetSquaresInDirection(row, column, Direction.Upwards);
-            Assert.AreEqual(1, squares.Count());
+            Assert.AreEqual(0, squares.Count());
         }
         [TestMethod]
         public void GetSquaresInDirectionReturns2SquaresRightFromSquare3x5IfSquare3x8IsHit()
