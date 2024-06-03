@@ -17,7 +17,7 @@ namespace Vsite.Oom.Battleship.Model
         private readonly ShotsGrid grid;
         private readonly IEnumerable<Square> squaresHit;
         private readonly int shipLength;
-        private readonly Random = new Random();
+        private readonly Random random = new Random();
         public Square Next()
         {
             var sorted = squaresHit.OrderBy(sq=>sq.Row+sq.Column);
@@ -41,15 +41,15 @@ namespace Vsite.Oom.Battleship.Model
             {
                 if (sorted.First().Row == sorted.Last().Row)
                 {
-                    var left = grid.GetSquaresInDirection(sorted.First().Row, sorted.First().Column, Direction.Leftwards);
-                    if (left.Any())
+                    var up = grid.GetSquaresInDirection(sorted.First().Row, sorted.First().Column, Direction.Upwards);
+                    if (up.Any())
                     {
-                        directionCandidates.Add(left);
+                        directionCandidates.Add(up);
                     }
-                    var right = grid.GetSquaresInDirection(sorted.Last().Row, sorted.Last().Column, Direction.Rightwards);
-                    if (right.Any())
+                    var down = grid.GetSquaresInDirection(sorted.Last().Row, sorted.Last().Column, Direction.Downwards);
+                    if (down.Any())
                     {
-                        directionCandidates.Add(right);
+                        directionCandidates.Add(down);
                     }
                 }
             }
@@ -61,7 +61,7 @@ namespace Vsite.Oom.Battleship.Model
             {
                 return longestDirections.First().First();
             }
-            int selectedDirectionIndex = random.Next(candidates);
+            int selectedIndex = random.Next(candidates);
             return longestDirections.ElementAt(selectedIndex).First();
             
 
