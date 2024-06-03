@@ -1,0 +1,67 @@
+﻿<UserControl x:Class="Vsite.Oom.Battleship.GUI.Views.GameView"
+             xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:controls="clr-namespace:Vsite.Oom.Battleship.GUI.Controls"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:Vsite.Oom.Battleship.GUI.ViewModels"
+             d:DesignHeight="600"
+             d:DesignWidth="1200"
+             x:DataType="vm:GameViewModel"
+             Background="{DynamicResource PrimaryColor}"
+             FontFamily="{StaticResource PoetsenOneFont}"
+             SizeChanged="Control_OnSizeChanged"
+             mc:Ignorable="d">
+  <Design.DataContext>
+    <vm:GameViewModel />
+  </Design.DataContext>
+
+  <Grid>
+
+    <ScrollViewer HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Hidden">
+
+      <Grid Name="BoardGrid"
+            HorizontalAlignment="Center" VerticalAlignment="Center"
+            ColumnDefinitions="Auto, Auto" RowDefinitions="Auto, Auto">
+
+        <!--  Player Fleet Board  -->
+        <controls:FleetBoardControl Name="FleetBoard"
+                                    Grid.Row="0" Grid.Column="0"
+                                    Margin="20" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                                    Source="{Binding Game.Player.FleetBoard}" />
+
+        <!--  Player Shots Board  -->
+        <controls:ShotsBoardControl Name="ShotsBoard"
+                                    Grid.Row="0" Grid.Column="1"
+                                    Margin="20" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                    ShootCommand="{Binding ShootCommand}"
+                                    Source="{Binding Game.Player.ShotsBoard}" />
+      </Grid>
+    </ScrollViewer>
+
+    <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="#aa222222" IsVisible="{Binding Message.Length}">
+
+      <Grid HorizontalAlignment="Center" VerticalAlignment="Center" RowDefinitions="Auto, Auto, Auto, Auto">
+        <TextBlock Grid.Row="0"
+                   HorizontalAlignment="Center" VerticalAlignment="Center"
+                   FontSize="68" Foreground="White"
+                   Text="{Binding Message}" />
+
+        <TextBlock Grid.Row="1"
+                   Margin="0,30,0,0" HorizontalAlignment="Center" VerticalAlignment="Center"
+                   FontSize="28" Foreground="White" Text="Play another?" />
+
+        <Button Grid.Row="2"
+                Width="250"
+                Margin="0,20,0,0" Padding="10" HorizontalAlignment="Center"
+                Command="{Binding NewGameCommand}"
+                Content="New game" CornerRadius="10" FontSize="26" FontWeight="SemiBold" />
+        <Button Grid.Row="3"
+                Width="250"
+                Margin="0,20,0,0" Padding="10" HorizontalAlignment="Center"
+                Command="{Binding ChangeSettingsCommand}"
+                Content="Change settings" CornerRadius="10" FontSize="26" FontWeight="SemiBold" />
+      </Grid>
+    </Grid>
+  </Grid>
+</UserControl>
