@@ -1,18 +1,22 @@
 <UserControl x:Class="Vsite.Oom.Battleship.GUI.Views.MainView"
              xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:controls="clr-namespace:Vsite.Oom.Battleship.GUI.Controls"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:viewModels="clr-namespace:Vsite.Oom.Battleship.GUI.ViewModels"
-             d:DesignHeight="450"
-             d:DesignWidth="800"
+             d:DesignHeight="800"
+             d:DesignWidth="1200"
              x:DataType="viewModels:MainViewModel"
+             FontFamily="{StaticResource PoetsenOneFont}"
+             SizeChanged="Control_OnSizeChanged"
              mc:Ignorable="d">
   <Design.DataContext>
-    <!--
-      This only sets the DataContext for the previewer in an IDE,
-      to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs)
-    -->
     <viewModels:MainViewModel />
   </Design.DataContext>
+
+  <Grid>
+    <ContentControl Content="{Binding CurrentView}" />
+    <controls:MessageControl IsVisible="{Binding Message.IsVisible}" Message="{Binding Message}" />
+  </Grid>
 </UserControl>
