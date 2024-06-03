@@ -1,0 +1,16 @@
+﻿<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <!--  Add Resources Here  -->
+
+  <Color x:Key="PrimaryColor">#262626</Color>
+  <Color x:Key="AccentColor">#107883</Color>
+  <Color x:Key="CellColor">#87c8d6</Color>
+  <Color x:Key="ShipColor">#244855</Color>
+  <Color x:Key="MissedColor">#fbe9d0</Color>
+  <Color x:Key="HitColor">#e64833</Color>
+  <Color x:Key="SunkenColor">#7C2F22</Color>
+  <Color x:Key="EliminatedColor">#A66D60</Color>
+
+  <SolidColorBrush x:Key="Primary" Color="{StaticResource PrimaryColor}" />
+  <SolidColorBrush x:Key="Accent" Color="{StaticResource AccentColor}" />
+</ResourceDictionary>

@@ -1,0 +1,45 @@
+﻿<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <Design.PreviewWith>
+    <StackPanel Background="Gray">
+      <!--  Add Controls for Previewer Here  -->
+      <RadioButton Width="200"
+                   Margin="5" Padding="10" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"
+                   Background="White" Classes="Custom" CommandParameter="Easy" Content="Easy"
+                   CornerRadius="10" FontSize="24" FontWeight="SemiBold" />
+      <RadioButton Width="200"
+                   Margin="5" Padding="10" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"
+                   Background="White" Classes="Custom" CommandParameter="Easy" Content="Easy"
+                   CornerRadius="10" FontSize="24" FontWeight="SemiBold" />
+    </StackPanel>
+  </Design.PreviewWith>
+
+  <!--  Add Styles Here  -->
+  <Style Selector="RadioButton.Custom">
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate>
+          <Border Width="{TemplateBinding Width}"
+                  Height="{TemplateBinding Height}"
+                  Background="{TemplateBinding Background}"
+                  BorderBrush="{TemplateBinding BorderBrush}"
+                  BorderThickness="{TemplateBinding BorderThickness}"
+                  CornerRadius="{TemplateBinding CornerRadius}">
+            <ContentPresenter Name="PART_ContentPresenter"
+                              Margin="{TemplateBinding Padding}"
+                              HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                              Content="{TemplateBinding Content}"
+                              ContentTemplate="{TemplateBinding ContentTemplate}"
+                              RecognizesAccessKey="True" />
+          </Border>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+
+    <!--  Checked State  -->
+    <Style Selector="^:checked /template/ Border">
+      <Setter Property="Background" Value="{StaticResource CellColor}" />
+    </Style>
+  </Style>
+</Styles>
