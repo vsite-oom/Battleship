@@ -5,6 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:views="clr-namespace:Vsite.Oom.Battleship.GUI.Views"
         Title="GUI"
+        Width="1200"
+        Height="800"
         d:DesignHeight="450"
         d:DesignWidth="800"
         Icon="/Assets/avalonia-logo.ico"
