@@ -1,14 +1,11 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-
-namespace Vsite.Oom.Battleship.Model
+﻿namespace Vsite.Oom.Battleship.Model
 {
     public enum Direction
     {
         Upwards,
         Rightwards,
-        Downards,
-        Leftwards,
+        Downwards,
+        Leftwards
     }
 
     public class ShotsGrid : Grid
@@ -24,44 +21,44 @@ namespace Vsite.Oom.Battleship.Model
 
         public void ChangeSquareState(int row, int column, SquareState newState)
         {
-            squares[row, column].ChangeState(newState);
+            squares[row, column]!.ChangeState(newState);
         }
 
         public IEnumerable<Square> GetSquaresInDirection(int row, int column, Direction direction)
         {
-            var squaresInDirection = new List<Square>();
+            var result = new List<Square>();
 
+            int deltaRow = 0;
+            int deltaColumn = 0;
+            int limit = 0;
             switch (direction)
             {
                 case Direction.Upwards:
-                    for (int r = row - 1; r >= 0; r--)
-                    {
-                        squaresInDirection.Add(squares[r, column]);
-                    }
+                    --row;
+                    deltaRow = -1;
+                    limit = -1;
                     break;
                 case Direction.Rightwards:
-                    for (int c = column + 1; c < Columns; c++)
-                    {
-                        squaresInDirection.Add(squares[row, c]);
-                    }
+                    ++column;
+                    deltaColumn = +1;
+                    limit = Columns;
                     break;
-                case Direction.Downards:
-                    for (int r = row + 1; r < Rows; r++)
-                    {
-                        squaresInDirection.Add(squares[r, column]);
-                    }
+                case Direction.Downwards:
+                    ++row;
+                    deltaRow = +1;
+                    limit = Rows;
                     break;
                 case Direction.Leftwards:
-                    for (int c = column - 1; c >= 0; c--)
-                    {
-                        squaresInDirection.Add(squares[row, c]);
-                    }
+                    --column;
+                    deltaColumn = -1;
+                    limit = -1;
                     break;
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(direction), direction, null);
             }
-
-            return squaresInDirection;
+            for (int r = row, c = column; r != limit && c != limit && IsSquareAvailable(r, c); r += deltaRow, c += deltaColumn)
+            {
+                result.Add(squares[r, c]!);
+            }
+            return result;
         }
     }
 }

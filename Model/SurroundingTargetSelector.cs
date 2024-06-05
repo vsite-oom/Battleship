@@ -12,47 +12,23 @@
         private readonly ShotsGrid grid;
         private readonly Square firstHit;
         private readonly int shipLength;
+        private readonly Random random = new Random();
 
         public Square Next()
         {
             List<IEnumerable<Square>> squares = new List<IEnumerable<Square>>();
 
-            var up = grid.GetSquaresInDirection(firstHit.Row, firstHit.Column, Direction.Upwards);
-            if (up.Any())
+            foreach (Direction direction in Enum.GetValues(typeof(Direction)))
             {
-                squares.Add(up);
-            }
-
-            var right = grid.GetSquaresInDirection(firstHit.Row, firstHit.Column, Direction.Rightwards);
-            if (right.Any())
-            {
-                squares.Add(right);
-            }
-
-            var down = grid.GetSquaresInDirection(firstHit.Row, firstHit.Column, Direction.Downards);
-            if (down.Any())
-            {
-                squares.Add(down);
-            }
-
-            var left = grid.GetSquaresInDirection(firstHit.Row, firstHit.Column, Direction.Leftwards);
-            if (left.Any())
-            {
-                squares.Add(left);
-            }
-
-            foreach (var directionSquares in squares)
-            {
-                foreach (var square in directionSquares)
+                var inDirection = grid.GetSquaresInDirection(firstHit.Row, firstHit.Column, direction);
+                if (inDirection.Any())
                 {
-                    if (square.SquareState == SquareState.Intact)
-                    {
-                        return square;
-                    }
+                    squares.Add(inDirection);
                 }
             }
 
-            throw new InvalidOperationException("Nema vise meta");
+            int index = random.Next(squares.Count);
+            return squares[index].First();
         }
     }
 }

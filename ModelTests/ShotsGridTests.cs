@@ -33,7 +33,7 @@ namespace Vsite.Oom.Battleship.Model.Tests
             var grid = new ShotsGrid(10, 10);
             int row = 7;
             int column = 5;
-            var squares = grid.GetSquaresInDirection(row, column, Direction.Downards);
+            var squares = grid.GetSquaresInDirection(row, column, Direction.Downwards);
             Assert.AreEqual(2, squares.Count());
         }
 
