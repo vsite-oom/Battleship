@@ -43,7 +43,18 @@ namespace Vsite.Oom.Battleship.Model
                 squares.Add(left);
             }
 
-            throw new NotImplementedException();
+            foreach (var direction in squares)
+            {
+                foreach (var square in direction)
+                {
+                    if (square.SquareState == SquareState.Intact)
+                    {
+                        return square;
+                    }
+                }
+            }
+
+            throw new InvalidOperationException("No valid targets available.");
         }
     }
 }
