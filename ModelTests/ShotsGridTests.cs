@@ -54,7 +54,7 @@ namespace Vsite.Oom.Battleship.Model.Tests
             int column = 3;
             grid.ChangeSquareState(1, 3, SquareState.Hit);
             var squares = grid.GetSquaresInDirection(row, column, Direction.Upwards);
-            Assert.AreEqual(3, squares.Count());
+            Assert.AreEqual(1, squares.Count());
         }
 
         [TestMethod]
@@ -75,7 +75,7 @@ namespace Vsite.Oom.Battleship.Model.Tests
             int row = 3;
             int column = 5;
             grid.ChangeSquareState(3, 8, SquareState.Hit);
-            var squares = grid.GetSquaresInDirection(row, column, Direction.Downwards);
+            var squares = grid.GetSquaresInDirection(row, column, Direction.Rightwards);
             Assert.AreEqual(2, squares.Count());
         }
 
@@ -86,7 +86,7 @@ namespace Vsite.Oom.Battleship.Model.Tests
             int row = 7;
             int column = 5;
             grid.ChangeSquareState(9, 5, SquareState.Hit);
-            var squares = grid.GetSquaresInDirection(row, column, Direction.Leftwards);
+            var squares = grid.GetSquaresInDirection(row, column, Direction.Downwards);
             Assert.AreEqual(1, squares.Count());
         }
 
