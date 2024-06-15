@@ -1,5 +1,4 @@
-﻿using System.Data.Common;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 
 namespace Vsite.Oom.Battleship.Model;
 
@@ -67,15 +66,18 @@ public class Gunnery
     {
         switch (hitResult)
         {
-            case HitResult.Missed: target?.ChangeState(SquareState.Missed);
+            case HitResult.Missed:
+                target?.ChangeState(SquareState.Missed);
                 return;
-            case HitResult.Hit: target?.ChangeState((SquareState.Hit));
+            case HitResult.Hit:
+                target?.ChangeState((SquareState.Hit));
                 shipSquares.Add(target!);
                 return;
-            case HitResult.Sunken: MarkShipSunken();
+            case HitResult.Sunken:
+                MarkShipSunken();
                 return;
         }
-        
+
     }
 
     private void MarkShipSunken()
@@ -91,7 +93,7 @@ public class Gunnery
         {
             _recordGrid.ChangeSquareState(square.Row, square.Column, SquareState.Eliminated);
         }
-        
+
         shipSquares.Clear();
     }
 

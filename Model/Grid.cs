@@ -5,7 +5,7 @@ public abstract class Grid
     protected readonly Square?[,] _squares;
     public readonly int Columns;
     public readonly int Rows;
-    
+
     protected Grid(int rows, int columns)
     {
         Rows = rows;
@@ -14,10 +14,10 @@ public abstract class Grid
         _squares = new Square[rows, columns];
 
         for (var r = 0; r < rows; r++)
-        for (var c = 0; c < columns; c++)
-            _squares[r, c] = new Square(r, c);
+            for (var c = 0; c < columns; c++)
+                _squares[r, c] = new Square(r, c);
     }
-    
+
     public virtual IEnumerable<Square> Squares
     {
         get { return _squares.Cast<Square>().Where(x => x != null); }

@@ -12,7 +12,7 @@ public class Square
 {
     public readonly int Column;
     public readonly int Row;
-    
+
     public SquareState SquareState { get; private set; }
     public bool IsHit => (int)SquareState >= (int)SquareState.Hit;
 
@@ -22,7 +22,7 @@ public class Square
         Column = column;
         this.SquareState = SquareState.Intact;
     }
-    
+
     public void Hit()
     {
         SquareState = SquareState.Hit;

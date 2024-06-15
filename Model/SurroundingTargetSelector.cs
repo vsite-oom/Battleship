@@ -20,7 +20,7 @@ public class SurroundingTargetSelector : ITargetSelector
         foreach (Direction direction in Enum.GetValues(typeof(Direction)))
         {
             var squaresInDirection = _grid.GetSquaresInDirection(_firstHit.Row, _firstHit.Column, direction);
-            if(squaresInDirection.Count() > 0 )
+            if (squaresInDirection.Count() > 0)
                 squares.Add(squaresInDirection);
         }
 
