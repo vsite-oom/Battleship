@@ -50,6 +50,9 @@ namespace vsite.oom.battleship.model
                             Debug.Assert(false);
                             return;
                     }
+                case HitResult.Sunken:
+                    ChangeTacticsToRandom();
+                    return;
             }
         }
 
@@ -97,8 +100,8 @@ namespace vsite.oom.battleship.model
         }
         private void ChangeTacticsToInline()
         {
-            ShootingTactics = ShootingTactics.Surrounding;
-            targetSelector = new SurroundingTargetSelector(recordGrid, target, shipLengths[0]);
+            ShootingTactics = ShootingTactics.Inline;
+            targetSelector = new InlineTargetSelector(recordGrid, shipSquares, shipLengths[0]);
         }
         public ShootingTactics ShootingTactics { get; private set; } = ShootingTactics.Random;
         private readonly ShotsGrid recordGrid;
