@@ -16,6 +16,7 @@ namespace Vsite.Oom.Battleship.Model.Tests
             var fleet = builder.CreateFleet();
             Assert.AreEqual(10, fleet.Ships.Count());
         }
+        [TestMethod]
         public void CreateFleetBuildsFleetWithShipsOfLengthProvided()
         {
             int rows = 10;
