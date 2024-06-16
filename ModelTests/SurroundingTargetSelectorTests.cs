@@ -34,6 +34,7 @@ namespace Vsite.Oom.Battleship.Model.Tests
             Assert.IsTrue(candidates.Contains(target));
         }
         
+        [TestMethod]
         public void OneOfThreeSquaresAroundSquare3x4AfterSquare3x5IsHit()
         {
             var grid = new ShotsGrid(10, 10);
@@ -45,7 +46,9 @@ namespace Vsite.Oom.Battleship.Model.Tests
             var candidates = CreateCandidates(grid, new List<SquareCoordinate> { new SquareCoordinate(2, 4), new SquareCoordinate(4, 4), new SquareCoordinate(3, 3) });
             Assert.IsTrue(candidates.Contains(target));
             
-        }        
+        } 
+
+        [TestMethod]
         public void OneOfThreeSquaresAroundSquare3x4AfterSquare3x3IsHit()
         {
             var grid = new ShotsGrid(10, 10);
