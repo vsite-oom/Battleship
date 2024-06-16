@@ -19,6 +19,7 @@ namespace vsite.oom.battleship.model
         private readonly ShotsGrid grid;
         private readonly Square firstHit;
         private readonly int shipLength;
+        private readonly Random random = new Random();
         public Square Next()
         {
             List<IEnumerable<Square>> squares = new List<IEnumerable<Square>>();
@@ -34,7 +35,8 @@ namespace vsite.oom.battleship.model
             var left = grid.GetSquaresInDirection(firstHit.Row, firstHit.Column, Direction.Leftwards);
             if (left.Count() > 0)
                 squares.Add(left);
-            throw new NotImplementedException();
+            int index = random.Next(squares.Count());
+            return squares.ElementAt(index).First();
         }
     }
 }
