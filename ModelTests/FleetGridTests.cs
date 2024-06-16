@@ -24,7 +24,7 @@ namespace Vsite.Oom.Battleship.Model.Tests
             int shipLength = 3;
             var grid = new FleetGrid(rows, cols);
 
-            Assert.AreEqual(5, grid.GetAvailablePlacements(shipLength).Count());
+            Assert.AreEqual(3, grid.GetAvailablePlacements(shipLength).Count());
         }
         [TestMethod]
         public void GetAvailablePlacementsForGrid7x1ReturnsxPlacementsForShipWith2Squares()
@@ -35,15 +35,16 @@ namespace Vsite.Oom.Battleship.Model.Tests
             var grid = new FleetGrid(rows, cols);
 
             Assert.AreEqual(6, grid.GetAvailablePlacements(shipLength).Count());
-        }  [TestMethod]
+        }  
+        [TestMethod]
         public void GetAvailablePlacementsForGrid7x1ReturnsxPlacementsForShipWith4Squares()
         {
-            int rows = 5;
-            int cols = 5;
+            int rows = 7;
+            int cols = 1;
             int shipLength = 4;
             var grid = new FleetGrid(rows, cols);
 
-            Assert.AreEqual(6, grid.GetAvailablePlacements(shipLength).Count());
+            Assert.AreEqual(4, grid.GetAvailablePlacements(shipLength).Count());
         }
     }
 }
