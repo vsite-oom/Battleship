@@ -36,9 +36,9 @@ namespace Vsite.Oom.Battleship.Model
             }
             var result = new List<SquareCoordinate>();
 
-            for(int r = firstRow; r < lastRow; ++r) 
+            for(int r = firstRow; r <= lastRow; ++r) 
             {
-                for(int c = firstColumn; c < lastColumn; ++c) 
+                for(int c = firstColumn; c <= lastColumn; ++c) 
                 {
                     result.Add(new SquareCoordinate(r, c));
                 }
