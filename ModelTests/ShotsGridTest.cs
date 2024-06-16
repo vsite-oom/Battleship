@@ -13,7 +13,7 @@ namespace Vsite.Oom.Battleship.Model.Tests
             var grid = new ShotsGrid(10, 10);
             int row = 3;
             int column = 3;
-            var Squares = grid.GetSquaresDirection(row, column, Direction.Upwards);
+            var Squares = grid.GetSquaresInDirection(row, column, Direction.Upwards);
             Assert.AreEqual(3, Squares.Count());
         }  
         
@@ -23,7 +23,7 @@ namespace Vsite.Oom.Battleship.Model.Tests
             var grid = new ShotsGrid(10, 10);
             int row = 3;
             int column = 5;
-            var Squares = grid.GetSquaresDirection(row, column, Direction.Rightwards);
+            var Squares = grid.GetSquaresInDirection(row, column, Direction.Rightwards);
             Assert.AreEqual(4, Squares.Count());
         }
 
@@ -33,7 +33,7 @@ namespace Vsite.Oom.Battleship.Model.Tests
             var grid = new ShotsGrid(10, 10);
             int row = 7;
             int column = 5;
-            var Squares = grid.GetSquaresDirection(row, column, Direction.Downwards);
+            var Squares = grid.GetSquaresInDirection(row, column, Direction.Downwards);
             Assert.AreEqual(2, Squares.Count());
         }
 
@@ -43,7 +43,7 @@ namespace Vsite.Oom.Battleship.Model.Tests
             var grid = new ShotsGrid(10, 10);
             int row = 7;
             int column = 1;
-            var Squares = grid.GetSquaresDirection(row, column, Direction.Leftwards);
+            var Squares = grid.GetSquaresInDirection(row, column, Direction.Leftwards);
             Assert.AreEqual(1, Squares.Count());
         }
         [TestMethod]
@@ -52,8 +52,8 @@ namespace Vsite.Oom.Battleship.Model.Tests
             var grid = new ShotsGrid(10, 10);
             int row = 3;
             int column = 3;
-            grid.CHangeSquareState(1, 3, SquareState.Hit);
-            var Squares = grid.GetSquaresDirection(row, column, Direction.Upwards);
+            grid.ChangeSquareState(1, 3, SquareState.Hit);
+            var Squares = grid.GetSquaresInDirection(row, column, Direction.Upwards);
             Assert.AreEqual(1, Squares.Count());
         }
         [TestMethod]
@@ -62,8 +62,8 @@ namespace Vsite.Oom.Battleship.Model.Tests
             var grid = new ShotsGrid(10, 10);
             int row = 3;
             int column = 3;
-            grid.CHangeSquareState(1, 3, SquareState.Hit);
-            var Squares = grid.GetSquaresDirection(row, column, Direction.Upwards);
+            grid.ChangeSquareState(2, 3, SquareState.Hit);
+            var Squares = grid.GetSquaresInDirection(row, column, Direction.Upwards);
             Assert.AreEqual(0, Squares.Count());
         }
         [TestMethod]
@@ -72,8 +72,8 @@ namespace Vsite.Oom.Battleship.Model.Tests
             var grid = new ShotsGrid(10, 10);
             int row = 3;
             int column = 5;
-            grid.CHangeSquareState(3, 8, SquareState.Hit);
-            var Squares = grid.GetSquaresDirection(row, column, Direction.Rightwards);
+            grid.ChangeSquareState(3, 5, SquareState.Hit);
+            var Squares = grid.GetSquaresInDirection(row, column, Direction.Rightwards);
             Assert.AreEqual(4, Squares.Count());
         }
         [TestMethod]
@@ -82,8 +82,8 @@ namespace Vsite.Oom.Battleship.Model.Tests
             var grid = new ShotsGrid(10, 10);
             int row = 7;
             int column = 5;
-            grid.CHangeSquareState(9, 5, SquareState.Hit);
-            var Squares = grid.GetSquaresDirection(row, column, Direction.Downwards);
+            grid.ChangeSquareState(9, 5, SquareState.Hit);
+            var Squares = grid.GetSquaresInDirection(row, column, Direction.Downwards);
             Assert.AreEqual(1, Squares.Count());
         }
 
@@ -93,8 +93,8 @@ namespace Vsite.Oom.Battleship.Model.Tests
             var grid = new ShotsGrid(10, 10);
             int row = 7;
             int column = 1;
-            grid.CHangeSquareState(7, 0, SquareState.Hit);
-            var Squares = grid.GetSquaresDirection(row, column, Direction.Leftwards);
+            grid.ChangeSquareState(7, 0, SquareState.Hit);
+            var Squares = grid.GetSquaresInDirection(row, column, Direction.Leftwards);
             Assert.AreEqual(0, Squares.Count());
         }
 

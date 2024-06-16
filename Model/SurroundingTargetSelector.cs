@@ -22,16 +22,16 @@ namespace vsite.oom.battleship.model
         public Square Next()
         {
             List<IEnumerable<Square>> squares = new List<IEnumerable<Square>>();
-            var up = grid.GetSquaresDirection(firstHit.Row, firstHit.Column, Direction.Upwards);
+            var up = grid.GetSquaresInDirection(firstHit.Row, firstHit.Column, Direction.Upwards);
             if (up.Count() > 0)
                 squares.Add(up);
-            var right = grid.GetSquaresDirection(firstHit.Row, firstHit.Column, Direction.Rightwards);
+            var right = grid.GetSquaresInDirection(firstHit.Row, firstHit.Column, Direction.Rightwards);
             if (right.Count() > 0)
                 squares.Add(right);
-            var down = grid.GetSquaresDirection(firstHit.Row, firstHit.Column, Direction.Downwards);
+            var down = grid.GetSquaresInDirection(firstHit.Row, firstHit.Column, Direction.Downwards);
             if (down.Count() > 0)
                 squares.Add(down);
-            var left = grid.GetSquaresDirection(firstHit.Row, firstHit.Column, Direction.Leftwards);
+            var left = grid.GetSquaresInDirection(firstHit.Row, firstHit.Column, Direction.Leftwards);
             if (left.Count() > 0)
                 squares.Add(left);
             throw new NotImplementedException();

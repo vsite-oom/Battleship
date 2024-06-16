@@ -26,12 +26,12 @@ namespace vsite.oom.battleship.model
             //horizontal
             if(sorted.First().Row == sorted.Last().Row)
             {
-                var left = grid.GetSquaresDirection(sorted.First().Row, sorted.First().Column, Direction.Leftwards);
+                var left = grid.GetSquaresInDirection(sorted.First().Row, sorted.First().Column, Direction.Leftwards);
                 if (left.Any())
                 {
                     directionCandidates.Add(left);
                 }       
-                var right = grid.GetSquaresDirection(sorted.Last().Row, sorted.Last().Column, Direction.Rightwards);
+                var right = grid.GetSquaresInDirection(sorted.Last().Row, sorted.Last().Column, Direction.Rightwards);
                 if (right.Any())
                 {
                     directionCandidates.Add(right);

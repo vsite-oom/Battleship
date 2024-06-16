@@ -53,9 +53,9 @@ namespace Vsite.Oom.Battleship.Model.Tests
             squareHit.ChangeState(SquareState.Hit);
             int shipLength = 5;
             var selector = new SurroundingTargetSelector(grid, squareHit, shipLength);
-            grid.CHangeSquareState(3, 5, SquareState.Missed);
-            grid.CHangeSquareState(3, 3, SquareState.Missed);
-            grid.CHangeSquareState(2, 4, SquareState.Missed);
+            grid.ChangeSquareState(3, 5, SquareState.Missed);
+            grid.ChangeSquareState(3, 3, SquareState.Missed);
+            grid.ChangeSquareState(2, 4, SquareState.Missed);
             var target = selector.Next();
             Assert.IsTrue(target.Row == 4 && target.Column ==4);
             
