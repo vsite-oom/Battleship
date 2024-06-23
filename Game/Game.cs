@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using Vsite.Oom.Battleship.Model;
@@ -12,6 +14,8 @@ namespace Vsite.Oom.Battleship.Game
         FleetBuilder fleetBuilder;
         Gunnery playerGunnery;
         Gunnery opponentGunnery;
+        private List<Button> buttonsHostHit = new List<Button>();
+        private List<int> shipsToShoot;
 
         public MainForm()
         {
@@ -21,31 +25,31 @@ namespace Vsite.Oom.Battleship.Game
 
         void InitializeGrids()
         {
-            InitializeGrid(strateskiGrid);
-            InitializeGrid(taktickiGrid);
+            InitializeGrid(panel_Host);
+            InitializeGrid(panel_Enemy);
         }
 
-        void InitializeGrid(DataGridView grid)
+        void InitializeGrid(Panel grid)
         {
-            grid.ColumnCount = 10;
-            grid.RowCount = 10;
-
-            // Postavljanje zaglavlja stupaca od A do J
-            for (int i = 0; i < 10; i++)
+            grid.Controls.Clear();
+            int buttonSize = grid.Width / 10;
+            for (int row = 0; row < 10; row++)
             {
-                grid.Columns[i].Name = ((char)('A' + i)).ToString();
-                grid.Columns[i].Width = 30; // prilagođena veličina ćelija
-            }
-
-            // Postavljanje zaglavlja redova od 1 do 10
-            for (int i = 0; i < 10; i++)
-            {
-                grid.Rows[i].HeaderCell.Value = (i + 1).ToString();
-                grid.Rows[i].Height = 30;   // prilagođena veličina ćelija
+                for (int col = 0; col < 10; col++)
+                {
+                    Button btn = new Button
+                    {
+                        Size = new Size(buttonSize, buttonSize),
+                        Location = new Point(col * buttonSize, row * buttonSize),
+                        Tag = new ButtonInfo(row, col)
+                    };
+                    btn.Click += GridButton_Click;
+                    grid.Controls.Add(btn);
+                }
             }
         }
 
-        void pocetakButton_Click(object sender, EventArgs e)
+        void button_StartStop_Click(object sender, EventArgs e)
         {
             try
             {
@@ -79,7 +83,7 @@ namespace Vsite.Oom.Battleship.Game
                 playerGunnery = new Gunnery(10, 10, new[] { 5, 4, 4, 3, 3, 2, 2, 2, 2 });
                 opponentGunnery = new Gunnery(10, 10, new[] { 5, 4, 4, 3, 3, 2, 2, 2, 2 });
 
-                RenderFleet(strateskiGrid, playerFleet);
+                RenderFleet(panel_Host, playerFleet);
                 statusLabel.Text = "Status: Igra je počela!";
             }
             catch (Exception ex)
@@ -88,22 +92,18 @@ namespace Vsite.Oom.Battleship.Game
             }
         }
 
-        void RenderFleet(DataGridView grid, Fleet fleet)
+        void GridButton_Click(object sender, EventArgs e)
         {
-            foreach (var ship in fleet.Ships)
-            {
-                foreach (var square in ship.Squares)
-                {
-                    grid.Rows[square.Row].Cells[square.Column].Style.BackColor = System.Drawing.Color.Gray;
-                }
-            }
-        }
+            Button btn = sender as Button;
+            if (btn == null) return;
 
-        void strateskiGrid_CellClick(object sender, DataGridViewCellEventArgs e)
-        {
-            if (e.RowIndex < 0 || e.ColumnIndex < 0) return;
+            var info = btn.Tag as ButtonInfo;
+            if (info == null) return;
 
-            var result = opponentFleet.Hit(e.RowIndex, e.ColumnIndex);
+            int row = info.Row;
+            int col = info.Col;
+
+            var result = opponentFleet.Hit(row, col);
             playerGunnery.ProcessHitResult(result);
             UpdateGrids();
             if (result == HitResult.Sunken && opponentFleet.Ships.All(ship => ship.Squares.All(sq => sq.IsHit)))
@@ -114,6 +114,26 @@ namespace Vsite.Oom.Battleship.Game
             else
             {
                 ProtivnikovPotez();
+            }
+        }
+
+        void RenderFleet(Panel grid, Fleet fleet)
+        {
+            foreach (var ship in fleet.Ships)
+            {
+                foreach (var square in ship.Squares)
+                {
+                    var btn = grid.Controls.OfType<Button>().FirstOrDefault(b =>
+                    {
+                        var info = b.Tag as ButtonInfo;
+                        return info.Row == square.Row && info.Col == square.Column;
+                    });
+
+                    if (btn != null)
+                    {
+                        btn.BackColor = Color.Gray;
+                    }
+                }
             }
         }
 
@@ -133,6 +153,33 @@ namespace Vsite.Oom.Battleship.Game
         void UpdateGrids()
         {
             // Ažuriraj prikaz strateškog i taktičkog grida na temelju trenutnog stanja igre
+        }
+
+        void panel_Host_SizeChanged(object sender, EventArgs e)
+        {
+            InitializeGrid(panel_Host);
+        }
+
+        void panel_Enemy_SizeChanged(object sender, EventArgs e)
+        {
+            InitializeGrid(panel_Enemy);
+        }
+
+        void MainForm_Resize(object sender, EventArgs e)
+        {
+            InitializeGrids();
+        }
+
+        private class ButtonInfo
+        {
+            public int Row { get; }
+            public int Col { get; }
+
+            public ButtonInfo(int row, int col)
+            {
+                Row = row;
+                Col = col;
+            }
         }
     }
 }
