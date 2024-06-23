@@ -11,10 +11,8 @@ namespace Vsite.Oom.Battleship.Game
         [STAThread]
         static void Main()
         {
-            // Da biste prilagodili konfiguraciju aplikacije kao što su postavke visoke DPI rezolucije ili zadani font,
-            // pogledajte https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
-            Application.Run(new Game());
+            Application.Run(new MainForm());
         }
     }
 }

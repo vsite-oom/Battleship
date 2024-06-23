@@ -5,7 +5,7 @@ using Vsite.Oom.Battleship.Model;
 
 namespace Vsite.Oom.Battleship.Game
 {
-    public partial class Game : Form
+    public partial class MainForm : Form
     {
         Fleet playerFleet;
         Fleet opponentFleet;
@@ -13,7 +13,7 @@ namespace Vsite.Oom.Battleship.Game
         Gunnery playerGunnery;
         Gunnery opponentGunnery;
 
-        public Game()
+        public MainForm()
         {
             InitializeComponent();
             InitializeGrids();
@@ -47,15 +47,45 @@ namespace Vsite.Oom.Battleship.Game
 
         void pocetakButton_Click(object sender, EventArgs e)
         {
-            fleetBuilder = new FleetBuilder(10, 10, new[] { 5, 4, 4, 3, 3, 2, 2, 2, 2 });
-            playerFleet = fleetBuilder.CreateFleet();
-            opponentFleet = fleetBuilder.CreateFleet();
+            try
+            {
+                fleetBuilder = new FleetBuilder(10, 10, new[] { 5, 4, 4, 3, 3, 2, 2, 2, 2 });
 
-            playerGunnery = new Gunnery(10, 10, new[] { 5, 4, 4, 3, 3, 2, 2, 2, 2 });
-            opponentGunnery = new Gunnery(10, 10, new[] { 5, 4, 4, 3, 3, 2, 2, 2, 2 });
+                // Provjerite je li moguće postaviti sve brodove prije nego što stvorite flote
+                var fleetGrid = fleetBuilder.GetType()
+                    .GetField("fleetGrid", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)
+                    ?.GetValue(fleetBuilder) as FleetGrid;
 
-            RenderFleet(strateskiGrid, playerFleet);
-            statusLabel.Text = "Status: Igra je počela!";
+                if (fleetGrid == null)
+                {
+                    MessageBox.Show("Nije moguće inicijalizirati mrežu flote.");
+                    return;
+                }
+
+                foreach (var length in new[] { 5, 4, 4, 3, 3, 2, 2, 2, 2 })
+                {
+                    var candidates = fleetGrid.GetAvailablePlacements(length);
+
+                    if (!candidates.Any())
+                    {
+                        MessageBox.Show($"Nema dovoljno mjesta za postavljanje broda duljine {length}. Pokušajte ponovno.");
+                        return;
+                    }
+                }
+
+                playerFleet = fleetBuilder.CreateFleet();
+                opponentFleet = fleetBuilder.CreateFleet();
+
+                playerGunnery = new Gunnery(10, 10, new[] { 5, 4, 4, 3, 3, 2, 2, 2, 2 });
+                opponentGunnery = new Gunnery(10, 10, new[] { 5, 4, 4, 3, 3, 2, 2, 2, 2 });
+
+                RenderFleet(strateskiGrid, playerFleet);
+                statusLabel.Text = "Status: Igra je počela!";
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Došlo je do greške: {ex.Message}");
+            }
         }
 
         void RenderFleet(DataGridView grid, Fleet fleet)

@@ -1,20 +1,11 @@
-﻿using static System.Net.Mime.MediaTypeNames;
-using System.Windows.Forms;
-using System.Xml.Linq;
+﻿using System.Windows.Forms;
 
 namespace Vsite.Oom.Battleship.Game
 {
-    partial class Game
+    partial class MainForm
     {
-        /// <summary>
-        /// Required designer variable.
-        /// </summary>
-        System.ComponentModel.IContainer components = null;
+        private System.ComponentModel.IContainer components = null;
 
-        /// <summary>
-        /// Clean up any resources being used.
-        /// </summary>
-        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
             if (disposing && (components != null))
@@ -26,11 +17,7 @@ namespace Vsite.Oom.Battleship.Game
 
         #region Windows Form Designer generated code
 
-        /// <summary>
-        /// Required method for Designer support - do not modify
-        /// the contents of this method with the code editor.
-        /// </summary>
-        void InitializeComponent()
+        private void InitializeComponent()
         {
             strateskiGrid = new DataGridView();
             taktickiGrid = new DataGridView();
@@ -53,6 +40,7 @@ namespace Vsite.Oom.Battleship.Game
             strateskiGrid.RowHeadersWidth = 62;
             strateskiGrid.Size = new System.Drawing.Size(357, 300);
             strateskiGrid.TabIndex = 0;
+            strateskiGrid.CellClick += new DataGridViewCellEventHandler(strateskiGrid_CellClick);
             // 
             // taktickiGrid
             // 
@@ -70,7 +58,7 @@ namespace Vsite.Oom.Battleship.Game
             pocetakButton.Name = "pocetakButton";
             pocetakButton.Size = new System.Drawing.Size(112, 34);
             pocetakButton.TabIndex = 2;
-            pocetakButton.Text = "pocni igru";
+            pocetakButton.Text = "Počni igru";
             pocetakButton.UseVisualStyleBackColor = true;
             pocetakButton.Click += new System.EventHandler(pocetakButton_Click);
             // 
@@ -80,7 +68,7 @@ namespace Vsite.Oom.Battleship.Game
             predajaButton.Name = "predajaButton";
             predajaButton.Size = new System.Drawing.Size(112, 34);
             predajaButton.TabIndex = 3;
-            predajaButton.Text = "predaj igru";
+            predajaButton.Text = "Predaj igru";
             predajaButton.UseVisualStyleBackColor = true;
             // 
             // statusLabel
@@ -104,7 +92,7 @@ namespace Vsite.Oom.Battleship.Game
             textStatus.Name = "textStatus";
             textStatus.Size = new System.Drawing.Size(98, 25);
             textStatus.TabIndex = 6;
-            textStatus.Text = "status igre:";
+            textStatus.Text = "Status igre:";
             // 
             // textRezultat
             // 
@@ -113,9 +101,9 @@ namespace Vsite.Oom.Battleship.Game
             textRezultat.Name = "textRezultat";
             textRezultat.Size = new System.Drawing.Size(109, 25);
             textRezultat.TabIndex = 8;
-            textRezultat.Text = "rezultat igre:";
+            textRezultat.Text = "Rezultat igre:";
             // 
-            // Game
+            // MainForm
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(10F, 25F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -128,7 +116,7 @@ namespace Vsite.Oom.Battleship.Game
             Controls.Add(pocetakButton);
             Controls.Add(taktickiGrid);
             Controls.Add(strateskiGrid);
-            Name = "Game";
+            Name = "MainForm";
             Text = "Borba brodova";
             ((System.ComponentModel.ISupportInitialize)(strateskiGrid)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(taktickiGrid)).EndInit();
@@ -138,13 +126,13 @@ namespace Vsite.Oom.Battleship.Game
 
         #endregion
 
-        DataGridView strateskiGrid;
-        DataGridView taktickiGrid;
-        Button pocetakButton;
-        Button predajaButton;
-        TextBox statusLabel;
-        TextBox rezultatLabel;
-        Label textStatus;
-        Label textRezultat;
+        private DataGridView strateskiGrid;
+        private DataGridView taktickiGrid;
+        private Button pocetakButton;
+        private Button predajaButton;
+        private TextBox statusLabel;
+        private TextBox rezultatLabel;
+        private Label textStatus;
+        private Label textRezultat;
     }
 }
