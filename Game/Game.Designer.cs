@@ -207,7 +207,6 @@
             statusLabel.Name = "statusLabel";
             statusLabel.Size = new Size(144, 31);
             statusLabel.TabIndex = 4;
-            statusLabel.Text = "Status: ";
             // 
             // rezultatLabel
             // 
@@ -215,7 +214,6 @@
             rezultatLabel.Name = "rezultatLabel";
             rezultatLabel.Size = new Size(122, 31);
             rezultatLabel.TabIndex = 5;
-            rezultatLabel.Text = "Rezultat: ";
             // 
             // MainForm
             // 

@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using Vsite.Oom.Battleship.Model;
@@ -12,7 +14,7 @@ namespace Vsite.Oom.Battleship.Game
         FleetBuilder fleetBuilder;
         Gunnery playerGunnery;
         Gunnery opponentGunnery;
-        private List<Button> buttonssHostHit = new List<Button>();
+        private List<Button> buttonsHostHit = new List<Button>();
         private List<int> shipsToShoot;
 
         public MainForm()
@@ -53,24 +55,23 @@ namespace Vsite.Oom.Battleship.Game
             {
                 fleetBuilder = new FleetBuilder(10, 10, new[] { 5, 4, 4, 3, 3, 2, 2, 2, 2 });
 
-                // Provjerite je li moguće postaviti sve brodove prije nego što stvorite flote
+                // Check if all ships can be placed before creating fleets
                 var fleetGrid = fleetBuilder.GetType()
                     .GetField("fleetGrid", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)
                     ?.GetValue(fleetBuilder) as FleetGrid;
 
                 if (fleetGrid == null)
                 {
-                    MessageBox.Show("Nije moguće inicijalizirati mrežu flote.");
+                    MessageBox.Show("Unable to initialize the fleet grid.");
                     return;
                 }
 
                 foreach (var length in new[] { 5, 4, 4, 3, 3, 2, 2, 2, 2 })
                 {
-                    var candidates = fleetGrid.GetAvailablePlacements(length);
-
+                    var candidates = fleetGrid.GetAvailablePlacements(length).ToList();
                     if (!candidates.Any())
                     {
-                        MessageBox.Show($"Nema dovoljno mjesta za postavljanje broda duljine {length}. Pokušajte ponovno.");
+                        MessageBox.Show($"Not enough space to place a ship of length {length}. Try again.");
                         return;
                     }
                 }
@@ -82,11 +83,11 @@ namespace Vsite.Oom.Battleship.Game
                 opponentGunnery = new Gunnery(10, 10, new[] { 5, 4, 4, 3, 3, 2, 2, 2, 2 });
 
                 RenderFleet(panel_Host, playerFleet);
-                statusLabel.Text = "Status: Igra je počela!";
+                statusLabel.Text = "Status: Game started!";
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Došlo je do greške: {ex.Message}");
+                MessageBox.Show($"An error occurred: {ex.Message}");
             }
         }
 
@@ -106,13 +107,13 @@ namespace Vsite.Oom.Battleship.Game
             UpdateGrids();
             if (result == HitResult.Sunken && opponentFleet.Ships.All(ship => ship.Squares.All(sq => sq.IsHit)))
             {
-                MessageBox.Show("Pobijedili ste!");
-                statusLabel.Text = "Status: Pobijedili ste!";
-                rezultatLabel.Text = "Rezultat: Vi ste pobjednik!";
+                MessageBox.Show("You won!");
+                statusLabel.Text = "Status: You won!";
+                rezultatLabel.Text = "Result: You are the winner!";
             }
             else
             {
-                ProtivnikovPotez();
+                OpponentMove();
             }
         }
 
@@ -136,7 +137,7 @@ namespace Vsite.Oom.Battleship.Game
             }
         }
 
-        void ProtivnikovPotez()
+        void OpponentMove()
         {
             var target = opponentGunnery.Next();
             var result = playerFleet.Hit(target.Row, target.Column);
@@ -144,15 +145,15 @@ namespace Vsite.Oom.Battleship.Game
             UpdateGrids();
             if (result == HitResult.Sunken && playerFleet.Ships.All(ship => ship.Squares.All(sq => sq.IsHit)))
             {
-                MessageBox.Show("Protivnik je pobijedio!");
-                statusLabel.Text = "Status: Protivnik je pobijedio!";
-                rezultatLabel.Text = "Rezultat: Protivnik je pobjednik!";
+                MessageBox.Show("Opponent won!");
+                statusLabel.Text = "Status: Opponent won!";
+                rezultatLabel.Text = "Result: Opponent is the winner!";
             }
         }
 
         void UpdateGrids()
         {
-            // Ažuriraj prikaz strateškog i taktičkog grida na temelju trenutnog stanja igre
+            // Update the display of strategic and tactical grids based on the current game state
         }
 
         void panel_Host_SizeChanged(object sender, EventArgs e)
