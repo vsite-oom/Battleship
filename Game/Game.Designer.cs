@@ -31,6 +31,7 @@
             panel_Split = new Panel();
             panel_Enemy = new Panel();
             statusLabel = new Label();
+            rezultatLabel = new Label();
             panel_Title.SuspendLayout();
             panel_Info.SuspendLayout();
             panel_ShootEnemy.SuspendLayout();
@@ -206,6 +207,15 @@
             statusLabel.Name = "statusLabel";
             statusLabel.Size = new Size(144, 31);
             statusLabel.TabIndex = 4;
+            statusLabel.Text = "Status: ";
+            // 
+            // rezultatLabel
+            // 
+            rezultatLabel.Location = new Point(525, 44);
+            rezultatLabel.Name = "rezultatLabel";
+            rezultatLabel.Size = new Size(122, 31);
+            rezultatLabel.TabIndex = 5;
+            rezultatLabel.Text = "Rezultat: ";
             // 
             // MainForm
             // 
@@ -218,6 +228,8 @@
             Controls.Add(panel_Control);
             Controls.Add(panel_Info);
             Controls.Add(panel_Title);
+            Controls.Add(statusLabel);
+            Controls.Add(rezultatLabel);
             Name = "MainForm";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Battleship";
@@ -248,5 +260,6 @@
         private Label label_Enemy;
         private Label label_Host;
         private Label statusLabel;
+        private Label rezultatLabel;
     }
 }

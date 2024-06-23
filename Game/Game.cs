@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using Vsite.Oom.Battleship.Model;
@@ -14,7 +12,7 @@ namespace Vsite.Oom.Battleship.Game
         FleetBuilder fleetBuilder;
         Gunnery playerGunnery;
         Gunnery opponentGunnery;
-        private List<Button> buttonsHostHit = new List<Button>();
+        private List<Button> buttonssHostHit = new List<Button>();
         private List<int> shipsToShoot;
 
         public MainForm()
@@ -110,6 +108,7 @@ namespace Vsite.Oom.Battleship.Game
             {
                 MessageBox.Show("Pobijedili ste!");
                 statusLabel.Text = "Status: Pobijedili ste!";
+                rezultatLabel.Text = "Rezultat: Vi ste pobjednik!";
             }
             else
             {
@@ -147,6 +146,7 @@ namespace Vsite.Oom.Battleship.Game
             {
                 MessageBox.Show("Protivnik je pobijedio!");
                 statusLabel.Text = "Status: Protivnik je pobijedio!";
+                rezultatLabel.Text = "Rezultat: Protivnik je pobjednik!";
             }
         }
 
