@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
@@ -11,9 +10,9 @@ namespace Vsite.Oom.Battleship.Game
     public partial class MainForm : Form
     {
         Fleet playerFleet;
-        Fleet opponentFleet;
+        Fleet enemyFleet;
         Gunnery playerGunnery;
-        Gunnery opponentGunnery;
+        Gunnery enemyGunnery;
 
         public MainForm()
         {
@@ -51,65 +50,26 @@ namespace Vsite.Oom.Battleship.Game
         {
             try
             {
-                // Create player fleet on a fresh grid
-                var playerFleetGrid = new FleetGrid(10, 10);
-                playerFleet = CreateFleet(playerFleetGrid);
+                var shipLengths = new[] { 5, 4, 4, 3, 3, 2, 2, 2, 2 };
 
-                // Create opponent fleet on a fresh grid
-                var opponentFleetGrid = new FleetGrid(10, 10);
-                opponentFleet = CreateFleet(opponentFleetGrid);
+                // Create player fleet
+                var playerFleetBuilder = new FleetBuilder(10, 10, shipLengths);
+                playerFleet = playerFleetBuilder.CreateFleet();
 
-                playerGunnery = new Gunnery(10, 10, new[] { 5, 4, 4, 3, 3, 2, 2, 2, 2 });
-                opponentGunnery = new Gunnery(10, 10, new[] { 5, 4, 4, 3, 3, 2, 2, 2, 2 });
+                // Create enemy fleet
+                var enemyFleetBuilder = new FleetBuilder(10, 10, shipLengths);
+                enemyFleet = enemyFleetBuilder.CreateFleet();
+
+                playerGunnery = new Gunnery(10, 10, shipLengths);
+                enemyGunnery = new Gunnery(10, 10, shipLengths);
 
                 RenderFleet(panel_Host, playerFleet);
+                EnableEnemyGrid(true);
             }
             catch (Exception ex)
             {
                 MessageBox.Show($"An error occurred: {ex.Message}");
             }
-        }
-
-        Fleet CreateFleet(FleetGrid fleetGrid)
-        {
-            var fleet = new Fleet();
-            var shipLengths = new[] { 5, 4, 4, 3, 3, 2, 2, 2, 2 };
-            var random = new Random();
-            var eliminator = new SquareEliminator();
-
-            for (int i = 0; i < shipLengths.Length; ++i)
-            {
-                var candidates = fleetGrid.GetAvailablePlacements(shipLengths[i]).ToList();
-                Debug.WriteLine($"Ship length: {shipLengths[i]}, Candidates count: {candidates.Count}");
-
-                if (candidates.Count == 0)
-                {
-                    throw new InvalidOperationException($"No available placements for ship of length {shipLengths[i]}");
-                }
-
-                var selectedIndex = random.Next(candidates.Count);
-                Debug.Assert(selectedIndex >= 0 && selectedIndex < candidates.Count, "Selected index out of range");
-                var selected = candidates[selectedIndex];
-                Debug.WriteLine($"Selected index: {selectedIndex}, Selected candidate start: Row={selected.First().Row}, Column={selected.First().Column}");
-
-                fleet.CreateShip(selected);
-
-                var toEliminate = eliminator.ToEliminate(selected, fleetGrid.Rows, fleetGrid.Columns);
-                Debug.WriteLine($"To eliminate count: {toEliminate.Count()}");
-                foreach (var coordinate in toEliminate)
-                {
-                    if (coordinate.Row >= 0 && coordinate.Row < fleetGrid.Rows && coordinate.Column >= 0 && coordinate.Column < fleetGrid.Columns)
-                    {
-                        fleetGrid.EliminateSquare(coordinate.Row, coordinate.Column);
-                    }
-                    else
-                    {
-                        Debug.WriteLine($"Invalid elimination coordinate: Row={coordinate.Row}, Column={coordinate.Column}");
-                    }
-                }
-            }
-
-            return fleet;
         }
 
         void GridButton_Click(object sender, EventArgs e)
@@ -120,15 +80,40 @@ namespace Vsite.Oom.Battleship.Game
             var info = btn.Tag as ButtonInfo;
             if (info == null) return;
 
-            int row = info.Row;
-            int col = info.Col;
+            if (btn.Parent == panel_Enemy)
+            {
+                ProcessPlayerShot(btn, info);
+            }
+        }
 
-            var result = opponentFleet.Hit(row, col);
+        void ProcessPlayerShot(Button btn, ButtonInfo info)
+        {
+            int row = info.Row;
+            int col = info.Column;
+
+            var result = enemyFleet.Hit(row, col);
             playerGunnery.ProcessHitResult(result);
-            UpdateGrids();
-            if (result == HitResult.Sunken && opponentFleet.Ships.All(ship => ship.Squares.All(sq => sq.IsHit)))
+
+            switch (result)
+            {
+                case HitResult.Missed:
+                    btn.BackColor = Color.Blue;
+                    break;
+                case HitResult.Hit:
+                    btn.BackColor = Color.Red;
+                    break;
+                case HitResult.Sunken:
+                    btn.BackColor = Color.Black;
+                    MarkSurroundingSquaresAsEliminated(enemyFleet.Ships.First(ship => ship.Squares.All(sq => sq.IsHit)).Squares);
+                    break;
+            }
+
+            btn.Enabled = false;
+
+            if (result == HitResult.Sunken && enemyFleet.Ships.All(ship => ship.Squares.All(sq => sq.IsHit)))
             {
                 MessageBox.Show("You won!");
+                ResetBattleFields();
             }
             else
             {
@@ -136,7 +121,26 @@ namespace Vsite.Oom.Battleship.Game
             }
         }
 
-        void RenderFleet(Panel grid, Fleet fleet)
+        void MarkSurroundingSquaresAsEliminated(IEnumerable<Square> sunkenShipSquares)
+        {
+            var toEliminate = new SquareEliminator().ToEliminate(sunkenShipSquares, 10, 10);
+            foreach (var square in toEliminate)
+            {
+                var btn = panel_Enemy.Controls.OfType<Button>().FirstOrDefault(b =>
+                {
+                    var info = b.Tag as ButtonInfo;
+                    return info.Row == square.Row && info.Column == square.Column;
+                });
+
+                if (btn != null && btn.BackColor == Color.White)
+                {
+                    btn.BackColor = Color.Gray;
+                    btn.Enabled = false;
+                }
+            }
+        }
+
+        void RenderFleet(Panel grid, Fleet fleet, bool isEnemy = false)
         {
             foreach (var ship in fleet.Ships)
             {
@@ -145,12 +149,15 @@ namespace Vsite.Oom.Battleship.Game
                     var btn = grid.Controls.OfType<Button>().FirstOrDefault(b =>
                     {
                         var info = b.Tag as ButtonInfo;
-                        return info.Row == square.Row && info.Col == square.Column;
+                        return info.Row == square.Row && info.Column == square.Column;
                     });
 
                     if (btn != null)
                     {
-                        btn.BackColor = Color.Gray;
+                        if (!isEnemy)
+                        {
+                            btn.BackColor = Color.Green;
+                        }
                     }
                 }
             }
@@ -158,19 +165,71 @@ namespace Vsite.Oom.Battleship.Game
 
         void OpponentMove()
         {
-            var target = opponentGunnery.Next();
+            var target = enemyGunnery.Next();
             var result = playerFleet.Hit(target.Row, target.Column);
-            opponentGunnery.ProcessHitResult(result);
-            UpdateGrids();
+            enemyGunnery.ProcessHitResult(result);
+
+            var btn = panel_Host.Controls.OfType<Button>().FirstOrDefault(b =>
+            {
+                var info = b.Tag as ButtonInfo;
+                return info.Row == target.Row && info.Column == target.Column;
+            });
+
+            if (btn != null)
+            {
+                switch (result)
+                {
+                    case HitResult.Missed:
+                        btn.BackColor = Color.Blue;
+                        break;
+                    case HitResult.Hit:
+                        btn.BackColor = Color.Red;
+                        break;
+                    case HitResult.Sunken:
+                        btn.BackColor = Color.Black;
+                        break;
+                }
+            }
+
             if (result == HitResult.Sunken && playerFleet.Ships.All(ship => ship.Squares.All(sq => sq.IsHit)))
             {
                 MessageBox.Show("Opponent won!");
+                ResetBattleFields();
+            }
+            else
+            {
+                EnableEnemyGrid(true);
             }
         }
 
-        void UpdateGrids()
+        void EnableEnemyGrid(bool enable)
         {
-            // Update the display of strategic and tactical grids based on the current game state
+            foreach (var btn in panel_Enemy.Controls.OfType<Button>())
+            {
+                if (btn.BackColor == Color.White)
+                {
+                    btn.Enabled = enable;
+                }
+            }
+        }
+
+        void ResetBattleFields()
+        {
+            button_StartStop.Tag = 0;
+            button_StartStop.Text = "Start";
+            button_StartStop.ForeColor = Color.ForestGreen;
+
+            foreach (Button button in panel_Host.Controls.OfType<Button>())
+            {
+                button.BackColor = Color.White;
+                button.Enabled = true;
+            }
+
+            foreach (Button button in panel_Enemy.Controls.OfType<Button>())
+            {
+                button.BackColor = Color.White;
+                button.Enabled = false;
+            }
         }
 
         void panel_Host_SizeChanged(object sender, EventArgs e)
@@ -191,12 +250,12 @@ namespace Vsite.Oom.Battleship.Game
         private class ButtonInfo
         {
             public int Row { get; }
-            public int Col { get; }
+            public int Column { get; }
 
             public ButtonInfo(int row, int col)
             {
                 Row = row;
-                Col = col;
+                Column = col;
             }
         }
     }
