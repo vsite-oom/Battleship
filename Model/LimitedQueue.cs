@@ -6,15 +6,16 @@ using System.Threading.Tasks;
 
 namespace Vsite.Oom.Battleship.Model
 {
-    public class LimitedQueue<T>:Queue<T>
+    public class LimitedQueue<T> : Queue<T>
     {
-        public LimitedQueue(int maxItems) {
+        public LimitedQueue(int maxItems)
+        {
             this.maxItems = maxItems;
         }
 
         private readonly int maxItems;
 
-        public new void Enqueue (T item)
+        public new void Enqueue(T item)
         {
             if (Count >= maxItems)
             {

@@ -7,7 +7,7 @@
 
         public IEnumerable<Ship> Ships { get { return ships; } }
 
-        public void CreateShip(IEnumerable<Square>squares)
+        public void CreateShip(IEnumerable<Square> squares)
         {
             var ship = new Ship(squares);
             ships.Add(ship);
@@ -27,7 +27,7 @@
                         square.Hit();
 
                         if (ship.Squares.All(s => s.IsHit))
-                            return HitResult.Sunken; 
+                            return HitResult.Sunken;
 
                         return HitResult.Hit;
                     }

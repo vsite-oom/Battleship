@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
@@ -11,11 +12,8 @@ namespace Vsite.Oom.Battleship.Game
     {
         Fleet playerFleet;
         Fleet opponentFleet;
-        FleetBuilder fleetBuilder;
         Gunnery playerGunnery;
         Gunnery opponentGunnery;
-        private List<Button> buttonsHostHit = new List<Button>();
-        private List<int> shipsToShoot;
 
         public MainForm()
         {
@@ -53,42 +51,65 @@ namespace Vsite.Oom.Battleship.Game
         {
             try
             {
-                fleetBuilder = new FleetBuilder(10, 10, new[] { 5, 4, 4, 3, 3, 2, 2, 2, 2 });
+                // Create player fleet on a fresh grid
+                var playerFleetGrid = new FleetGrid(10, 10);
+                playerFleet = CreateFleet(playerFleetGrid);
 
-                // Check if all ships can be placed before creating fleets
-                var fleetGrid = fleetBuilder.GetType()
-                    .GetField("fleetGrid", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)
-                    ?.GetValue(fleetBuilder) as FleetGrid;
-
-                if (fleetGrid == null)
-                {
-                    MessageBox.Show("Unable to initialize the fleet grid.");
-                    return;
-                }
-
-                foreach (var length in new[] { 5, 4, 4, 3, 3, 2, 2, 2, 2 })
-                {
-                    var candidates = fleetGrid.GetAvailablePlacements(length).ToList();
-                    if (!candidates.Any())
-                    {
-                        MessageBox.Show($"Not enough space to place a ship of length {length}. Try again.");
-                        return;
-                    }
-                }
-
-                playerFleet = fleetBuilder.CreateFleet();
-                opponentFleet = fleetBuilder.CreateFleet();
+                // Create opponent fleet on a fresh grid
+                var opponentFleetGrid = new FleetGrid(10, 10);
+                opponentFleet = CreateFleet(opponentFleetGrid);
 
                 playerGunnery = new Gunnery(10, 10, new[] { 5, 4, 4, 3, 3, 2, 2, 2, 2 });
                 opponentGunnery = new Gunnery(10, 10, new[] { 5, 4, 4, 3, 3, 2, 2, 2, 2 });
 
                 RenderFleet(panel_Host, playerFleet);
-                statusLabel.Text = "Status: Game started!";
             }
             catch (Exception ex)
             {
                 MessageBox.Show($"An error occurred: {ex.Message}");
             }
+        }
+
+        Fleet CreateFleet(FleetGrid fleetGrid)
+        {
+            var fleet = new Fleet();
+            var shipLengths = new[] { 5, 4, 4, 3, 3, 2, 2, 2, 2 };
+            var random = new Random();
+            var eliminator = new SquareEliminator();
+
+            for (int i = 0; i < shipLengths.Length; ++i)
+            {
+                var candidates = fleetGrid.GetAvailablePlacements(shipLengths[i]).ToList();
+                Debug.WriteLine($"Ship length: {shipLengths[i]}, Candidates count: {candidates.Count}");
+
+                if (candidates.Count == 0)
+                {
+                    throw new InvalidOperationException($"No available placements for ship of length {shipLengths[i]}");
+                }
+
+                var selectedIndex = random.Next(candidates.Count);
+                Debug.Assert(selectedIndex >= 0 && selectedIndex < candidates.Count, "Selected index out of range");
+                var selected = candidates[selectedIndex];
+                Debug.WriteLine($"Selected index: {selectedIndex}, Selected candidate start: Row={selected.First().Row}, Column={selected.First().Column}");
+
+                fleet.CreateShip(selected);
+
+                var toEliminate = eliminator.ToEliminate(selected, fleetGrid.Rows, fleetGrid.Columns);
+                Debug.WriteLine($"To eliminate count: {toEliminate.Count()}");
+                foreach (var coordinate in toEliminate)
+                {
+                    if (coordinate.Row >= 0 && coordinate.Row < fleetGrid.Rows && coordinate.Column >= 0 && coordinate.Column < fleetGrid.Columns)
+                    {
+                        fleetGrid.EliminateSquare(coordinate.Row, coordinate.Column);
+                    }
+                    else
+                    {
+                        Debug.WriteLine($"Invalid elimination coordinate: Row={coordinate.Row}, Column={coordinate.Column}");
+                    }
+                }
+            }
+
+            return fleet;
         }
 
         void GridButton_Click(object sender, EventArgs e)
@@ -108,8 +129,6 @@ namespace Vsite.Oom.Battleship.Game
             if (result == HitResult.Sunken && opponentFleet.Ships.All(ship => ship.Squares.All(sq => sq.IsHit)))
             {
                 MessageBox.Show("You won!");
-                statusLabel.Text = "Status: You won!";
-                rezultatLabel.Text = "Result: You are the winner!";
             }
             else
             {
@@ -146,8 +165,6 @@ namespace Vsite.Oom.Battleship.Game
             if (result == HitResult.Sunken && playerFleet.Ships.All(ship => ship.Squares.All(sq => sq.IsHit)))
             {
                 MessageBox.Show("Opponent won!");
-                statusLabel.Text = "Status: Opponent won!";
-                rezultatLabel.Text = "Result: Opponent is the winner!";
             }
         }
 

@@ -30,8 +30,6 @@
             panel_Host = new Panel();
             panel_Split = new Panel();
             panel_Enemy = new Panel();
-            statusLabel = new Label();
-            rezultatLabel = new Label();
             panel_Title.SuspendLayout();
             panel_Info.SuspendLayout();
             panel_ShootEnemy.SuspendLayout();
@@ -201,20 +199,6 @@
             panel_Enemy.TabIndex = 5;
             panel_Enemy.SizeChanged += new EventHandler(panel_Enemy_SizeChanged);
             // 
-            // statusLabel
-            // 
-            statusLabel.Location = new Point(237, 44);
-            statusLabel.Name = "statusLabel";
-            statusLabel.Size = new Size(144, 31);
-            statusLabel.TabIndex = 4;
-            // 
-            // rezultatLabel
-            // 
-            rezultatLabel.Location = new Point(525, 44);
-            rezultatLabel.Name = "rezultatLabel";
-            rezultatLabel.Size = new Size(122, 31);
-            rezultatLabel.TabIndex = 5;
-            // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -226,11 +210,9 @@
             Controls.Add(panel_Control);
             Controls.Add(panel_Info);
             Controls.Add(panel_Title);
-            Controls.Add(statusLabel);
-            Controls.Add(rezultatLabel);
+            FormBorderStyle = FormBorderStyle.FixedSingle;
             Name = "MainForm";
-            StartPosition = FormStartPosition.CenterScreen;
-            Text = "Battleship";
+            Text = "Battleship Game";
             Resize += new EventHandler(MainForm_Resize);
             panel_Title.ResumeLayout(false);
             panel_Title.PerformLayout();
@@ -245,19 +227,17 @@
         #endregion
 
         private Panel panel_Title;
+        private Label label_Enemy;
+        private Label label_Host;
         private Panel panel_Info;
+        private TextBox textBox_EnemyShoot;
+        private Panel panel1;
+        private Panel panel_ShootEnemy;
+        private TextBox textBox_HostShoot;
         private Panel panel_Control;
+        private Button button_StartStop;
         private Panel panel_Host;
         private Panel panel_Split;
         private Panel panel_Enemy;
-        private Button button_StartStop;
-        private TextBox textBox_HostShoot;
-        private Panel panel_ShootEnemy;
-        private Panel panel1;
-        private TextBox textBox_EnemyShoot;
-        private Label label_Enemy;
-        private Label label_Host;
-        private Label statusLabel;
-        private Label rezultatLabel;
     }
 }
