@@ -10,14 +10,11 @@
 
         public Square Next()
         {
-            // Pronađi sve netaknute kvadrate
             var intactSquares = grid.Squares.Where(s => s.SquareState == SquareState.Intact).ToList();
             if (!intactSquares.Any())
             {
                 throw new InvalidOperationException("No available targets to select.");
             }
-
-            // Nasumično odaberi kvadrat iz liste netaknutih kvadrata
             var selectedIndex = random.Next(intactSquares.Count());
             return intactSquares.ElementAt(selectedIndex);
         }
