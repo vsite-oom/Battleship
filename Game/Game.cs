@@ -321,7 +321,17 @@ namespace Vsite.Oom.Battleship.Game
             Refresh();
             System.Threading.Thread.Sleep(100);
 
-            var target = opponentGunnery.Next();
+            Square target;
+            try
+            {
+                target = opponentGunnery.Next();
+            }
+            catch (InvalidOperationException)
+            {
+                CheckGameState(true); // Pass true to indicate that the exception was caught
+                return;
+            }
+
             var hitResult = playerFleet.Hit(target.Row, target.Column);
 
             var hitButton = panel_Host.Controls.OfType<Button>().FirstOrDefault(b =>
@@ -361,14 +371,46 @@ namespace Vsite.Oom.Battleship.Game
 
             opponentGunnery.ProcessHitResult(hitResult);
 
-            if (playerFleet.Ships.All(s => s.Squares.All(sq => sq.SquareState == SquareState.Sunken)))
+            CheckGameState();
+        }
+
+        private void CheckGameState(bool isExceptionCaught = false)
+        {
+            bool playerFleetSunken = playerFleet.Ships.All(s => s.Squares.All(sq => sq.SquareState == SquareState.Sunken));
+            bool opponentFleetSunken = opponentFleet.Ships.All(s => s.Squares.All(sq => sq.SquareState == SquareState.Sunken));
+            bool allPlayerSquaresHit = panel_Host.Controls.OfType<Button>().All(b => ((ButtonInfo)b.Tag).state.HasValue);
+            bool allOpponentSquaresHit = panel_Enemy.Controls.OfType<Button>().All(b => ((ButtonInfo)b.Tag).state.HasValue);
+
+            if (playerFleetSunken && opponentFleetSunken)
             {
-                MessageBox.Show("Sorry, you lost the game!", "LOSER !!!", MessageBoxButtons.OK);
-                ResetBattleFields();
+                MessageBox.Show("It's a draw!", "Game Over", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            else if (playerFleetSunken || allPlayerSquaresHit)
+            {
+                MessageBox.Show("Sorry, you lost the game!", "Game Over", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            else if (opponentFleetSunken || allOpponentSquaresHit)
+            {
+                MessageBox.Show("You won the game!", "Game Over", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            else if (isExceptionCaught)
+            {
+                if (allPlayerSquaresHit)
+                {
+                    MessageBox.Show("Sorry, you lost the game!", "Game Over", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                else if (allOpponentSquaresHit)
+                {
+                    MessageBox.Show("You won the game!", "Game Over", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+            }
+            else
+            {
+                HostIsShooting();
                 return;
             }
 
-            HostIsShooting();
+            ResetBattleFields();
         }
 
         private class ButtonInfo
