@@ -1,9 +1,8 @@
 ﻿namespace Vsite.Oom.Battleship.Model
-
 {
     public class Fleet
     {
-        private List<Ship> ships = new List<Ship>();
+        private readonly List<Ship> ships = [];
 
         public IEnumerable<Ship> Ships { get { return ships; } }
 
@@ -17,23 +16,12 @@
         {
             foreach (var ship in ships)
             {
-                foreach (var square in ship.Squares)
+                var result = ship.Hit(row, column);
+                if (result != HitResult.Missed)
                 {
-                    if (square.Row == row && square.Column == column)
-                    {
-                        if (square.IsHit)
-                            continue;
-
-                        square.Hit();
-
-                        if (ship.Squares.All(s => s.IsHit))
-                            return HitResult.Sunken;
-
-                        return HitResult.Hit;
-                    }
+                    return result;
                 }
             }
-
             return HitResult.Missed;
         }
     }
