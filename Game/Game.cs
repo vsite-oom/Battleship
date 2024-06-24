@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using System.Reflection;
 using System.Windows.Forms;
 using Vsite.Oom.Battleship.Model;
 
@@ -229,7 +228,7 @@ namespace Vsite.Oom.Battleship.Game
         private IEnumerable<IEnumerable<Square>> GetAvailablePlacements(FleetBuilder fleetBuilder, int shipLength)
         {
             // Use reflection to get the private fleetGrid field
-            var fleetGridField = typeof(FleetBuilder).GetField("fleetGrid", BindingFlags.NonPublic | BindingFlags.Instance);
+            var fleetGridField = typeof(FleetBuilder).GetField("fleetGrid", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
             var fleetGrid = (FleetGrid)fleetGridField.GetValue(fleetBuilder);
 
             // Get available placements from the fleetGrid
@@ -295,7 +294,7 @@ namespace Vsite.Oom.Battleship.Game
                     hitButton.BackColor = Color.Black;
                     hitButtonInfo.state = HitResult.Sunken;
 
-                    var toEliminate = this.squareEliminator.ToEliminate(this.opponentFleet.Ships.First(s => s.Squares.Any(sq => sq.Row == lastTarget.Row && sq.Column == lastTarget.Row)).Squares, gridRow, gridColumn);
+                    var toEliminate = this.squareEliminator.ToEliminate(this.opponentFleet.Ships.First(s => s.Squares.Any(sq => sq.Row == lastTarget.Row && sq.Column == lastTarget.Column)).Squares, gridRow, gridColumn);
                     foreach (var sq in toEliminate)
                     {
                         var button = this.panel_Enemy.Controls.OfType<Button>().FirstOrDefault(b =>
