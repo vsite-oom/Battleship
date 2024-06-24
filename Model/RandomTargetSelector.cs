@@ -1,5 +1,4 @@
-﻿
-namespace Vsite.Oom.Battleship.Model
+﻿namespace Vsite.Oom.Battleship.Model
 {
     public class RandomTargetSelector : ITargetSelector
     {
@@ -11,10 +10,16 @@ namespace Vsite.Oom.Battleship.Model
 
         public Square Next()
         {
-            var placements = grid.GetAvailablePlacements(shipLength);
-            var candidates = placements.SelectMany(s => s);
-            var selectedIndex = random.Next(candidates.Count());
-            return candidates.ElementAt(selectedIndex);
+            // Pronađi sve netaknute kvadrate
+            var intactSquares = grid.Squares.Where(s => s.SquareState == SquareState.Intact).ToList();
+            if (!intactSquares.Any())
+            {
+                throw new InvalidOperationException("No available targets to select.");
+            }
+
+            // Nasumično odaberi kvadrat iz liste netaknutih kvadrata
+            var selectedIndex = random.Next(intactSquares.Count());
+            return intactSquares.ElementAt(selectedIndex);
         }
 
         private readonly ShotsGrid grid;

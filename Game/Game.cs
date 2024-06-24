@@ -12,7 +12,6 @@ namespace Vsite.Oom.Battleship.Game
         private List<int> ShipLengths = new List<int> { 5, 4, 4, 3, 3, 3, 2, 2, 2, 2 };
         private Fleet playerFleet;
         private Fleet opponentFleet;
-        private Gunnery playerGunnery;
         private Gunnery opponentGunnery;
         private SquareEliminator squareEliminator;
         private List<Button> playerHitButtons = new List<Button>();
@@ -172,7 +171,6 @@ namespace Vsite.Oom.Battleship.Game
                     opponentFleet = CreateFleet(gridRow, gridColumn, ShipLengths);
                     PlaceShipsOnGrid(opponentFleet, panel_Enemy, hideShips: true);
 
-                    playerGunnery = new Gunnery(gridRow, gridColumn, ShipLengths);
                     opponentGunnery = new Gunnery(gridRow, gridColumn, ShipLengths);
 
                     HostIsShooting();
@@ -222,7 +220,6 @@ namespace Vsite.Oom.Battleship.Game
             }
             return fleet;
         }
-
 
         private void PlaceShipsOnGrid(Fleet fleet, Panel panel, bool hideShips = false)
         {
@@ -336,7 +333,6 @@ namespace Vsite.Oom.Battleship.Game
             EnemyIsShooting();
         }
 
-
         private void EnemyIsShooting()
         {
             panel_Enemy.Enabled = false;
@@ -378,6 +374,8 @@ namespace Vsite.Oom.Battleship.Game
                 var position = (ButtonInfo)b.Tag;
                 return position.row == target.Row && position.column == target.Column;
             });
+
+            if (hitButton == null) return; // Safety check
 
             var buttonInfo = (ButtonInfo)hitButton.Tag;
             switch (hitResult)
