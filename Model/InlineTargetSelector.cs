@@ -1,5 +1,10 @@
-﻿namespace Vsite.Oom.Battleship.Model
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
+namespace Vsite.Oom.Battleship.Model
 {
     public class InlineTargetSelector : ITargetSelector
     {
@@ -9,6 +14,7 @@
             this.squaresHit = squaresHit;
             this.shipLength = shipLength;
         }
+
         private readonly ShotsGrid grid;
         private readonly IEnumerable<Square> squaresHit;
         private readonly int shipLength;
@@ -17,7 +23,6 @@
         {
             var sorted = squaresHit.OrderBy(sq => sq.Row + sq.Column);
             var directionCandidates = new List<IEnumerable<Square>>();
-            //horizontal
             if (sorted.First().Row == sorted.Last().Row)
             {
                 var left = grid.GetSquaresInDirection(sorted.First().Row, sorted.First().Column, Direction.Leftwards);
@@ -31,7 +36,6 @@
                     directionCandidates.Add(right);
                 }
             }
-
             else
             {
                 if (sorted.First().Row == sorted.Last().Row)
@@ -58,7 +62,6 @@
             }
             int selectedIndex = random.Next(candidates);
             return longestDirections.ElementAt(selectedIndex).First();
-
         }
     }
 }
