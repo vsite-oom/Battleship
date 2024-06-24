@@ -276,15 +276,28 @@ namespace Vsite.Oom.Battleship.Game
                 case HitResult.Hit:
                     hitButton.BackColor = Color.Red;
                     hitButtonInfo.state = HitResult.Hit;
-                    opponentHitCounter--; // Broji samo protivnikove pogodke
+                    opponentHitCounter--;
                     UpdateHitCounters();
                     break;
 
                 case HitResult.Sunken:
-                    hitButton.BackColor = Color.Black;
+                    var sunkenShip = opponentFleet.Ships.First(s => s.Squares.Any(sq => sq.Row == lastTarget.Row && sq.Column == lastTarget.Column));
+                    foreach (var sq in sunkenShip.Squares)
+                    {
+                        var button = panel_Enemy.Controls.OfType<Button>().FirstOrDefault(b =>
+                        {
+                            var position = (ButtonInfo)b.Tag;
+                            return position.row == sq.Row && position.column == sq.Column;
+                        });
+
+                        if (button != null)
+                        {
+                            button.BackColor = Color.Black;
+                        }
+                    }
                     hitButtonInfo.state = HitResult.Sunken;
 
-                    var toEliminate = squareEliminator.ToEliminate(opponentFleet.Ships.First(s => s.Squares.Any(sq => sq.Row == lastTarget.Row && sq.Column == lastTarget.Column)).Squares, gridRow, gridColumn);
+                    var toEliminate = squareEliminator.ToEliminate(sunkenShip.Squares, gridRow, gridColumn);
                     foreach (var sq in toEliminate)
                     {
                         var button = panel_Enemy.Controls.OfType<Button>().FirstOrDefault(b =>
@@ -300,13 +313,15 @@ namespace Vsite.Oom.Battleship.Game
                         }
                     }
 
-                    shipsToShoot.Remove(opponentFleet.Ships.First(s => s.Squares.Any(sq => sq.Row == lastTarget.Row && sq.Column == sq.Column)).Squares.Count());
+                    shipsToShoot.Remove(opponentFleet.Ships.First(s => s.Squares.Any(sq => sq.Row == lastTarget.Row && sq.Column == lastTarget.Column)).Squares.Count());
                     opponentHitCounter--;
                     UpdateHitCounters();
                     break;
             }
 
             hitButton.Tag = hitButtonInfo;
+
+            UpdateEliminatedSquares(opponentFleet, panel_Enemy);
 
             if (opponentHitCounter <= 0)
             {
@@ -338,7 +353,15 @@ namespace Vsite.Oom.Battleship.Game
             }
             catch (InvalidOperationException)
             {
-                MessageBox.Show("Sorry, you lost the game! No available squares to target.", "Game Over", MessageBoxButtons.OK);
+                // Ako nema dostupnih kvadrata, proverite da li su svi brodovi pogođeni
+                if (playerFleet.Ships.SelectMany(s => s.Squares).All(sq => sq.SquareState != SquareState.Intact))
+                {
+                    MessageBox.Show("Sorry, you lost the game! No available squares to target.", "Game Over", MessageBoxButtons.OK);
+                }
+                else
+                {
+                    MessageBox.Show("You won the game! Opponent has no available squares to target.", "Game Over", MessageBoxButtons.OK);
+                }
                 ResetBattleFields();
                 return;
             }
@@ -369,7 +392,20 @@ namespace Vsite.Oom.Battleship.Game
                     break;
 
                 case HitResult.Sunken:
-                    hitButton.BackColor = Color.Black;
+                    var sunkenShip = playerFleet.Ships.First(s => s.Squares.Any(sq => sq.Row == target.Row && sq.Column == target.Column));
+                    foreach (var sq in sunkenShip.Squares)
+                    {
+                        var button = panel_Host.Controls.OfType<Button>().FirstOrDefault(b =>
+                        {
+                            var position = (ButtonInfo)b.Tag;
+                            return position.row == sq.Row && position.column == sq.Column;
+                        });
+
+                        if (button != null)
+                        {
+                            button.BackColor = Color.Black;
+                        }
+                    }
                     buttonInfo.state = HitResult.Sunken;
 
                     foreach (var bt in playerHitButtons)
@@ -378,6 +414,22 @@ namespace Vsite.Oom.Battleship.Game
                     }
 
                     playerHitButtons.Clear();
+
+                    var toEliminate = squareEliminator.ToEliminate(sunkenShip.Squares, gridRow, gridColumn);
+                    foreach (var sq in toEliminate)
+                    {
+                        var button = panel_Host.Controls.OfType<Button>().FirstOrDefault(b =>
+                        {
+                            var position = (ButtonInfo)b.Tag;
+                            return position.row == sq.Row && position.column == sq.Column;
+                        });
+
+                        if (button != null)
+                        {
+                            button.BackColor = Color.Gray;
+                            button.Enabled = false;
+                        }
+                    }
                     playerHitCounter--;
                     UpdateHitCounters();
                     break;
@@ -385,24 +437,47 @@ namespace Vsite.Oom.Battleship.Game
 
             hitButton.Tag = buttonInfo;
 
+            UpdateEliminatedSquares(playerFleet, panel_Host);
+
+            if (playerHitCounter <= 0)
+            {
+                MessageBox.Show("Sorry, you lost the game!", "LOSER !!!", MessageBoxButtons.OK);
+                ResetBattleFields();
+                return;
+            }
+
             HostIsShooting();
+        }
+
+        private void UpdateEliminatedSquares(Fleet fleet, Panel panel)
+        {
+            foreach (var ship in fleet.Ships)
+            {
+                if (ship.Squares.All(sq => sq.SquareState == SquareState.Sunken))
+                {
+                    var toEliminate = squareEliminator.ToEliminate(ship.Squares, gridRow, gridColumn);
+                    foreach (var sq in toEliminate)
+                    {
+                        var button = panel.Controls.OfType<Button>().FirstOrDefault(b =>
+                        {
+                            var position = (ButtonInfo)b.Tag;
+                            return position.row == sq.Row && position.column == sq.Column;
+                        });
+
+                        if (button != null)
+                        {
+                            button.BackColor = Color.Gray;
+                            button.Enabled = false;
+                        }
+                    }
+                }
+            }
         }
 
         private void UpdateHitCounters()
         {
             playerHitsLabel.Text = $"Opponent Hits Left: {playerHitCounter}";
             opponentHitsLabel.Text = $"Player Hits Left: {opponentHitCounter}";
-
-            if (playerHitCounter <= 0)
-            {
-                MessageBox.Show("Sorry, you lost the game!", "LOSER !!!", MessageBoxButtons.OK);
-                ResetBattleFields();
-            }
-            else if (opponentHitCounter <= 0)
-            {
-                MessageBox.Show("You won the game!", "WINNER !!!", MessageBoxButtons.OK);
-                ResetBattleFields();
-            }
         }
 
         #region // Helper Class

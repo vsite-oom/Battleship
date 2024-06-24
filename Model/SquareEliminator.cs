@@ -1,5 +1,4 @@
 ﻿namespace Vsite.Oom.Battleship.Model
-
 {
     public class SquareEliminator
     {
@@ -34,7 +33,10 @@
             {
                 for (int c = firstColumn; c <= lastColumn; ++c)
                 {
-                    result.Add(new SquareCoordinate(r, c));
+                    if (!shipSquares.Any(sq => sq.Row == r && sq.Column == c))
+                    {
+                        result.Add(new SquareCoordinate(r, c));
+                    }
                 }
             }
             return result;
