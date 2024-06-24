@@ -300,7 +300,7 @@ namespace Vsite.Oom.Battleship.Game
                         }
                     }
 
-                    shipsToShoot.Remove(opponentFleet.Ships.First(s => s.Squares.Any(sq => sq.Row == lastTarget.Row && sq.Column == lastTarget.Column)).Squares.Count());
+                    shipsToShoot.Remove(opponentFleet.Ships.First(s => s.Squares.Any(sq => sq.Row == lastTarget.Row && sq.Column == sq.Column)).Squares.Count());
                     opponentHitCounter--;
                     UpdateHitCounters();
                     break;
@@ -338,15 +338,7 @@ namespace Vsite.Oom.Battleship.Game
             }
             catch (InvalidOperationException)
             {
-                // Ako nema dostupnih kvadrata, proverite da li su svi brodovi pogođeni
-                if (playerFleet.Ships.SelectMany(s => s.Squares).All(sq => sq.SquareState != SquareState.Intact))
-                {
-                    MessageBox.Show("Sorry, you lost the game! No available squares to target.", "Game Over", MessageBoxButtons.OK);
-                }
-                else
-                {
-                    MessageBox.Show("You won the game! Opponent has no available squares to target.", "Game Over", MessageBoxButtons.OK);
-                }
+                MessageBox.Show("Sorry, you lost the game! No available squares to target.", "Game Over", MessageBoxButtons.OK);
                 ResetBattleFields();
                 return;
             }
@@ -393,13 +385,6 @@ namespace Vsite.Oom.Battleship.Game
 
             hitButton.Tag = buttonInfo;
 
-            if (playerHitCounter <= 0)
-            {
-                MessageBox.Show("Sorry, you lost the game!", "LOSER !!!", MessageBoxButtons.OK);
-                ResetBattleFields();
-                return;
-            }
-
             HostIsShooting();
         }
 
@@ -407,6 +392,17 @@ namespace Vsite.Oom.Battleship.Game
         {
             playerHitsLabel.Text = $"Opponent Hits Left: {playerHitCounter}";
             opponentHitsLabel.Text = $"Player Hits Left: {opponentHitCounter}";
+
+            if (playerHitCounter <= 0)
+            {
+                MessageBox.Show("Sorry, you lost the game!", "LOSER !!!", MessageBoxButtons.OK);
+                ResetBattleFields();
+            }
+            else if (opponentHitCounter <= 0)
+            {
+                MessageBox.Show("You won the game!", "WINNER !!!", MessageBoxButtons.OK);
+                ResetBattleFields();
+            }
         }
 
         #region // Helper Class
