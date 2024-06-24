@@ -24,11 +24,11 @@ namespace Vsite.Oom.Battleship.Game
         public MainForm()
         {
             InitializeComponent();
-            this.MainForm_Resize(this, null);
+            MainForm_Resize(this, null);
 
-            var (buttonSize, startLocationX, startLocationY) = this.CalculateButtonSize();
-            this.InitializeBattleField("Host", this.panel_Host, buttonSize, startLocationX, startLocationY);
-            this.InitializeBattleField("Enemy", this.panel_Enemy, buttonSize, startLocationX, startLocationY);
+            var (buttonSize, startLocationX, startLocationY) = CalculateButtonSize();
+            InitializeBattleField("Host", panel_Host, buttonSize, startLocationX, startLocationY);
+            InitializeBattleField("Enemy", panel_Enemy, buttonSize, startLocationX, startLocationY);
         }
 
         private (int, int, int) CalculateButtonSize()
@@ -57,7 +57,7 @@ namespace Vsite.Oom.Battleship.Game
             {
                 for (var col = 0; col < gridColumn; ++col)
                 {
-                    panel.Controls.Add(this.CreateButton(fieldName, row, col, buttonSize, startLocationX + 5 + row * buttonSize + 2, startLocationY + col * buttonSize + 2));
+                    panel.Controls.Add(CreateButton(fieldName, row, col, buttonSize, startLocationX + 5 + row * buttonSize + 2, startLocationY + col * buttonSize + 2));
                 }
             }
         }
@@ -79,18 +79,18 @@ namespace Vsite.Oom.Battleship.Game
                 BackgroundImageLayout = ImageLayout.Stretch,
                 Enabled = fieldName != "Host"
             };
-            button.Click += new EventHandler(this.GridButton_Click);
+            button.Click += new EventHandler(GridButton_Click);
             return button;
         }
 
         private void ResetBattleFields()
         {
-            this.button_StartStop.Tag = 0;
-            this.button_StartStop.Text = "Start";
-            this.button_StartStop.ForeColor = Color.ForestGreen;
+            button_StartStop.Tag = 0;
+            button_StartStop.Text = "Start";
+            button_StartStop.ForeColor = Color.ForestGreen;
 
-            this.textBox_HostShoot.BackColor = Color.Red;
-            foreach (Button button in this.panel_Host.Controls.OfType<Button>())
+            textBox_HostShoot.BackColor = Color.Red;
+            foreach (Button button in panel_Host.Controls.OfType<Button>())
             {
                 var buttonInfo = (ButtonInfo)button.Tag;
                 buttonInfo.state = null;
@@ -99,8 +99,8 @@ namespace Vsite.Oom.Battleship.Game
                 button.Text = "";
             }
 
-            this.textBox_EnemyShoot.BackColor = Color.Red;
-            foreach (Button button in this.panel_Enemy.Controls.OfType<Button>())
+            textBox_EnemyShoot.BackColor = Color.Red;
+            foreach (Button button in panel_Enemy.Controls.OfType<Button>())
             {
                 var buttonInfo = (ButtonInfo)button.Tag;
                 buttonInfo.state = null;
@@ -113,31 +113,31 @@ namespace Vsite.Oom.Battleship.Game
 
         private void MainForm_Resize(object sender, EventArgs e)
         {
-            this.label_Host.MinimumSize = new Size((int)((this.Width - 16) * 0.5), this.label_Host.MinimumSize.Height);
-            this.label_Enemy.MinimumSize = new Size(this.label_Host.MinimumSize.Width, this.label_Host.MinimumSize.Height);
-            this.panel_Host.VerticalScroll.Value = 0;
-            this.panel_Host.HorizontalScroll.Value = 0;
-            this.panel_Host.Size = new Size((int)((this.Width - 16 - this.panel_Split.Width) * 0.5), this.panel_Host.Height);
-            this.panel_Enemy.VerticalScroll.Value = 0;
-            this.panel_Enemy.HorizontalScroll.Visible = false;
-            this.panel_ShootEnemy.Size = new Size((int)((this.Width - 16 - this.panel_Split.Width) * 0.5), this.panel_ShootEnemy.Height);
-            this.Refresh();
+            label_Host.MinimumSize = new Size((int)((Width - 16) * 0.5), label_Host.MinimumSize.Height);
+            label_Enemy.MinimumSize = new Size(label_Host.MinimumSize.Width, label_Host.MinimumSize.Height);
+            panel_Host.VerticalScroll.Value = 0;
+            panel_Host.HorizontalScroll.Value = 0;
+            panel_Host.Size = new Size((int)((Width - 16 - panel_Split.Width) * 0.5), panel_Host.Height);
+            panel_Enemy.VerticalScroll.Value = 0;
+            panel_Enemy.HorizontalScroll.Visible = false;
+            panel_ShootEnemy.Size = new Size((int)((Width - 16 - panel_Split.Width) * 0.5), panel_ShootEnemy.Height);
+            Refresh();
         }
 
         private void panel_Host_SizeChanged(object sender, EventArgs e)
         {
-            this.ResizeButtons(this.panel_Host.Controls.OfType<Button>());
+            ResizeButtons(panel_Host.Controls.OfType<Button>());
         }
 
         private void panel_Enemy_SizeChanged(object sender, EventArgs e)
         {
-            this.ResizeButtons(this.panel_Enemy.Controls.OfType<Button>());
+            ResizeButtons(panel_Enemy.Controls.OfType<Button>());
         }
 
         private void ResizeButtons(IEnumerable<Button> buttons)
         {
-            this.Refresh();
-            var (buttonSize, startLocationX, startLocationY) = this.CalculateButtonSize();
+            Refresh();
+            var (buttonSize, startLocationX, startLocationY) = CalculateButtonSize();
             foreach (Button button in buttons)
             {
                 var buttonLocation = (ButtonInfo)button.Tag;
@@ -148,34 +148,33 @@ namespace Vsite.Oom.Battleship.Game
 
         private void button_StartStop_Click(object sender, EventArgs e)
         {
-            var buttonTag = Convert.ToInt32(this.button_StartStop.Tag);
+            var buttonTag = Convert.ToInt32(button_StartStop.Tag);
             if (buttonTag == 0)
             {
-                this.button_StartStop.Tag = 1;
-                this.button_StartStop.Text = "Stop";
-                this.button_StartStop.ForeColor = Color.Red;
+                button_StartStop.Tag = 1;
+                button_StartStop.Text = "Stop";
+                button_StartStop.ForeColor = Color.Red;
 
-                this.shipsToShoot = new List<int>(ShipLengths);
-                this.squareEliminator = new SquareEliminator();
-                var fleetBuilder = new FleetBuilder(gridRow, gridColumn, ShipLengths.ToArray());
+                shipsToShoot = new List<int>(ShipLengths);
+                squareEliminator = new SquareEliminator();
 
                 try
                 {
-                    this.playerFleet = CreateFleetWithRetry(fleetBuilder, "Player");
-                    PlaceShipsOnGrid(this.playerFleet, this.panel_Host);
+                    playerFleet = CreateFleet(gridRow, gridColumn, ShipLengths);
+                    PlaceShipsOnGrid(playerFleet, panel_Host);
 
-                    this.opponentFleet = CreateFleetWithRetry(fleetBuilder, "Opponent");
-                    PlaceShipsOnGrid(this.opponentFleet, this.panel_Enemy, hideShips: true);
+                    opponentFleet = CreateFleet(gridRow, gridColumn, ShipLengths);
+                    PlaceShipsOnGrid(opponentFleet, panel_Enemy, hideShips: true);
 
-                    this.playerGunnery = new Gunnery(gridRow, gridColumn, ShipLengths);
-                    this.opponentGunnery = new Gunnery(gridRow, gridColumn, ShipLengths);
+                    playerGunnery = new Gunnery(gridRow, gridColumn, ShipLengths);
+                    opponentGunnery = new Gunnery(gridRow, gridColumn, ShipLengths);
 
-                    this.HostIsShooting();
+                    HostIsShooting();
                 }
                 catch (Exception ex)
                 {
                     MessageBox.Show($"Error creating fleet: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    this.ResetBattleFields();
+                    ResetBattleFields();
                 }
             }
             else
@@ -186,53 +185,36 @@ namespace Vsite.Oom.Battleship.Game
                     return;
                 }
 
-                this.ResetBattleFields();
+                ResetBattleFields();
             }
         }
 
-        private Fleet CreateFleetWithRetry(FleetBuilder fleetBuilder, string fleetType, int maxRetries = 3)
+        private Fleet CreateFleet(int gridRows, int gridColumns, List<int> shipLengths)
         {
-            for (int i = 0; i < maxRetries; i++)
+            var fleet = new Fleet();
+            var fleetGrid = new FleetGrid(gridRows, gridColumns);
+            var eliminator = new SquareEliminator();
+            var random = new Random();
+
+            foreach (var length in shipLengths)
             {
-                try
+                var candidates = fleetGrid.GetAvailablePlacements(length);
+                if (!candidates.Any())
                 {
-                    var fleet = fleetBuilder.CreateFleet();
-                    Console.WriteLine($"{fleetType} fleet created successfully on attempt {i + 1}.");
-                    return fleet;
+                    throw new InvalidOperationException($"No available placements for ship length {length}");
                 }
-                catch (ArgumentOutOfRangeException ex)
-                {
-                    Console.WriteLine($"Attempt {i + 1} to create {fleetType} fleet failed: {ex.Message}");
+                var selectedIndex = random.Next(candidates.Count());
+                var selected = candidates.ElementAt(selectedIndex);
 
-                    // Log details about the failed attempt
-                    LogAvailablePlacements(fleetBuilder, fleetType);
-                }
-            }
-            throw new InvalidOperationException($"Failed to create {fleetType} fleet after {maxRetries} attempts.");
-        }
+                fleet.CreateShip(selected);
 
-        private void LogAvailablePlacements(FleetBuilder fleetBuilder, string fleetType)
-        {
-            Console.WriteLine($"Logging available placements for {fleetType} fleet debugging...");
-            foreach (var length in ShipLengths)
-            {
-                var candidates = GetAvailablePlacements(fleetBuilder, length);
-                Console.WriteLine($"Available placements for ship length {length}: {candidates.Count()}");
-                foreach (var placement in candidates)
+                var toEliminate = eliminator.ToEliminate(selected, fleetGrid.Rows, fleetGrid.Columns);
+                foreach (var coordinate in toEliminate)
                 {
-                    Console.WriteLine($"Placement: {string.Join(", ", placement.Select(sq => $"({sq.Row},{sq.Column})"))}");
+                    fleetGrid.EliminateSquare(coordinate.Row, coordinate.Column);
                 }
             }
-        }
-
-        private IEnumerable<IEnumerable<Square>> GetAvailablePlacements(FleetBuilder fleetBuilder, int shipLength)
-        {
-            // Use reflection to get the private fleetGrid field
-            var fleetGridField = typeof(FleetBuilder).GetField("fleetGrid", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-            var fleetGrid = (FleetGrid)fleetGridField.GetValue(fleetBuilder);
-
-            // Get available placements from the fleetGrid
-            return fleetGrid.GetAvailablePlacements(shipLength);
+            return fleet;
         }
 
         private void PlaceShipsOnGrid(Fleet fleet, Panel panel, bool hideShips = false)
@@ -256,16 +238,16 @@ namespace Vsite.Oom.Battleship.Game
 
         private void HostIsShooting()
         {
-            this.panel_Enemy.Enabled = true;
-            this.textBox_EnemyShoot.BackColor = Color.Red;
-            this.textBox_HostShoot.BackColor = Color.LightGreen;
-            this.Refresh();
+            panel_Enemy.Enabled = true;
+            textBox_EnemyShoot.BackColor = Color.Red;
+            textBox_HostShoot.BackColor = Color.LightGreen;
+            Refresh();
             System.Threading.Thread.Sleep(100);
-            this.textBox_HostShoot.BackColor = Color.GreenYellow;
-            this.Refresh();
+            textBox_HostShoot.BackColor = Color.GreenYellow;
+            Refresh();
             System.Threading.Thread.Sleep(100);
-            this.textBox_HostShoot.BackColor = Color.LightGreen;
-            this.Refresh();
+            textBox_HostShoot.BackColor = Color.LightGreen;
+            Refresh();
             System.Threading.Thread.Sleep(100);
         }
 
@@ -277,7 +259,7 @@ namespace Vsite.Oom.Battleship.Game
             var hitButtonInfo = (ButtonInfo)hitButton.Tag;
             var lastTarget = new Square(hitButtonInfo.row, hitButtonInfo.column);
 
-            var hitResult = this.opponentFleet.Hit(lastTarget.Row, lastTarget.Column);
+            var hitResult = opponentFleet.Hit(lastTarget.Row, lastTarget.Column);
             switch (hitResult)
             {
                 case HitResult.Missed:
@@ -294,10 +276,10 @@ namespace Vsite.Oom.Battleship.Game
                     hitButton.BackColor = Color.Black;
                     hitButtonInfo.state = HitResult.Sunken;
 
-                    var toEliminate = this.squareEliminator.ToEliminate(this.opponentFleet.Ships.First(s => s.Squares.Any(sq => sq.Row == lastTarget.Row && sq.Column == lastTarget.Column)).Squares, gridRow, gridColumn);
+                    var toEliminate = squareEliminator.ToEliminate(opponentFleet.Ships.First(s => s.Squares.Any(sq => sq.Row == lastTarget.Row && sq.Column == lastTarget.Column)).Squares, gridRow, gridColumn);
                     foreach (var sq in toEliminate)
                     {
-                        var button = this.panel_Enemy.Controls.OfType<Button>().FirstOrDefault(b =>
+                        var button = panel_Enemy.Controls.OfType<Button>().FirstOrDefault(b =>
                         {
                             var position = (ButtonInfo)b.Tag;
                             return position.row == sq.Row && position.column == sq.Column;
@@ -310,39 +292,39 @@ namespace Vsite.Oom.Battleship.Game
                         }
                     }
 
-                    this.shipsToShoot.Remove(this.opponentFleet.Ships.First(s => s.Squares.Any(sq => sq.Row == lastTarget.Row && sq.Column == lastTarget.Column)).Squares.Count());
+                    shipsToShoot.Remove(opponentFleet.Ships.First(s => s.Squares.Any(sq => sq.Row == lastTarget.Row && sq.Column == lastTarget.Column)).Squares.Count());
                     break;
             }
 
             hitButton.Tag = hitButtonInfo;
 
-            if (!this.shipsToShoot.Any())
+            if (!shipsToShoot.Any())
             {
                 MessageBox.Show("You won the game!", "WINNER !!!", MessageBoxButtons.OK);
-                this.ResetBattleFields();
+                ResetBattleFields();
                 return;
             }
 
-            this.EnemyIsShooting();
+            EnemyIsShooting();
         }
 
         private void EnemyIsShooting()
         {
-            this.panel_Enemy.Enabled = false;
-            this.textBox_HostShoot.BackColor = Color.Red;
-            this.textBox_EnemyShoot.BackColor = Color.LightGreen;
+            panel_Enemy.Enabled = false;
+            textBox_HostShoot.BackColor = Color.Red;
+            textBox_EnemyShoot.BackColor = Color.LightGreen;
             System.Threading.Thread.Sleep(100);
-            this.textBox_EnemyShoot.BackColor = Color.GreenYellow;
-            this.Refresh();
+            textBox_EnemyShoot.BackColor = Color.GreenYellow;
+            Refresh();
             System.Threading.Thread.Sleep(100);
-            this.textBox_EnemyShoot.BackColor = Color.LightGreen;
-            this.Refresh();
+            textBox_EnemyShoot.BackColor = Color.LightGreen;
+            Refresh();
             System.Threading.Thread.Sleep(100);
 
-            var target = this.opponentGunnery.Next();
-            var hitResult = this.playerFleet.Hit(target.Row, target.Column);
+            var target = opponentGunnery.Next();
+            var hitResult = playerFleet.Hit(target.Row, target.Column);
 
-            var hitButton = this.panel_Host.Controls.OfType<Button>().FirstOrDefault(b =>
+            var hitButton = panel_Host.Controls.OfType<Button>().FirstOrDefault(b =>
             {
                 var position = (ButtonInfo)b.Tag;
                 return position.row == target.Row && position.column == target.Column;
@@ -359,34 +341,34 @@ namespace Vsite.Oom.Battleship.Game
                 case HitResult.Hit:
                     hitButton.BackColor = Color.Red;
                     buttonInfo.state = HitResult.Hit;
-                    this.playerHitButtons.Add(hitButton);
+                    playerHitButtons.Add(hitButton);
                     break;
 
                 case HitResult.Sunken:
                     hitButton.BackColor = Color.Black;
                     buttonInfo.state = HitResult.Sunken;
 
-                    foreach (var bt in this.playerHitButtons)
+                    foreach (var bt in playerHitButtons)
                     {
                         bt.BackColor = Color.Black;
                     }
 
-                    this.playerHitButtons.Clear();
+                    playerHitButtons.Clear();
                     break;
             }
 
             hitButton.Tag = buttonInfo;
 
-            this.opponentGunnery.ProcessHitResult(hitResult);
+            opponentGunnery.ProcessHitResult(hitResult);
 
-            if (this.playerFleet.Ships.All(s => s.Squares.All(sq => sq.SquareState == SquareState.Sunken)))
+            if (playerFleet.Ships.All(s => s.Squares.All(sq => sq.SquareState == SquareState.Sunken)))
             {
                 MessageBox.Show("Sorry, you lost the game!", "LOSER !!!", MessageBoxButtons.OK);
-                this.ResetBattleFields();
+                ResetBattleFields();
                 return;
             }
 
-            this.HostIsShooting();
+            HostIsShooting();
         }
 
         private class ButtonInfo

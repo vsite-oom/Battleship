@@ -1,5 +1,4 @@
-﻿
-using System.Diagnostics;
+﻿using System.Diagnostics;
 
 namespace Vsite.Oom.Battleship.Model
 {
@@ -100,7 +99,7 @@ namespace Vsite.Oom.Battleship.Model
         private void ChangeTacticsToInline()
         {
             ShootingTactics = ShootingTactics.Inline;
-            targetSelector = new InlineTargetSelector();
+            targetSelector = new InlineTargetSelector(recordGrid, shipSquares, shipLengths[0]);
         }
 
         public ShootingTactics ShootingTactics { get; private set; } = ShootingTactics.Random;
