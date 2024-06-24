@@ -25,7 +25,6 @@ namespace Vsite.Oom.Battleship.Game
         public MainForm()
         {
             InitializeComponent();
-            MainForm_Resize(this, null);
 
             var (buttonSize, startLocationX, startLocationY) = CalculateButtonSize();
             InitializeBattleField("Host", panel_Host, buttonSize, startLocationX, startLocationY);
@@ -72,9 +71,9 @@ namespace Vsite.Oom.Battleship.Game
                 ForeColor = Color.ForestGreen,
                 Location = new Point(position_X, position_Y),
                 Margin = new Padding(2),
-                Name = "button_Battle_" + column + "_" + row,
+                Name = $"button_Battle_{column}_{row}",
                 Size = new Size(size, size),
-                Tag = new ButtonInfo(column, row),
+                Tag = (column, row),
                 Text = "",
                 UseVisualStyleBackColor = false,
                 BackgroundImageLayout = ImageLayout.Stretch,
@@ -90,60 +89,19 @@ namespace Vsite.Oom.Battleship.Game
             button_StartStop.Text = "Start";
             button_StartStop.ForeColor = Color.ForestGreen;
 
-            textBox_HostShoot.BackColor = Color.Red;
             foreach (Button button in panel_Host.Controls.OfType<Button>())
             {
-                var buttonInfo = (ButtonInfo)button.Tag;
-                buttonInfo.state = null;
-                button.Tag = buttonInfo;
+                button.Tag = null;
                 button.BackColor = Color.White;
                 button.Text = "";
             }
 
-            textBox_EnemyShoot.BackColor = Color.Red;
             foreach (Button button in panel_Enemy.Controls.OfType<Button>())
             {
-                var buttonInfo = (ButtonInfo)button.Tag;
-                buttonInfo.state = null;
-                button.Tag = buttonInfo;
+                button.Tag = null;
                 button.BackColor = Color.White;
                 button.Enabled = true;
                 button.Text = "";
-            }
-        }
-
-        private void MainForm_Resize(object sender, EventArgs e)
-        {
-            label_Host.MinimumSize = new Size((int)((Width - 16) * 0.5), label_Host.MinimumSize.Height);
-            label_Enemy.MinimumSize = new Size(label_Host.MinimumSize.Width, label_Host.MinimumSize.Height);
-            panel_Host.VerticalScroll.Value = 0;
-            panel_Host.HorizontalScroll.Value = 0;
-            panel_Host.Size = new Size((int)((Width - 16 - panel_Split.Width) * 0.5), panel_Host.Height);
-            panel_Enemy.VerticalScroll.Value = 0;
-            panel_Enemy.HorizontalScroll.Visible = false;
-            panel_ShootEnemy.Size = new Size((int)((Width - 16 - panel_Split.Width) * 0.5), panel_ShootEnemy.Height);
-            Refresh();
-        }
-
-        private void panel_Host_SizeChanged(object sender, EventArgs e)
-        {
-            ResizeButtons(panel_Host.Controls.OfType<Button>());
-        }
-
-        private void panel_Enemy_SizeChanged(object sender, EventArgs e)
-        {
-            ResizeButtons(panel_Enemy.Controls.OfType<Button>());
-        }
-
-        private void ResizeButtons(IEnumerable<Button> buttons)
-        {
-            Refresh();
-            var (buttonSize, startLocationX, startLocationY) = CalculateButtonSize();
-            foreach (Button button in buttons)
-            {
-                var buttonLocation = (ButtonInfo)button.Tag;
-                button.Location = new Point(startLocationX + buttonLocation.row * buttonSize + 2, startLocationY + buttonLocation.column * buttonSize + 2);
-                button.Size = new Size(buttonSize, buttonSize);
             }
         }
 
@@ -229,7 +187,7 @@ namespace Vsite.Oom.Battleship.Game
                 {
                     var button = panel.Controls.OfType<Button>().FirstOrDefault(b =>
                     {
-                        var position = (ButtonInfo)b.Tag;
+                        var position = ((int column, int row))b.Tag;
                         return position.row == sq.Row && position.column == sq.Column;
                     });
                     if (button != null)
@@ -243,14 +201,11 @@ namespace Vsite.Oom.Battleship.Game
         private void HostIsShooting()
         {
             panel_Enemy.Enabled = true;
-            textBox_EnemyShoot.BackColor = Color.Red;
-            textBox_HostShoot.BackColor = Color.LightGreen;
+
             Refresh();
             System.Threading.Thread.Sleep(100);
-            textBox_HostShoot.BackColor = Color.GreenYellow;
             Refresh();
             System.Threading.Thread.Sleep(100);
-            textBox_HostShoot.BackColor = Color.LightGreen;
             Refresh();
             System.Threading.Thread.Sleep(100);
         }
@@ -260,35 +215,30 @@ namespace Vsite.Oom.Battleship.Game
             var hitButton = (Button)sender;
             hitButton.Enabled = false;
 
-            var hitButtonInfo = (ButtonInfo)hitButton.Tag;
-            var lastTarget = new Square(hitButtonInfo.row, hitButtonInfo.column);
+            var (column, row) = ((int column, int row))hitButton.Tag;
+            var lastTarget = new Square(row, column);
 
             var hitResult = opponentFleet.Hit(lastTarget.Row, lastTarget.Column);
             switch (hitResult)
             {
                 case HitResult.Missed:
                     hitButton.BackColor = Color.Blue;
-                    hitButtonInfo.state = HitResult.Missed;
                     break;
 
                 case HitResult.Hit:
                     hitButton.BackColor = Color.Red;
-                    hitButtonInfo.state = HitResult.Hit;
-                    opponentHitCounter--; // Broji samo protivnikove pogodke
+                    opponentHitCounter--;
                     UpdateHitCounters();
                     break;
 
                 case HitResult.Sunken:
                     hitButton.BackColor = Color.Black;
-                    hitButtonInfo.state = HitResult.Sunken;
-
-                    // Ovdje ćemo zacrniti sve kvadrate potopljenog broda
                     var sunkenShip = opponentFleet.Ships.First(s => s.Squares.Any(sq => sq.Row == lastTarget.Row && sq.Column == lastTarget.Column));
                     foreach (var sq in sunkenShip.Squares)
                     {
                         var button = panel_Enemy.Controls.OfType<Button>().FirstOrDefault(b =>
                         {
-                            var position = (ButtonInfo)b.Tag;
+                            var position = ((int column, int row))b.Tag;
                             return position.row == sq.Row && position.column == sq.Column;
                         });
 
@@ -304,7 +254,7 @@ namespace Vsite.Oom.Battleship.Game
                     {
                         var button = panel_Enemy.Controls.OfType<Button>().FirstOrDefault(b =>
                         {
-                            var position = (ButtonInfo)b.Tag;
+                            var position = ((int column, int row))b.Tag;
                             return position.row == sq.Row && position.column == sq.Column;
                         });
 
@@ -321,8 +271,6 @@ namespace Vsite.Oom.Battleship.Game
                     break;
             }
 
-            hitButton.Tag = hitButtonInfo;
-
             if (opponentHitCounter <= 0)
             {
                 MessageBox.Show("You won the game!", "WINNER !!!", MessageBoxButtons.OK);
@@ -336,13 +284,9 @@ namespace Vsite.Oom.Battleship.Game
         private void EnemyIsShooting()
         {
             panel_Enemy.Enabled = false;
-            textBox_HostShoot.BackColor = Color.Red;
-            textBox_EnemyShoot.BackColor = Color.LightGreen;
             System.Threading.Thread.Sleep(100);
-            textBox_EnemyShoot.BackColor = Color.GreenYellow;
             Refresh();
             System.Threading.Thread.Sleep(100);
-            textBox_EnemyShoot.BackColor = Color.LightGreen;
             Refresh();
             System.Threading.Thread.Sleep(100);
 
@@ -371,23 +315,20 @@ namespace Vsite.Oom.Battleship.Game
 
             var hitButton = panel_Host.Controls.OfType<Button>().FirstOrDefault(b =>
             {
-                var position = (ButtonInfo)b.Tag;
+                var position = ((int column, int row))b.Tag;
                 return position.row == target.Row && position.column == target.Column;
             });
 
             if (hitButton == null) return; // Safety check
 
-            var buttonInfo = (ButtonInfo)hitButton.Tag;
             switch (hitResult)
             {
                 case HitResult.Missed:
                     hitButton.BackColor = Color.Blue;
-                    buttonInfo.state = HitResult.Missed;
                     break;
 
                 case HitResult.Hit:
                     hitButton.BackColor = Color.Red;
-                    buttonInfo.state = HitResult.Hit;
                     playerHitCounter--;
                     UpdateHitCounters();
                     playerHitButtons.Add(hitButton);
@@ -395,7 +336,6 @@ namespace Vsite.Oom.Battleship.Game
 
                 case HitResult.Sunken:
                     hitButton.BackColor = Color.Black;
-                    buttonInfo.state = HitResult.Sunken;
 
                     foreach (var bt in playerHitButtons)
                     {
@@ -413,7 +353,7 @@ namespace Vsite.Oom.Battleship.Game
                     {
                         var button = panel_Host.Controls.OfType<Button>().FirstOrDefault(b =>
                         {
-                            var position = (ButtonInfo)b.Tag;
+                            var position = ((int column, int row))b.Tag;
                             return position.row == sq.Row && position.column == sq.Column;
                         });
 
@@ -425,8 +365,6 @@ namespace Vsite.Oom.Battleship.Game
                     }
                     break;
             }
-
-            hitButton.Tag = buttonInfo;
 
             if (playerHitCounter <= 0)
             {
@@ -440,24 +378,8 @@ namespace Vsite.Oom.Battleship.Game
 
         private void UpdateHitCounters()
         {
-            playerHitsLabel.Text = $"Opponent Hits Left: {playerHitCounter}";
-            opponentHitsLabel.Text = $"Player Hits Left: {opponentHitCounter}";
+            playerHitsLabel.Text = $"Obrambeni bodovi: {playerHitCounter}";
+            opponentHitsLabel.Text = $"napadački bodovi: {opponentHitCounter}";
         }
-
-        #region // Helper Class
-        private class ButtonInfo
-        {
-            public int row;
-            public int column;
-            public HitResult? state;
-
-            public ButtonInfo(int row, int column)
-            {
-                this.row = row;
-                this.column = column;
-                this.state = null;
-            }
-        }
-        #endregion
     }
 }
