@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Reflection;
 using System.Windows.Forms;
 using Vsite.Oom.Battleship.Model;
 
@@ -161,30 +162,18 @@ namespace Vsite.Oom.Battleship.Game
 
                 try
                 {
-                    this.playerFleet = fleetBuilder.CreateFleet();
-                    foreach (var ship in this.playerFleet.Ships)
-                    {
-                        foreach (var sq in ship.Squares)
-                        {
-                            var button = this.panel_Host.Controls.OfType<Button>().FirstOrDefault(b =>
-                            {
-                                var position = (ButtonInfo)b.Tag;
-                                return position.row == sq.Row && position.column == sq.Column;
-                            });
-                            if (button != null)
-                            {
-                                button.BackColor = Color.Green;
-                            }
-                        }
-                    }
+                    this.playerFleet = CreateFleetWithRetry(fleetBuilder, "Player");
+                    PlaceShipsOnGrid(this.playerFleet, this.panel_Host);
 
-                    this.opponentFleet = fleetBuilder.CreateFleet();
+                    this.opponentFleet = CreateFleetWithRetry(fleetBuilder, "Opponent");
+                    PlaceShipsOnGrid(this.opponentFleet, this.panel_Enemy, hideShips: true);
+
                     this.playerGunnery = new Gunnery(gridRow, gridColumn, ShipLengths);
                     this.opponentGunnery = new Gunnery(gridRow, gridColumn, ShipLengths);
 
                     this.HostIsShooting();
                 }
-                catch (InvalidOperationException ex)
+                catch (Exception ex)
                 {
                     MessageBox.Show($"Error creating fleet: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     this.ResetBattleFields();
@@ -199,6 +188,70 @@ namespace Vsite.Oom.Battleship.Game
                 }
 
                 this.ResetBattleFields();
+            }
+        }
+
+        private Fleet CreateFleetWithRetry(FleetBuilder fleetBuilder, string fleetType, int maxRetries = 3)
+        {
+            for (int i = 0; i < maxRetries; i++)
+            {
+                try
+                {
+                    var fleet = fleetBuilder.CreateFleet();
+                    Console.WriteLine($"{fleetType} fleet created successfully on attempt {i + 1}.");
+                    return fleet;
+                }
+                catch (ArgumentOutOfRangeException ex)
+                {
+                    Console.WriteLine($"Attempt {i + 1} to create {fleetType} fleet failed: {ex.Message}");
+
+                    // Log details about the failed attempt
+                    LogAvailablePlacements(fleetBuilder, fleetType);
+                }
+            }
+            throw new InvalidOperationException($"Failed to create {fleetType} fleet after {maxRetries} attempts.");
+        }
+
+        private void LogAvailablePlacements(FleetBuilder fleetBuilder, string fleetType)
+        {
+            Console.WriteLine($"Logging available placements for {fleetType} fleet debugging...");
+            foreach (var length in ShipLengths)
+            {
+                var candidates = GetAvailablePlacements(fleetBuilder, length);
+                Console.WriteLine($"Available placements for ship length {length}: {candidates.Count()}");
+                foreach (var placement in candidates)
+                {
+                    Console.WriteLine($"Placement: {string.Join(", ", placement.Select(sq => $"({sq.Row},{sq.Column})"))}");
+                }
+            }
+        }
+
+        private IEnumerable<IEnumerable<Square>> GetAvailablePlacements(FleetBuilder fleetBuilder, int shipLength)
+        {
+            // Use reflection to get the private fleetGrid field
+            var fleetGridField = typeof(FleetBuilder).GetField("fleetGrid", BindingFlags.NonPublic | BindingFlags.Instance);
+            var fleetGrid = (FleetGrid)fleetGridField.GetValue(fleetBuilder);
+
+            // Get available placements from the fleetGrid
+            return fleetGrid.GetAvailablePlacements(shipLength);
+        }
+
+        private void PlaceShipsOnGrid(Fleet fleet, Panel panel, bool hideShips = false)
+        {
+            foreach (var ship in fleet.Ships)
+            {
+                foreach (var sq in ship.Squares)
+                {
+                    var button = panel.Controls.OfType<Button>().FirstOrDefault(b =>
+                    {
+                        var position = (ButtonInfo)b.Tag;
+                        return position.row == sq.Row && position.column == sq.Column;
+                    });
+                    if (button != null)
+                    {
+                        button.BackColor = hideShips ? Color.White : Color.Green;
+                    }
+                }
             }
         }
 
@@ -242,7 +295,7 @@ namespace Vsite.Oom.Battleship.Game
                     hitButton.BackColor = Color.Black;
                     hitButtonInfo.state = HitResult.Sunken;
 
-                    var toEliminate = this.squareEliminator.ToEliminate(this.opponentFleet.Ships.First(s => s.Squares.Any(sq => sq.Row == lastTarget.Row && sq.Column == lastTarget.Column)).Squares, gridRow, gridColumn);
+                    var toEliminate = this.squareEliminator.ToEliminate(this.opponentFleet.Ships.First(s => s.Squares.Any(sq => sq.Row == lastTarget.Row && sq.Column == lastTarget.Row)).Squares, gridRow, gridColumn);
                     foreach (var sq in toEliminate)
                     {
                         var button = this.panel_Enemy.Controls.OfType<Button>().FirstOrDefault(b =>

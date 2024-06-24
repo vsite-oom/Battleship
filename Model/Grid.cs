@@ -1,5 +1,4 @@
 ﻿namespace Vsite.Oom.Battleship.Model
-
 {
     public abstract class Grid
     {
