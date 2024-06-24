@@ -328,11 +328,21 @@ namespace Vsite.Oom.Battleship.Game
             }
             catch (InvalidOperationException)
             {
-                CheckGameState(true); // Pass true to indicate that the exception was caught
+                // Ako nema dostupnih kvadrata, proverite da li su svi brodovi pogođeni
+                if (playerFleet.Ships.SelectMany(s => s.Squares).All(sq => sq.SquareState != SquareState.Intact))
+                {
+                    MessageBox.Show("Sorry, you lost the game! No available squares to target.", "Game Over", MessageBoxButtons.OK);
+                }
+                else
+                {
+                    MessageBox.Show("You won the game! Opponent has no available squares to target.", "Game Over", MessageBoxButtons.OK);
+                }
+                ResetBattleFields();
                 return;
             }
 
             var hitResult = playerFleet.Hit(target.Row, target.Column);
+            opponentGunnery.ProcessHitResult(hitResult); // Ensure this line is here
 
             var hitButton = panel_Host.Controls.OfType<Button>().FirstOrDefault(b =>
             {
@@ -369,48 +379,14 @@ namespace Vsite.Oom.Battleship.Game
 
             hitButton.Tag = buttonInfo;
 
-            opponentGunnery.ProcessHitResult(hitResult);
-
-            CheckGameState();
-        }
-
-        private void CheckGameState(bool isExceptionCaught = false)
-        {
-            bool playerFleetSunken = playerFleet.Ships.All(s => s.Squares.All(sq => sq.SquareState == SquareState.Sunken));
-            bool opponentFleetSunken = opponentFleet.Ships.All(s => s.Squares.All(sq => sq.SquareState == SquareState.Sunken));
-            bool allPlayerSquaresHit = panel_Host.Controls.OfType<Button>().All(b => ((ButtonInfo)b.Tag).state.HasValue);
-            bool allOpponentSquaresHit = panel_Enemy.Controls.OfType<Button>().All(b => ((ButtonInfo)b.Tag).state.HasValue);
-
-            if (playerFleetSunken && opponentFleetSunken)
+            if (!playerFleet.Ships.SelectMany(s => s.Squares).Any(sq => sq.SquareState == SquareState.Intact))
             {
-                MessageBox.Show("It's a draw!", "Game Over", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
-            else if (playerFleetSunken || allPlayerSquaresHit)
-            {
-                MessageBox.Show("Sorry, you lost the game!", "Game Over", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
-            else if (opponentFleetSunken || allOpponentSquaresHit)
-            {
-                MessageBox.Show("You won the game!", "Game Over", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
-            else if (isExceptionCaught)
-            {
-                if (allPlayerSquaresHit)
-                {
-                    MessageBox.Show("Sorry, you lost the game!", "Game Over", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                }
-                else if (allOpponentSquaresHit)
-                {
-                    MessageBox.Show("You won the game!", "Game Over", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                }
-            }
-            else
-            {
-                HostIsShooting();
+                MessageBox.Show("Sorry, you lost the game!", "LOSER !!!", MessageBoxButtons.OK);
+                ResetBattleFields();
                 return;
             }
 
-            ResetBattleFields();
+            HostIsShooting();
         }
 
         private class ButtonInfo
