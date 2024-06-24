@@ -59,8 +59,6 @@
             int selectedIndex = random.Next(candidates);
             return longestDirections.ElementAt(selectedIndex).First();
 
-
-
         }
     }
 }
