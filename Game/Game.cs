@@ -223,6 +223,7 @@ namespace Vsite.Oom.Battleship.Game
             return fleet;
         }
 
+
         private void PlaceShipsOnGrid(Fleet fleet, Panel panel, bool hideShips = false)
         {
             foreach (var ship in fleet.Ships)
@@ -398,22 +399,17 @@ namespace Vsite.Oom.Battleship.Game
                     hitButton.BackColor = Color.Black;
                     buttonInfo.state = HitResult.Sunken;
 
-                    var sunkenShip = playerFleet.Ships.First(s => s.Squares.Any(sq => sq.Row == target.Row && sq.Column == target.Column));
-                    foreach (var sq in sunkenShip.Squares)
+                    foreach (var bt in playerHitButtons)
                     {
-                        var button = panel_Host.Controls.OfType<Button>().FirstOrDefault(b =>
-                        {
-                            var position = (ButtonInfo)b.Tag;
-                            return position.row == sq.Row && position.column == sq.Column;
-                        });
-
-                        if (button != null)
-                        {
-                            button.BackColor = Color.Black;
-                            button.Enabled = false;
-                        }
+                        bt.BackColor = Color.Black;
                     }
 
+                    playerHitButtons.Clear();
+                    playerHitCounter--;
+                    UpdateHitCounters();
+
+                    // Eliminisanje okolnih polja
+                    var sunkenShip = playerFleet.Ships.First(s => s.Squares.Any(sq => sq.Row == target.Row && sq.Column == target.Column));
                     var toEliminate = squareEliminator.ToEliminate(sunkenShip.Squares, gridRow, gridColumn);
                     foreach (var sq in toEliminate)
                     {
@@ -429,9 +425,6 @@ namespace Vsite.Oom.Battleship.Game
                             button.Enabled = false;
                         }
                     }
-
-                    playerHitCounter--;
-                    UpdateHitCounters();
                     break;
             }
 
