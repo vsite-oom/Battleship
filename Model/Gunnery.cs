@@ -21,15 +21,7 @@ namespace Vsite.Oom.Battleship.Model
 
         public Square Next()
         {
-            try
-            {
-                target = targetSelector.Next();
-            }
-            catch (InvalidOperationException)
-            {
-                ChangeTacticsToRandom();
-                target = targetSelector.Next();
-            }
+            target = targetSelector.Next();
             return target;
         }
 

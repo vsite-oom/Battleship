@@ -1,4 +1,5 @@
-﻿namespace Vsite.Oom.Battleship.Model
+﻿
+namespace Vsite.Oom.Battleship.Model
 {
     public class RandomTargetSelector : ITargetSelector
     {
@@ -11,13 +12,9 @@
         public Square Next()
         {
             var placements = grid.GetAvailablePlacements(shipLength);
-            var candidates = placements.SelectMany(s => s).ToList(); // Pretvaranje u listu radi lakše manipulacije
-            if (!candidates.Any())
-            {
-                throw new InvalidOperationException("No available squares found.");
-            }
-            var selectedIndex = random.Next(candidates.Count);
-            return candidates[selectedIndex];
+            var candidates = placements.SelectMany(s => s);
+            var selectedIndex = random.Next(candidates.Count());
+            return candidates.ElementAt(selectedIndex);
         }
 
         private readonly ShotsGrid grid;

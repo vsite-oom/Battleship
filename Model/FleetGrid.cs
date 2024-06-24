@@ -1,5 +1,8 @@
-﻿namespace Vsite.Oom.Battleship.Model
+﻿
 
+using System.Linq;
+
+namespace Vsite.Oom.Battleship.Model
 {
     public class FleetGrid : Grid
     {
