@@ -1,5 +1,4 @@
 ﻿using System.Diagnostics;
-using static Vsite.Oom.Battleship.Model.Square;
 
 namespace Vsite.Oom.Battleship.Model
 {
@@ -28,7 +27,6 @@ namespace Vsite.Oom.Battleship.Model
         public void ProcessHitResult(HitResult hitResult)
         {
             RecordTargetResult(hitResult);
-
             switch (hitResult)
             {
                 case HitResult.Missed:
