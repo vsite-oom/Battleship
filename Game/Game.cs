@@ -284,7 +284,24 @@ namespace Vsite.Oom.Battleship.Game
                     hitButton.BackColor = Color.Black;
                     hitButtonInfo.state = HitResult.Sunken;
 
-                    var toEliminate = squareEliminator.ToEliminate(opponentFleet.Ships.First(s => s.Squares.Any(sq => sq.Row == lastTarget.Row && sq.Column == lastTarget.Column)).Squares, gridRow, gridColumn);
+                    // Ovdje ćemo zacrniti sve kvadrate potopljenog broda
+                    var sunkenShip = opponentFleet.Ships.First(s => s.Squares.Any(sq => sq.Row == lastTarget.Row && sq.Column == lastTarget.Column));
+                    foreach (var sq in sunkenShip.Squares)
+                    {
+                        var button = panel_Enemy.Controls.OfType<Button>().FirstOrDefault(b =>
+                        {
+                            var position = (ButtonInfo)b.Tag;
+                            return position.row == sq.Row && position.column == sq.Column;
+                        });
+
+                        if (button != null)
+                        {
+                            button.BackColor = Color.Black;
+                            button.Enabled = false;
+                        }
+                    }
+
+                    var toEliminate = squareEliminator.ToEliminate(sunkenShip.Squares, gridRow, gridColumn);
                     foreach (var sq in toEliminate)
                     {
                         var button = panel_Enemy.Controls.OfType<Button>().FirstOrDefault(b =>
@@ -300,7 +317,7 @@ namespace Vsite.Oom.Battleship.Game
                         }
                     }
 
-                    shipsToShoot.Remove(opponentFleet.Ships.First(s => s.Squares.Any(sq => sq.Row == lastTarget.Row && sq.Column == lastTarget.Column)).Squares.Count());
+                    shipsToShoot.Remove(sunkenShip.Squares.Count());
                     opponentHitCounter--;
                     UpdateHitCounters();
                     break;
@@ -317,6 +334,7 @@ namespace Vsite.Oom.Battleship.Game
 
             EnemyIsShooting();
         }
+
 
         private void EnemyIsShooting()
         {
@@ -380,16 +398,23 @@ namespace Vsite.Oom.Battleship.Game
                     hitButton.BackColor = Color.Black;
                     buttonInfo.state = HitResult.Sunken;
 
-                    foreach (var bt in playerHitButtons)
+                    var sunkenShip = playerFleet.Ships.First(s => s.Squares.Any(sq => sq.Row == target.Row && sq.Column == target.Column));
+                    foreach (var sq in sunkenShip.Squares)
                     {
-                        bt.BackColor = Color.Black;
+                        var button = panel_Host.Controls.OfType<Button>().FirstOrDefault(b =>
+                        {
+                            var position = (ButtonInfo)b.Tag;
+                            return position.row == sq.Row && position.column == sq.Column;
+                        });
+
+                        if (button != null)
+                        {
+                            button.BackColor = Color.Black;
+                            button.Enabled = false;
+                        }
                     }
 
-                    playerHitButtons.Clear();
-                    playerHitCounter--;
-                    UpdateHitCounters();
-                    // Eliminisanje okolnih polja
-                    var toEliminate = squareEliminator.ToEliminate(playerFleet.Ships.First(s => s.Squares.Any(sq => sq.Row == target.Row && sq.Column == target.Column)).Squares, gridRow, gridColumn);
+                    var toEliminate = squareEliminator.ToEliminate(sunkenShip.Squares, gridRow, gridColumn);
                     foreach (var sq in toEliminate)
                     {
                         var button = panel_Host.Controls.OfType<Button>().FirstOrDefault(b =>
@@ -404,6 +429,9 @@ namespace Vsite.Oom.Battleship.Game
                             button.Enabled = false;
                         }
                     }
+
+                    playerHitCounter--;
+                    UpdateHitCounters();
                     break;
             }
 
