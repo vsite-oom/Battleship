@@ -3,6 +3,8 @@
     partial class MainForm
     {
         private System.ComponentModel.IContainer components = null;
+        private Label playerHitsLabel;
+        private Label opponentHitsLabel;
 
         protected override void Dispose(bool disposing)
         {
@@ -30,6 +32,8 @@
             panel_Host = new Panel();
             panel_Split = new Panel();
             panel_Enemy = new Panel();
+            playerHitsLabel = new Label();
+            opponentHitsLabel = new Label();
             panel_Title.SuspendLayout();
             panel_Info.SuspendLayout();
             panel_ShootEnemy.SuspendLayout();
@@ -73,6 +77,26 @@
             label_Host.TabIndex = 0;
             label_Host.Text = "H O S T";
             label_Host.TextAlign = ContentAlignment.MiddleCenter;
+            // 
+            // playerHitsLabel
+            // 
+            playerHitsLabel.AutoSize = true;
+            playerHitsLabel.Font = new Font("Calibri", 12F, FontStyle.Bold, GraphicsUnit.Point);
+            playerHitsLabel.Location = new Point(5, 5);
+            playerHitsLabel.Name = "playerHitsLabel";
+            playerHitsLabel.Size = new Size(135, 24);
+            playerHitsLabel.TabIndex = 2;
+            playerHitsLabel.Text = "Player Hits Left: 0";
+            // 
+            // opponentHitsLabel
+            // 
+            opponentHitsLabel.AutoSize = true;
+            opponentHitsLabel.Font = new Font("Calibri", 12F, FontStyle.Bold, GraphicsUnit.Point);
+            opponentHitsLabel.Location = new Point(5, 5);
+            opponentHitsLabel.Name = "opponentHitsLabel";
+            opponentHitsLabel.Size = new Size(170, 24);
+            opponentHitsLabel.TabIndex = 3;
+            opponentHitsLabel.Text = "Opponent Hits Left: 0";
             // 
             // panel_Info
             // 
@@ -174,6 +198,7 @@
             // panel_Host
             // 
             panel_Host.BackColor = Color.LightSkyBlue;
+            panel_Host.Controls.Add(playerHitsLabel);
             panel_Host.Dock = DockStyle.Left;
             panel_Host.Font = new Font("Calibri", 9.75F);
             panel_Host.Location = new Point(0, 86);
@@ -197,6 +222,7 @@
             // panel_Enemy
             // 
             panel_Enemy.BackColor = SystemColors.Info;
+            panel_Enemy.Controls.Add(opponentHitsLabel);
             panel_Enemy.Dock = DockStyle.Fill;
             panel_Enemy.Enabled = false;
             panel_Enemy.Font = new Font("Calibri", 9.75F);

@@ -17,6 +17,8 @@ namespace Vsite.Oom.Battleship.Game
         private SquareEliminator squareEliminator;
         private List<Button> playerHitButtons = new List<Button>();
         private List<int> shipsToShoot;
+        private int playerHitCounter;
+        private int opponentHitCounter;
 
         private const int gridRow = 10;
         private const int gridColumn = 10;
@@ -158,6 +160,10 @@ namespace Vsite.Oom.Battleship.Game
                 shipsToShoot = new List<int>(ShipLengths);
                 squareEliminator = new SquareEliminator();
 
+                playerHitCounter = ShipLengths.Sum();
+                opponentHitCounter = ShipLengths.Sum();
+                UpdateHitCounters();
+
                 try
                 {
                     playerFleet = CreateFleet(gridRow, gridColumn, ShipLengths);
@@ -270,6 +276,8 @@ namespace Vsite.Oom.Battleship.Game
                 case HitResult.Hit:
                     hitButton.BackColor = Color.Red;
                     hitButtonInfo.state = HitResult.Hit;
+                    opponentHitCounter--; // Broji samo protivnikove pogodke
+                    UpdateHitCounters();
                     break;
 
                 case HitResult.Sunken:
@@ -293,12 +301,14 @@ namespace Vsite.Oom.Battleship.Game
                     }
 
                     shipsToShoot.Remove(opponentFleet.Ships.First(s => s.Squares.Any(sq => sq.Row == lastTarget.Row && sq.Column == lastTarget.Column)).Squares.Count());
+                    opponentHitCounter--;
+                    UpdateHitCounters();
                     break;
             }
 
             hitButton.Tag = hitButtonInfo;
 
-            if (!shipsToShoot.Any())
+            if (opponentHitCounter <= 0)
             {
                 MessageBox.Show("You won the game!", "WINNER !!!", MessageBoxButtons.OK);
                 ResetBattleFields();
@@ -342,7 +352,7 @@ namespace Vsite.Oom.Battleship.Game
             }
 
             var hitResult = playerFleet.Hit(target.Row, target.Column);
-            opponentGunnery.ProcessHitResult(hitResult); // Ensure this line is here
+            opponentGunnery.ProcessHitResult(hitResult);
 
             var hitButton = panel_Host.Controls.OfType<Button>().FirstOrDefault(b =>
             {
@@ -361,6 +371,8 @@ namespace Vsite.Oom.Battleship.Game
                 case HitResult.Hit:
                     hitButton.BackColor = Color.Red;
                     buttonInfo.state = HitResult.Hit;
+                    playerHitCounter--;
+                    UpdateHitCounters();
                     playerHitButtons.Add(hitButton);
                     break;
 
@@ -374,12 +386,14 @@ namespace Vsite.Oom.Battleship.Game
                     }
 
                     playerHitButtons.Clear();
+                    playerHitCounter--;
+                    UpdateHitCounters();
                     break;
             }
 
             hitButton.Tag = buttonInfo;
 
-            if (!playerFleet.Ships.SelectMany(s => s.Squares).Any(sq => sq.SquareState == SquareState.Intact))
+            if (playerHitCounter <= 0)
             {
                 MessageBox.Show("Sorry, you lost the game!", "LOSER !!!", MessageBoxButtons.OK);
                 ResetBattleFields();
@@ -389,6 +403,13 @@ namespace Vsite.Oom.Battleship.Game
             HostIsShooting();
         }
 
+        private void UpdateHitCounters()
+        {
+            playerHitsLabel.Text = $"Opponent Hits Left: {playerHitCounter}";
+            opponentHitsLabel.Text = $"Player Hits Left: {opponentHitCounter}";
+        }
+
+        #region // Helper Class
         private class ButtonInfo
         {
             public int row;
@@ -402,5 +423,6 @@ namespace Vsite.Oom.Battleship.Game
                 this.state = null;
             }
         }
+        #endregion
     }
 }
