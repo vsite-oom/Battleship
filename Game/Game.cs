@@ -9,7 +9,7 @@ namespace Vsite.Oom.Battleship.Game
 {
     public partial class MainForm : Form
     {
-        private List<int> ShipLengths = new List<int> { 5, 4, 4, 3, 3, 2, 2, 2, 2 };
+        private List<int> ShipLengths = new List<int> { 5, 4, 4, 3, 3, 3, 2, 2, 2, 2 };
         private Fleet playerFleet;
         private Fleet opponentFleet;
         private Gunnery playerGunnery;
