@@ -64,7 +64,7 @@
             button_StartStop.TabIndex = 56;
             button_StartStop.TabStop = false;
             button_StartStop.Tag = "0";
-            button_StartStop.Text = "Start";
+            button_StartStop.Text = "IGRA";
             button_StartStop.UseVisualStyleBackColor = false;
             button_StartStop.Click += button_StartStop_Click;
             // 
