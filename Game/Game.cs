@@ -89,20 +89,36 @@ namespace Vsite.Oom.Battleship.Game
             button_StartStop.Text = "Start";
             button_StartStop.ForeColor = Color.ForestGreen;
 
+            // Clear player fleet, opponent fleet, and other variables
+            playerFleet = null;
+            opponentFleet = null;
+            opponentGunnery = null;
+            squareEliminator = null;
+            playerHitButtons.Clear();
+            shipsToShoot = null;
+            playerHitCounter = 0;
+            opponentHitCounter = 0;
+
+            // Reset player and opponent grid buttons
             foreach (Button button in panel_Host.Controls.OfType<Button>())
             {
-                button.Tag = null;
+
                 button.BackColor = Color.White;
                 button.Text = "";
+                button.Enabled = false; // Disable the host buttons initially
             }
 
             foreach (Button button in panel_Enemy.Controls.OfType<Button>())
             {
-                button.Tag = null;
+
                 button.BackColor = Color.White;
-                button.Enabled = true;
                 button.Text = "";
+                button.Enabled = true; // Enable the enemy buttons
             }
+
+            // Update hit counters
+            playerHitsLabel.Text = "Obrambeni bodovi: 0";
+            opponentHitsLabel.Text = "napadački bodovi: 0";
         }
 
         private void button_StartStop_Click(object sender, EventArgs e)
@@ -273,7 +289,7 @@ namespace Vsite.Oom.Battleship.Game
 
             if (opponentHitCounter <= 0)
             {
-                MessageBox.Show("You won the game!", "WINNER !!!", MessageBoxButtons.OK);
+                MessageBox.Show("Igra je gotova", "Pobjeda", MessageBoxButtons.OK);
                 ResetBattleFields();
                 return;
             }
