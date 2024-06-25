@@ -1,4 +1,9 @@
-﻿using Vsite.Oom.Battleship.Model;
+﻿using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Linq;
+using System.Windows.Forms;
+using Vsite.Oom.Battleship.Model;
 
 namespace Vsite.Oom.Battleship.Game
 {
@@ -7,9 +12,9 @@ namespace Vsite.Oom.Battleship.Game
         private List<int> ShipLengths = new List<int> { 5, 4, 4, 3, 3, 3, 2, 2, 2, 2 };
         private Fleet playerFleet;
         private Fleet opponentFleet;
-        private Gunnery opponentGunnery;
+        private Gunnery shipGunnery;
         private SquareEliminator squareEliminator;
-        private List<Button> playerHitButtons = new List<Button>();
+        private List<Button> hitSquares = new List<Button>();
         private List<int> shipsToShoot;
         private int playerHitCounter;
         private int opponentHitCounter;
@@ -22,8 +27,8 @@ namespace Vsite.Oom.Battleship.Game
             InitializeComponent();
 
             var (squareSize, startLocationX, startLocationY) = CalculateSquareSize();
-            InitializeBattleField("Igrač", panel_Host, squareSize, startLocationX, startLocationY);
-            InitializeBattleField("Protivnik", panel_Enemy, squareSize, startLocationX, startLocationY);
+            InitializeBattleField("Igrač", panel_Player, squareSize, startLocationX, startLocationY);
+            InitializeBattleField("Protivnik", panel_Opponent, squareSize, startLocationX, startLocationY);
         }
 
         private (int, int, int) CalculateSquareSize()
@@ -31,10 +36,10 @@ namespace Vsite.Oom.Battleship.Game
             int startLocationX = 5;
             int startLocationY = 5;
 
-            var optimalSquare = panel_Host.Size.Width;
-            if (optimalSquare > panel_Host.Size.Height)
+            var optimalSquare = panel_Player.Size.Width;
+            if (optimalSquare > panel_Player.Size.Height)
             {
-                optimalSquare = panel_Host.Size.Height;
+                optimalSquare = panel_Player.Size.Height;
             }
 
             int squareSize = (int)((optimalSquare - 2 * startLocationX - 18) / gridColumn);
@@ -85,14 +90,14 @@ namespace Vsite.Oom.Battleship.Game
 
             playerFleet = null;
             opponentFleet = null;
-            opponentGunnery = null;
+            shipGunnery = null;
             squareEliminator = null;
-            playerHitButtons.Clear();
+            hitSquares.Clear();
             shipsToShoot = null;
             playerHitCounter = 0;
             opponentHitCounter = 0;
 
-            foreach (Button button in panel_Host.Controls.OfType<Button>())
+            foreach (Button button in panel_Player.Controls.OfType<Button>())
             {
 
                 button.BackColor = Color.White;
@@ -100,7 +105,7 @@ namespace Vsite.Oom.Battleship.Game
                 button.Enabled = false;
             }
 
-            foreach (Button button in panel_Enemy.Controls.OfType<Button>())
+            foreach (Button button in panel_Opponent.Controls.OfType<Button>())
             {
 
                 button.BackColor = Color.White;
@@ -131,14 +136,14 @@ namespace Vsite.Oom.Battleship.Game
                 try
                 {
                     playerFleet = CreateFleet(gridRow, gridColumn, ShipLengths);
-                    PlaceShipsOnGrid(playerFleet, panel_Host);
+                    PlaceShipsOnGrid(playerFleet, panel_Player);
 
                     opponentFleet = CreateFleet(gridRow, gridColumn, ShipLengths);
-                    PlaceShipsOnGrid(opponentFleet, panel_Enemy, hideShips: true);
+                    PlaceShipsOnGrid(opponentFleet, panel_Opponent, hideShips: true);
 
-                    opponentGunnery = new Gunnery(gridRow, gridColumn, ShipLengths);
+                    shipGunnery = new Gunnery(gridRow, gridColumn, ShipLengths);
 
-                    HostIsShooting();
+                    PlayerIsShooting();
                 }
                 catch (Exception ex)
                 {
@@ -205,10 +210,9 @@ namespace Vsite.Oom.Battleship.Game
             }
         }
 
-        private void HostIsShooting()
+        private void PlayerIsShooting()
         {
-            panel_Enemy.Enabled = true;
-
+            panel_Opponent.Enabled = true;
         }
 
         private void GridButton_Click(object sender, EventArgs e)
@@ -237,7 +241,7 @@ namespace Vsite.Oom.Battleship.Game
                     var sunkenShip = opponentFleet.Ships.First(s => s.Squares.Any(sq => sq.Row == lastTarget.Row && sq.Column == lastTarget.Column));
                     foreach (var sq in sunkenShip.Squares)
                     {
-                        var button = panel_Enemy.Controls.OfType<Button>().FirstOrDefault(b =>
+                        var button = panel_Opponent.Controls.OfType<Button>().FirstOrDefault(b =>
                         {
                             var position = ((int column, int row))b.Tag;
                             return position.row == sq.Row && position.column == sq.Column;
@@ -253,7 +257,7 @@ namespace Vsite.Oom.Battleship.Game
                     var toEliminate = squareEliminator.ToEliminate(sunkenShip.Squares, gridRow, gridColumn);
                     foreach (var sq in toEliminate)
                     {
-                        var button = panel_Enemy.Controls.OfType<Button>().FirstOrDefault(b =>
+                        var button = panel_Opponent.Controls.OfType<Button>().FirstOrDefault(b =>
                         {
                             var position = ((int column, int row))b.Tag;
                             return position.row == sq.Row && position.column == sq.Column;
@@ -279,23 +283,22 @@ namespace Vsite.Oom.Battleship.Game
                 return;
             }
 
-            EnemyIsShooting();
+            OpponentIsShooting();
         }
 
-        private void EnemyIsShooting()
+        private void OpponentIsShooting()
         {
-            panel_Enemy.Enabled = false;
+            panel_Opponent.Enabled = false;
 
             System.Threading.Thread.Sleep(100);
             Refresh();
             System.Threading.Thread.Sleep(100);
             Refresh();
-
 
             Square target;
             try
             {
-                target = opponentGunnery.Next();
+                target = shipGunnery.Next();
             }
             catch (InvalidOperationException)
             {
@@ -304,9 +307,9 @@ namespace Vsite.Oom.Battleship.Game
             }
 
             var hitResult = playerFleet.Hit(target.Row, target.Column);
-            opponentGunnery.ProcessHitResult(hitResult);
+            shipGunnery.ProcessHitResult(hitResult);
 
-            var hitButton = panel_Host.Controls.OfType<Button>().FirstOrDefault(b =>
+            var hitButton = panel_Player.Controls.OfType<Button>().FirstOrDefault(b =>
             {
                 var position = ((int column, int row))b.Tag;
                 return position.row == target.Row && position.column == target.Column;
@@ -324,18 +327,18 @@ namespace Vsite.Oom.Battleship.Game
                     hitButton.BackColor = Color.Red;
                     playerHitCounter--;
                     UpdateHitCounters();
-                    playerHitButtons.Add(hitButton);
+                    hitSquares.Add(hitButton);
                     break;
 
                 case HitResult.Sunken:
                     hitButton.BackColor = Color.Black;
 
-                    foreach (var bt in playerHitButtons)
+                    foreach (var bt in hitSquares)
                     {
                         bt.BackColor = Color.Black;
                     }
 
-                    playerHitButtons.Clear();
+                    hitSquares.Clear();
                     playerHitCounter--;
                     UpdateHitCounters();
 
@@ -343,7 +346,7 @@ namespace Vsite.Oom.Battleship.Game
                     var toEliminate = squareEliminator.ToEliminate(sunkenShip.Squares, gridRow, gridColumn);
                     foreach (var sq in toEliminate)
                     {
-                        var button = panel_Host.Controls.OfType<Button>().FirstOrDefault(b =>
+                        var button = panel_Player.Controls.OfType<Button>().FirstOrDefault(b =>
                         {
                             var position = ((int column, int row))b.Tag;
                             return position.row == sq.Row && position.column == sq.Column;
@@ -365,7 +368,7 @@ namespace Vsite.Oom.Battleship.Game
                 return;
             }
 
-            HostIsShooting();
+            PlayerIsShooting();
         }
 
         private void UpdateHitCounters()

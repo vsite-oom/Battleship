@@ -29,9 +29,9 @@
             panel_ShootEnemy = new Panel();
             playerHitsLabel = new Label();
             panel_Control = new Panel();
-            panel_Host = new Panel();
+            panel_Player = new Panel();
             panel_Split = new Panel();
-            panel_Enemy = new Panel();
+            panel_Opponent = new Panel();
             panel_Title.SuspendLayout();
             panel_Info.SuspendLayout();
             panel_ShootEnemy.SuspendLayout();
@@ -160,16 +160,16 @@
             panel_Control.Size = new Size(887, 60);
             panel_Control.TabIndex = 2;
             // 
-            // panel_Host
+            // panel_Player
             // 
-            panel_Host.BackColor = Color.Blue;
-            panel_Host.Dock = DockStyle.Left;
-            panel_Host.Font = new Font("Calibri", 9.75F);
-            panel_Host.Location = new Point(0, 86);
-            panel_Host.Margin = new Padding(3, 4, 3, 4);
-            panel_Host.Name = "panel_Host";
-            panel_Host.Size = new Size(438, 482);
-            panel_Host.TabIndex = 3;
+            panel_Player.BackColor = Color.Blue;
+            panel_Player.Dock = DockStyle.Left;
+            panel_Player.Font = new Font("Calibri", 9.75F);
+            panel_Player.Location = new Point(0, 86);
+            panel_Player.Margin = new Padding(3, 4, 3, 4);
+            panel_Player.Name = "panel_Player";
+            panel_Player.Size = new Size(438, 482);
+            panel_Player.TabIndex = 3;
             // 
             // panel_Split
             // 
@@ -182,26 +182,26 @@
             panel_Split.Size = new Size(11, 482);
             panel_Split.TabIndex = 4;
             // 
-            // panel_Enemy
+            // panel_Opponent
             // 
-            panel_Enemy.BackColor = Color.Crimson;
-            panel_Enemy.Dock = DockStyle.Fill;
-            panel_Enemy.Enabled = false;
-            panel_Enemy.Font = new Font("Calibri", 9.75F);
-            panel_Enemy.Location = new Point(449, 86);
-            panel_Enemy.Margin = new Padding(3, 4, 3, 4);
-            panel_Enemy.Name = "panel_Enemy";
-            panel_Enemy.Size = new Size(438, 482);
-            panel_Enemy.TabIndex = 5;
+            panel_Opponent.BackColor = Color.Crimson;
+            panel_Opponent.Dock = DockStyle.Fill;
+            panel_Opponent.Enabled = false;
+            panel_Opponent.Font = new Font("Calibri", 9.75F);
+            panel_Opponent.Location = new Point(449, 86);
+            panel_Opponent.Margin = new Padding(3, 4, 3, 4);
+            panel_Opponent.Name = "panel_Opponent";
+            panel_Opponent.Size = new Size(438, 482);
+            panel_Opponent.TabIndex = 5;
             // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(887, 628);
-            Controls.Add(panel_Enemy);
+            Controls.Add(panel_Opponent);
             Controls.Add(panel_Split);
-            Controls.Add(panel_Host);
+            Controls.Add(panel_Player);
             Controls.Add(panel_Control);
             Controls.Add(panel_Info);
             Controls.Add(panel_Title);
@@ -228,8 +228,8 @@
         private Panel panel_ShootEnemy;
         private Panel panel_Control;
         private Button button_StartStop;
-        private Panel panel_Host;
+        private Panel panel_Player;
         private Panel panel_Split;
-        private Panel panel_Enemy;
+        private Panel panel_Opponent;
     }
 }
