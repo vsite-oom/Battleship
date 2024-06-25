@@ -61,7 +61,7 @@ namespace Vsite.Oom.Battleship.Game
                 var label = new Label
                 {
                     Text = columns[col].ToString(),
-                    Font = new Font("Tahoma", 10, FontStyle.Bold),
+                    Font = new Font("Tahoma", 9, FontStyle.Bold),
                     Size = new Size(squareSize, squareSize),
                     Location = new Point(startLocationX + 5 + col * squareSize + 2, startLocationY - squareSize),
                     TextAlign = ContentAlignment.MiddleCenter,
@@ -76,9 +76,9 @@ namespace Vsite.Oom.Battleship.Game
                 var label = new Label
                 {
                     Text = (row + 1).ToString(),
-                    Font = new Font("Tahoma", 10, FontStyle.Bold),
+                    Font = new Font("Tahoma", 9, FontStyle.Bold),
                     Size = new Size(squareSize, squareSize),
-                    Location = new Point(startLocationX - squareSize, startLocationY + 5 + row * squareSize + 2),
+                    Location = new Point(startLocationX - (int)(0.8 * squareSize), startLocationY + 5 + row * squareSize + 2),  // Pomičemo brojeve malo ulijevo
                     TextAlign = ContentAlignment.MiddleCenter,
                     ForeColor = Color.Black,
                     BackColor = backgroundColor
@@ -91,6 +91,7 @@ namespace Vsite.Oom.Battleship.Game
                 }
             }
         }
+
 
         private Button InitializeSquareButton(string fieldName, int row, int column, int size, int position_X, int position_Y)
         {
