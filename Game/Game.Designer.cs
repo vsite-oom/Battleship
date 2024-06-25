@@ -57,10 +57,10 @@
             button_StartStop.BackgroundImageLayout = ImageLayout.Stretch;
             button_StartStop.Font = new Font("Calibri", 14.25F, FontStyle.Bold);
             button_StartStop.ForeColor = Color.ForestGreen;
-            button_StartStop.Location = new Point(464, 3);
+            button_StartStop.Location = new Point(453, 6);
             button_StartStop.Margin = new Padding(2, 4, 2, 4);
             button_StartStop.Name = "button_StartStop";
-            button_StartStop.Size = new Size(171, 54);
+            button_StartStop.Size = new Size(200, 54);
             button_StartStop.TabIndex = 56;
             button_StartStop.TabStop = false;
             button_StartStop.Tag = "0";
@@ -166,7 +166,7 @@
             // 
             // panel_Host
             // 
-            panel_Host.BackColor = Color.LightSkyBlue;
+            panel_Host.BackColor = Color.Blue;
             panel_Host.Dock = DockStyle.Left;
             panel_Host.Font = new Font("Calibri", 9.75F);
             panel_Host.Location = new Point(0, 108);
@@ -188,7 +188,7 @@
             // 
             // panel_Enemy
             // 
-            panel_Enemy.BackColor = SystemColors.Info;
+            panel_Enemy.BackColor = Color.Crimson;
             panel_Enemy.Dock = DockStyle.Fill;
             panel_Enemy.Enabled = false;
             panel_Enemy.Font = new Font("Calibri", 9.75F);
