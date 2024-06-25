@@ -334,6 +334,8 @@ namespace Vsite.Oom.Battleship.Game
 
             System.Threading.Thread.Sleep(100);
             Refresh();
+            System.Threading.Thread.Sleep(100);
+            Refresh();
 
             Square target;
             try
