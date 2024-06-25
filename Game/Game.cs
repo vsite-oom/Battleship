@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Windows.Forms;
-using Vsite.Oom.Battleship.Model;
+﻿using Vsite.Oom.Battleship.Model;
 
 namespace Vsite.Oom.Battleship.Game
 {
@@ -34,8 +29,8 @@ namespace Vsite.Oom.Battleship.Game
 
         private (int, int, int) CalculateSquareSize()
         {
-            int startLocationX = 27; 
-            int startLocationY = 27; 
+            int startLocationX = 25; 
+            int startLocationY = 25; 
 
             var optimalSquare = panel_Player.Size.Width;
             if (optimalSquare > panel_Player.Size.Height)
@@ -56,7 +51,6 @@ namespace Vsite.Oom.Battleship.Game
         {
             panel.BackColor = backgroundColor;
 
-            // Add column labels
             for (var col = 0; col < gridColumn; ++col)
             {
                 var label = new Label
@@ -72,7 +66,6 @@ namespace Vsite.Oom.Battleship.Game
                 panel.Controls.Add(label);
             }
 
-            // Add row labels and buttons
             for (var row = 0; row < gridRow; ++row)
             {
                 var label = new Label
@@ -101,7 +94,6 @@ namespace Vsite.Oom.Battleship.Game
                 BackColor = Color.White,
                 ForeColor = Color.ForestGreen,
                 Location = new Point(position_X, position_Y),
-                Margin = new Padding(2),
                 Name = $"button_Battle_{column}_{row}",
                 Size = new Size(size, size),
                 Tag = (column, row),
@@ -308,7 +300,7 @@ namespace Vsite.Oom.Battleship.Game
 
             if (opponentHitCounter <= 0)
             {
-                MessageBox.Show("Igra je gotova", "Pobjeda", MessageBoxButtons.OK);
+                MessageBox.Show("Pobjeda", "Igra je gotova", MessageBoxButtons.OK); 
                 ResetBattleFields();
                 return;
             }
@@ -393,7 +385,7 @@ namespace Vsite.Oom.Battleship.Game
 
             if (playerHitCounter <= 0)
             {
-                MessageBox.Show("Igra je gotova", "Poraz", MessageBoxButtons.OK);
+                MessageBox.Show("Poraz", "Igra je gotova", MessageBoxButtons.OK); 
                 ResetBattleFields();
                 return;
             }
