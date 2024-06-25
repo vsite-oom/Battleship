@@ -45,9 +45,9 @@
             panel_Title.Dock = DockStyle.Top;
             panel_Title.Font = new Font("Calibri", 9.75F);
             panel_Title.Location = new Point(0, 0);
-            panel_Title.Margin = new Padding(4, 5, 4, 5);
+            panel_Title.Margin = new Padding(3, 4, 3, 4);
             panel_Title.Name = "panel_Title";
-            panel_Title.Size = new Size(1109, 64);
+            panel_Title.Size = new Size(887, 51);
             panel_Title.TabIndex = 0;
             // 
             // button_StartStop
@@ -57,10 +57,10 @@
             button_StartStop.BackgroundImageLayout = ImageLayout.Stretch;
             button_StartStop.Font = new Font("Calibri", 14.25F, FontStyle.Bold);
             button_StartStop.ForeColor = Color.ForestGreen;
-            button_StartStop.Location = new Point(453, 6);
-            button_StartStop.Margin = new Padding(2, 4, 2, 4);
+            button_StartStop.Location = new Point(362, 5);
+            button_StartStop.Margin = new Padding(2, 3, 2, 3);
             button_StartStop.Name = "button_StartStop";
-            button_StartStop.Size = new Size(200, 54);
+            button_StartStop.Size = new Size(160, 43);
             button_StartStop.TabIndex = 56;
             button_StartStop.TabStop = false;
             button_StartStop.Tag = "0";
@@ -73,11 +73,10 @@
             label_Enemy.AutoSize = true;
             label_Enemy.Dock = DockStyle.Fill;
             label_Enemy.Font = new Font("Calibri", 14.25F, FontStyle.Bold);
-            label_Enemy.Location = new Point(554, 0);
-            label_Enemy.Margin = new Padding(4, 0, 4, 0);
-            label_Enemy.MinimumSize = new Size(554, 60);
+            label_Enemy.Location = new Point(443, 0);
+            label_Enemy.MinimumSize = new Size(443, 48);
             label_Enemy.Name = "label_Enemy";
-            label_Enemy.Size = new Size(554, 60);
+            label_Enemy.Size = new Size(443, 48);
             label_Enemy.TabIndex = 1;
             label_Enemy.Text = "Napad";
             label_Enemy.TextAlign = ContentAlignment.MiddleCenter;
@@ -88,10 +87,9 @@
             label_Host.Dock = DockStyle.Left;
             label_Host.Font = new Font("Calibri", 14.25F, FontStyle.Bold);
             label_Host.Location = new Point(0, 0);
-            label_Host.Margin = new Padding(4, 0, 4, 0);
-            label_Host.MinimumSize = new Size(554, 60);
+            label_Host.MinimumSize = new Size(443, 48);
             label_Host.Name = "label_Host";
-            label_Host.Size = new Size(554, 60);
+            label_Host.Size = new Size(443, 48);
             label_Host.TabIndex = 0;
             label_Host.Text = "Baza";
             label_Host.TextAlign = ContentAlignment.MiddleCenter;
@@ -104,20 +102,19 @@
             panel_Info.Controls.Add(panel_ShootEnemy);
             panel_Info.Dock = DockStyle.Top;
             panel_Info.Font = new Font("Calibri", 9.75F);
-            panel_Info.Location = new Point(0, 64);
-            panel_Info.Margin = new Padding(4, 5, 4, 5);
+            panel_Info.Location = new Point(0, 51);
+            panel_Info.Margin = new Padding(3, 4, 3, 4);
             panel_Info.Name = "panel_Info";
-            panel_Info.Size = new Size(1109, 44);
+            panel_Info.Size = new Size(887, 35);
             panel_Info.TabIndex = 1;
             // 
             // opponentHitsLabel
             // 
             opponentHitsLabel.AutoSize = true;
             opponentHitsLabel.Font = new Font("Calibri", 12F, FontStyle.Bold);
-            opponentHitsLabel.Location = new Point(698, 5);
-            opponentHitsLabel.Margin = new Padding(4, 0, 4, 0);
+            opponentHitsLabel.Location = new Point(558, 4);
             opponentHitsLabel.Name = "opponentHitsLabel";
-            opponentHitsLabel.Size = new Size(0, 29);
+            opponentHitsLabel.Size = new Size(0, 24);
             opponentHitsLabel.TabIndex = 3;
             opponentHitsLabel.TextAlign = ContentAlignment.MiddleCenter;
             // 
@@ -126,10 +123,10 @@
             panel1.BackColor = SystemColors.ControlLightLight;
             panel1.Dock = DockStyle.Left;
             panel1.Font = new Font("Calibri", 9.75F);
-            panel1.Location = new Point(548, 0);
-            panel1.Margin = new Padding(4, 5, 4, 5);
+            panel1.Location = new Point(438, 0);
+            panel1.Margin = new Padding(3, 4, 3, 4);
             panel1.Name = "panel1";
-            panel1.Size = new Size(14, 44);
+            panel1.Size = new Size(11, 35);
             panel1.TabIndex = 5;
             // 
             // panel_ShootEnemy
@@ -138,19 +135,18 @@
             panel_ShootEnemy.Controls.Add(playerHitsLabel);
             panel_ShootEnemy.Dock = DockStyle.Left;
             panel_ShootEnemy.Location = new Point(0, 0);
-            panel_ShootEnemy.Margin = new Padding(4, 5, 4, 5);
+            panel_ShootEnemy.Margin = new Padding(3, 4, 3, 4);
             panel_ShootEnemy.Name = "panel_ShootEnemy";
-            panel_ShootEnemy.Size = new Size(548, 44);
+            panel_ShootEnemy.Size = new Size(438, 35);
             panel_ShootEnemy.TabIndex = 0;
             // 
             // playerHitsLabel
             // 
             playerHitsLabel.AutoSize = true;
             playerHitsLabel.Font = new Font("Calibri", 12F, FontStyle.Bold);
-            playerHitsLabel.Location = new Point(153, 5);
-            playerHitsLabel.Margin = new Padding(4, 0, 4, 0);
+            playerHitsLabel.Location = new Point(122, 4);
             playerHitsLabel.Name = "playerHitsLabel";
-            playerHitsLabel.Size = new Size(0, 29);
+            playerHitsLabel.Size = new Size(0, 24);
             playerHitsLabel.TabIndex = 2;
             playerHitsLabel.TextAlign = ContentAlignment.MiddleCenter;
             // 
@@ -158,10 +154,10 @@
             // 
             panel_Control.Dock = DockStyle.Bottom;
             panel_Control.Font = new Font("Calibri", 9.75F);
-            panel_Control.Location = new Point(0, 710);
-            panel_Control.Margin = new Padding(4, 5, 4, 5);
+            panel_Control.Location = new Point(0, 568);
+            panel_Control.Margin = new Padding(3, 4, 3, 4);
             panel_Control.Name = "panel_Control";
-            panel_Control.Size = new Size(1109, 75);
+            panel_Control.Size = new Size(887, 60);
             panel_Control.TabIndex = 2;
             // 
             // panel_Host
@@ -169,10 +165,10 @@
             panel_Host.BackColor = Color.Blue;
             panel_Host.Dock = DockStyle.Left;
             panel_Host.Font = new Font("Calibri", 9.75F);
-            panel_Host.Location = new Point(0, 108);
-            panel_Host.Margin = new Padding(4, 5, 4, 5);
+            panel_Host.Location = new Point(0, 86);
+            panel_Host.Margin = new Padding(3, 4, 3, 4);
             panel_Host.Name = "panel_Host";
-            panel_Host.Size = new Size(548, 602);
+            panel_Host.Size = new Size(438, 482);
             panel_Host.TabIndex = 3;
             // 
             // panel_Split
@@ -180,10 +176,10 @@
             panel_Split.BackColor = SystemColors.ControlLightLight;
             panel_Split.Dock = DockStyle.Left;
             panel_Split.Font = new Font("Calibri", 9.75F);
-            panel_Split.Location = new Point(548, 108);
-            panel_Split.Margin = new Padding(4, 5, 4, 5);
+            panel_Split.Location = new Point(438, 86);
+            panel_Split.Margin = new Padding(3, 4, 3, 4);
             panel_Split.Name = "panel_Split";
-            panel_Split.Size = new Size(14, 602);
+            panel_Split.Size = new Size(11, 482);
             panel_Split.TabIndex = 4;
             // 
             // panel_Enemy
@@ -192,17 +188,17 @@
             panel_Enemy.Dock = DockStyle.Fill;
             panel_Enemy.Enabled = false;
             panel_Enemy.Font = new Font("Calibri", 9.75F);
-            panel_Enemy.Location = new Point(562, 108);
-            panel_Enemy.Margin = new Padding(4, 5, 4, 5);
+            panel_Enemy.Location = new Point(449, 86);
+            panel_Enemy.Margin = new Padding(3, 4, 3, 4);
             panel_Enemy.Name = "panel_Enemy";
-            panel_Enemy.Size = new Size(547, 602);
+            panel_Enemy.Size = new Size(438, 482);
             panel_Enemy.TabIndex = 5;
             // 
             // MainForm
             // 
-            AutoScaleDimensions = new SizeF(10F, 25F);
+            AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1109, 785);
+            ClientSize = new Size(887, 628);
             Controls.Add(panel_Enemy);
             Controls.Add(panel_Split);
             Controls.Add(panel_Host);
@@ -210,7 +206,7 @@
             Controls.Add(panel_Info);
             Controls.Add(panel_Title);
             FormBorderStyle = FormBorderStyle.FixedSingle;
-            Margin = new Padding(4, 5, 4, 5);
+            Margin = new Padding(3, 4, 3, 4);
             Name = "MainForm";
             Text = "Battleship Game";
             panel_Title.ResumeLayout(false);

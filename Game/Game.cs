@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Windows.Forms;
-using Vsite.Oom.Battleship.Model;
+﻿using Vsite.Oom.Battleship.Model;
 
 namespace Vsite.Oom.Battleship.Game
 {
@@ -26,12 +21,12 @@ namespace Vsite.Oom.Battleship.Game
         {
             InitializeComponent();
 
-            var (buttonSize, startLocationX, startLocationY) = CalculateButtonSize();
-            InitializeBattleField("Host", panel_Host, buttonSize, startLocationX, startLocationY);
-            InitializeBattleField("Enemy", panel_Enemy, buttonSize, startLocationX, startLocationY);
+            var (squareSize, startLocationX, startLocationY) = CalculateSquareSize();
+            InitializeBattleField("Igrač", panel_Host, squareSize, startLocationX, startLocationY);
+            InitializeBattleField("Protivnik", panel_Enemy, squareSize, startLocationX, startLocationY);
         }
 
-        private (int, int, int) CalculateButtonSize()
+        private (int, int, int) CalculateSquareSize()
         {
             int startLocationX = 5;
             int startLocationY = 5;
@@ -42,32 +37,31 @@ namespace Vsite.Oom.Battleship.Game
                 optimalSquare = panel_Host.Size.Height;
             }
 
-            int buttonSize = (int)((optimalSquare - 2 * startLocationX - 18) / gridColumn);
-            if (buttonSize < 5)
+            int squareSize = (int)((optimalSquare - 2 * startLocationX - 18) / gridColumn);
+            if (squareSize < 5)
             {
-                buttonSize = 5;
+                squareSize = 5;
             }
 
-            return (buttonSize, startLocationX, startLocationY);
+            return (squareSize, startLocationX, startLocationY);
         }
 
-        private void InitializeBattleField(string fieldName, Panel panel, int buttonSize, int startLocationX, int startLocationY)
+        private void InitializeBattleField(string fieldName, Panel panel, int squareSize, int startLocationX, int startLocationY)
         {
             for (var row = 0; row < gridRow; ++row)
             {
                 for (var col = 0; col < gridColumn; ++col)
                 {
-                    panel.Controls.Add(CreateButton(fieldName, row, col, buttonSize, startLocationX + 5 + row * buttonSize + 2, startLocationY + col * buttonSize + 2));
+                    panel.Controls.Add(InitializeSquareButton(fieldName, row, col, squareSize, startLocationX + 5 + row * squareSize + 2, startLocationY + col * squareSize + 2));
                 }
             }
         }
 
-        private Button CreateButton(string fieldName, int row, int column, int size, int position_X, int position_Y)
+        private Button InitializeSquareButton(string fieldName, int row, int column, int size, int position_X, int position_Y)
         {
             var button = new Button
             {
                 BackColor = Color.White,
-                Font = new Font("Calibri", 8F, FontStyle.Regular, GraphicsUnit.Point),
                 ForeColor = Color.ForestGreen,
                 Location = new Point(position_X, position_Y),
                 Margin = new Padding(2),
@@ -77,7 +71,7 @@ namespace Vsite.Oom.Battleship.Game
                 Text = "",
                 UseVisualStyleBackColor = false,
                 BackgroundImageLayout = ImageLayout.Stretch,
-                Enabled = fieldName != "Host"
+                Enabled = fieldName != "Igrač"
             };
             button.Click += new EventHandler(GridButton_Click);
             return button;
@@ -86,10 +80,9 @@ namespace Vsite.Oom.Battleship.Game
         private void ResetBattleFields()
         {
             button_StartStop.Tag = 0;
-            button_StartStop.Text = "Start";
+            button_StartStop.Text = "IGRA";
             button_StartStop.ForeColor = Color.ForestGreen;
 
-            // Clear player fleet, opponent fleet, and other variables
             playerFleet = null;
             opponentFleet = null;
             opponentGunnery = null;
@@ -99,13 +92,12 @@ namespace Vsite.Oom.Battleship.Game
             playerHitCounter = 0;
             opponentHitCounter = 0;
 
-            // Reset player and opponent grid buttons
             foreach (Button button in panel_Host.Controls.OfType<Button>())
             {
 
                 button.BackColor = Color.White;
                 button.Text = "";
-                button.Enabled = false; // Disable the host buttons initially
+                button.Enabled = false;
             }
 
             foreach (Button button in panel_Enemy.Controls.OfType<Button>())
@@ -113,12 +105,11 @@ namespace Vsite.Oom.Battleship.Game
 
                 button.BackColor = Color.White;
                 button.Text = "";
-                button.Enabled = true; // Enable the enemy buttons
+                button.Enabled = true;
             }
 
-            // Update hit counters
-            playerHitsLabel.Text = "Obrambeni bodovi: 0";
-            opponentHitsLabel.Text = "napadački bodovi: 0";
+            playerHitsLabel.Text = "obrambeni bodovi: ";
+            opponentHitsLabel.Text = "napadački bodovi:";
         }
 
         private void button_StartStop_Click(object sender, EventArgs e)
@@ -127,7 +118,7 @@ namespace Vsite.Oom.Battleship.Game
             if (buttonTag == 0)
             {
                 button_StartStop.Tag = 1;
-                button_StartStop.Text = "Stop";
+                button_StartStop.Text = "Predaj";
                 button_StartStop.ForeColor = Color.Red;
 
                 shipsToShoot = new List<int>(ShipLengths);
@@ -151,13 +142,13 @@ namespace Vsite.Oom.Battleship.Game
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show($"Error creating fleet: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show($"Greška prilikom kreiranja flote: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     ResetBattleFields();
                 }
             }
             else
             {
-                DialogResult dialogResult = MessageBox.Show("Are you sure that you want to quit the game?", "In the middle of the war...", MessageBoxButtons.YesNo);
+                DialogResult dialogResult = MessageBox.Show("Da li želite predati igru?", "Prekid igre", MessageBoxButtons.YesNo);
                 if (dialogResult == DialogResult.No)
                 {
                     return;
@@ -179,7 +170,7 @@ namespace Vsite.Oom.Battleship.Game
                 var candidates = fleetGrid.GetAvailablePlacements(length);
                 if (!candidates.Any())
                 {
-                    throw new InvalidOperationException($"No available placements for ship length {length}");
+                    throw new InvalidOperationException($"Nema slobodnih polja za smještaj brodova {length}");
                 }
                 var selectedIndex = random.Next(candidates.Count());
                 var selected = candidates.ElementAt(selectedIndex);
@@ -218,12 +209,6 @@ namespace Vsite.Oom.Battleship.Game
         {
             panel_Enemy.Enabled = true;
 
-            Refresh();
-            System.Threading.Thread.Sleep(100);
-            Refresh();
-            System.Threading.Thread.Sleep(100);
-            Refresh();
-            System.Threading.Thread.Sleep(100);
         }
 
         private void GridButton_Click(object sender, EventArgs e)
@@ -300,11 +285,12 @@ namespace Vsite.Oom.Battleship.Game
         private void EnemyIsShooting()
         {
             panel_Enemy.Enabled = false;
+
             System.Threading.Thread.Sleep(100);
             Refresh();
             System.Threading.Thread.Sleep(100);
             Refresh();
-            System.Threading.Thread.Sleep(100);
+
 
             Square target;
             try
@@ -326,7 +312,7 @@ namespace Vsite.Oom.Battleship.Game
                 return position.row == target.Row && position.column == target.Column;
             });
 
-            if (hitButton == null) return; // Safety check
+            if (hitButton == null) return;
 
             switch (hitResult)
             {
@@ -353,7 +339,6 @@ namespace Vsite.Oom.Battleship.Game
                     playerHitCounter--;
                     UpdateHitCounters();
 
-                    // Eliminisanje okolnih polja
                     var sunkenShip = playerFleet.Ships.First(s => s.Squares.Any(sq => sq.Row == target.Row && sq.Column == target.Column));
                     var toEliminate = squareEliminator.ToEliminate(sunkenShip.Squares, gridRow, gridColumn);
                     foreach (var sq in toEliminate)
