@@ -1,4 +1,9 @@
 ﻿using Vsite.Oom.Battleship.Model;
+using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Linq;
+using System.Windows.Forms;
 
 namespace Vsite.Oom.Battleship.Game
 {
@@ -22,27 +27,32 @@ namespace Vsite.Oom.Battleship.Game
         {
             InitializeComponent();
 
-            var (squareSize, startLocationX, startLocationY) = CalculateSquareSize();
-            InitializeBattleField("Igrač", panel_Player, squareSize, startLocationX, startLocationY, Color.Blue);
-            InitializeBattleField("Protivnik", panel_Opponent, squareSize, startLocationX, startLocationY, Color.Red);
+            var (squareSizePlayer, startLocationXPlayer, startLocationYPlayer) = CalculateSquareSize(panel_Player);
+            InitializeBattleField("Igrač", panel_Player, squareSizePlayer, startLocationXPlayer, startLocationYPlayer, Color.Blue);
+
+            var (squareSizeOpponent, startLocationXOpponent, startLocationYOpponent) = CalculateSquareSize(panel_Opponent);
+            InitializeBattleField("Protivnik", panel_Opponent, squareSizeOpponent, startLocationXOpponent, startLocationYOpponent, Color.Red);
         }
 
-        private (int, int, int) CalculateSquareSize()
+        private (int, int, int) CalculateSquareSize(Panel panel)
         {
-            int startLocationX = 25; 
-            int startLocationY = 25; 
-
-            var optimalSquare = panel_Player.Size.Width;
-            if (optimalSquare > panel_Player.Size.Height)
+            int optimalSquare = panel.Size.Width;
+            if (optimalSquare > panel.Size.Height)
             {
-                optimalSquare = panel_Player.Size.Height;
+                optimalSquare = panel.Size.Height;
             }
 
-            int squareSize = (int)((optimalSquare - 2 * startLocationX - 18) / gridColumn);
+            int squareSize = (int)((optimalSquare - 50) / gridColumn);  
             if (squareSize < 5)
             {
                 squareSize = 5;
             }
+
+            int totalGridWidth = squareSize * gridColumn;
+            int totalGridHeight = squareSize * gridRow;
+
+            int startLocationX = (panel.Size.Width - totalGridWidth) / 2;
+            int startLocationY = (panel.Size.Height - totalGridHeight) / 2;
 
             return (squareSize, startLocationX, startLocationY);
         }
@@ -56,12 +66,12 @@ namespace Vsite.Oom.Battleship.Game
                 var label = new Label
                 {
                     Text = columns[col].ToString(),
-                    Font = new Font("Tahoma", 8, FontStyle.Bold),
+                    Font = new Font("Tahoma", 10, FontStyle.Bold),
                     Size = new Size(squareSize, squareSize),
                     Location = new Point(startLocationX + 5 + col * squareSize + 2, startLocationY - squareSize),
                     TextAlign = ContentAlignment.MiddleCenter,
-                    ForeColor = Color.Black, 
-                    BackColor = backgroundColor 
+                    ForeColor = Color.Black,
+                    BackColor = backgroundColor
                 };
                 panel.Controls.Add(label);
             }
@@ -71,7 +81,7 @@ namespace Vsite.Oom.Battleship.Game
                 var label = new Label
                 {
                     Text = (row + 1).ToString(),
-                    Font = new Font("Tahoma", 8, FontStyle.Bold),
+                    Font = new Font("Tahoma", 10, FontStyle.Bold),
                     Size = new Size(squareSize, squareSize),
                     Location = new Point(startLocationX - squareSize, startLocationY + 5 + row * squareSize + 2),
                     TextAlign = ContentAlignment.MiddleCenter,
@@ -145,7 +155,7 @@ namespace Vsite.Oom.Battleship.Game
             if (buttonTag == 0)
             {
                 button_StartStop.Tag = 1;
-                button_StartStop.Text = "Predaj";
+                button_StartStop.Text = "PREDAJ";
                 button_StartStop.ForeColor = Color.Red;
 
                 shipsToShoot = new List<int>(ShipLengths);
@@ -175,7 +185,7 @@ namespace Vsite.Oom.Battleship.Game
             }
             else
             {
-                DialogResult dialogResult = MessageBox.Show("Da li želite predati igru?", "Prekid igre", MessageBoxButtons.YesNo);
+                DialogResult dialogResult = MessageBox.Show("Predajete igru?", "Prekid igre", MessageBoxButtons.YesNo);
                 if (dialogResult == DialogResult.No)
                 {
                     return;
@@ -239,27 +249,34 @@ namespace Vsite.Oom.Battleship.Game
 
         private void GridButton_Click(object sender, EventArgs e)
         {
-            var hitButton = (Button)sender;
-            hitButton.Enabled = false;
+            // Provjera je li igra u tijeku
+            if (button_StartStop.Tag == null || Convert.ToInt32(button_StartStop.Tag) == 0)
+            {
+                MessageBox.Show("Morate izabrati novu igru", "Upozorenje", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
 
-            var (column, row) = ((int column, int row))hitButton.Tag;
+            var hitSquare = (Button)sender;
+            hitSquare.Enabled = false;
+
+            var (column, row) = ((int column, int row))hitSquare.Tag;
             var lastTarget = new Square(row, column);
 
             var hitResult = opponentFleet.Hit(lastTarget.Row, lastTarget.Column);
             switch (hitResult)
             {
                 case HitResult.Missed:
-                    hitButton.BackColor = Color.Blue;
+                    hitSquare.BackColor = Color.Blue;
                     break;
 
                 case HitResult.Hit:
-                    hitButton.BackColor = Color.Red;
+                    hitSquare.BackColor = Color.Red;
                     opponentHitCounter--;
                     UpdateHitCounters();
                     break;
 
                 case HitResult.Sunken:
-                    hitButton.BackColor = Color.Black;
+                    hitSquare.BackColor = Color.Black;
                     var sunkenShip = opponentFleet.Ships.First(s => s.Squares.Any(sq => sq.Row == lastTarget.Row && sq.Column == lastTarget.Column));
                     foreach (var sq in sunkenShip.Squares)
                     {
@@ -300,8 +317,11 @@ namespace Vsite.Oom.Battleship.Game
 
             if (opponentHitCounter <= 0)
             {
-                MessageBox.Show("Pobjeda", "Igra je gotova", MessageBoxButtons.OK); 
+                MessageBox.Show("POBJEDA", "Igra je gotova", MessageBoxButtons.OK);
                 ResetBattleFields();
+                button_StartStop.Tag = 0;
+                button_StartStop.Text = "IGRA";
+                button_StartStop.ForeColor = Color.ForestGreen;
                 return;
             }
 
@@ -314,8 +334,6 @@ namespace Vsite.Oom.Battleship.Game
 
             System.Threading.Thread.Sleep(100);
             Refresh();
-            System.Threading.Thread.Sleep(100);
-            Refresh();
 
             Square target;
             try
@@ -325,35 +343,38 @@ namespace Vsite.Oom.Battleship.Game
             catch (InvalidOperationException)
             {
                 ResetBattleFields();
+                button_StartStop.Tag = 0;
+                button_StartStop.Text = "IGRA";
+                button_StartStop.ForeColor = Color.ForestGreen;
                 return;
             }
 
             var hitResult = playerFleet.Hit(target.Row, target.Column);
             shipGunnery.ProcessHitResult(hitResult);
 
-            var hitButton = panel_Player.Controls.OfType<Button>().FirstOrDefault(b =>
+            var hitSquare = panel_Player.Controls.OfType<Button>().FirstOrDefault(b =>
             {
                 var position = ((int column, int row))b.Tag;
                 return position.row == target.Row && position.column == target.Column;
             });
 
-            if (hitButton == null) return;
+            if (hitSquare == null) return;
 
             switch (hitResult)
             {
                 case HitResult.Missed:
-                    hitButton.BackColor = Color.Blue;
+                    hitSquare.BackColor = Color.Blue;
                     break;
 
                 case HitResult.Hit:
-                    hitButton.BackColor = Color.Red;
+                    hitSquare.BackColor = Color.Red;
                     playerHitCounter--;
                     UpdateHitCounters();
-                    hitSquares.Add(hitButton);
+                    hitSquares.Add(hitSquare);
                     break;
 
                 case HitResult.Sunken:
-                    hitButton.BackColor = Color.Black;
+                    hitSquare.BackColor = Color.Black;
 
                     foreach (var bt in hitSquares)
                     {
@@ -385,8 +406,11 @@ namespace Vsite.Oom.Battleship.Game
 
             if (playerHitCounter <= 0)
             {
-                MessageBox.Show("Poraz", "Igra je gotova", MessageBoxButtons.OK); 
+                MessageBox.Show("PORAZ", "Igra je gotova", MessageBoxButtons.OK);
                 ResetBattleFields();
+                button_StartStop.Tag = 0;
+                button_StartStop.Text = "IGRA";
+                button_StartStop.ForeColor = Color.ForestGreen;
                 return;
             }
 
