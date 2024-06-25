@@ -55,12 +55,12 @@
             button_StartStop.Anchor = AnchorStyles.None;
             button_StartStop.BackColor = Color.White;
             button_StartStop.BackgroundImageLayout = ImageLayout.Stretch;
-            button_StartStop.Font = new Font("Calibri", 14.25F, FontStyle.Bold);
+            button_StartStop.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 238);
             button_StartStop.ForeColor = Color.ForestGreen;
-            button_StartStop.Location = new Point(362, 5);
+            button_StartStop.Location = new Point(363, 3);
             button_StartStop.Margin = new Padding(2, 3, 2, 3);
             button_StartStop.Name = "button_StartStop";
-            button_StartStop.Size = new Size(160, 43);
+            button_StartStop.Size = new Size(160, 41);
             button_StartStop.TabIndex = 56;
             button_StartStop.TabStop = false;
             button_StartStop.Tag = "0";
@@ -71,8 +71,10 @@
             // label_Enemy
             // 
             label_Enemy.AutoSize = true;
+            label_Enemy.BackColor = Color.LavenderBlush;
             label_Enemy.Dock = DockStyle.Fill;
-            label_Enemy.Font = new Font("Calibri", 14.25F, FontStyle.Bold);
+            label_Enemy.Font = new Font("Showcard Gothic", 16F, FontStyle.Bold);
+            label_Enemy.ForeColor = Color.Crimson;
             label_Enemy.Location = new Point(443, 0);
             label_Enemy.MinimumSize = new Size(443, 48);
             label_Enemy.Name = "label_Enemy";
@@ -84,8 +86,10 @@
             // label_Host
             // 
             label_Host.AutoSize = true;
+            label_Host.BackColor = Color.AliceBlue;
             label_Host.Dock = DockStyle.Left;
-            label_Host.Font = new Font("Calibri", 14.25F, FontStyle.Bold);
+            label_Host.Font = new Font("Showcard Gothic", 16F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label_Host.ForeColor = Color.Blue;
             label_Host.Location = new Point(0, 0);
             label_Host.MinimumSize = new Size(443, 48);
             label_Host.Name = "label_Host";
