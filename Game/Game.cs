@@ -313,15 +313,6 @@ namespace Vsite.Oom.Battleship.Game
             }
             catch (InvalidOperationException)
             {
-                // Ako nema dostupnih kvadrata, proverite da li su svi brodovi pogođeni
-                if (playerFleet.Ships.SelectMany(s => s.Squares).All(sq => sq.SquareState != SquareState.Intact))
-                {
-                    MessageBox.Show("Sorry, you lost the game! No available squares to target.", "Game Over", MessageBoxButtons.OK);
-                }
-                else
-                {
-                    MessageBox.Show("You won the game! Opponent has no available squares to target.", "Game Over", MessageBoxButtons.OK);
-                }
                 ResetBattleFields();
                 return;
             }
@@ -384,7 +375,7 @@ namespace Vsite.Oom.Battleship.Game
 
             if (playerHitCounter <= 0)
             {
-                MessageBox.Show("Sorry, you lost the game!", "LOSER !!!", MessageBoxButtons.OK);
+                MessageBox.Show("Igra je gotova", "Poraz", MessageBoxButtons.OK);
                 ResetBattleFields();
                 return;
             }
@@ -394,7 +385,7 @@ namespace Vsite.Oom.Battleship.Game
 
         private void UpdateHitCounters()
         {
-            playerHitsLabel.Text = $"Obrambeni bodovi: {playerHitCounter}";
+            playerHitsLabel.Text = $"obrambeni bodovi: {playerHitCounter}";
             opponentHitsLabel.Text = $"napadački bodovi: {opponentHitCounter}";
         }
     }
