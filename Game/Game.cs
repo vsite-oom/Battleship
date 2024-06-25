@@ -21,20 +21,21 @@ namespace Vsite.Oom.Battleship.Game
 
         private const int gridRow = 10;
         private const int gridColumn = 10;
+        private readonly char[] columns = "ABCDEFGHIJ".ToCharArray();
 
         public MainForm()
         {
             InitializeComponent();
 
             var (squareSize, startLocationX, startLocationY) = CalculateSquareSize();
-            InitializeBattleField("Igrač", panel_Player, squareSize, startLocationX, startLocationY);
-            InitializeBattleField("Protivnik", panel_Opponent, squareSize, startLocationX, startLocationY);
+            InitializeBattleField("Igrač", panel_Player, squareSize, startLocationX, startLocationY, Color.Blue);
+            InitializeBattleField("Protivnik", panel_Opponent, squareSize, startLocationX, startLocationY, Color.Red);
         }
 
         private (int, int, int) CalculateSquareSize()
         {
-            int startLocationX = 5;
-            int startLocationY = 5;
+            int startLocationX = 27; 
+            int startLocationY = 27; 
 
             var optimalSquare = panel_Player.Size.Width;
             if (optimalSquare > panel_Player.Size.Height)
@@ -51,13 +52,44 @@ namespace Vsite.Oom.Battleship.Game
             return (squareSize, startLocationX, startLocationY);
         }
 
-        private void InitializeBattleField(string fieldName, Panel panel, int squareSize, int startLocationX, int startLocationY)
+        private void InitializeBattleField(string fieldName, Panel panel, int squareSize, int startLocationX, int startLocationY, Color backgroundColor)
         {
+            panel.BackColor = backgroundColor;
+
+            // Add column labels
+            for (var col = 0; col < gridColumn; ++col)
+            {
+                var label = new Label
+                {
+                    Text = columns[col].ToString(),
+                    Font = new Font("Tahoma", 8, FontStyle.Bold),
+                    Size = new Size(squareSize, squareSize),
+                    Location = new Point(startLocationX + 5 + col * squareSize + 2, startLocationY - squareSize),
+                    TextAlign = ContentAlignment.MiddleCenter,
+                    ForeColor = Color.Black, 
+                    BackColor = backgroundColor 
+                };
+                panel.Controls.Add(label);
+            }
+
+            // Add row labels and buttons
             for (var row = 0; row < gridRow; ++row)
             {
+                var label = new Label
+                {
+                    Text = (row + 1).ToString(),
+                    Font = new Font("Tahoma", 8, FontStyle.Bold),
+                    Size = new Size(squareSize, squareSize),
+                    Location = new Point(startLocationX - squareSize, startLocationY + 5 + row * squareSize + 2),
+                    TextAlign = ContentAlignment.MiddleCenter,
+                    ForeColor = Color.Black,
+                    BackColor = backgroundColor
+                };
+                panel.Controls.Add(label);
+
                 for (var col = 0; col < gridColumn; ++col)
                 {
-                    panel.Controls.Add(InitializeSquareButton(fieldName, row, col, squareSize, startLocationX + 5 + row * squareSize + 2, startLocationY + col * squareSize + 2));
+                    panel.Controls.Add(InitializeSquareButton(fieldName, row, col, squareSize, startLocationX + 5 + col * squareSize + 2, startLocationY + row * squareSize + 2));
                 }
             }
         }
@@ -99,7 +131,6 @@ namespace Vsite.Oom.Battleship.Game
 
             foreach (Button button in panel_Player.Controls.OfType<Button>())
             {
-
                 button.BackColor = Color.White;
                 button.Text = "";
                 button.Enabled = false;
@@ -107,7 +138,6 @@ namespace Vsite.Oom.Battleship.Game
 
             foreach (Button button in panel_Opponent.Controls.OfType<Button>())
             {
-
                 button.BackColor = Color.White;
                 button.Text = "";
                 button.Enabled = true;
