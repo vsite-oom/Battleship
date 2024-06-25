@@ -140,8 +140,8 @@ namespace Vsite.Oom.Battleship.Game
                 button.Enabled = true;
             }
 
-            playerHitsLabel.Text = "obrambeni bodovi: ";
-            opponentHitsLabel.Text = "napadački bodovi:";
+            playerHitsLabel.Text = "obrambeni bodovi";
+            opponentHitsLabel.Text = "napadački bodovi";
         }
 
         private void button_StartStop_Click(object sender, EventArgs e)
@@ -416,8 +416,8 @@ namespace Vsite.Oom.Battleship.Game
 
         private void UpdateHitCounters()
         {
-            playerHitsLabel.Text = $"obrambeni bodovi: {playerHitCounter}";
-            opponentHitsLabel.Text = $"napadački bodovi: {opponentHitCounter}";
+            playerHitsLabel.Text = $"obrambeni bodovi {playerHitCounter}";
+            opponentHitsLabel.Text = $"napadački bodovi {opponentHitCounter}";
         }
     }
 }
