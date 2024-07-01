@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using vsite.oom.battleship.model;
 
-namespace Vsite.Oom.Battleship.Model
+namespace vsite.oom.battleship.model
 {
     public class SquareEliminator
     {

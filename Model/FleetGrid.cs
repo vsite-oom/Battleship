@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using vsite.oom.battleship.model;
 
-namespace Vsite.Oom.Battleship.Model
+
+namespace vsite.oom.battleship.model
 {
     public class FleetGrid : Grid
     {
@@ -23,7 +23,7 @@ namespace Vsite.Oom.Battleship.Model
         {
             squares[row, column] = null;
         }
-        protected override bool IsSquareAvailable(int row, int column)
+        public override bool IsSquareAvailable(int row, int column)
         {
             return squares[row, column] != null;
         }

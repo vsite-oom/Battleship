@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Vsite.Oom.Battleship.Model;
+
 
 namespace vsite.oom.battleship.model
 {
@@ -23,7 +23,7 @@ namespace vsite.oom.battleship.model
 
         }
 
-        protected override bool IsSquareAvailable(int row, int column)
+        public override bool IsSquareAvailable(int row, int column)
         {
             return squares[row, column]?.SquareState == SquareState.Intact;
         }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Vsite.Oom.Battleship.Model;
+
 
 namespace vsite.oom.battleship.model
 {
@@ -35,7 +35,7 @@ namespace vsite.oom.battleship.model
         {
             get { return squares.Cast<Square>().Where(s => s != null); }
         }
-        protected abstract bool IsSquareAvailable(int row, int column);
+        public abstract bool IsSquareAvailable(int row, int column);
 
         public IEnumerable<IEnumerable<Square>> GetAvailablePlacements(int length)
         {

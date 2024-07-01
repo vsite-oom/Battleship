@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Vsite.Oom.Battleship.Model
+namespace vsite.oom.battleship.model
 {
     public class Fleet
     {
