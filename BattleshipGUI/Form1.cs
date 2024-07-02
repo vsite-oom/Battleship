@@ -20,6 +20,7 @@ namespace BattleshipGUI
         private FleetBuilder fleetBuilder;
         private Fleet playerFleet;
         private Fleet enemyFleet;
+        private Gunnery enemyGunnery;
 
         private Button[,] fleetGridButtons;
         private Button[,] shotsGridButtons;
@@ -34,11 +35,6 @@ namespace BattleshipGUI
         public Form1()
         {
             InitializeComponent();
-            this.Load += Form1_Load;
-        }
-
-        private void Form1_Load(object sender, EventArgs e)
-        {
             fleetGrid = new FleetGrid(gridRows, gridColumns);
             fleetGridButtons = InitializeGrid(fleetGrid, 50, 50);
 
@@ -56,6 +52,8 @@ namespace BattleshipGUI
             playerFleet = new Fleet();
             enemyFleet = fleetBuilder.CreateFleet();
 
+            enemyGunnery = new Gunnery(gridRows, gridColumns, shipLengths);
+
             currentShipIndex = 0;
             selectedCount = 0;
             selectedButtons = new Button[shipLengths[currentShipIndex]];
@@ -72,8 +70,13 @@ namespace BattleshipGUI
             foreach (Button button in shotsGridButtons)
             {
                 button.Click += ShotsGridButton_Click;
-                button.Enabled = false; 
+                button.Enabled = false;
             }
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+
         }
 
         private Button[,] InitializeGrid(Grid gridModel, int startX, int startY)
@@ -150,7 +153,7 @@ namespace BattleshipGUI
                     else
                     {
                         fleetDeploymentComplete = true;
-                        MessageBox.Show("Deployment phase complete. Initiate combat phase.");
+                        MessageBox.Show("Deployment phase complete. Initiate combat phase..");
 
                         foreach (Button button in shotsGridButtons)
                         {
@@ -208,6 +211,27 @@ namespace BattleshipGUI
             }
 
             clickedButton.Enabled = false;
+
+            EnemyTakesShot();
+        }
+
+        private void EnemyTakesShot()
+        {
+            Square targetSquare = enemyGunnery.Next();
+            var hitResult = playerFleet.Hit(targetSquare.Row, targetSquare.Column);
+            enemyGunnery.ProcessHitResult(hitResult);
+
+            Button targetButton = fleetGridButtons[targetSquare.Row, targetSquare.Column];
+            if (hitResult != HitResult.Missed)
+            {
+                targetButton.BackColor = Color.Red;
+            }
+            else
+            {
+                targetButton.BackColor = Color.Gray;
+            }
+
+            targetButton.Enabled = false;
         }
     }
 }
