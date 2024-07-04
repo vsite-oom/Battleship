@@ -40,7 +40,16 @@ namespace vsite.oom.battleship.model
             //vertical
             else
             {
-
+                var up = grid.GetSquaresInDirection(sorted.First().Row, sorted.First().Column, Direction.Upwards);
+                if (up.Any())
+                {
+                    directionCandidates.Add(up);
+                }
+                var down = grid.GetSquaresInDirection(sorted.Last().Row, sorted.Last().Column, Direction.Downwards);
+                if (down.Any())
+                {
+                    directionCandidates.Add(down);
+                }
             }
             var groupedByLength = directionCandidates.GroupBy(l => l.Count());
             var sortedByLength = groupedByLength.OrderByDescending(g => g.Key);

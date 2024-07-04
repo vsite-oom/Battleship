@@ -30,29 +30,35 @@ namespace vsite.oom.battleship.model
         public void ProcessHitResult(HitResult hitResult)
         {
             RecordTargetResult(hitResult);
-            switch(hitResult)
+            switch (hitResult)
             {
                 case HitResult.Missed:
                     target.ChangeState(SquareState.Missed);
-                    return;
+                    break;
                 case HitResult.Hit:
+                    target.ChangeState(SquareState.Hit);
+                    shipSquares.Add(target);
                     switch (ShootingTactics)
                     {
                         case ShootingTactics.Random:
                             ChangeTacticsToSurrounding();
-                            return;
+                            break;
                         case ShootingTactics.Surrounding:
                             ChangeTacticsToInline();
-                            return;
+                            break;
                         case ShootingTactics.Inline:
-                            return;
+                            break;
                         default:
                             Debug.Assert(false);
-                            return;
+                            break;
                     }
+                    break;
                 case HitResult.Sunken:
+                    target.ChangeState(SquareState.Sunken);
+                    shipSquares.Add(target);
+                    MarkShipSunken(target);
                     ChangeTacticsToRandom();
-                    return;
+                    break;
             }
         }
 
