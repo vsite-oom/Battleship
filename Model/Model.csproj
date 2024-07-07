@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
@@ -6,13 +6,5 @@
     <Nullable>enable</Nullable>
     <RootNamespace>Vsite.Oom.Battleship.Model</RootNamespace>
   </PropertyGroup>
-
-  <ItemGroup>
-    <EditorConfigFiles Remove="C:\Users\Korisnik\Source\Repos\Battleship\Model\.editorconfig" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="C:\Users\Korisnik\Source\Repos\Battleship\Model\.editorconfig" />
-  </ItemGroup>
 
 </Project>

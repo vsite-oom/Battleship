@@ -1,4 +1,7 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 
 namespace Vsite.Oom.Battleship.Model
 {
@@ -14,13 +17,28 @@ namespace Vsite.Oom.Battleship.Model
         public Gunnery(int rows, int columns, IEnumerable<int> shipLengths)
         {
             recordGrid = new ShotsGrid(rows, columns);
-            this.shipLengths = new List<int>(shipLengths.OrderDescending());
+            this.shipLengths = new List<int>(shipLengths.OrderByDescending(length => length));
             targetSelector = new RandomTargetSelector(recordGrid, this.shipLengths[0]);
         }
 
         public Square Next()
         {
-            target = targetSelector.Next();
+            try
+            {
+                target = targetSelector.Next();
+            }
+            catch (InvalidOperationException)
+            {
+                ChangeTacticsToRandom();
+                try
+                {
+                    target = targetSelector.Next();
+                }
+                catch (InvalidOperationException)
+                {
+                    throw new InvalidOperationException("No valid targets available.");
+                }
+            }
             return target;
         }
 
@@ -32,6 +50,7 @@ namespace Vsite.Oom.Battleship.Model
                     RecordTargetResult(hitResult);
                     return;
                 case HitResult.Hit:
+                    RecordTargetResult(hitResult);
                     switch (ShootingTactics)
                     {
                         case ShootingTactics.Random:
@@ -48,6 +67,7 @@ namespace Vsite.Oom.Battleship.Model
                     }
                     return;
                 case HitResult.Sunken:
+                    RecordTargetResult(hitResult);
                     ChangeTacticsToRandom();
                     return;
             }
@@ -106,7 +126,7 @@ namespace Vsite.Oom.Battleship.Model
         public ShootingTactics ShootingTactics { get; private set; } = ShootingTactics.Random;
 
         private readonly ShotsGrid recordGrid;
-        private readonly List<int> shipLengths = [];
+        private readonly List<int> shipLengths;
         private List<Square> shipSquares = new List<Square>();
         private ITargetSelector targetSelector;
         private Square target;

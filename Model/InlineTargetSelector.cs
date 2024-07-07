@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Vsite.Oom.Battleship.Model
 {
@@ -13,6 +11,7 @@ namespace Vsite.Oom.Battleship.Model
             this.grid = grid;
             this.shipLength = shipLength;
             this.squaresHit = squaresHit;
+            this.random = new Random();
         }
 
         private readonly ShotsGrid grid;
@@ -22,8 +21,9 @@ namespace Vsite.Oom.Battleship.Model
 
         public Square Next()
         {
-            var sorted = squaresHit.OrderBy(sq => sq.Row + sq.Column);
+            var sorted = squaresHit.OrderBy(sq => sq.Row + sq.Column).ToList();
             var directionCandidates = new List<IEnumerable<Square>>();
+
             // Horizontal
             if (sorted.First().Row == sorted.Last().Row)
             {
@@ -52,16 +52,31 @@ namespace Vsite.Oom.Battleship.Model
                     directionCandidates.Add(down);
                 }
             }
+
+            if (!directionCandidates.Any())
+            {
+                // Default to random if no direction candidates are found
+                return new RandomTargetSelector(grid, shipLength).Next();
+            }
+
             var groupedByLength = directionCandidates.GroupBy(l => l.Count());
             var sortedByLength = groupedByLength.OrderByDescending(g => g.Key);
-            var longestDIrections = sortedByLength.First();
-            var candidates = longestDIrections.Count();
-            if (candidates == 1)
+            var longestDirections = sortedByLength.FirstOrDefault();
+
+            if (longestDirections == null || !longestDirections.Any())
             {
-                return longestDIrections.First().First();
+                // Default to random if no valid directions are found
+                return new RandomTargetSelector(grid, shipLength).Next();
             }
-            int selectedIndex = random.Next();
-            return longestDIrections.ElementAt(selectedIndex).First();
+
+            var candidates = longestDirections.ToList();
+            if (candidates.Count == 1)
+            {
+                return candidates.First().First();
+            }
+
+            int selectedIndex = random.Next(candidates.Count);
+            return candidates.ElementAt(selectedIndex).First();
         }
     }
 }
