@@ -55,7 +55,7 @@ namespace vsite.oom.battleship.model
                     break;
                 case HitResult.Sunken:
                     target.ChangeState(SquareState.Sunken);
-                    shipSquares.Add(target);
+                    shipSquares.Clear();
                     MarkShipSunken(target);
                     ChangeTacticsToRandom();
                     break;

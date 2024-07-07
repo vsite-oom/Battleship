@@ -17,9 +17,11 @@ namespace vsite.oom.battleship.model
         public Square Next()
         {
             var placements = grid.GetAvailablePlacements(shipLength);
-            var candidates = placements.SelectMany(s => s);
+            IEnumerable<Square> candidates = placements.SelectMany(s => s);
+            int count = candidates.Count();
             var selectedIndex = random.Next(candidates.Count());
             return candidates.ElementAt(selectedIndex);
+
         }
         private readonly ShotsGrid grid;
         private readonly int shipLength;

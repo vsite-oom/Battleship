@@ -3,7 +3,7 @@ using NuGet.Frameworks;
 using System;
 using vsite.oom.battleship.model;
 
-namespace Vsite.Oom.Battleship.Model.Tests
+namespace vsite.oom.battleship.model.tests
 {
     [TestClass]
     public class ShipTests

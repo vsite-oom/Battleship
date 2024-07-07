@@ -169,6 +169,15 @@ namespace BattleshipGUI
                         {
                             button.Enabled = true;
                         }
+
+                        // Show deployed enemy ships on shotsGrid
+                        foreach (var ship in enemyFleet.Ships)
+                        {
+                            foreach (var square in ship.Squares)
+                            {
+                                shotsGridButtons[square.Row, square.Column].BackColor = Color.Yellow;
+                            }
+                        }
                     }
                 }
             }
@@ -283,7 +292,6 @@ namespace BattleshipGUI
             {
                 clickedButton.BackColor = Color.Green;
             }
-
             else
             {
                 clickedButton.BackColor = Color.Red;
@@ -297,17 +305,13 @@ namespace BattleshipGUI
                 RestartGame();
                 return;
             }
-            
-            //Enemy takes a shot after each player shot
+
+            // Enemy takes a shot after each player shot
             Square enemyTarget = enemyGunnery.Next();
             HitResult enemyHitResult = playerFleet.Hit(enemyTarget.Row, enemyTarget.Column);
 
             Button enemyTargetButton = fleetGridButtons[enemyTarget.Row, enemyTarget.Column];
-            if (enemyHitResult == HitResult.Hit)
-            {
-                enemyTargetButton.BackColor = Color.Green;
-            }
-            else if (enemyHitResult == HitResult.Sunken)
+            if (enemyHitResult == HitResult.Hit || enemyHitResult == HitResult.Sunken)
             {
                 enemyTargetButton.BackColor = Color.Green;
             }
@@ -320,7 +324,6 @@ namespace BattleshipGUI
 
             enemyGunnery.ProcessHitResult(enemyHitResult);
 
-            // Check if all player ships are sunken
             if (AllShipsSunken(playerFleet))
             {
                 MessageBox.Show("You lost!");
