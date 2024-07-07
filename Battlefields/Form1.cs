@@ -351,7 +351,7 @@ namespace Battlefields
 
         private void label3_Click(object sender, EventArgs e)
         {
-            //Kod za klik na label3 
+            //Ovdje ide kod za klik na label3 
         }
 
         private void tableLayoutPanel1_Paint(object sender, PaintEventArgs e)
