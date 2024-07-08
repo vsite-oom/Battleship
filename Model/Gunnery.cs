@@ -37,7 +37,6 @@ namespace vsite.oom.battleship.model
                     break;
                 case HitResult.Hit:
                     target.ChangeState(SquareState.Hit);
-                    shipSquares.Add(target);
                     switch (ShootingTactics)
                     {
                         case ShootingTactics.Random:
@@ -55,8 +54,6 @@ namespace vsite.oom.battleship.model
                     break;
                 case HitResult.Sunken:
                     target.ChangeState(SquareState.Sunken);
-                    shipSquares.Clear();
-                    MarkShipSunken(target);
                     ChangeTacticsToRandom();
                     break;
             }
@@ -91,6 +88,7 @@ namespace vsite.oom.battleship.model
             {
                 recordGrid.GetSquare(square.Row, square.Column).ChangeState(SquareState.Sunken);
             }
+            shipLengths.Remove(shipSquares.Count);
             shipSquares.Clear();
         }
 

@@ -169,15 +169,6 @@ namespace BattleshipGUI
                         {
                             button.Enabled = true;
                         }
-
-                        // Show deployed enemy ships on shotsGrid
-                        foreach (var ship in enemyFleet.Ships)
-                        {
-                            foreach (var square in ship.Squares)
-                            {
-                                shotsGridButtons[square.Row, square.Column].BackColor = Color.Yellow;
-                            }
-                        }
                     }
                 }
             }
@@ -288,7 +279,7 @@ namespace BattleshipGUI
 
             HitResult hitResult = enemyFleet.Hit(position.X, position.Y);
 
-            if (hitResult == HitResult.Hit)
+            if (hitResult == HitResult.Hit || hitResult == HitResult.Sunken)
             {
                 clickedButton.BackColor = Color.Green;
             }
