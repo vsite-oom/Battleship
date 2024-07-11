@@ -1,0 +1,117 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="GUI.MainPage">
+
+    <Grid BackgroundColor="BlanchedAlmond">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1.3*"/>
+            <!--header-->
+            <RowDefinition Height="*"/>
+            <!--difficulty-->
+            <RowDefinition Height="*"/>
+            <!--grid size-->
+            <RowDefinition Height="*"/>
+            <!--start button-->
+            <!--<RowDefinition Height="*"/>-->
+            <!--footer-->
+        </Grid.RowDefinitions>
+        <Frame Grid.Row="0" BackgroundColor="Beige">
+            <Label Text="BattleShip" 
+                   TextColor="Black" 
+                   FontSize="Header" 
+                   FontFamily="Poppins"
+                   HorizontalTextAlignment="Center"
+                   VerticalTextAlignment="Center"/>
+        </Frame>
+        <Frame Grid.Row="1"
+               BackgroundColor="AntiqueWhite"
+               CornerRadius="10">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <!--easy-->
+                    <ColumnDefinition Width="*"/>
+                    <!--medium-->
+                    <ColumnDefinition Width="*"/>
+                    <!--hard-->
+                </Grid.ColumnDefinitions>
+                <Grid Grid.Column = "0">
+                    <RadioButton GroupName="difficulty" 
+                                 Content="EASY" 
+                                 TextColor="Black"
+                                 HorizontalOptions="Center"
+                                 VerticalOptions="Center"
+                                 FontSize="Medium"/>
+                </Grid>
+                <Grid Grid.Column = "1">
+                    <RadioButton GroupName="difficulty" 
+                                 Content="MEDIUM" 
+                                 TextColor="Black"
+                                 HorizontalOptions="Center"
+                                 VerticalOptions="Center"
+                                 FontSize="Medium"/>
+                </Grid>
+                <Grid Grid.Column = "2">
+                    <RadioButton GroupName="difficulty" 
+                                 Content="HARD" 
+                                 TextColor="Black"
+                                 HorizontalOptions="Center"
+                                 VerticalOptions="Center"
+                                 FontSize="Medium"/>
+                </Grid>
+            </Grid>
+        </Frame>
+        <Frame Grid.Row="2" BackgroundColor="Bisque" CornerRadius="10">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="100"/>
+                    <!--grid size-->
+                    <ColumnDefinition Width="*"/>
+                    <!--grid size-->
+                    <ColumnDefinition Width="50"/>
+                    <!--grid size-->
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="100"/>
+                </Grid.ColumnDefinitions>
+                <Grid Grid.Column="1">
+                    <Picker x:Name="rowPicker"
+                            Title="Rows: "
+                            TitleColor= "Black"
+                            TextColor="Black"
+                            FontSize="Medium"
+                            BackgroundColor="Cornsilk"/>
+                </Grid>
+                <Grid Grid.Column="3">
+                    <Picker x:Name="columnPicker"
+                            Title="Columns: "
+                            TitleColor="Black"
+                            TextColor="Black"
+                            FontSize="Medium"
+                            BackgroundColor="Cornsilk"/>
+                </Grid>
+            </Grid>
+        </Frame>
+        <Frame 
+            Grid.Row="3"
+            BackgroundColor="Beige"
+            CornerRadius="10">
+            <Button 
+                x:Name="startButton"
+                CornerRadius="10"
+                FontSize="Medium"
+                HorizontalOptions="CenterAndExpand"
+                VerticalOptions="CenterAndExpand"
+                Text="START"
+                BackgroundColor="SaddleBrown"
+                TextColor="Black"
+                Padding="30"
+                Margin="5"
+                Clicked="startButton_Clicked"
+                />
+
+        </Frame>
+    </Grid>
+
+
+</ContentPage>
