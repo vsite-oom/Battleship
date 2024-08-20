@@ -47,6 +47,10 @@ namespace Vsite.Oom.Battleship.Model
                             return;
                     }
                 case HitResult.Sunken:
+                    if (shipLengths.Count == 0)
+                    {
+                        return;
+                    }
                     ChangeTacticsToRandom();
                     return;
             }
@@ -81,6 +85,7 @@ namespace Vsite.Oom.Battleship.Model
             {
                 recordGrid.ChangeSquareState(square.Row, square.Column, SquareState.Eliminated);
             }
+            shipLengths.Remove(shipSquares.Count);
             shipSquares.Clear();
         }
 

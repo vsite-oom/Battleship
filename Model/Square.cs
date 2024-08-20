@@ -25,6 +25,7 @@ namespace Vsite.Oom.Battleship.Model
 
         public readonly int Row;
         public readonly int Column;
+        public bool IsShip;
 
         public void Hit()
         {
