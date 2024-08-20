@@ -1,0 +1,255 @@
+﻿@using Vsite.Oom.Battleship.Model
+
+
+<div class="page-container">
+    <h1 class="page-header">Battleship Game</h1>
+    <div class="boards-container">
+        <div class="board">
+            <h4 class="board-header">Your fleet</h4>
+            @foreach (var row in playerFleetBoard)
+            {
+                <div class="board-row">
+                    @foreach (var square in row)
+                    {
+                        if (square.IsShip)
+                        {
+                            switch (square.SquareState)
+                            {
+                                case SquareState.Sunken:
+                                    <button class="board-cell sunken"></button>
+                                    break;
+                                case SquareState.Hit:
+                                    <button class="board-cell hit"></button>
+                                    break;
+                                case SquareState.Intact:
+                                    <button class="board-cell ship"></button>
+                                    break;
+                            }
+                        }
+                        else
+                        {
+                            switch (square.SquareState)
+                            {
+                                case SquareState.Intact:
+                                    <button class="board-cell"></button>
+                                    break;
+                                case SquareState.Missed:
+                                    <button class="board-cell missed"></button>
+                                    break;
+                            }
+                        }
+                    }
+                </div>
+            }
+        </div>
+
+        <div class="board">
+            <h4 class="board-header">Opponent fleet</h4>
+            @foreach (var row in playerTargetBoard)
+            {
+                <div class="board-row">
+                    @foreach (var square in row)
+                    {
+                        switch (square.SquareState)
+                        {
+                            case SquareState.Intact:
+                                <button class="board-cell" @onclick="() => PlayerAttack(square)"></button>
+                                break;
+                            case SquareState.Missed:
+                                <button class="board-cell missed"></button>
+                                break;
+                            case SquareState.Hit:
+                                <button class="board-cell hit"></button>
+                                break;
+                            case SquareState.Eliminated:
+                                <button class="board-cell eliminated"></button>
+                                break;
+                            case SquareState.Sunken:
+                                <button class="board-cell sunken"></button>
+                                break;
+                        }
+                    }
+                </div>
+            }
+        </div>
+    </div>
+
+    @if (isGameOver)
+    {
+        <div class="modal-container">
+            <div class="modal-dialog">
+                <h1>Game Over!</h1>
+                <h2>@gameState</h2>
+                <button class="new-game-btn" @onclick="StartGame">Start</button>
+            </div>
+        </div>
+    }
+</div>
+
+
+@code {
+    private bool isGameOver;
+    private string gameState = "You lost";
+    private int rows = 10;
+    private int columns = 10;
+    private int[] shipLengths = { 5, 4, 3, 3, 2 };
+
+    private List<List<Square>> playerFleetBoard = [];
+    private List<List<Square>> playerTargetBoard = [];
+    private Gunnery playerGunnery = null!;
+    private Fleet playerFleet = null!;
+
+    private List<List<Square>> opponentFleetBoard = [];
+    private List<List<Square>> opponentTargetBoard = [];
+    private Gunnery opponentGunnery = null!;
+    private Fleet opponentFleet = null!;
+
+    private void InitializePlayer()
+    {
+        playerFleetBoard.Clear();
+        playerTargetBoard.Clear();
+        FleetBuilder fleetBuilder = new(rows, columns, shipLengths);
+        playerFleet = fleetBuilder.CreateFleet();
+        playerGunnery = new Gunnery(rows, columns, shipLengths);
+
+        CreateBoards(playerFleetBoard, playerTargetBoard);
+    }
+    private void InitializeOpponent()
+    {
+        opponentFleetBoard.Clear();
+        opponentTargetBoard.Clear();
+        FleetBuilder fleetBuilder = new(rows, columns, shipLengths);
+        opponentFleet = fleetBuilder.CreateFleet();
+        opponentGunnery = new Gunnery(rows, columns, shipLengths);
+
+        CreateBoards(opponentFleetBoard, opponentTargetBoard);
+    }
+    protected override Task OnInitializedAsync()
+    {
+        InitializePlayer();
+        InitializeOpponent();
+        return base.OnInitializedAsync();
+    }
+
+    private void CreateBoards(List<List<Square>> fleetBoard, List<List<Square>> targetBoard)
+    {
+        for (int i=0; i<rows; ++i)
+        {
+            List<Square> fleetRow = [];
+            List<Square> targetRow = [];
+            for (int j=0; j<columns; ++j)
+            {
+                fleetRow.Add(new Square(i, j));
+                targetRow.Add(new Square(i, j));
+            }
+            fleetBoard.Add(fleetRow);
+            targetBoard.Add(targetRow);
+        }
+        foreach (var ship in playerFleet.Ships)
+        {
+            foreach (var square in ship.Squares)
+            {
+                fleetBoard[square.Row][square.Column].IsShip = true;
+            }
+        }
+    }
+
+    private void PlayerAttack(Square target)
+    {
+        var result = opponentFleet.Hit(target.Row, target.Column);
+
+        switch (result)
+        {
+            case HitResult.Hit:
+                playerTargetBoard[target.Row][target.Column].ChangeState(SquareState.Hit);
+                break;
+            case HitResult.Sunken:
+                {
+                    foreach (var ship in opponentFleet.Ships)
+                    {
+                        if (ship.Squares.Any(square => square.Row == target.Row && square.Column == target.Column))
+                        {
+                            foreach (var sunkSquare in ship.Squares)
+                            {
+                                playerTargetBoard[sunkSquare.Row][sunkSquare.Column].ChangeState(SquareState.Sunken);
+                            }
+                            break;
+                        }
+                    }
+                    break;
+                }
+            default:
+                playerTargetBoard[target.Row][target.Column].ChangeState(SquareState.Missed);
+                break;
+        }
+
+        if (CheckIsGameOver())
+        {
+            isGameOver = true;
+        }
+        else
+        {
+            OpponentAttack();
+        }
+    }
+
+    private void OpponentAttack()
+    {
+        var target = opponentGunnery.Next();
+        var result = playerFleet.Hit(target.Row, target.Column);
+
+        opponentGunnery.ProcessHitResult(result);
+        switch (result)
+        {
+            case HitResult.Hit:
+                playerFleetBoard[target.Row][target.Column].ChangeState(SquareState.Hit);
+                break;
+            case HitResult.Sunken:
+                {
+                    foreach (var ship in playerFleet.Ships)
+                    {
+                        if (ship.Squares.Any(square => square.Row == target.Row && square.Column == target.Column))
+                        {
+                            foreach (var sunkSquare in ship.Squares)
+                            {
+                                playerFleetBoard[sunkSquare.Row][sunkSquare.Column].ChangeState(SquareState.Sunken);
+                            }
+                            break;
+                        }
+                    }
+                    break;
+                }
+            default:
+                playerFleetBoard[target.Row][target.Column].ChangeState(SquareState.Missed);
+                break;
+        }
+        if (CheckIsGameOver())
+        {
+            isGameOver = true;
+        }
+    }
+
+    private bool CheckIsGameOver()
+    {
+        var playerWon = opponentFleet.Ships.SelectMany(s => s.Squares).All(ship => ship.SquareState != SquareState.Intact);
+        var opponentWon = playerFleet.Ships.SelectMany(s => s.Squares).All(ship => ship.SquareState != SquareState.Intact);
+
+        if (playerWon)
+        {
+            gameState = "You won!";
+        }
+        else if (opponentWon)
+        {
+            gameState = "You lost!";
+        }
+        return playerWon || opponentWon;
+    }
+
+    private void StartGame()
+    {
+        isGameOver = false;
+        InitializePlayer();
+        InitializeOpponent();
+        StateHasChanged();
+    }
+}

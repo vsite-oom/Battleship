@@ -1,0 +1,15 @@
+﻿<div class="page-container">
+    <h1 class="page-header">Battleship Game</h1>
+    <h5 class="page-header">New Game</h5>
+    <button class="new-game-btn" @onclick="StartGame">Start</button>
+</div>
+
+@code
+{
+    [Parameter] public EventCallback<bool> OnGameStarted { get; set; }
+
+    private void StartGame()
+    {
+        OnGameStarted.InvokeAsync(true);
+    }
+}

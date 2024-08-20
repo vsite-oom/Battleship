@@ -1,0 +1,22 @@
+﻿@page "/"
+
+<PageTitle>Battleship</PageTitle>
+
+@if (!isGameStarted)
+{
+    <NewGame OnGameStarted="StartGame"/>
+}
+else
+{
+    <Game/>
+}
+
+@code
+{
+    private bool isGameStarted;
+
+    private void StartGame()
+    {
+        isGameStarted = true;
+    }
+}
