@@ -30,6 +30,9 @@ namespace Vsite.Oom.Battleship.Model.Tests
             var fleet = builder.CreateFleet();
 
             Assert.AreEqual(4, fleet.Ships.Count(s => s.Squares.Count() == 2));
+            Assert.AreEqual(3, fleet.Ships.Count(s => s.Squares.Count() == 3));
+            Assert.AreEqual(2, fleet.Ships.Count(s => s.Squares.Count() == 4));
+            Assert.AreEqual(1, fleet.Ships.Count(s => s.Squares.Count() == 5));
         }
     }
 }
