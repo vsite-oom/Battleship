@@ -19,7 +19,7 @@ namespace Vsite.Oom.Battleship.Model
             Squares = squares;
         }
 
-        public readonly IEnumerable<Square> Squares;
+        public readonly IEnumerable<Square> Squares;  // Stavili smo public jer je potrebno za testiranje i prvo slovo veliko jer po konvenciji je prvo slovo veliko za public member-e.
 
         public bool Contains(int row, int column)
         {

@@ -29,8 +29,8 @@ namespace Vsite.Oom.Battleship.Model
         public readonly int Rows;
         public readonly int Columns;
 
-        // Dvodimenzionalno polje. Squarevi mogu biti null, to će nam
-        // trebati kasnije da ih možemo eliminirati.
+        // Dvodimenzionalno polje/niz/array. Squarevi mogu biti null,
+        // to će nam trebati kasnije da ih možemo eliminirati.
         protected readonly Square?[,] squares;
 
         public virtual IEnumerable<Square> Squares

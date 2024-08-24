@@ -16,8 +16,9 @@ namespace Vsite.Oom.Battleship.Model.Tests
 
             var toEliminate = eliminator.ToEliminate(shipSquares, 10, 10);  // Na osnovu polja koja smo proslijedili za brod vraća koordinate svih polja koja treba eliminirati.
            
-            Assert.AreEqual(18, toEliminate.Count());  
+            Assert.AreEqual(18, toEliminate.Count());  // Eliminira 4 kvadrata broda i 14 okolnih kvadrata.
 
+            // Provjeri jesu li uključene sve okolne koordinate (provjeravamo samo kutove, ne sve):
             var corners = new List<SquareCoordinate> { new SquareCoordinate(3, 2),
                                                        new SquareCoordinate(3, 7),
                                                        new SquareCoordinate(5, 2),
@@ -34,7 +35,7 @@ namespace Vsite.Oom.Battleship.Model.Tests
                 }
             }
             
-            Assert.AreEqual(0, corners.Count());  // Check if boundary coordinates are included (we check only corners, not all.)
+            Assert.AreEqual(0, corners.Count());  // Ako smo pronašli sve kutove, lista će biti prazna.
         }
 
         [TestMethod]

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Vsite.Oom.Battleship.Model
 {
-    public struct SquareCoordinate
+    public struct SquareCoordinate  // "Možda smo mogli koristiti i samo public članove, bez konstruktora..."
     {
         public SquareCoordinate(int row, int column)
         {

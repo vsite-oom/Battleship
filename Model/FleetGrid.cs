@@ -22,7 +22,8 @@ namespace Vsite.Oom.Battleship.Model
         // To će nam biti getter.
         // Castamo dvodimenzionalni niz squares u jednodimenzionalni niz
         // Square, ali želimo dobiti samo squareove koji su trenutno u
-        // mreži, ne želimo one koje su null reference.
+        // mreži, ne želimo one koje su null reference (jer su
+        // eliminirani).
         public override IEnumerable<Square> Squares
         {
             get { return squares.Cast<Square>().Where(s => s != null); }

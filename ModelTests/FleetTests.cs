@@ -23,7 +23,7 @@ namespace Vsite.Oom.Battleship.Model.Tests
 
             fleet.CreateShip(squares);
 
-            Assert.AreEqual(1, fleet.Ships.Count());
+            Assert.AreEqual(1, fleet.Ships.Count());  // Ships je IEnumerable čija metoda Count() vraća broj elemenata.
         }
 
         [TestMethod]

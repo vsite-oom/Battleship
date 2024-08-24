@@ -6,16 +6,17 @@ using System.Threading.Tasks;
 
 namespace Vsite.Oom.Battleship.Model
 {
+    // Fleet je kolekcija brodova.
     public class Fleet
     {
-        private List<Ship> ships = new List<Ship>();
+        private List<Ship> ships = new List<Ship>();  // "Koristimo listu jer nam je potrebno dodavati brodove u flotu. S IEnumerable ne možemo dodavati elemente".
 
-        public IEnumerable<Ship> Ships { get { return ships; } }
+        public IEnumerable<Ship> Ships { get { return ships; } }  // Koristimo IEnumerable jer ne želimo da se može mijenjati izvana.
 
         public void CreateShip(IEnumerable<Square> squares)
         {
             var ship = new Ship(squares);
-            ships.Add(ship);  // "Mogli smo dodati kroz konstruktor, ali smo radi preglednosti ovako napravili".
+            ships.Add(ship);  // "Mogli smo tu dodati kroz konstruktor bez stvaranja varijable, ali smo radi preglednosti ovako napravili".
         }
 
         public HitResult Hit(int row, int column)

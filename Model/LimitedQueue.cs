@@ -16,6 +16,7 @@ namespace Vsite.Oom.Battleship.Model
         
         private readonly int maxItems;
 
+        // Enqueue nije virtualna metoda, pa ju ne možemo overrideati.
         // Ako ne napišemo override, onda u potpunosti skrivamo
         // istoimenu metodu iz bazne klase, ali u tom slučaju
         // trebamo napisati 'new' da ne dobivamo warning:
@@ -27,5 +28,9 @@ namespace Vsite.Oom.Battleship.Model
             }
             base.Enqueue(item);
         }
+        // Mogli smo staviti i if umjesto while, ali za teoretski slučaj
+        // da se netko igra s ovom klasom i pozove Enqueue više puta
+        // nego što je maxItems, ovako smo sigurni da će uvijek biti
+        // maxItems elemenata u redu.
     }
 }
