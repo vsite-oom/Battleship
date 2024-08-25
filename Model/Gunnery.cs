@@ -112,7 +112,7 @@ namespace Vsite.Oom.Battleship.Model
 
         private readonly ShotsGrid recordGrid;  // Tablica s rezultatima gađanja.
 
-        private List<int> shipLengths = [];  // Duljine preostalih brodova koje treba potopiti.
+        private readonly List<int> shipLengths = [];  // Duljine preostalih brodova koje treba potopiti.
 
         private List<Square> shipSquares = new List<Square>();  // Pogođena polja broda.
 
