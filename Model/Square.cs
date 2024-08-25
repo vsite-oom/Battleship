@@ -14,6 +14,7 @@ namespace Vsite.Oom.Battleship.Model
         Hit,
         Sunken
     }
+
     public class Square
     {
         public Square(int row, int column)

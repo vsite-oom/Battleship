@@ -12,6 +12,7 @@ namespace Vsite.Oom.Battleship.Model
         Hit,
         Sunken
     }
+
     public class Ship
     {
         public Ship(IEnumerable<Square> squares)
@@ -26,6 +27,7 @@ namespace Vsite.Oom.Battleship.Model
             return Squares.FirstOrDefault(sq => sq.Row == row && sq.Column == column) != null;
         }
 
+        // Metoda koja provjerava je li brod promašen, pogođen ili potopljen.
         public  HitResult Hit(int row, int column)
         {
             var square = Squares.FirstOrDefault(sq => sq.Row == row && sq.Column == column);
@@ -34,7 +36,7 @@ namespace Vsite.Oom.Battleship.Model
                 return HitResult.Missed;
             }
 
-            square.Hit();
+            square.Hit();  // Ovdje pozivamo metodu Hit() iz klase Square koja postavlja stanje kvadrata na Hit.
 
             if (Squares.All(sq => sq.IsHit))
             {

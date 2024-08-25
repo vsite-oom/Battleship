@@ -46,6 +46,7 @@ namespace Vsite.Oom.Battleship.Model.Tests
             Assert.AreEqual(HitResult.Sunken, ship.Hit(1, 4));
         }
 
+        // U slučaju da protivnik nije dobro bilježio pogođene kvadrate, metoda Hit() mora vratiti Hit i nakon što je isti kvadrat pogođen više puta:
         [TestMethod]
         public void HitMethodReturnsHitAfterSquareIsHitAgain()
         {

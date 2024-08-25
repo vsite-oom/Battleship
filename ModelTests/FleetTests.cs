@@ -67,6 +67,7 @@ namespace Vsite.Oom.Battleship.Model.Tests
             Assert.AreEqual(HitResult.Sunken, fleet.Hit(8, 4));
         }
 
+        // Da ne moramo u test metodama ponavljati isti kod za stvaranje flote, izdvojili smo ga u zasebnu metodu:
         private static Fleet CreateFleet()
         {
             var fleet = new Fleet();
