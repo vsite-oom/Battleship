@@ -16,32 +16,46 @@ namespace Vsite.Oom.Battleship.Model
         }
 
         private readonly ShotsGrid grid;
+
         private readonly Square firstHit;
+
         private readonly int shipLength;
+        
         public Square Next()
         {
             List<IEnumerable<Square>> squares = new List<IEnumerable<Square>>();
 
-            var up = grid.GetSquaresInDirection(firstHit.Row, firstHit.Column, Direction.Upwards);
-            if (up.Count() > 0)
+            for (Direction direction = Direction.Upwards; direction <= Direction.Leftwards; direction++)
             {
-                squares.Add(up);
+                var squaresInDirection = grid.GetSquaresInDirection(firstHit.Row, firstHit.Column, direction);
+                if (squaresInDirection.Count() > 0)  // Ne želimo dodati praznu kolekciju.
+                {
+                    squares.Add(squaresInDirection);
+                }
             }
-            var right = grid.GetSquaresInDirection(firstHit.Row, firstHit.Column, Direction.Rightwards);
-            if (right.Count() > 0)
-            {
-                squares.Add(right);
-            }
-            var down = grid.GetSquaresInDirection(firstHit.Row, firstHit.Column, Direction.Downwards);
-            if (down.Count() > 0)
-            {
-                squares.Add(down);
-            }
-            var left = grid.GetSquaresInDirection(firstHit.Row, firstHit.Column, Direction.Leftwards);
-            if (left.Count() > 0)
-            {
-                squares.Add(left);
-            }
+
+            // Ovo sve smo zamijenili gornjim for petljama:
+
+            //var up = grid.GetSquaresInDirection(firstHit.Row, firstHit.Column, Direction.Upwards);
+            //if (up.Count() > 0)
+            //{
+            //    squares.Add(up);
+            //}
+            //var right = grid.GetSquaresInDirection(firstHit.Row, firstHit.Column, Direction.Rightwards);
+            //if (right.Count() > 0)
+            //{
+            //    squares.Add(right);
+            //}
+            //var down = grid.GetSquaresInDirection(firstHit.Row, firstHit.Column, Direction.Downwards);
+            //if (down.Count() > 0)
+            //{
+            //    squares.Add(down);
+            //}
+            //var left = grid.GetSquaresInDirection(firstHit.Row, firstHit.Column, Direction.Leftwards);
+            //if (left.Count() > 0)
+            //{
+            //    squares.Add(left);
+            //}
 
             foreach (var direction in squares)
             {

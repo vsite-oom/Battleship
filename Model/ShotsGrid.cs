@@ -14,21 +14,24 @@ namespace Vsite.Oom.Battleship.Model
         Downwards,
         Leftwards
     }
+
     public class ShotsGrid : Grid
     {
         public ShotsGrid(int rows, int columns) : base(rows, columns)
         { 
         }
+
         protected override bool IsSquareAvailable(int row, int column)
         {
             return squares[row, column]?.SquareState == SquareState.Intact;
         }
+
         public void ChangeSquareState(int row, int column, SquareState newState)
         {
             squares[row, column]!.ChangeState(newState);
         }
 
-        public IEnumerable<Square> GetSquaresInDirection(int row, int col, Direction direction)
+        public IEnumerable<Square> GetSquaresInDirection(int row, int col, Direction direction)  // Ova metoda vraća broj uzastopnih Intact kvadrata u određenom smjeru.
         {
             var squaresInDirection = new List<Square>();
             switch (direction)
@@ -36,9 +39,9 @@ namespace Vsite.Oom.Battleship.Model
                 case Direction.Upwards:
                     for (int r = row - 1; r >= 0; r--)
                     {
-                        if (IsSquareAvailable(r, col))
+                        if (IsSquareAvailable(r, col))  // Ako je kvadrat na retku r i stupcu col Intact, dodajemo ga u listu squaresInDirection.
                             squaresInDirection.Add(squares[r, col]!);
-                        else
+                        else  // Ako nije Intact, prekidamo petlju.
                             break;
                     }
                     break;
@@ -70,6 +73,7 @@ namespace Vsite.Oom.Battleship.Model
                     }
                     break;
             }
+
             return squaresInDirection;
         }
     }

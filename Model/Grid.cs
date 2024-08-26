@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace Vsite.Oom.Battleship.Model
 {
-    public abstract class Grid
+    public abstract class Grid  // Čim klasa ima barem jednu apstraktnu metodu, mora biti apstraktna.
     {
-        protected Grid(int rows, int columns)
+        protected Grid(int rows, int columns)  // Konstruktor je ptorected jer se neće koristiti izvan izvedenih klasa.
         {
             Rows = rows;
             Columns = columns;
@@ -31,11 +31,11 @@ namespace Vsite.Oom.Battleship.Model
 
         // Dvodimenzionalno polje/niz/array. Squarevi mogu biti null,
         // to će nam trebati kasnije da ih možemo eliminirati.
-        protected readonly Square?[,] squares;
+        protected readonly Square?[,] squares;  // U pravilu se ne koristi protected polje, ali u ovom slučaju je opravdano jer je to polje bitno za izvedene klase.
 
-        public virtual IEnumerable<Square> Squares
+        public virtual IEnumerable<Square> Squares  
         {
-            get { return squares.Cast<Square>(); }
+            get { return squares.Cast<Square>(); }  // Castamo dvodimenzionalni niz squares u jednodimenzionalni niz Square.
         }
 
         public IEnumerable<IEnumerable<Square>> GetAvailablePlacements(int length)
@@ -68,6 +68,7 @@ namespace Vsite.Oom.Battleship.Model
                     }
                 }
             }
+
             return result;
         }
 
@@ -94,6 +95,7 @@ namespace Vsite.Oom.Battleship.Model
                     }
                 }
             }
+
             return result;
         }
     }

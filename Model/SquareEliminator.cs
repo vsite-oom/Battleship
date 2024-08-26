@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace Vsite.Oom.Battleship.Model
 {
-    // "SquareEliminator ne zna za Squareove koji su okolo. Umjesto da te okolne stvaramo preko konstruktora, mi ćemo umjesto Squareova vraćati parove redak, stupac."
+    // "SquareEliminator ne zna za Squareove koji su okolo. Umjesto da te okolne stvaramo preko
+    // konstruktora, mi ćemo umjesto Squareova vraćati parove redak, stupac."
     // Za to u Model moramo dodati strukturu SquareCoordinate.
     // Prijašnjih godina su se koristili Squareovi, ali to je kompliciralo kod (vidi L6)."
     public class SquareEliminator
@@ -14,7 +15,8 @@ namespace Vsite.Oom.Battleship.Model
         // Moramo proslijediti i broj redaka i stupaca jer ne znamo veličinu polja.
         public  IEnumerable<SquareCoordinate> ToEliminate(IEnumerable<Square> shipSquares, int rows, int columns)
         {
-            // Grid vraća već sortirane Squareove od najlijevijeg, najgornjeg, prema dolje, pa ovdje možemo pretpostaviti da će nam prvi imati najmanje koordinate.
+            // Grid vraća već sortirane Squareove od najlijevijeg, najgornjeg, prema dolje, pa ovdje možemo
+            // pretpostaviti da će nam prvi imati najmanje koordinate.
             var first = shipSquares.First();
             int firstRow = first.Row;
             int firstColumn = first.Column;
@@ -47,6 +49,7 @@ namespace Vsite.Oom.Battleship.Model
                     result.Add(new SquareCoordinate(r, c));
                 }
             }
+
             return result;
         }
     }

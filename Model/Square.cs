@@ -25,14 +25,15 @@ namespace Vsite.Oom.Battleship.Model
         }
 
         public readonly int Row;
+
         public readonly int Column;
 
-        public void Hit()
+        public void Hit()  // Metoda za označavanje polja kao pogodak.
         {
             SquareState = SquareState.Hit;
         }
 
-        public void ChangeState(SquareState newState)
+        public void ChangeState(SquareState newState)  // Stanje polja se mijenja samo ako je novo stanje više od trenutnog.
         {
             if ((int)newState > (int)SquareState)
             {

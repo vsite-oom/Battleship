@@ -28,6 +28,7 @@ namespace Vsite.Oom.Battleship.Model
                     return ship.Hit(row, column);
                 }
             }
+
             return HitResult.Missed;
         }
     }

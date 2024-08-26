@@ -17,7 +17,9 @@ namespace Vsite.Oom.Battleship.Model
 
         private FleetGrid? fleetGrid;
 
-        private readonly int gridRows, gridColumns;
+        private readonly int gridRows;
+
+        private readonly int gridColumns;
 
         private readonly List<int> shipLengths; // "readonly ne znači da se njen sadržaj ne može mijenjati. Jedino ne možemo pozvati konstruktor s novom listom."
 

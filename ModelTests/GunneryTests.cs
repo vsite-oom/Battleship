@@ -38,7 +38,6 @@ namespace Vsite.Oom.Battleship.Model.Tests
             gunnery.Next();
             gunnery.ProcessHitResult(HitResult.Hit);
             Assert.AreEqual(ShootingTactics.Surrounding, gunnery.ShootingTactics);
-            //gunnery.Next();
             gunnery.ProcessHitResult(HitResult.Missed);
             Assert.AreEqual(ShootingTactics.Surrounding, gunnery.ShootingTactics);
         }

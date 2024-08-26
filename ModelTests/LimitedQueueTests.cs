@@ -40,6 +40,4 @@ namespace Vsite.Oom.Battleship.Model.Tests
             Assert.IsFalse(queue.Contains(2));
         }
     }
-
-
 }

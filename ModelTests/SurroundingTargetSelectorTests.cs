@@ -6,30 +6,18 @@ namespace Vsite.Oom.Battleship.Model.Tests
     [TestClass]
     public class SurroundingTargetSelectorTests
     {
-        //private IEnumerable<Square> CreateCandidates(ShotsGrid grid, IEnumerable<SquareCoordinate> coord)
-        //{
-        //    List<Square> result = new List<Square>();
-        //    foreach (var c in coord)
-        //    {
-        //        var square = grid.Squares.FirstOrDefault(s => s.Row == c.Row && s.Column == c.Column);
-
-        //        result.Add(square!);
-        //    }
-        //    return result;
-        //}
-
         [TestMethod]
         public void NextReturnsOneOfFourSquaresAroundSquare3x4()
         {
             var grid = new ShotsGrid(10, 10);
-            var squareHit = grid.Squares.FirstOrDefault(s => s.Row == 3 && s.Column == 4);
-            squareHit!.ChangeState(SquareState.Hit);
+            var squareHit = grid.Squares.FirstOrDefault(s => s.Row == 3 && s.Column == 4);  // Kažemo da je kvadrat 3x4 pogođen.
+            squareHit!.ChangeState(SquareState.Hit);  // Za svaki slučaj označimo kvadrat kao pogođen iako to nije bitno za ovaj test.
             int shipLength = 5;
-            var selector = new SurroundingTargetSelector(grid, squareHit, shipLength);
-            var target = selector.Next();
+            var selector = new SurroundingTargetSelector(grid, squareHit, shipLength);  
+            var target = selector.Next();  // Očekujemo da će metoda Next() vratiti jedan od kvadrata oko kvadrata 3x4.
 
             var candidates = new SquareCoordinate[] { new(2, 4), new(3, 5), new(4, 4), new(3, 3)};  // Kolekcija koordinata koje očekujem da će biti.
-            Assert.IsTrue(candidates.Contains(new SquareCoordinate(target.Row, target.Column)));
+            Assert.IsTrue(candidates.Contains(new SquareCoordinate(target.Row, target.Column)));  // Provjeravamo je li kvadrat koji je vratila metoda Next() jedan od kandidata.
         }
 
         [TestMethod]

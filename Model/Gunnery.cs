@@ -20,7 +20,7 @@ namespace Vsite.Oom.Battleship.Model
         public Gunnery(int rows, int columns, IEnumerable<int> shipLengths)
         {
             recordGrid = new ShotsGrid(rows, columns);
-            this.shipLengths = new List<int>(shipLengths.OrderDescending());
+            this.shipLengths = new List<int>(shipLengths.OrderDescending());  // Kopira duljine brodova i sortira ih od najvećeg prema najmanjem.
             targetSelector = new RandomTargetSelector(recordGrid, this.shipLengths[0]);  // Inicijalno koristi nasumično gađanje.
         }
 
@@ -85,7 +85,7 @@ namespace Vsite.Oom.Battleship.Model
                     return;
                 case HitResult.Hit:
                     target.ChangeState(SquareState.Hit);
-                    shipSquares.Add(target);
+                    shipSquares.Add(target);  // Dodajemo pogođeno polje u listu pogođenih polja.
                     return;
                 case HitResult.Sunken:
                     MarkShipSunken();
@@ -93,7 +93,7 @@ namespace Vsite.Oom.Battleship.Model
             }
         }
 
-        private void MarkShipSunken()
+        private void MarkShipSunken()  // Označava brod kao potopljen na način da označi sva polja broda kao potopljena i eliminira sva polja oko broda.
         {
             shipSquares.Add(target);
             foreach (var square in shipSquares)
@@ -105,16 +105,16 @@ namespace Vsite.Oom.Battleship.Model
             {
                 recordGrid.ChangeSquareState(square.Row, square.Column, SquareState.Eliminated);
             }
-            shipSquares.Clear();
+            shipSquares.Clear();  // Brišemo listu pogođenih polja jer smo potopili brod.
         }
 
-        public ShootingTactics ShootingTactics { get; private set; } = ShootingTactics.Random;  // Initially it will be random.
+        public ShootingTactics ShootingTactics { get; private set; } = ShootingTactics.Random;  // Inicjalno koristi nasumično gađanje.
 
         private readonly ShotsGrid recordGrid;  // Tablica s rezultatima gađanja.
 
         private readonly List<int> shipLengths = [];  // Duljine preostalih brodova koje treba potopiti.
 
-        private List<Square> shipSquares = new List<Square>();  // Pogođena polja broda.
+        private List<Square> shipSquares = new List<Square>();  // Bilježimo pogođena polja broda, da bi znali kad ga potopimo koja polja treba označiti kao potopljena.
 
         private Square target;  // Polje koje se gađa.
 

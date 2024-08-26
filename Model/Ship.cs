@@ -46,6 +46,7 @@ namespace Vsite.Oom.Battleship.Model
                 }
                 return HitResult.Sunken;
             }
+
             return HitResult.Hit;
         }
     }
