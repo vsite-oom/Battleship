@@ -38,7 +38,7 @@
             // 
             // btnIndicator1
             // 
-            btnIndicator1.Location = new Point(325, 25);
+            btnIndicator1.Location = new Point(425, 25);
             btnIndicator1.Name = "btnIndicator1";
             btnIndicator1.Size = new Size(50, 50);
             btnIndicator1.TabIndex = 0;
@@ -46,7 +46,7 @@
             // 
             // btnIndicator2
             // 
-            btnIndicator2.Location = new Point(925, 25);
+            btnIndicator2.Location = new Point(1075, 25);
             btnIndicator2.Name = "btnIndicator2";
             btnIndicator2.Size = new Size(50, 50);
             btnIndicator2.TabIndex = 1;
@@ -54,7 +54,7 @@
             // 
             // btnPlaceFleet
             // 
-            btnPlaceFleet.Location = new Point(200, 625);
+            btnPlaceFleet.Location = new Point(300, 675);
             btnPlaceFleet.Name = "btnPlaceFleet";
             btnPlaceFleet.Size = new Size(100, 50);
             btnPlaceFleet.TabIndex = 2;
@@ -63,7 +63,7 @@
             // 
             // btnStartReset
             // 
-            btnStartReset.Location = new Point(350, 625);
+            btnStartReset.Location = new Point(500, 675);
             btnStartReset.Name = "btnStartReset";
             btnStartReset.Size = new Size(100, 50);
             btnStartReset.TabIndex = 3;
@@ -74,7 +74,7 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1265, 736);
+            ClientSize = new Size(1450, 750);
             Controls.Add(btnStartReset);
             Controls.Add(btnPlaceFleet);
             Controls.Add(btnIndicator2);
