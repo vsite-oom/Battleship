@@ -57,6 +57,7 @@
             this.ToBattle.TabIndex = 1;
             this.ToBattle.Text = "TO BATTLE";
             this.ToBattle.UseVisualStyleBackColor = false;
+            this.ToBattle.Click += new System.EventHandler(this.ToBattle_Click);
             // 
             // Welcome
             // 
