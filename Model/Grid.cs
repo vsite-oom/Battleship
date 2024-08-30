@@ -8,7 +8,7 @@ namespace Vsite.Oom.Battleship.Model
 {
     public abstract class Grid  // Čim klasa ima barem jednu apstraktnu metodu, mora biti apstraktna.
     {
-        protected Grid(int rows, int columns)  // Konstruktor je ptorected jer se neće koristiti izvan izvedenih klasa.
+        protected Grid(int rows, int columns)  // Konstruktor je protected jer se neće koristiti izvan izvedenih klasa.
         {
             Rows = rows;
             Columns = columns;

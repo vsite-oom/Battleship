@@ -60,6 +60,7 @@
             btnPlaceFleet.TabIndex = 2;
             btnPlaceFleet.Text = "Place Fleet";
             btnPlaceFleet.UseVisualStyleBackColor = true;
+            btnPlaceFleet.Click += btnPlaceFleet_Click;
             // 
             // btnStartReset
             // 
