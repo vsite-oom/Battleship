@@ -70,6 +70,7 @@
             btnStartReset.TabIndex = 3;
             btnStartReset.Text = "Start / Reset";
             btnStartReset.UseVisualStyleBackColor = true;
+            btnStartReset.Click += btnStartReset_Click;
             // 
             // Form1
             // 

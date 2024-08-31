@@ -19,10 +19,16 @@ namespace GUI
         private Fleet? playerFleet;
         private Fleet? computerFleet;
 
+        private bool playerTurn = true;
+        private bool gameStarted = false;
+
+        private int playerShipsSunk = 0;
+        private int computerShipsSunk = 0;
+
         public Form1()
         {
             InitializeComponent();
-            //CreateFleetBuilders();  // Warning otherwise
+            btnStartReset.Enabled = false;
             CreateGrids(PlayerGridLeftMargin, ComputerGridLeftMargin, topMargin);
         }
 
@@ -60,15 +66,10 @@ namespace GUI
             }
         }
 
-        //private void CreateFleetBuilders()  // Warning otherwise
-        //{
-        //    playerFleetBuilder = new FleetBuilder(gridSize, gridSize, new int[] { 2, 2, 2, 2, 3, 3, 3, 4, 4, 5 });
-        //    computerFleetBuilder = new FleetBuilder(gridSize, gridSize, new int[] { 2, 2, 2, 2, 3, 3, 3, 4, 4, 5 });
-        //}
+        // ************************************************************
+        // *                    HELPER METHODS                        *
+        // ************************************************************
 
-        //
-        // Helper methods
-        //
         private CustomButton CreateButton(int i, int j, int leftMargin, int topMargin)
         {
             CustomButton button = new CustomButton(i, j)
@@ -120,36 +121,81 @@ namespace GUI
             return label;
         }
 
-        //
-        // Event handlers
-        //
-        private void btnPlaceFleet_Click(object sender, EventArgs e)
+        private void ClearGrid(CustomButton[,] buttons)
         {
-            // Clear player grid (color grid to LightGray)
-            int i = 0;
-            int j = 0;
-            for (i = 1; i < (gridSize + 1); i++)
+            for (int i = 1; i < (gridSize + 1); i++)
             {
-                for (j = 1; j < (gridSize + 1); j++)
+                for (int j = 1; j < (gridSize + 1); j++)
                 {
-                    var button = playerButtons[i - 1, j - 1];
-                    //var button = Controls.Find("button" + i + j, true).FirstOrDefault();
+                    var button = buttons[i - 1, j - 1];
                     button.BackColor = Color.LightGray;
                 }
             }
+        }
 
-            // Create player fleet
-            playerFleet = playerFleetBuilder.CreateFleet();
-
-            // Place player fleet on the grid (color grid to Gray)
-            foreach (var ship in playerFleet.Ships)
+        private void PlaceFleetOnGrid(Fleet fleet, CustomButton[,] buttons)
+        {
+            foreach (var ship in fleet.Ships)
             {
                 foreach (var square in ship.Squares)
                 {
-                    var button = playerButtons[square.Row, square.Column];
+                    var button = buttons[square.Row, square.Column];
                     button.BackColor = Color.Gray;
                 }
             }
+        }
+
+        // ************************************************************
+        // *                    EVENT HANDLERS                        *
+        // ************************************************************
+
+        private void btnPlaceFleet_Click(object sender, EventArgs e)
+        {
+            // 1. Clear player grid (color grid to LightGray)
+            ClearGrid(playerButtons);
+
+            // 2. Create player fleet
+            playerFleet = playerFleetBuilder.CreateFleet();
+
+            // 3. Place player fleet on the grid (color grid to Gray)
+            PlaceFleetOnGrid(playerFleet, playerButtons);
+
+            // 4. Enable Start/Reset button
+            btnStartReset.Enabled = true;
+        }
+
+        private void btnStartReset_Click(object sender, EventArgs e)
+        {
+
+            if (gameStarted == false)
+            {
+                // 1. Disable Place Fleet button
+                btnPlaceFleet.Enabled = false;
+
+                // 2. Clear computer grid (color grid to LightGray)
+                ClearGrid(computerButtons);
+
+                // 3. Create computer fleet
+                computerFleet = computerFleetBuilder.CreateFleet();
+
+                // 4. Determine who starts the game <----------------------- !
+                Random random = new Random();
+                playerTurn = random.Next(0, 2) != 0;
+
+                // Debugging: Place computer fleet on the grid (color grid to Gray) for testing purposes.
+                PlaceFleetOnGrid(computerFleet, computerButtons);
+
+                gameStarted = true; // <------------------------------------ !
+            }
+            else
+            {
+                gameStarted = false;
+                btnPlaceFleet.Enabled = true;
+            }
+
+
+
+
         }
     }
 }
