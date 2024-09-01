@@ -1,0 +1,29 @@
+﻿@page "/"
+
+@rendermode InteractiveServer
+@using Vsite.Oom.Battleship.Model
+
+<PageTitle>WEBATTLESHIP</PageTitle>
+
+<div class="container">
+    <h1 class="title">WEBattleships</h1>
+    <div class="game-info">
+        <div class="level-label">Level:</div>
+        <div class="level-value">10 x 10</div>
+        <button onclick=@PlayGame class="play-btn">Play</button>
+    </div>
+    <div class="footer">
+        <p>Prepare for battle!</p>
+    </div>
+</div>
+
+
+@code {
+    [Inject] private NavigationManager navigationManager { get; set; }
+
+
+    public void PlayGame()
+    {
+        navigationManager.NavigateTo("/Game");
+    }
+}

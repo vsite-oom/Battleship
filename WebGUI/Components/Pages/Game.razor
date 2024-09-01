@@ -1,0 +1,230 @@
+﻿@page "/Game"
+
+@rendermode InteractiveServer
+@using Vsite.Oom.Battleship.Model
+
+<div class="container">
+    <div class="boards">
+        <div class="my-board">
+            @myGrid
+        </div>
+        <div class="opponent-board">
+            @opponentGrid
+        </div>
+    </div>
+</div>
+
+
+@code {
+    private List<List<Square>> myBoard = new();
+    private List<List<Square>> myBoats = new();
+    private Gunnery myGunnery = null!;
+    private Fleet myFleet = null!;
+
+    private List<List<Square>> opponentBoard = new();
+    private List<List<Square>> opponentBoats = new();
+    private Gunnery opponentGunnery = null!;
+    private Fleet opponentFleet = null!;
+
+    private int boardRows = 10;
+    private int boardColumns = 10;
+    private int[] ships = { 5, 4, 3, 3, 2 };
+
+    private RenderFragment? myGrid;
+    private RenderFragment? opponentGrid;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        InitializeMyBoard();
+        InitializeOpponentBoard();
+        await FillBoards();
+    }
+
+    private void InitializeMyBoard()
+    {
+        myBoard.Clear();
+
+        FleetBuilder fleetBuilder = new FleetBuilder(boardRows, boardColumns, ships);
+
+        myFleet = fleetBuilder.CreateFleet();
+
+        myGunnery = new Gunnery(boardRows, boardColumns, ships);
+
+        CreateBoards(myBoard, myBoats);
+
+    }
+
+    private void InitializeOpponentBoard()
+    {
+
+        opponentBoard.Clear();
+
+        FleetBuilder fleetBuilder = new FleetBuilder(boardRows, boardColumns, ships);
+
+        opponentFleet = fleetBuilder.CreateFleet();
+
+        opponentGunnery = new Gunnery(boardRows, boardColumns, ships);
+
+        CreateBoards(opponentBoard, opponentBoats);
+
+    }
+
+
+    private void CreateBoards(List<List<Square>> board, List<List<Square>> boats, bool isOpponent = false)
+    {
+        for (int i = 0; i < boardRows; i++)
+        {
+            List<Square> boardRow = new();
+            List<Square> boatsRow = new();
+
+            for (int j = 0; j < boardColumns; j++)
+            {
+                boardRow.Add(new Square(i, j));
+                boatsRow.Add(new Square(i, j));
+            }
+            board.Add(boardRow);
+            boats.Add(boatsRow);
+        }
+
+        if (isOpponent)
+        {
+            foreach (var ship in opponentFleet.Ships)
+            {
+                foreach (var field in ship.Squares)
+                {
+                    boats[field.Row][field.Column].IsShip = true;
+                }
+            }
+        }
+        else
+        {
+            foreach (var ship in myFleet.Ships)
+            {
+                foreach (var field in ship.Squares)
+                {
+                    boats[field.Row][field.Column].IsShip = true;
+                }
+            }
+        }
+    }
+
+    private async Task FillBoards()
+    {
+        myGrid = builder =>
+        {
+            for (int i = 0; i < boardRows; i++)
+            {
+                builder.OpenElement(0, "div");
+                builder.AddAttribute(1, "class", "row");
+
+                for (int j = 0; j < boardColumns; j++)
+                {
+                    builder.OpenElement(2, "Button");
+                    builder.AddAttribute(3, "class", myBoats[i][j].IsShip ? "square ship" : "square water");
+                    builder.AddAttribute(4, "Disabled", "true");
+                    builder.CloseElement();
+                }
+
+                builder.CloseElement();
+            }
+        };
+
+        opponentGrid = builder =>
+        {
+            for (int i = 0; i < boardRows; i++)
+            {
+                builder.OpenElement(0, "div");
+                builder.AddAttribute(1, "class", "row");
+
+                for (int j = 0; j < boardColumns; j++)
+                {
+                    builder.OpenElement(2, "button");
+                    string cssClass = opponentBoard[i][j].SquareState switch
+                    {
+                        SquareState.Hit => "square hit-ship",
+                        SquareState.Missed => "square hit-water",
+                        SquareState.Sunken => "square ship-sunken",
+                        _ => "opponent-board-btn square water"
+                    };
+                    builder.AddAttribute(3, "class", cssClass);
+                    builder.AddAttribute(4, "onclick", EventCallback.Factory.Create(this, () => MyAttack(opponentBoard[i][j])));
+                    builder.CloseElement();
+                }
+
+                builder.CloseElement();
+            }
+        };
+        StateHasChanged();
+    }
+
+    private void MyAttack(Square target)
+    {
+        var hitResult = opponentFleet.Hit(target.Row, target.Column);
+
+        switch (hitResult)
+        {
+            case HitResult.Hit:
+                opponentBoard[target.Row][target.Column].ChangeState(SquareState.Hit);
+                break;
+            case HitResult.Missed:
+                opponentBoard[target.Row][target.Column].ChangeState(SquareState.Missed);
+                break;
+            case HitResult.Sunken:
+                foreach(var ship in opponentFleet.Ships)
+                {
+                    if (ship.Squares.Any(s => s.Row == target.Row && s.Column == target.Column));
+
+                    foreach(var hitSquare in ship.Squares)
+                    {
+                        opponentBoard[hitSquare.Row][hitSquare.Column].ChangeState(SquareState.Sunken);
+                    }
+                    break;
+                }
+                break;
+
+        }
+        StateHasChanged();
+    }
+
+    private void OpponentAttack()
+    {
+        var target = opponentGunnery.Next();
+        var hitResult = myFleet.Hit(target.Row, target.Column);
+
+        opponentGunnery.ProcessHitResult(hitResult);
+
+        switch (hitResult)
+        {
+            case HitResult.Hit:
+                myBoard[target.Row][target.Column].ChangeState(SquareState.Hit);
+                break;
+            case HitResult.Missed:
+                myBoard[target.Row][target.Column].ChangeState(SquareState.Missed);
+                break;
+            case HitResult.Sunken:
+                foreach (var ship in myFleet.Ships)
+                {
+                    if (ship.Squares.Any(s => s.Row == target.Row && s.Column == target.Column)) ;
+
+                    foreach (var hitSquare in ship.Squares)
+                    {
+                        myBoard[hitSquare.Row][hitSquare.Column].ChangeState(SquareState.Sunken);
+                    }
+                    break;
+                }
+                break;
+
+        }
+        StateHasChanged();
+    }
+
+    private bool IsGameOver()
+    {
+        var playerLost = myFleet.Ships.SelectMany(s => s.Squares).All(ship => ship.SquareState != SquareState.Intact);
+        var enemyLost = opponentFleet.Ships.SelectMany(s => s.Squares).All(ship => ship.SquareState != SquareState.Intact);
+
+        return playerLost || enemyLost;
+    }
+
+}
