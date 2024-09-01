@@ -33,6 +33,8 @@ namespace Vsite.Oom.Battleship.Model
         public void ProcessHitResult(HitResult hitResult)  // Ovisno o trenutnoj taktici gađanja i rezultatu gađanja, obrađuje rezultat i postavlja sljedeću taktiku.
         {
             RecordTargetResult(hitResult);  // Zapisuje rezultat gađanja.
+            if (shipLengths.Count == 0)  // Ako su svi brodovi potopljeni, nema potrebe za daljnjim gađanjem.
+                return;
 
             switch (ShootingTactics)
             {
@@ -105,6 +107,7 @@ namespace Vsite.Oom.Battleship.Model
             {
                 recordGrid.ChangeSquareState(square.Row, square.Column, SquareState.Eliminated);
             }
+            shipLengths.Remove(shipSquares.Count);  // Uklanjamo duljinu potopljenog broda iz liste preostalih brodova koje treba potopiti.
             shipSquares.Clear();  // Brišemo listu pogođenih polja jer smo potopili brod.
         }
 

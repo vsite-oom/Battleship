@@ -30,15 +30,14 @@ namespace GUI
         private Gunnery playerGunnery;
         private Gunnery computerGunnery;
 
+        private CustomButton lastComputerHitButton;
+        private CustomButton lastPlayerHitButton;
+
         public Form1()
         {
             InitializeComponent();
             btnStartReset.Enabled = false;
             CreateGrids(PlayerGridLeftMargin, ComputerGridLeftMargin, topMargin);
-            playerFleetBuilder = new FleetBuilder(gridSize, gridSize, shipLengths);
-            computerFleetBuilder = new FleetBuilder(gridSize, gridSize, shipLengths);
-            playerGunnery = new Gunnery(gridSize, gridSize, shipLengths);
-            computerGunnery = new Gunnery(gridSize, gridSize, shipLengths);
         }
 
         private void CreateGrids(int playerGridLeftMargin, int computerGridLeftMargin, int topMargin)
@@ -77,6 +76,7 @@ namespace GUI
                 }
             }
         }
+
 
         // ************************************************************
         // *                    HELPER METHODS                        *
@@ -133,7 +133,25 @@ namespace GUI
             return label;
         }
 
-        private void ClearGrid(CustomButton[,] buttons)
+        private void PrepareComputerGrid(CustomButton[,] buttons)
+        {
+            DisableGrid(computerGridButtons);
+            for (int i = 1; i < (gridSize + 1); i++)
+            {
+                for (int j = 1; j < (gridSize + 1); j++)
+                {
+                    var button = buttons[i - 1, j - 1];
+                    button.BackColor = Color.LightGray;
+                }
+            }
+            if (lastPlayerHitButton != null)
+            {
+                // Clear the last hit button (remove the "X" text)
+                lastPlayerHitButton.Text = "";
+            }
+        }
+
+        private void PreparePlayerGrid(CustomButton[,] buttons)
         {
             for (int i = 1; i < (gridSize + 1); i++)
             {
@@ -142,6 +160,11 @@ namespace GUI
                     var button = buttons[i - 1, j - 1];
                     button.BackColor = Color.LightGray;
                 }
+            }
+            if (lastComputerHitButton != null)
+            {
+                // Clear the last hit button (remove the "X" text)
+                lastComputerHitButton.Text = "";
             }
         }
 
@@ -159,12 +182,16 @@ namespace GUI
 
         private void EnableGrid(CustomButton[,] buttons)
         {
-            for (int i = 1; i < (gridSize + 1); i++)
+            for (int i = 1; i <= gridSize; i++)
             {
-                for (int j = 1; j < (gridSize + 1); j++)
+                for (int j = 1; j <= gridSize; j++)
                 {
+                    // Enable only buttons that are not already hit
                     var button = buttons[i - 1, j - 1];
-                    button.Enabled = true;
+                    if (button.BackColor == Color.LightGray || button.BackColor == Color.Gray)
+                    {
+                        button.Enabled = true;
+                    }
                 }
             }
         }
@@ -191,9 +218,70 @@ namespace GUI
         {
             // Disable computer grid
             DisableGrid(computerGridButtons);
-            playerTurnLogic();
-            //MessageBox.Show("computer logic!");
+
+            var target = computerGunnery.Next();
+            HitResult hitResult = playerFleet.Hit(target.Row, target.Column);
+            computerGunnery.ProcessHitResult(hitResult);
+
+            if (lastComputerHitButton != null)
+            {
+                lastComputerHitButton.Text = "";
+            }
+
+            lastComputerHitButton = playerGridButtons[target.Row, target.Column];
+            lastComputerHitButton.Text = "X";
+
+            if (hitResult == HitResult.Missed)
+            {
+                playerGridButtons[target.Row, target.Column].BackColor = Color.Blue;
+                playerTurn = true;
+                playerTurnLogic();
+            }
+            else if (hitResult == HitResult.Hit)
+            {
+                playerGridButtons[target.Row, target.Column].BackColor = Color.Orange;
+                playerTurn = true;
+                playerTurnLogic();
+            }
+            else if (hitResult == HitResult.Sunken)
+            {
+                foreach (var ship in playerFleet.Ships)
+                {
+                    foreach (var square in ship.Squares)
+                    {
+                        if (square.SquareState == SquareState.Sunken)
+                        {
+                            playerGridButtons[square.Row, square.Column].BackColor = Color.Red;
+                        }
+                    }
+                }
+
+                playerShipsSunk++;
+
+                if (playerShipsSunk == playerFleet.Ships.Count())
+                {
+                    MessageBox.Show("Computer wins!");
+                    gameReset();
+                }
+                else
+                {
+                    playerTurn = true;
+                    playerTurnLogic();
+                }
+            }
         }
+
+        private void gameReset()
+        {
+            gameStarted = false;
+            btnPlaceFleet.Enabled = true;
+            btnStartReset.Enabled = false;
+            PreparePlayerGrid(playerGridButtons);
+            PrepareComputerGrid(computerGridButtons);
+            playerShipsSunk = 0;
+            computerShipsSunk = 0;
+        }
+
 
         // ************************************************************
         // *                    EVENT HANDLERS                        *
@@ -202,9 +290,10 @@ namespace GUI
         private void btnPlaceFleet_Click(object sender, EventArgs e)
         {
             // 1. Clear player grid (color grid to LightGray)
-            ClearGrid(playerGridButtons);
+            PreparePlayerGrid(playerGridButtons);
 
             // 2. Create player fleet
+            playerFleetBuilder = new FleetBuilder(gridSize, gridSize, shipLengths);  // U sebi sadrži FleetGrid
             playerFleet = playerFleetBuilder.CreateFleet();
 
             // 3. Place player fleet on the grid (color grid to Gray)
@@ -222,21 +311,26 @@ namespace GUI
                 btnPlaceFleet.Enabled = false;
 
                 // 2. Clear computer grid (color grid to LightGray)
-                ClearGrid(computerGridButtons);
+                PrepareComputerGrid(computerGridButtons);
 
                 // 3. Create computer fleet
+                computerFleetBuilder = new FleetBuilder(gridSize, gridSize, shipLengths);  // U sebi sadrži FleetGrid
                 computerFleet = computerFleetBuilder.CreateFleet();
 
-                // 4. Determine who starts the game <----------------------- !
+                // 4. Create player and computer gunnery
+                playerGunnery = new Gunnery(gridSize, gridSize, shipLengths);
+                computerGunnery = new Gunnery(gridSize, gridSize, shipLengths);
+
+                // Determine who starts the game
                 Random random = new Random();
                 playerTurn = random.Next(0, 2) != 0;
 
-                // Debugging: Place computer fleet on the grid (color grid to Gray) for testing purposes.
-                PlaceFleetOnGrid(computerFleet, computerGridButtons);
+                // Debugging: Place computer fleet on the grid (color grid to Gray) for testing purposes. <<<<<<<<<<<<<<<<<<<<<<<<<<
+                //PlaceFleetOnGrid(computerFleet, computerGridButtons);
 
-                gameStarted = true; // <------------------------------------ !
+                gameStarted = true;
 
-                // 5. Call the method to handle the game logic
+                // Call the method to handle the game logic
                 if (playerTurn)
                 {
                     playerTurnLogic();
@@ -249,7 +343,10 @@ namespace GUI
             else if (gameStarted == true)
             {
                 gameStarted = false;
+                PreparePlayerGrid(playerGridButtons);
+                PrepareComputerGrid(computerGridButtons);
                 btnPlaceFleet.Enabled = true;
+                btnStartReset.Enabled = false;
             }
         }
 
@@ -257,9 +354,16 @@ namespace GUI
         private void btnComputerGridButton_Click(object sender, EventArgs e)
         {
             CustomButton customButton = (CustomButton)sender;
-            customButton.Enabled = false;
-            playerGunnery.Next();
+            customButton.Enabled = false;  // copilot, why doesn't this work? answer: 
             HitResult hitResult = computerFleet.Hit(customButton.Row, customButton.Column);
+
+            if (lastPlayerHitButton != null)
+            {
+                lastPlayerHitButton.Text = "";
+            }
+
+            lastPlayerHitButton = customButton;
+            lastPlayerHitButton.Text = "X";
 
             if (hitResult == HitResult.Missed)
             {
@@ -291,8 +395,12 @@ namespace GUI
                 if (computerShipsSunk == computerFleet.Ships.Count())
                 {
                     MessageBox.Show("Player wins!");
-                    gameStarted = false;
-                    btnPlaceFleet.Enabled = true;
+                    gameReset();
+                }
+                else
+                {
+                    playerTurn = false;
+                    computerTurnLogic();
                 }
             }
         }

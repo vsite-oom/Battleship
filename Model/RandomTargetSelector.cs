@@ -17,7 +17,12 @@ namespace Vsite.Oom.Battleship.Model
         {
             // Dohvaća sva moguća mjesta na kojima se brod duljine shipLength može postaviti.
             var placements = grid.GetAvailablePlacements(shipLength);
-            
+
+            if (!placements.Any())
+            {
+                throw new InvalidOperationException($"No available placements found for ship of length {shipLength}.");
+            }
+
             // Spaja gornji niz nizova u jedan niz u kojemu se neka polja mogu pojaviti više puta.
             // To nam ne smeta jer ako se neko polje pojavljuje više puta, to znači da se na tom
             // mjestu brod može postaviti na više načina i onda je veća vjerojatnost da će se

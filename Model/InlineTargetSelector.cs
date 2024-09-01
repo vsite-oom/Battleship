@@ -64,6 +64,11 @@ namespace Vsite.Oom.Battleship.Model
             // duljinu niza), te vrijednost (niz polja).
             var groupedByLength = directionCandidates.GroupBy(l => l.Count());
 
+            if (!groupedByLength.Any())
+            {
+                throw new InvalidOperationException("No valid direction candidates found.");
+            }
+
             // Sortiramo grupe po ključu (duljini niza), od najvećeg prema najmanjem.
             var sortedByLength = groupedByLength.OrderByDescending(g => g.Key);
             

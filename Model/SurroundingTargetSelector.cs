@@ -20,7 +20,7 @@ namespace Vsite.Oom.Battleship.Model
         private readonly Square firstHit;
 
         private readonly int shipLength;
-        
+
         public Square Next()
         {
             List<IEnumerable<Square>> squares = new List<IEnumerable<Square>>();
