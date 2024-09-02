@@ -18,7 +18,17 @@ namespace Vsite.Oom.Battleship.Model
         {
             var placements = grid.GetAvailablePlacements(shipLength);
             var candidates = placements.SelectMany(s => s);
+
+            // If there are no candidates available from the placements
+            if (!candidates.Any())
+            {
+                // Fallback to selecting any intact squares from the grid
+                candidates = grid.Squares.Where(s => s.SquareState == SquareState.Intact).ToList();
+            }
+
+            // Select a random index from the list of candidates
             var selectedIndex = random.Next(candidates.Count());
+
             return candidates.ElementAt(selectedIndex);
         }
 
