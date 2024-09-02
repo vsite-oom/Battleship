@@ -32,7 +32,7 @@ html, body {
     height: 100%;
     margin: 0;
     padding: 0;
-    background-color: #ff87cd; /* Your original background color */
+    background-color: #ff87cd; 
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
@@ -40,15 +40,19 @@ html, body {
     display: flex;
     flex-direction: column;
     height: 100%;
-    justify-content: space-between;
     align-items: center;
+    gap: 100px;
     text-align: center;
-    color: #7a3262; /* Your original text color */
+    color: #7a3262; 
+}
+
+.front-page {
+    justify-content: space-between;
 }
 
 .title {
     margin-top: 20px;
-    font-size: 5rem; /* Big title for WEBattleships */
+    font-size: 5rem; 
     text-shadow: 2px 2px 4px black, 0 0 10px #40132d, 0 0 5px #40132d;
 }
 
@@ -99,30 +103,8 @@ html, body {
         margin-top: 200px;
     }
 
-.row {
-    display: flex;
-}
-
-.square {
-    height: 50px;
-    width: 50px;
-    gap: 5px;
-}
-
-.opponent-board-btn:hover {
-    background-color: #a67179;
-}
-
-.ship {
-    background-color: red;
-}
-
-.water {
-    background-color: lightpink;
-}
-
-.my-board, .opponent-board {
-    margin: auto;
+.attacker {
+    font-size: xx-large;
 }
 
 

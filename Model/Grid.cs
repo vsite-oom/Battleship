@@ -48,7 +48,7 @@
                     if (IsSquareAvailable(r, c))
                     {
                         queue.Enqueue(squares[r, c]!);
-                        if (queue.Count() >= length)
+                        if (queue.Count() == length)
                         {
                             result.Add(queue.ToArray());
                         }
@@ -75,7 +75,7 @@
                     if (IsSquareAvailable(r, c))
                     {
                         queue.Enqueue(squares[r, c]!);
-                        if (queue.Count() >= length)
+                        if (queue.Count() == length)
                         {
                             result.Add(queue.ToArray());
                         }

@@ -4,32 +4,67 @@
 @using Vsite.Oom.Battleship.Model
 
 <style>
-    .hit-ship {
-        background-color: #4f2527;
+    .row {
+        display: flex;
+    }
+
+    .opponent-board-btn:hover {
+        background-color: #a67179;
+    }
+
+    .my-board, .opponent-board {
+        margin: auto;
+    }
+
+    .water {
+        background-color: lightpink;
+    } 
+
+    .square {
+        height: 50px;
+        width: 50px;
+        gap: 2px;
+    }
+
+    .btn-pointer {
         cursor: default !important;
     }
 
+    .btn-hover:hover {
+        opacity: 0.5;
+    }
+
+    .ship {
+        background-color: #8a484b;
+    }
+
+    .hit-ship {
+        background-color: #4f2527;
+        cursor: default !important;
+        pointer-events: none;
+    }
+
     .hit-water {
-        background-color: #ff87cd;
-        cursor: default !important
+        background-color: #3a535e;
+        cursor: default !important;
+        pointer-events: none;
     }
 
     .ship-sunken {
         background-color: #323333;
         cursor: default !important;
-
+        pointer-events: none;
     }
 
-    .ship {
-        background-color: red;
-    }
 
-    .water {
-        background-color: lightpink;
-    }
 
 
 </style>
+<Modal @ref=modal IsServiceModal="true">
+    <FooterTemplate> 
+        <Button @onclick = "RestartGame">Restart</Button>
+    </FooterTemplate>
+</Modal>
 
 <div class="container">
     <div class="boards">
@@ -40,10 +75,14 @@
             @opponentGrid
         </div>
     </div>
+    <label class="attacker">@attacker</label>
 </div>
 
 
 @code {
+    [Inject] private ModalService modalService { get; set; } = default!;
+    [Inject]private NavigationManager navigationManager { get; set; }
+
     private List<List<Square>> myBoard = new();
     private List<List<Square>> myBoats = new();
     private Gunnery myGunnery = null!;
@@ -53,6 +92,7 @@
     private List<List<Square>> opponentBoats = new();
     private Gunnery opponentGunnery = null!;
     private Fleet opponentFleet = null!;
+    private string attacker = "Your turn...";
 
     private int boardRows = 10;
     private int boardColumns = 10;
@@ -60,6 +100,11 @@
 
     private RenderFragment? myGrid;
     private RenderFragment? opponentGrid;
+
+    private bool AIWon;
+    private Modal modal = default!;
+
+
 
     protected override async Task OnInitializedAsync()
     {
@@ -98,13 +143,12 @@
 
     }
 
-
     private void CreateBoards(List<List<Square>> board, List<List<Square>> boats, bool isOpponent = false)
     {
         for (int i = 0; i < boardRows; i++)
         {
-            List<Square> boardRow = new();
-            List<Square> boatsRow = new();
+            List<Square> boardRow = [];
+            List<Square> boatsRow = [];
 
             for (int j = 0; j < boardColumns; j++)
             {
@@ -121,7 +165,7 @@
             {
                 foreach (var field in ship.Squares)
                 {
-                    boats[field.Row][field.Column].IsShip = true;
+                    board[field.Row][field.Column].IsShip = true;
                 }
             }
         }
@@ -131,7 +175,7 @@
             {
                 foreach (var field in ship.Squares)
                 {
-                    boats[field.Row][field.Column].IsShip = true;
+                    board[field.Row][field.Column].IsShip = true;
                 }
             }
         }
@@ -139,55 +183,66 @@
 
     private async Task FillBoards()
     {
+        await FillMyBoard();
+        await FillOpponentBoard();
+        StateHasChanged();
+    }
+
+    private async Task FillMyBoard()
+    {
+        int d = 0;
         myGrid = builder =>
         {
             foreach (var row in myBoard)
             {
-                builder.OpenElement(0, "div");
-                builder.AddAttribute(1, "class", "row");
+                builder.OpenElement(d++, "div");
+                builder.AddAttribute(d++, "class", "row");
 
-                foreach (var field in row)
+                foreach (var square in row) 
                 {
-                    builder.OpenElement(2, "Button");
-                    string cssClass = field.SquareState switch
+                    builder.OpenElement(d++, "Button");
+                    string cssFriendClass = square.SquareState switch
                     {
-                        SquareState.Hit => "square hit-ship",
-                        SquareState.Missed => "square hit-water",
-                        SquareState.Sunken => "square ship-sunken",
-                        SquareState.Intact => field.IsShip ? "square ship" : "square water",
-                        _ => "opponent-board-btn square water"
+                        SquareState.Hit => "btn-pointer square hit-ship",
+                        SquareState.Missed => "btn-pointer square hit-water",
+                        SquareState.Sunken => "btn-pointer square ship-sunken",
+                        SquareState.Intact => square.IsShip ? "btn-pointer square ship" : "btn-pointer square water",
+                        _ => "btn-pointer square water"
                     };
-                    builder.AddAttribute(3, "class", cssClass);
-                    builder.AddAttribute(4, "Disabled", "true");
+                    builder.AddAttribute(d++, "class", cssFriendClass);
+                    builder.AddAttribute(d++, "Disabled", "true");
                     builder.CloseElement();
                 }
 
                 builder.CloseElement();
             }
         };
+    }
 
+    private async Task FillOpponentBoard() 
+    {
+        int seq = 0;
         opponentGrid = builder =>
         {
             foreach (var row in opponentBoard)
             {
-                builder.OpenElement(0, "div");
-                builder.AddAttribute(1, "class", "row");
+                builder.OpenElement(seq++, "div");
+                builder.AddAttribute(seq++, "class", "row");
 
                 foreach (var field in row)
                 {
-                    builder.OpenElement(2, "button");
-                    string cssClass = field.SquareState switch
+                    builder.OpenElement(seq++, "button");
+                    string cssOpponentClass = field.SquareState switch
                     {
                         SquareState.Hit => "square hit-ship",
                         SquareState.Missed => "square hit-water",
                         SquareState.Sunken => "square ship-sunken",
                         _ => "opponent-board-btn square water"
                     };
-                    builder.AddAttribute(3, "class", cssClass);
-                    builder.AddAttribute(4, "onclick", EventCallback.Factory.Create(this, async () =>
+                    builder.AddAttribute(seq++, "class", cssOpponentClass);
+                    builder.AddAttribute(seq++, "onclick", EventCallback.Factory.Create(this, async () =>
                     {
                         await MyAttack(field);
-                        // builder.AddAttribute(5, "Disabled", "true");
                     }));
                     builder.CloseElement();
                 }
@@ -195,7 +250,6 @@
                 builder.CloseElement();
             }
         };
-        StateHasChanged();
     }
 
     private async Task MyAttack(Square target)
@@ -208,29 +262,39 @@
                 opponentBoard[target.Row][target.Column].ChangeState(SquareState.Hit);
                 break;
             case HitResult.Sunken:
-                foreach(var ship in opponentFleet.Ships)
+                foreach (var ship in opponentFleet.Ships)
                 {
                     if (ship.Squares.Any(s => s.Row == target.Row && s.Column == target.Column))
                     {
-                        foreach(var hitSquare in ship.Squares)
+                        foreach (var hitSquare in ship.Squares)
                         {
                             opponentBoard[hitSquare.Row][hitSquare.Column].ChangeState(SquareState.Sunken);
                         }
-                        break;                       
+                        break;
                     }
-
                 }
                 break;
-            default: 
+            default:
                 opponentBoard[target.Row][target.Column].ChangeState(SquareState.Missed);
                 break;
-
         }
+
         StateHasChanged();
 
         if (!IsGameOver())
         {
+            attacker = "Opponent is thinking...";
+            StateHasChanged();
+            await Task.Delay(500); 
+
             await OpponentAttack();
+        }
+        else
+        {
+            AIWon = false;
+            await ShowGameOverModal();
+            attacker = "Game Over!";
+            StateHasChanged();
         }
     }
 
@@ -247,26 +311,37 @@
                 myBoard[target.Row][target.Column].ChangeState(SquareState.Hit);
                 break;
             case HitResult.Sunken:
+                foreach (var ship in myFleet.Ships)
                 {
-                    foreach (var ship in myFleet.Ships)
+                    if (ship.Squares.Any(s => s.Row == target.Row && s.Column == target.Column))
                     {
-                        if (ship.Squares.Any(s => s.Row == target.Row && s.Column == target.Column))
+                        foreach (var hitSquare in ship.Squares)
                         {
-                            foreach (var hitSquare in ship.Squares)
-                            {
-                                myBoard[hitSquare.Row][hitSquare.Column].ChangeState(SquareState.Sunken);
-                            }
-                            break;
+                            myBoard[hitSquare.Row][hitSquare.Column].ChangeState(SquareState.Sunken);
                         }
+                        break;
                     }
-                    break;
                 }
+                break;
             default:
                 myBoard[target.Row][target.Column].ChangeState(SquareState.Missed);
                 break;
-
         }
+
         StateHasChanged();
+
+        if (!IsGameOver())
+        {
+            attacker = "Your turn...";
+            StateHasChanged();
+        }
+        else
+        {
+            AIWon = true;
+            await ShowGameOverModal();
+            attacker = "Game Over!";
+            StateHasChanged();
+        }
     }
 
     private bool IsGameOver()
@@ -277,4 +352,28 @@
         return playerLost || enemyLost;
     }
 
+    private async Task ShowGameOverModal()
+    {
+        string winnerText = AIWon ? "Computer" : "You";
+        var modalOption = new ModalOptions
+            {
+                Title = "GAME OVER",
+                Type = ModalType.Dark,
+                Message = $"Game over! {winnerText} won!",
+                OnFooterButtonClick = EventCallback.Factory.Create(this, async () => await RestartGame()),
+                IsVerticallyCentered = true,
+            };
+        await modalService.ShowAsync(modalOption);
+    }
+
+    private class ModalOptions : ModalOption
+    {
+        public EventCallback OnFooterButtonClick { get; set; }
+    }
+
+    private async Task RestartGame()
+    {
+        await modal.HideAsync();
+        navigationManager.NavigateTo("/");
+    }
 }
