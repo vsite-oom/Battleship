@@ -32,6 +32,13 @@ namespace GUI
 
         private CustomButton lastComputerHitButton;
         private CustomButton lastPlayerHitButton;
+        private String lastHitMarker = "X";
+
+        private Color colorMissed = Color.DodgerBlue;
+        private Color colorHit = Color.DarkOrange;
+        private Color colorSunken = Color.DarkRed;
+        private Color colorFogOfWar = Color.LightGray;
+        private Color colorFleet = Color.Gray;
 
         public Form1()
         {
@@ -141,12 +148,12 @@ namespace GUI
                 for (int j = 1; j < (gridSize + 1); j++)
                 {
                     var button = buttons[i - 1, j - 1];
-                    button.BackColor = Color.LightGray;
+                    button.BackColor = colorFogOfWar;
                 }
             }
             if (lastPlayerHitButton != null)
             {
-                // Clear the last hit button (remove the "X" text)
+                // Clear the last hit button (remove the lastHitMarker text)
                 lastPlayerHitButton.Text = "";
             }
         }
@@ -158,12 +165,12 @@ namespace GUI
                 for (int j = 1; j < (gridSize + 1); j++)
                 {
                     var button = buttons[i - 1, j - 1];
-                    button.BackColor = Color.LightGray;
+                    button.BackColor = colorFogOfWar;
                 }
             }
             if (lastComputerHitButton != null)
             {
-                // Clear the last hit button (remove the "X" text)
+                // Clear the last hit button (remove the lastHitMarker text)
                 lastComputerHitButton.Text = "";
             }
         }
@@ -175,7 +182,7 @@ namespace GUI
                 foreach (var square in ship.Squares)
                 {
                     var button = buttons[square.Row, square.Column];
-                    button.BackColor = Color.Gray;
+                    button.BackColor = colorFleet;
                 }
             }
         }
@@ -188,7 +195,7 @@ namespace GUI
                 {
                     // Enable only buttons that are not already hit
                     var button = buttons[i - 1, j - 1];
-                    if (button.BackColor == Color.LightGray || button.BackColor == Color.Gray)
+                    if (button.BackColor == colorFogOfWar || button.BackColor == colorFleet)
                     {
                         button.Enabled = true;
                     }
@@ -232,17 +239,18 @@ namespace GUI
             }
 
             lastComputerHitButton = playerGridButtons[target.Row, target.Column];
-            lastComputerHitButton.Text = "X";
+            lastComputerHitButton.Text = lastHitMarker;
+            lastComputerHitButton.Font = new Font(lastComputerHitButton.Font, FontStyle.Bold);
 
             if (hitResult == HitResult.Missed)
             {
-                playerGridButtons[target.Row, target.Column].BackColor = Color.Blue;
+                playerGridButtons[target.Row, target.Column].BackColor = colorMissed;
                 playerTurn = true;
                 playerTurnLogic();
             }
             else if (hitResult == HitResult.Hit)
             {
-                playerGridButtons[target.Row, target.Column].BackColor = Color.Orange;
+                playerGridButtons[target.Row, target.Column].BackColor = colorHit;
                 playerTurn = true;
                 playerTurnLogic();
             }
@@ -254,7 +262,7 @@ namespace GUI
                     {
                         if (square.SquareState == SquareState.Sunken)
                         {
-                            playerGridButtons[square.Row, square.Column].BackColor = Color.Red;
+                            playerGridButtons[square.Row, square.Column].BackColor = colorSunken;
                         }
                     }
                 }
@@ -292,14 +300,14 @@ namespace GUI
 
         private void btnPlaceFleet_Click(object sender, EventArgs e)
         {
-            // 1. Clear player grid (color grid to LightGray)
+            // 1. Clear player grid (color grid to color used for empty grid)
             PreparePlayerGrid(playerGridButtons);
 
             // 2. Create player fleet
             playerFleetBuilder = new FleetBuilder(gridSize, gridSize, shipLengths);  // U sebi sadrži FleetGrid
             playerFleet = playerFleetBuilder.CreateFleet();
 
-            // 3. Place player fleet on the grid (color grid to Gray)
+            // 3. Place player fleet on the grid (color grid to color used for fleet)
             PlaceFleetOnGrid(playerFleet, playerGridButtons);
 
             // 4. Enable Start/Reset button
@@ -313,7 +321,7 @@ namespace GUI
                 // 1. Disable Place Fleet button
                 btnPlaceFleet.Enabled = false;
 
-                // 2. Clear computer grid (color grid to LightGray)
+                // 2. Clear computer grid (color grid to color used for empty grid)
                 PrepareComputerGrid(computerGridButtons);
 
                 // 3. Create computer fleet
@@ -328,7 +336,7 @@ namespace GUI
                 Random random = new Random();
                 playerTurn = random.Next(0, 2) != 0;
 
-                // Debugging: Place computer fleet on the grid (color grid to Gray) for testing purposes.
+                // Debugging: Place computer fleet on the grid (color grid to color used for fleet) for testing purposes.
                 //PlaceFleetOnGrid(computerFleet, computerGridButtons);
 
                 gameStarted = true;
@@ -366,17 +374,18 @@ namespace GUI
             }
 
             lastPlayerHitButton = customButton;
-            lastPlayerHitButton.Text = "X";
+            lastPlayerHitButton.Text = lastHitMarker;
+            lastPlayerHitButton.Font = new Font(lastPlayerHitButton.Font, FontStyle.Bold);
 
             if (hitResult == HitResult.Missed)
             {
-                customButton.BackColor = Color.Blue;
+                customButton.BackColor = colorMissed;
                 playerTurn = false;
                 computerTurnLogic();
             }
             else if (hitResult == HitResult.Hit)
             {
-                customButton.BackColor = Color.Orange;
+                customButton.BackColor = colorHit;
                 playerTurn = false;
                 computerTurnLogic();
             }
@@ -388,7 +397,7 @@ namespace GUI
                     {
                         if (square.SquareState == SquareState.Sunken)
                         {
-                            computerGridButtons[square.Row, square.Column].BackColor = Color.Red;
+                            computerGridButtons[square.Row, square.Column].BackColor = colorSunken;
                         }
                     }
                 }
