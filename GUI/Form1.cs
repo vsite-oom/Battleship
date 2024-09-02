@@ -214,10 +214,13 @@ namespace GUI
             EnableGrid(computerGridButtons);
         }
 
-        private void computerTurnLogic()
+        private async void computerTurnLogic()
         {
             // Disable computer grid
             DisableGrid(computerGridButtons);
+
+            // Simulate thinking delay
+            await Task.Delay(1000);
 
             var target = computerGunnery.Next();
             HitResult hitResult = playerFleet.Hit(target.Row, target.Column);
@@ -325,7 +328,7 @@ namespace GUI
                 Random random = new Random();
                 playerTurn = random.Next(0, 2) != 0;
 
-                // Debugging: Place computer fleet on the grid (color grid to Gray) for testing purposes. <<<<<<<<<<<<<<<<<<<<<<<<<<
+                // Debugging: Place computer fleet on the grid (color grid to Gray) for testing purposes.
                 //PlaceFleetOnGrid(computerFleet, computerGridButtons);
 
                 gameStarted = true;
