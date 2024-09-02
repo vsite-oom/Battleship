@@ -7,9 +7,9 @@ namespace GUI
     {
         private const int gridSize = 10;
         private const int gridSquareSize = 50;
-        private const int PlayerGridLeftMargin = 150;
-        private const int ComputerGridLeftMargin = 800;
-        private const int topMargin = 100;
+        private const int PlayerGridLeftMargin = 100;
+        private const int ComputerGridLeftMargin = 750;
+        private const int topMargin = 50;
 
         private CustomButton[,] playerGridButtons = new CustomButton[gridSize, gridSize];  // Buttons representing squares on the grid for placing player's fleet and recording computer's shots
         private CustomButton[,] computerGridButtons = new CustomButton[gridSize, gridSize];  // Buttons representing squares on the grid for placing computer's fleet and recording player's shots
@@ -52,13 +52,13 @@ namespace GUI
                     }
                     else if (i == 0)
                     {
-                        Controls.Add(CreateLetterLabel(j, 150 + j * gridSquareSize, 100));  // Player grid column letters
-                        Controls.Add(CreateLetterLabel(j, 800 + j * gridSquareSize, 100));  // Computer grid column letters
+                        Controls.Add(CreateLetterLabel(j, playerGridLeftMargin + (j * gridSquareSize), topMargin));  // Player grid column letters
+                        Controls.Add(CreateLetterLabel(j, ComputerGridLeftMargin + (j * gridSquareSize), topMargin));  // Computer grid column letters
                     }
                     else if (j == 0)
                     {
-                        Controls.Add(CreateNumberLabel(i, 150, 100 + i * gridSquareSize));  // Player grid row numbers
-                        Controls.Add(CreateNumberLabel(i, 800, 100 + i * gridSquareSize));  // Computer grid row numbers
+                        Controls.Add(CreateNumberLabel(i, playerGridLeftMargin, topMargin + (i * gridSquareSize)));  // Player grid row numbers
+                        Controls.Add(CreateNumberLabel(i, computerGridLeftMargin, topMargin + (i * gridSquareSize)));  // Computer grid row numbers
                     }
                     else  // Create squares buttons
                     {
@@ -86,7 +86,7 @@ namespace GUI
         {
             CustomButton button = new CustomButton(i, j)
             {
-                Location = new Point(leftMargin + (j + 1) * gridSquareSize, topMargin + (i + 1) * gridSquareSize),  // +1 because of row and column labels
+                Location = new Point(leftMargin + ((j + 1) * gridSquareSize), topMargin + ((i + 1) * gridSquareSize)),  // +1 because of row and column labels
                 Name = "button" + i + j,
                 Size = new Size(gridSquareSize, gridSquareSize),
                 TabIndex = (i * gridSize) + j,
