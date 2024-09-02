@@ -12,7 +12,7 @@
         private readonly ShotsGrid grid;
         private readonly IEnumerable<Square> squaresHit;
         private readonly int shipLength;
-        private readonly Random random;
+        private readonly Random random = new Random();
 
         public Square Next()
         {

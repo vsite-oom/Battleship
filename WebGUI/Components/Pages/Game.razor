@@ -3,6 +3,34 @@
 @rendermode InteractiveServer
 @using Vsite.Oom.Battleship.Model
 
+<style>
+    .hit-ship {
+        background-color: #4f2527;
+        cursor: default !important;
+    }
+
+    .hit-water {
+        background-color: #ff87cd;
+        cursor: default !important
+    }
+
+    .ship-sunken {
+        background-color: #323333;
+        cursor: default !important;
+
+    }
+
+    .ship {
+        background-color: red;
+    }
+
+    .water {
+        background-color: lightpink;
+    }
+
+
+</style>
+
 <div class="container">
     <div class="boards">
         <div class="my-board">
@@ -66,7 +94,7 @@
 
         opponentGunnery = new Gunnery(boardRows, boardColumns, ships);
 
-        CreateBoards(opponentBoard, opponentBoats);
+        CreateBoards(opponentBoard, opponentBoats, true);
 
     }
 
@@ -113,15 +141,23 @@
     {
         myGrid = builder =>
         {
-            for (int i = 0; i < boardRows; i++)
+            foreach (var row in myBoard)
             {
                 builder.OpenElement(0, "div");
                 builder.AddAttribute(1, "class", "row");
 
-                for (int j = 0; j < boardColumns; j++)
+                foreach (var field in row)
                 {
                     builder.OpenElement(2, "Button");
-                    builder.AddAttribute(3, "class", myBoats[i][j].IsShip ? "square ship" : "square water");
+                    string cssClass = field.SquareState switch
+                    {
+                        SquareState.Hit => "square hit-ship",
+                        SquareState.Missed => "square hit-water",
+                        SquareState.Sunken => "square ship-sunken",
+                        SquareState.Intact => field.IsShip ? "square ship" : "square water",
+                        _ => "opponent-board-btn square water"
+                    };
+                    builder.AddAttribute(3, "class", cssClass);
                     builder.AddAttribute(4, "Disabled", "true");
                     builder.CloseElement();
                 }
@@ -132,15 +168,15 @@
 
         opponentGrid = builder =>
         {
-            for (int i = 0; i < boardRows; i++)
+            foreach (var row in opponentBoard)
             {
                 builder.OpenElement(0, "div");
                 builder.AddAttribute(1, "class", "row");
 
-                for (int j = 0; j < boardColumns; j++)
+                foreach (var field in row)
                 {
                     builder.OpenElement(2, "button");
-                    string cssClass = opponentBoard[i][j].SquareState switch
+                    string cssClass = field.SquareState switch
                     {
                         SquareState.Hit => "square hit-ship",
                         SquareState.Missed => "square hit-water",
@@ -148,7 +184,11 @@
                         _ => "opponent-board-btn square water"
                     };
                     builder.AddAttribute(3, "class", cssClass);
-                    builder.AddAttribute(4, "onclick", EventCallback.Factory.Create(this, () => MyAttack(opponentBoard[i][j])));
+                    builder.AddAttribute(4, "onclick", EventCallback.Factory.Create(this, async () =>
+                    {
+                        await MyAttack(field);
+                        // builder.AddAttribute(5, "Disabled", "true");
+                    }));
                     builder.CloseElement();
                 }
 
@@ -158,7 +198,7 @@
         StateHasChanged();
     }
 
-    private void MyAttack(Square target)
+    private async Task MyAttack(Square target)
     {
         var hitResult = opponentFleet.Hit(target.Row, target.Column);
 
@@ -167,27 +207,34 @@
             case HitResult.Hit:
                 opponentBoard[target.Row][target.Column].ChangeState(SquareState.Hit);
                 break;
-            case HitResult.Missed:
-                opponentBoard[target.Row][target.Column].ChangeState(SquareState.Missed);
-                break;
             case HitResult.Sunken:
                 foreach(var ship in opponentFleet.Ships)
                 {
-                    if (ship.Squares.Any(s => s.Row == target.Row && s.Column == target.Column));
-
-                    foreach(var hitSquare in ship.Squares)
+                    if (ship.Squares.Any(s => s.Row == target.Row && s.Column == target.Column))
                     {
-                        opponentBoard[hitSquare.Row][hitSquare.Column].ChangeState(SquareState.Sunken);
+                        foreach(var hitSquare in ship.Squares)
+                        {
+                            opponentBoard[hitSquare.Row][hitSquare.Column].ChangeState(SquareState.Sunken);
+                        }
+                        break;                       
                     }
-                    break;
+
                 }
+                break;
+            default: 
+                opponentBoard[target.Row][target.Column].ChangeState(SquareState.Missed);
                 break;
 
         }
         StateHasChanged();
+
+        if (!IsGameOver())
+        {
+            await OpponentAttack();
+        }
     }
 
-    private void OpponentAttack()
+    private async Task OpponentAttack()
     {
         var target = opponentGunnery.Next();
         var hitResult = myFleet.Hit(target.Row, target.Column);
@@ -199,20 +246,23 @@
             case HitResult.Hit:
                 myBoard[target.Row][target.Column].ChangeState(SquareState.Hit);
                 break;
-            case HitResult.Missed:
-                myBoard[target.Row][target.Column].ChangeState(SquareState.Missed);
-                break;
             case HitResult.Sunken:
-                foreach (var ship in myFleet.Ships)
                 {
-                    if (ship.Squares.Any(s => s.Row == target.Row && s.Column == target.Column)) ;
-
-                    foreach (var hitSquare in ship.Squares)
+                    foreach (var ship in myFleet.Ships)
                     {
-                        myBoard[hitSquare.Row][hitSquare.Column].ChangeState(SquareState.Sunken);
+                        if (ship.Squares.Any(s => s.Row == target.Row && s.Column == target.Column))
+                        {
+                            foreach (var hitSquare in ship.Squares)
+                            {
+                                myBoard[hitSquare.Row][hitSquare.Column].ChangeState(SquareState.Sunken);
+                            }
+                            break;
+                        }
                     }
                     break;
                 }
+            default:
+                myBoard[target.Row][target.Column].ChangeState(SquareState.Missed);
                 break;
 
         }
