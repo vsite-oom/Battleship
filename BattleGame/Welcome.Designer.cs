@@ -70,7 +70,9 @@
             Controls.Add(toBattle);
             Controls.Add(label1);
             Icon = (Icon)resources.GetObject("$this.Icon");
+            MaximizeBox = false;
             Name = "Welcome";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "Welcome";
             Load += Welcome_Load;
             ResumeLayout(false);
