@@ -1,3 +1,9 @@
+using Microsoft.VisualBasic.ApplicationServices;
+using System.Globalization;
+using System.Media;
+using System.Reflection;
+using System.Resources;
+using System.Threading.Tasks;
 using System.Xml.Serialization;
 using Vsite.Oom.Battleship.Model;
 
@@ -8,7 +14,7 @@ namespace GUI
         // ************************************************************
         // *                   CONSTANTS AND FIELDS                   *
         // ************************************************************
-        
+
         private const int gridSize = 10;
         private const int gridSquareSize = 50;
         private const int playerGridLeftMargin = 100;
@@ -44,23 +50,36 @@ namespace GUI
         private Color colorFogOfWar = Color.LightGray;
         private Color colorFleet = Color.Gray;
 
+        // ResourceManager is used to load audio files from the resources
+        private ResourceManager resourceManager = new ResourceManager("GUI.Form1", Assembly.GetExecutingAssembly());
+
+        // SoundPlayer is used to play audio files
+        private SoundPlayer soundMissed;
+        private SoundPlayer soundHit;
+        private SoundPlayer soundSunken;
+
 
         // ************************************************************
         // *                       CONSTRUCTOR                        *
         // ************************************************************
-        
+
         public Form1()
         {
             InitializeComponent();
             btnStartReset.Enabled = false;
             CreateGrids(playerGridLeftMargin, computerGridLeftMargin, topMargin);
+
+            // Load the audio files from the resources
+            soundMissed = LoadSound("soundMissed");
+            soundHit = LoadSound("soundHit");
+            soundSunken = LoadSound("soundSunken");
         }
 
 
         // ************************************************************
         // *                     GRID MANAGEMENT                      *
         // ************************************************************
-        
+
         private void CreateGrids(int playerGridLeftMargin, int computerGridLeftMargin, int topMargin)
         {
             for (int i = 0; i <= gridSize; i++)
@@ -232,7 +251,7 @@ namespace GUI
         // ************************************************************
         // *                        GAME LOGIC                        *
         // ************************************************************
-        
+
         private void playerTurnLogic()
         {
             // Enable computer grid
@@ -262,18 +281,21 @@ namespace GUI
 
             if (hitResult == HitResult.Missed)
             {
+                soundMissed.Play();
                 playerGridButtons[target.Row, target.Column].BackColor = colorMissed;
                 playerTurn = true;
                 playerTurnLogic();
             }
             else if (hitResult == HitResult.Hit)
             {
+                soundHit.Play();
                 playerGridButtons[target.Row, target.Column].BackColor = colorHit;
                 playerTurn = true;
                 playerTurnLogic();
             }
             else if (hitResult == HitResult.Sunken)
             {
+                soundSunken.Play();
                 foreach (var ship in playerFleet.Ships)
                 {
                     foreach (var square in ship.Squares)
@@ -297,7 +319,7 @@ namespace GUI
                     playerTurn = true;
                     playerTurnLogic();
                 }
-            }  
+            }
         }
 
         private void gameReset()
@@ -380,7 +402,7 @@ namespace GUI
         }
 
         // Event handler for when a player clicks on a square on the computer grid
-        private void btnComputerGridButton_Click(object? sender, EventArgs e)  
+        private void btnComputerGridButton_Click(object? sender, EventArgs e)
         {
             if (sender is CustomButton customButton)  // Warning if omitted. Warning is false-positive because the sender is always a CustomButton.
             {
@@ -398,18 +420,21 @@ namespace GUI
 
                 if (hitResult == HitResult.Missed)
                 {
+                    soundMissed.Play();
                     customButton.BackColor = colorMissed;
                     playerTurn = false;
                     computerTurnLogic();
                 }
                 else if (hitResult == HitResult.Hit)
                 {
+                    soundHit.Play();
                     customButton.BackColor = colorHit;
                     playerTurn = false;
                     computerTurnLogic();
                 }
                 else if (hitResult == HitResult.Sunken)
                 {
+                    soundSunken.Play();
                     foreach (var ship in computerFleet.Ships)
                     {
                         foreach (var square in ship.Squares)
@@ -435,6 +460,23 @@ namespace GUI
                     }
                 }
             }
+        }
+
+
+        // ************************************************************
+        // *                          AUDIO                           *
+        // ************************************************************
+
+        private SoundPlayer LoadSound(string resourceName)
+        {
+            var soundBytes = resourceManager.GetObject(resourceName) as byte[];  // 'as' casts the object to a byte array or returns null if the object is not a byte array.
+            if (soundBytes == null)
+            {
+                throw new ArgumentException("Resource not found or is not a sound file.", nameof(resourceName));
+            }
+
+            MemoryStream soundStream = new MemoryStream(soundBytes);
+            return new SoundPlayer(soundStream);
         }
     }
 }
