@@ -153,14 +153,14 @@ namespace GUI
             return label;
         }
 
-        private void PrepareComputerGrid(CustomButton[,] buttons)
+        private void PrepareComputerGrid()
         {
             DisableGrid(computerGridButtons);
             for (int i = 1; i < (gridSize + 1); i++)
             {
                 for (int j = 1; j < (gridSize + 1); j++)
                 {
-                    var button = buttons[i - 1, j - 1];
+                    var button = computerGridButtons[i - 1, j - 1];
                     button.BackColor = colorFogOfWar;
                 }
             }
@@ -171,13 +171,13 @@ namespace GUI
             }
         }
 
-        private void PreparePlayerGrid(CustomButton[,] buttons)
+        private void PreparePlayerGrid()
         {
             for (int i = 1; i < (gridSize + 1); i++)
             {
                 for (int j = 1; j < (gridSize + 1); j++)
                 {
-                    var button = buttons[i - 1, j - 1];
+                    var button = playerGridButtons[i - 1, j - 1];
                     button.BackColor = colorFogOfWar;
                 }
             }
@@ -305,8 +305,8 @@ namespace GUI
             gameStarted = false;
             btnPlaceFleet.Enabled = true;
             btnStartReset.Enabled = false;
-            PreparePlayerGrid(playerGridButtons);
-            PrepareComputerGrid(computerGridButtons);
+            PreparePlayerGrid();
+            PrepareComputerGrid();
             playerShipsSunk = 0;
             computerShipsSunk = 0;
         }
@@ -319,7 +319,7 @@ namespace GUI
         private void btnPlaceFleet_Click(object sender, EventArgs e)
         {
             // 1. Clear player grid (color grid to color used for empty grid)
-            PreparePlayerGrid(playerGridButtons);
+            PreparePlayerGrid();
 
             // 2. Create player fleet
             playerFleetBuilder = new FleetBuilder(gridSize, gridSize, shipLengths);
@@ -340,7 +340,7 @@ namespace GUI
                 btnPlaceFleet.Enabled = false;
 
                 // 2. Clear computer grid (color grid to color used for empty grid)
-                PrepareComputerGrid(computerGridButtons);
+                PrepareComputerGrid();
 
                 // 3. Create computer fleet
                 computerFleetBuilder = new FleetBuilder(gridSize, gridSize, shipLengths);
@@ -372,8 +372,8 @@ namespace GUI
             else if (gameStarted == true)
             {
                 gameStarted = false;
-                PreparePlayerGrid(playerGridButtons);
-                PrepareComputerGrid(computerGridButtons);
+                PreparePlayerGrid();
+                PrepareComputerGrid();
                 btnPlaceFleet.Enabled = true;
                 btnStartReset.Enabled = false;
             }
