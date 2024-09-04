@@ -266,6 +266,12 @@ namespace GUI
             // Simulate thinking delay
             await Task.Delay(1000);
 
+            // If the game was reset while the computer was "thinking", return so as not to continue the game
+            if (gameStarted == false)
+            {
+                return;
+            }
+
             var target = computerGunnery!.Next();
             HitResult hitResult = playerFleet!.Hit(target.Row, target.Column);  // Warning if '!' is omitted. Warning is false-positive because playerFleet is initialized in btnPlaceFleet_Click.
             computerGunnery.ProcessHitResult(hitResult);
