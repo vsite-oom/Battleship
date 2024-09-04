@@ -382,8 +382,10 @@ namespace GUI
                 Random random = new Random();
                 playerTurn = random.Next(0, 2) != 0;
 
-                // Debugging: Place computer fleet on the grid (color grid to color used for fleet) for testing purposes.
-                // PlaceFleetOnGrid(computerFleet, computerGridButtons);
+#if DEBUG
+                // Place computer fleet on the grid (color grid to color used for fleet) for testing purposes.
+                PlaceFleetOnGrid(computerFleet, computerGridButtons);
+#endif
 
                 gameStarted = true;
 
