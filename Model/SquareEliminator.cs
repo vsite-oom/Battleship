@@ -13,20 +13,19 @@ namespace Vsite.Oom.Battleship.Model
     public class SquareEliminator
     {
         // Moramo proslijediti i broj redaka i stupaca jer ne znamo veličinu polja.
-        public  IEnumerable<SquareCoordinate> ToEliminate(IEnumerable<Square> shipSquares, int rows, int columns)
+        // shipSquares moraju biti sortirani da bi ova metoda radila kako treba.
+        public IEnumerable<SquareCoordinate> ToEliminate(IEnumerable<Square> shipSquares, int rows, int columns)
         {
-            // Grid vraća već sortirane Squareove od najlijevijeg, najgornjeg, prema dolje, pa ovdje možemo
-            // pretpostaviti da će nam prvi imati najmanje koordinate.
             var first = shipSquares.First();
             int firstRow = first.Row;
             int firstColumn = first.Column;
             if (firstRow > 0)
             {
-                --firstRow;
+                --firstRow;  // Ako je prvi redak veći od 0, onda možemo eliminirati i kvadrat iznad njega.
             }
             if (firstColumn > 0)
             {
-                --firstColumn;
+                --firstColumn;  // Ako je prvi stupac veći od 0, onda možemo eliminirati i kvadrat lijevo od njega.
             }
 
             var last = shipSquares.Last();
@@ -34,11 +33,11 @@ namespace Vsite.Oom.Battleship.Model
             int lastColumn = last.Column;
             if (lastRow < rows - 1)
             {
-                ++lastRow;
+                ++lastRow;  // Ako je zadnji redak manji od broja redaka, onda možemo eliminirati i kvadrat ispod njega.
             }            
             if (lastColumn < columns - 1)
             {
-                ++lastColumn;
+                ++lastColumn;  // Ako je zadnji stupac manji od broja stupaca, onda možemo eliminirati i kvadrat desno od njega.
             }
 
             var result = new List<SquareCoordinate>();

@@ -98,15 +98,30 @@ namespace Vsite.Oom.Battleship.Model
         private void MarkShipSunken()  // Označava brod kao potopljen na način da označi sva polja broda kao potopljena i eliminira sva polja oko broda.
         {
             shipSquares.Add(target);
+
+            // Označavamo sva polja broda kao potopljena
             foreach (var square in shipSquares)
             {
                 square.ChangeState(SquareState.Sunken);
+
             }
+
+            // Sortiramo pogođena polja broda prema rednom broju retka i stupca.
+            // Ovo je potrebno jer eliminator očekuje sortirane kvadrate.
+            shipSquares.Sort((s1, s2) =>
+            {
+                if (s1.Row == s2.Row)
+                    return s1.Column.CompareTo(s2.Column);
+                return s1.Row.CompareTo(s2.Row);
+            });
+
             var toEliminate = eliminator.ToEliminate(shipSquares, recordGrid.Rows, recordGrid.Columns);
+            
             foreach (var square in toEliminate)
             {
                 recordGrid.ChangeSquareState(square.Row, square.Column, SquareState.Eliminated);
             }
+            
             shipLengths.Remove(shipSquares.Count);  // Uklanjamo duljinu potopljenog broda iz liste preostalih brodova koje treba potopiti.
             shipSquares.Clear();  // Brišemo listu pogođenih polja jer smo potopili brod.
         }
