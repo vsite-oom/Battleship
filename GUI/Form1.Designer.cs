@@ -64,7 +64,7 @@
             MaximumSize = new Size(1466, 789);
             MinimumSize = new Size(1466, 789);
             Name = "Form1";
-            Text = "Form1";
+            Text = "Battleship";
             ResumeLayout(false);
         }
 
