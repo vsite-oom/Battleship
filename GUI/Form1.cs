@@ -51,7 +51,7 @@ namespace GUI
         private Color colorFleet = Color.Gray;
 
         // ResourceManager is used to load audio files from the resources
-        private ResourceManager resourceManager = new ResourceManager("GUI.Form1", Assembly.GetExecutingAssembly());
+        private ResourceManager resourceManager = new ResourceManager("GUI.CustomResources", Assembly.GetExecutingAssembly());
 
         // SoundPlayer is used to play audio files
         private SoundPlayer soundMissed;

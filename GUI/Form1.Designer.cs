@@ -61,6 +61,8 @@
             ClientSize = new Size(1450, 750);
             Controls.Add(btnStartReset);
             Controls.Add(btnPlaceFleet);
+            MaximumSize = new Size(1466, 789);
+            MinimumSize = new Size(1466, 789);
             Name = "Form1";
             Text = "Form1";
             ResumeLayout(false);
