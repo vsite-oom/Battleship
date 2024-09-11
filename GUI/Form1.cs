@@ -21,10 +21,10 @@ namespace GUI
         private const int computerGridLeftMargin = 750;
         private const int topMargin = 50;
 
-        private CustomButton[,] playerGridButtons = new CustomButton[gridSize, gridSize];  // Player's fleet and computer's shots
-        private CustomButton[,] computerGridButtons = new CustomButton[gridSize, gridSize];  // Computer's fleet and player's shots
+        private readonly CustomButton[,] playerGridButtons = new CustomButton[gridSize, gridSize];  // Player's fleet and computer's shots
+        private readonly CustomButton[,] computerGridButtons = new CustomButton[gridSize, gridSize];  // Computer's fleet and player's shots
 
-        private int[] shipLengths = new int[] { 5, 4, 4, 3, 3, 3, 2, 2, 2, 2 };
+        private readonly int[] shipLengths = new int[] { 5, 4, 4, 3, 3, 3, 2, 2, 2, 2 };  
 
         private FleetBuilder? playerFleetBuilder;
         private FleetBuilder? computerFleetBuilder;
@@ -42,21 +42,21 @@ namespace GUI
 
         private CustomButton? lastComputerHitButton;
         private CustomButton? lastPlayerHitButton;
-        private String lastHitMarker = "X";
+        private const String lastHitMarker = "X";
 
-        private Color colorMissed = Color.DodgerBlue;
-        private Color colorHit = Color.DarkOrange;
-        private Color colorSunken = Color.DarkRed;
-        private Color colorFogOfWar = Color.LightGray;
-        private Color colorFleet = Color.Gray;
+        private readonly Color colorMissed = Color.DodgerBlue;
+        private readonly Color colorHit = Color.DarkOrange;
+        private readonly Color colorSunken = Color.DarkRed;
+        private readonly Color colorFogOfWar = Color.LightGray;
+        private readonly Color colorFleet = Color.Gray;
 
         // ResourceManager is used to load audio files from the resources
-        private ResourceManager resourceManager = new ResourceManager("GUI.CustomResources", Assembly.GetExecutingAssembly());
+        private readonly ResourceManager resourceManager = new ResourceManager("GUI.CustomResources", Assembly.GetExecutingAssembly());
 
         // SoundPlayer is used to play audio files
-        private SoundPlayer soundMissed;
-        private SoundPlayer soundHit;
-        private SoundPlayer soundSunken;
+        private readonly SoundPlayer soundMissed;
+        private readonly SoundPlayer soundHit;
+        private readonly SoundPlayer soundSunken;
 
 
         // ************************************************************
@@ -95,7 +95,7 @@ namespace GUI
                         // Player grid column letters
                         Controls.Add(CreateLetterLabel(j, playerGridLeftMargin + (j * gridSquareSize), topMargin));
                         // Computer grid column letters
-                        Controls.Add(CreateLetterLabel(j, Form1.computerGridLeftMargin + (j * gridSquareSize), topMargin));
+                        Controls.Add(CreateLetterLabel(j, computerGridLeftMargin + (j * gridSquareSize), topMargin));
                     }
                     else if (j == 0)
                     {
@@ -106,12 +106,12 @@ namespace GUI
                     }
                     else  // Create squares buttons
                     {
-                        CustomButton playerButton = CreateButton(i - 1, j - 1, Form1.playerGridLeftMargin, topMargin);  // i - 1 and j - 1 because Model.Grid is 0-based.
+                        CustomButton playerButton = CreateButton(i - 1, j - 1, playerGridLeftMargin, topMargin);  // i - 1 and j - 1 because Model.Grid is 0-based.
                         playerButton.Enabled = false;
                         playerGridButtons[i - 1, j - 1] = playerButton;
                         Controls.Add(playerButton);
 
-                        CustomButton computerButton = CreateButton(i - 1, j - 1, Form1.computerGridLeftMargin, topMargin);
+                        CustomButton computerButton = CreateButton(i - 1, j - 1, computerGridLeftMargin, topMargin);
                         computerButton.Click += btnComputerGridButton_Click;
                         computerButton.Enabled = false;
                         computerGridButtons[i - 1, j - 1] = computerButton;
