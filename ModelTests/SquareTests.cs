@@ -6,6 +6,7 @@ namespace ModelTests;
 [TestClass]
 public class SquareTests
 {
+    [TestMethod]
     public void ConstructorCreateSquareWithRowAndColumnProvided()
     {
         int row = 1;
