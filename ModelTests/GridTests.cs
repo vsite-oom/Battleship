@@ -10,7 +10,7 @@ namespace ModelTests;
 public class GridTests
 {
     [TestMethod]
-    public void ConstructorCreatesGridWith50SquaresFor5RowsAnd10Columns(Assert assert)
+    public void ConstructorCreatesGridWith50SquaresFor5RowsAnd10Columns()
     {
         int rows = 5;
         int columns = 10;
