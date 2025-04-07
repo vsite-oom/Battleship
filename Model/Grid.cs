@@ -6,12 +6,19 @@ using System.Threading.Tasks;
 
 namespace Model;
 
-class Grid
+public class Grid
 {
     public readonly int Rows;
     public readonly int Columns;
 
     private readonly Square[,] squares;
+    private object get;
+
+    public Grid(int rows, int columns)
+    {
+        Rows = rows;
+        Columns = columns;
+    }
 
     public Grid(int rows, int columns, Square[,] squares)
     {
@@ -30,6 +37,6 @@ class Grid
 
     public IEnumerable<Square> Squares()
     {
-        get{return squares.Cast<Square>().Where(s=>s!=null) }
+        get { return squares.Cast<Square>().Where(s => s != null); }
     }
 }

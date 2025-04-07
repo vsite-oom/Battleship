@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Model;
 
-class Square
+public class Square
 {
     public readonly int Row;
     public readonly int Column;

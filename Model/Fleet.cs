@@ -6,6 +6,6 @@ using System.Threading.Tasks;
 
 namespace Model;
 
-class Fleet
+public class Fleet
 {
 }

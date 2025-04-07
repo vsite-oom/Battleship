@@ -6,6 +6,6 @@ using System.Threading.Tasks;
 
 namespace Model;
 
-class FleetBuilder
+public class FleetBuilder
 {
 }
