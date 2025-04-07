@@ -16,7 +16,7 @@ public class GridTests
         int columns = 10;
 
         var grid = new Grid(rows, columns);
-        assert.AreEqual(50, grid.Squares.Count());
+        Assert.AreEqual(50, grid.Squares.Count());
     }
 
 

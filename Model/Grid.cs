@@ -3,40 +3,37 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Model;
 
 namespace Model;
 
-public class Grid
+public class Grid 
 {
+
     public readonly int Rows;
     public readonly int Columns;
 
-    private readonly Square[,] squares;
-    private object get;
+    private readonly Square?[,] squares;
 
     public Grid(int rows, int columns)
     {
         Rows = rows;
         Columns = columns;
-    }
 
-    public Grid(int rows, int columns, Square[,] squares)
-    {
-        Rows = rows;
-        Columns = columns;
-        this.squares = squares;
+        squares = new Square[Rows, Columns];
 
-        for(int row = 0; row<Rows; row++)
+        for (int r = 0; r < Rows; r++)
         {
-            for(int column=0; column<Columns; column++)
+            for (int c = 0; c < Columns; c++)
             {
-                squares[row, column] = new Square(row, column);
+                squares[r, c] = new Square(r, c);
             }
         }
     }
 
-    public IEnumerable<Square> Squares()
+    public IEnumerable<Square> Squares
     {
         get { return squares.Cast<Square>().Where(s => s != null); }
     }
+
 }
