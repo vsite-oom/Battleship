@@ -1,4 +1,6 @@
-﻿namespace Model;
+﻿using System.Data;
+
+namespace Model;
 
 public class Square
 {
@@ -10,5 +12,4 @@ public class Square
         Row = row;
         Column = column;
     }
-
 }
