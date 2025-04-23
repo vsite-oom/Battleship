@@ -1,11 +1,11 @@
-﻿namespace ModelTests
+﻿using Model;
+namespace ModelTests;
+
+[TestClass]
+public sealed class Test1
 {
-    [TestClass]
-    public sealed class Test1
+    [TestMethod]
+    public void TestMethod1()
     {
-        [TestMethod]
-        public void TestMethod1()
-        {
-        }
     }
 }

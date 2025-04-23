@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ModelTests;
 [TestClass]
-class SquareTests
+public class SquareTests
 {
     [TestMethod]
 
