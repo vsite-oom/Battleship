@@ -1,95 +1,68 @@
 ﻿namespace Model;
 
-public class Grid
+public abstract class Grid
 {
     public readonly int Rows;
     public readonly int Columns;
-    private readonly Square[,] squares;
+    protected readonly Square?[,] squares;
 
-    public Grid(int rows, int columns)
+    protected Grid(int rows, int columns)
     {
         Rows = rows;
         Columns = columns;
-        squares = new Square[rows, columns];
 
-        for (int row = 0; row < rows; row++)
+        squares = new Square[Rows, Columns];
+
+        for (int r = 0; r < Rows; r++)
         {
-            for (int column = 0; column < columns; column++)
+            for (int c = 0; c < Columns; c++)
             {
-                squares[row, column] = new Square(row, column);
+                squares[r, c] = new Square(r, c);
             }
         }
     }
 
-    public IEnumerable<Square> Squares
+    public virtual IEnumerable<Square> Squares
     {
-        get { return squares.Cast<Square>().Where(s => s != null); }
+        get => squares.Cast<Square>();
     }
+
+    protected abstract bool IsSquareAvailable(int row, int column);
 
     public IEnumerable<IEnumerable<Square>> GetAvailablePlacements(int length)
     {
-        return GetHorizontalAvailablePlacements(length).Concat(GetVerticalAvailablePlacements(length));
+
+        return GetAvailablePlacements(length, true).Concat(GetAvailablePlacements(length, false));
     }
-
-    private IEnumerable<IEnumerable<Square>> GetHorizontalAvailablePlacements(int length)
+    private IEnumerable<IEnumerable<Square>> GetAvailablePlacements(int length, bool isHorizontal)
     {
-        List<IEnumerable<Square>> result = new List<IEnumerable<Square>>();
+        List<IEnumerable<Square>> result = new();
 
-        for (int r = 0; r < Rows; ++r)
+        for (int i = 0; i < (isHorizontal ? Rows : Columns); i++)
         {
-            int counter = 0;
-            for (int c = 0; c < Columns; ++c)
+            var queue = new LimitedQueue<Square>(length);
+
+            for (int j = 0; j < (isHorizontal ? Columns : Rows); j++)
             {
-                if (squares[r, c] != null)
+                int rowId = isHorizontal ? i : j;
+                int colId = isHorizontal ? j : i;
+
+                if (IsSquareAvailable(rowId, colId))
                 {
-                    ++counter;
-                    if (counter >= length)
+                    queue.Enqueue(squares[rowId, colId]!);
+
+                    if (queue.Count >= length)
                     {
-                        List<Square> temp = new List<Square>();
-                        for (int c1 = c - length + 1; c1 <= c; ++c1)
-                        {
-                            temp.Add(squares[r, c1]!);
-                        }
-                        result.Add(temp);
+                        result.Add(queue.ToArray());
                     }
                 }
                 else
                 {
-                    counter = 0;
+                    queue.Clear();
                 }
             }
         }
-        return result;
-    }
 
-    private IEnumerable<IEnumerable<Square>> GetVerticalAvailablePlacements(int length)
-    {
-        List<IEnumerable<Square>> result = new List<IEnumerable<Square>>();
-
-        for (int c = 0; c < Columns; c++)
-        {
-            int counter = 0;
-            for (int r = 0; r < Rows; r++)
-            {
-                if (squares[r, c] != null)
-                {
-                    ++counter;
-                    if (counter >= length)
-                    {
-                        List<Square> temp = new List<Square>();
-                        for (int r1 = r - length + 1; r1 <= r; ++r1)
-                        {
-                            temp.Add(squares[r1, c]!);
-                        }
-                        result.Add(temp);
-                    }
-                }
-                else
-                {
-                    counter = 0;
-                }
-            }
-        }
         return result;
     }
 }
