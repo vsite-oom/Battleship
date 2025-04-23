@@ -3,7 +3,25 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.33502.453
 MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Model", "..\Battleship\Model\Model.csproj", "{91A4B5AB-98DA-BD30-F62D-F24F07128E38}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModelTests", "..\Battleship\ModelTests\ModelTests.csproj", "{6B6B447B-216C-BA24-FE60-2F473868F4E4}"
+EndProject
 Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{91A4B5AB-98DA-BD30-F62D-F24F07128E38}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{91A4B5AB-98DA-BD30-F62D-F24F07128E38}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{91A4B5AB-98DA-BD30-F62D-F24F07128E38}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{91A4B5AB-98DA-BD30-F62D-F24F07128E38}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6B6B447B-216C-BA24-FE60-2F473868F4E4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6B6B447B-216C-BA24-FE60-2F473868F4E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6B6B447B-216C-BA24-FE60-2F473868F4E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6B6B447B-216C-BA24-FE60-2F473868F4E4}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
