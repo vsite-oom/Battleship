@@ -1,0 +1,70 @@
+﻿@page "/"
+@inject NavigationManager NavigationManager
+@using Microsoft.AspNetCore.Components
+@using System.Collections.Generic
+
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h2 class="text-center">Battleship Game Settings</h2>
+                </div>
+                <div class="card-body">
+                    <div class="form-group mb-3">
+                        <label for="gridSize">Grid Size:</label>
+                        <select id="gridSize" class="form-control" @bind="gridSize">
+                            <option value="8">8x8</option>
+                            <option value="10">10x10</option>
+                            <option value="12">12x12</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label for="aiSelector">AI Strategy:</label>
+                        <select id="aiSelector" class="form-control" @bind="aiSelectorType">
+                            <option value="@ShootingTactics.Random">Random</option>
+                            <option value="@ShootingTactics.Surrounding">Surrounding</option>
+                            <option value="@ShootingTactics.Inline">Inline</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label>Ship Configuration:</label>
+                        <div class="card p-3">
+                            @foreach (var ship in shipLengths)
+                            {
+                                <div class="d-flex align-items-center mb-2">
+                                    <span>Ship size: @ship</span>
+                                    <div class="ms-2 d-flex">
+                                        @for (int i = 0; i < ship; i++)
+                                        {
+                                            <div class="ship-segment bg-primary" style="width: 20px; height: 20px; margin-right: 2px;"></div>
+                                        }
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+
+                    <div class="text-center mt-4">
+                        <button class="btn btn-primary btn-lg" @onclick="StartGame">Start Game</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    private int gridSize = 10;
+    private ShootingTactics aiSelectorType = ShootingTactics.Random;
+    private List<int> shipLengths = new List<int> { 5, 4, 3, 3, 2 }; // Default ship sizes
+
+    private void StartGame()
+    {
+        // Pass the integer value of the enum instead of the enum itself
+        NavigationManager.NavigateTo($"/game?gridSize={gridSize}&ships={string.Join(",", shipLengths)}");
+    }
+}

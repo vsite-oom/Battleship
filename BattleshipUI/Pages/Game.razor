@@ -1,0 +1,240 @@
+﻿@page "/game"
+@inject NavigationManager NavigationManager
+@inject BattleshipGame.Services.GameService GameService
+@using Model
+@using System.Timers
+@implements IDisposable
+
+<div class="container-fluid mt-3">
+    <div class="row">
+        <div class="col-12 mb-3 text-center">
+            <h1>Battleship Game</h1>
+            <div class="alert @(GameService.IsGameOver ? "alert-info" : GameService.IsPlayerTurn ? "alert-primary" : "alert-warning") mt-2">
+                @if (GameService.IsGameOver)
+                {
+                    var playerWon = GameService.AIHits.Count(h => h.state == SquareState.Sunken) < GameService.ShipLengths.Sum();
+                    <h3>Game Over - @(playerWon ? "You Won!" : "AI Won!")</h3>
+                }
+                else
+                {
+                    <h3>@(GameService.IsPlayerTurn ? "Your Turn" : "AI is thinking...")</h3>
+                }
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6 mb-4">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h3>Your Fleet</h3>
+                </div>
+                <div class="card-body">
+                    <div class="grid-container">
+                        @for (int row = 0; row < GameService.GridRows; row++)
+                        {
+                            <div class="grid-row">
+                                @for (int col = 0; col < GameService.GridColumns; col++)
+                                {
+                                    var r = row;
+                                    var c = col;
+                                    var isShip = GameService.IsPlayerShipAt(r, c);
+                                    var isHit = GameService.HasAIHit(r, c);
+                                    var hitState = isHit ? GameService.GetAIHitState(r, c) : SquareState.Intact;
+                                    
+                                    <div class="grid-cell @GetPlayerCellClass(isShip, hitState)">
+                                        @if (showCoordinates)
+                                        {
+                                            <small>@r,@c</small>
+                                        }
+                                    </div>
+                                }
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-6 mb-4">
+            <div class="card">
+                <div class="card-header bg-danger text-white">
+                    <h3>Enemy Fleet</h3>
+                </div>
+                <div class="card-body">
+                    <div class="grid-container">
+                        @for (int row = 0; row < GameService.GridRows; row++)
+                        {
+                            <div class="grid-row">
+                                @for (int col = 0; col < GameService.GridColumns; col++)
+                                {
+                                    var r = row;
+                                    var c = col;
+                                    var isHit = GameService.HasPlayerHit(r, c);
+                                    var hitState = isHit ? GameService.GetPlayerHitState(r, c) : SquareState.Intact;
+                                    
+                                    <div class="grid-cell @GetEnemyCellClass(hitState)" @onclick="() => ShootAtEnemy(r, c)">
+                                        @if (showCoordinates)
+                                        {
+                                            <small>@r,@c</small>
+                                        }
+                                    </div>
+                                }
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-12 text-center mt-3 mb-4">
+            <button class="btn btn-secondary me-2" @onclick="ToggleCoordinates">@(showCoordinates ? "Hide" : "Show") Coordinates</button>
+            <button class="btn btn-primary me-2" @onclick="RestartGame">Restart Game</button>
+            <button class="btn btn-outline-primary" @onclick="ReturnToSettings">Change Settings</button>
+        </div>
+    </div>
+</div>
+
+<style>
+    .grid-container {
+        display: flex;
+        flex-direction: column;
+        margin: 0 auto;
+        max-width: 500px;
+    }
+    
+    .grid-row {
+        display: flex;
+    }
+    
+    .grid-cell {
+        width: 40px;
+        height: 40px;
+        border: 1px solid #aaa;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.2s;
+        position: relative;
+    }
+    
+    .ship {
+        background-color: #0d6efd;
+    }
+    
+    .intact {
+        background-color: #f8f9fa;
+    }
+    
+    .missed {
+        background-color: #e9ecef;
+    }
+    
+    .hit {
+        background-color: #dc3545;
+    }
+    
+    .enemy-cell:hover {
+        background-color: rgba(13, 110, 253, 0.2);
+    }
+</style>
+
+@code {
+    [Parameter]
+    [SupplyParameterFromQuery(Name = "gridSize")]
+    public int GridSize { get; set; } = 10;
+
+    [Parameter]
+    [SupplyParameterFromQuery(Name = "ships")]
+    public string ShipsParam { get; set; } = "5,4,3,3,2";
+
+    private Timer aiTimer;
+    private bool showCoordinates = false;
+
+    protected override void OnInitialized()
+    {
+        int[] shipLengths = ShipsParam.Split(',').Select(int.Parse).ToArray();
+        GameService.InitializeGame(GridSize, shipLengths);
+        Console.WriteLine(shipLengths.ToString);
+
+        aiTimer = new Timer(1000);
+        aiTimer.Elapsed += HandleAITurn;
+        aiTimer.AutoReset = false;
+    }
+    
+    private void ShootAtEnemy(int row, int col)
+    {
+        if (!GameService.IsPlayerTurn || GameService.HasPlayerHit(row, col) || GameService.IsGameOver)
+            return;
+            
+        var result = GameService.PlayerShoot(row, col);
+        
+        if (!GameService.IsPlayerTurn && !GameService.IsGameOver)
+        {
+            aiTimer.Start(); // AI will make its move after a short delay
+        }
+        
+        StateHasChanged();
+    }
+    
+    private void HandleAITurn(object source, ElapsedEventArgs e)
+    {
+        if (GameService.IsPlayerTurn || GameService.IsGameOver)
+            return;
+            
+        var result = GameService.AIShoot();
+        
+        if (!GameService.IsPlayerTurn && !GameService.IsGameOver)
+        {
+            aiTimer.Start(); // AI takes another turn if it hit
+        }
+        
+        InvokeAsync(StateHasChanged);
+    }
+    
+    private string GetPlayerCellClass(bool isShip, SquareState hitState)
+    {
+        return hitState switch
+        {
+            SquareState.Hit => "hit",
+            SquareState.Sunken => "hit",
+            SquareState.Missed => "missed",
+            _ => isShip ? "ship" : "intact"
+        };
+    }
+    
+    private string GetEnemyCellClass(SquareState hitState)
+    {
+        return hitState switch
+        {
+            SquareState.Hit => "hit",
+            SquareState.Sunken => "hit",
+            SquareState.Missed => "missed",
+            _ => "intact enemy-cell"
+        };
+    }
+    
+    private void ToggleCoordinates()
+    {
+        showCoordinates = !showCoordinates;
+    }
+    
+    private void RestartGame()
+    {
+        int[] shipLengths = ShipsParam.Split(',').Select(int.Parse).ToArray();
+        GameService.InitializeGame(GridSize, shipLengths);
+    }
+    
+    private void ReturnToSettings()
+    {
+        NavigationManager.NavigateTo("/");
+    }
+    
+    public void Dispose()
+    {
+        aiTimer?.Dispose();
+    }
+}

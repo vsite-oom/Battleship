@@ -12,6 +12,10 @@ public class FleetBuilder
 
     private readonly List<int> shipLengths;
 
+    private readonly Random random = new Random();
+
+    private readonly SquareEliminator eliminator = new SquareEliminator();
+
     public Fleet CreateFleet()
     {
         var fleet = new Fleet();
@@ -33,8 +37,4 @@ public class FleetBuilder
 
         return fleet;
     }
-
-    private readonly Random random = new Random();
-
-    private readonly SquareEliminator eliminator = new SquareEliminator();
 }
