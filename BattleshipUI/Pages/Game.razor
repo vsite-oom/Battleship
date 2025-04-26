@@ -1,7 +1,8 @@
 ﻿@page "/game"
 @inject NavigationManager NavigationManager
-@inject BattleshipGame.Services.GameService GameService
+@inject BattleshipGame.Services.GameServiceManager GameServiceManager
 @using Model
+@using BattleshipGame.Services
 @using System.Timers
 @implements IDisposable
 
@@ -12,7 +13,7 @@
             <div class="alert @(GameService.IsGameOver ? "alert-info" : GameService.IsPlayerTurn ? "alert-primary" : "alert-warning") mt-2">
                 @if (GameService.IsGameOver)
                 {
-                    var playerWon = GameService.AIHits.Count(h => h.state == SquareState.Sunken) < GameService.ShipLengths.Sum();
+                    var playerWon = GameService.AIHits.Count(h => h.state == SquareState.Sunken) < GameService.ShipConfiguration.Sum(kvp => kvp.Key * kvp.Value);
                     <h3>Game Over - @(playerWon ? "You Won!" : "AI Won!")</h3>
                 }
                 else
@@ -137,6 +138,11 @@
         background-color: #dc3545;
     }
     
+    .sunken {
+        background-color: #dc3545;
+        border: 2px solid #000;
+    }
+    
     .enemy-cell:hover {
         background-color: rgba(13, 110, 253, 0.2);
     }
@@ -151,14 +157,21 @@
     [SupplyParameterFromQuery(Name = "ships")]
     public string ShipsParam { get; set; } = "5,4,3,3,2";
 
+    private BaseGameService GameService => GameServiceManager.CurrentGameService;
     private Timer aiTimer;
     private bool showCoordinates = false;
 
     protected override void OnInitialized()
     {
-        int[] shipLengths = ShipsParam.Split(',').Select(int.Parse).ToArray();
-        GameService.InitializeGame(GridSize, shipLengths);
-        Console.WriteLine(shipLengths.ToString);
+        var shipLengths = ShipsParam.Split(',').Select(int.Parse).ToArray();
+        var shipConfig = new Dictionary<int, int>();
+        
+        foreach (var length in shipLengths.GroupBy(l => l))
+        {
+            shipConfig[length.Key] = length.Count();
+        }
+        
+        GameServiceManager.InitializeGame(GridSize, shipConfig);
 
         aiTimer = new Timer(1000);
         aiTimer.Elapsed += HandleAITurn;
@@ -174,7 +187,7 @@
         
         if (!GameService.IsPlayerTurn && !GameService.IsGameOver)
         {
-            aiTimer.Start(); // AI will make its move after a short delay
+            aiTimer.Start();
         }
         
         StateHasChanged();
@@ -189,7 +202,7 @@
         
         if (!GameService.IsPlayerTurn && !GameService.IsGameOver)
         {
-            aiTimer.Start(); // AI takes another turn if it hit
+            aiTimer.Start();
         }
         
         InvokeAsync(StateHasChanged);
@@ -224,8 +237,15 @@
     
     private void RestartGame()
     {
-        int[] shipLengths = ShipsParam.Split(',').Select(int.Parse).ToArray();
-        GameService.InitializeGame(GridSize, shipLengths);
+        var shipLengths = ShipsParam.Split(',').Select(int.Parse).ToArray();
+        var shipConfig = new Dictionary<int, int>();
+        
+        foreach (var length in shipLengths.GroupBy(l => l))
+        {
+            shipConfig[length.Key] = length.Count();
+        }
+        
+        GameServiceManager.InitializeGame(GridSize, shipConfig);
     }
     
     private void ReturnToSettings()
