@@ -19,7 +19,7 @@ public class GunneryTests
         var gunnery = new Gunnery(10, 10, new List<int> { 1, 2, 3 });
 
         gunnery.Next();
-        gunnery.ProcessHit(HitResult.Missed);
+        gunnery.ProcessHitResult(HitResult.Missed);
         Assert.AreEqual(ShootingTactics.Random, gunnery.ShootingTactics);
     }
 
@@ -29,7 +29,7 @@ public class GunneryTests
         var gunnery = new Gunnery(10, 10, new List<int> { 1, 2, 3 });
 
         gunnery.Next();
-        gunnery.ProcessHit(HitResult.Hit);
+        gunnery.ProcessHitResult(HitResult.Hit);
         Assert.AreEqual(ShootingTactics.Surrounding, gunnery.ShootingTactics);
     }
 
@@ -39,11 +39,10 @@ public class GunneryTests
         var gunnery = new Gunnery(10, 10, new List<int> { 1, 2, 3 });
 
         gunnery.Next();
-        gunnery.ProcessHit(HitResult.Hit);
+        gunnery.ProcessHitResult(HitResult.Hit);
         Assert.AreEqual(ShootingTactics.Surrounding, gunnery.ShootingTactics);
 
-        //gunnery.Next();
-        gunnery.ProcessHit(HitResult.Missed);
+        gunnery.ProcessHitResult(HitResult.Missed);
         Assert.AreEqual(ShootingTactics.Surrounding, gunnery.ShootingTactics);
     }
 
@@ -53,10 +52,10 @@ public class GunneryTests
         var gunnery = new Gunnery(10, 10, new List<int> { 1, 2, 3 });
 
         gunnery.Next();
-        gunnery.ProcessHit(HitResult.Hit);
+        gunnery.ProcessHitResult(HitResult.Hit);
         Assert.AreEqual(ShootingTactics.Surrounding, gunnery.ShootingTactics);
 
-        gunnery.ProcessHit(HitResult.Hit);
+        gunnery.ProcessHitResult(HitResult.Hit);
         Assert.AreEqual(ShootingTactics.Inline, gunnery.ShootingTactics);
     }
 
@@ -66,13 +65,13 @@ public class GunneryTests
         var gunnery = new Gunnery(10, 10, new List<int> { 1, 2, 3 });
 
         gunnery.Next();
-        gunnery.ProcessHit(HitResult.Hit);
+        gunnery.ProcessHitResult(HitResult.Hit);
         Assert.AreEqual(ShootingTactics.Surrounding, gunnery.ShootingTactics);
 
-        gunnery.ProcessHit(HitResult.Hit);
+        gunnery.ProcessHitResult(HitResult.Hit);
         Assert.AreEqual(ShootingTactics.Inline, gunnery.ShootingTactics);
 
-        gunnery.ProcessHit(HitResult.Hit);
+        gunnery.ProcessHitResult(HitResult.Hit);
         Assert.AreEqual(ShootingTactics.Inline, gunnery.ShootingTactics);
     }
 
@@ -82,13 +81,13 @@ public class GunneryTests
         var gunnery = new Gunnery(10, 10, new List<int> { 1, 2, 3 });
 
         gunnery.Next();
-        gunnery.ProcessHit(HitResult.Hit);
+        gunnery.ProcessHitResult(HitResult.Hit);
         Assert.AreEqual(ShootingTactics.Surrounding, gunnery.ShootingTactics);
 
-        gunnery.ProcessHit(HitResult.Hit);
+        gunnery.ProcessHitResult(HitResult.Hit);
         Assert.AreEqual(ShootingTactics.Inline, gunnery.ShootingTactics);
 
-        gunnery.ProcessHit(HitResult.Missed);
+        gunnery.ProcessHitResult(HitResult.Missed);
         Assert.AreEqual(ShootingTactics.Inline, gunnery.ShootingTactics);
     }
 
@@ -98,10 +97,10 @@ public class GunneryTests
         var gunnery = new Gunnery(10, 10, new List<int> { 1, 2, 3 });
 
         gunnery.Next();
-        gunnery.ProcessHit(HitResult.Hit);
+        gunnery.ProcessHitResult(HitResult.Hit);
         Assert.AreEqual(ShootingTactics.Surrounding, gunnery.ShootingTactics);
 
-        gunnery.ProcessHit(HitResult.Sunken);
+        gunnery.ProcessHitResult(HitResult.Sunken);
         Assert.AreEqual(ShootingTactics.Random, gunnery.ShootingTactics);
     }
 }
