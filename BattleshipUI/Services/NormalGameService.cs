@@ -54,7 +54,7 @@ public class NormalGameService : BaseGameService
 
         var target = AIGunnery.Next();
         var result = PlayerFleet.Hit(target.Row, target.Column);
-        AIGunnery.ProcessHit(result);
+        AIGunnery.ProcessHitResult(result);
 
         var squareState = result switch
         {

@@ -20,7 +20,6 @@ public class InlineTargetSelector : ITargetSelector
         var sorted = _squaresHit.OrderBy(keySelector: s => s.Row + s.Column);
         var directionCandidates = new List<IEnumerable<Square>>();
 
-        // Horizontal
         if (sorted.First().Row == sorted.Last().Row)
         {
             var left = _grid.GetSquaresInDirection(sorted.First().Row, sorted.First().Column, Direction.Leftwards);
@@ -35,7 +34,6 @@ public class InlineTargetSelector : ITargetSelector
                 directionCandidates.Add(right);
             }
         }
-        // Vertical
         else
         {
             var up = _grid.GetSquaresInDirection(sorted.First().Row, sorted.First().Column, Direction.Upwards);

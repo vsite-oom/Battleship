@@ -1,4 +1,6 @@
-﻿namespace Model;
+﻿using System.Diagnostics;
+
+namespace Model;
 
 public enum ShootingTactics
 {
@@ -37,7 +39,7 @@ public class Gunnery
         target = new Square(row, column);
     }
 
-    public void ProcessHit(HitResult hitResult)
+    public void ProcessHitResult(HitResult hitResult)
     {
         RecordTargetResult(hitResult);
 
@@ -47,11 +49,11 @@ public class Gunnery
             {
                 case ShootingTactics.Random:
                     ShootingTactics = ShootingTactics.Surrounding;
-                    targetSelector = new SurroundingTargetSelector(recordGrid, target, shipLengths.Max());
+                    targetSelector = new SurroundingTargetSelector(recordGrid, target, shipLengths[0]);
                     break;
                 case ShootingTactics.Surrounding:
                     ShootingTactics = ShootingTactics.Inline;
-                    targetSelector = new InlineTargetSelector(recordGrid, shipSquares, shipLengths.Max());
+                    targetSelector = new InlineTargetSelector(recordGrid, shipSquares, shipLengths[0]);
                     break;
             }
         }
@@ -84,6 +86,8 @@ public class Gunnery
 
     private void MarkShipSunken()
     {
+        shipSquares.Add(target);
+
         foreach (var square in shipSquares)
         {
             square.ChangeState(SquareState.Sunken);

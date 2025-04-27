@@ -1,7 +1,6 @@
 ﻿@page "/game"
 @inject NavigationManager NavigationManager
 @inject BattleshipGame.Services.GameServiceManager GameServiceManager
-@using Model
 @using BattleshipGame.Services
 @using System.Timers
 @implements IDisposable
@@ -13,8 +12,8 @@
             <div class="alert @(GameService.IsGameOver ? "alert-info" : GameService.IsPlayerTurn ? "alert-primary" : "alert-warning") mt-2">
                 @if (GameService.IsGameOver)
                 {
-                    var playerWon = GameService.AIHits.Count(h => h.state == SquareState.Sunken) < GameService.ShipConfiguration.Sum(kvp => kvp.Key * kvp.Value);
-                    <h3>Game Over - @(playerWon ? "You Won!" : "AI Won!")</h3>
+                    var aiWon = GameService.AIHits.Count(h => (h.state == SquareState.Sunken || h.state == SquareState.Hit || h.state == SquareState.Eliminated)) < GameService.ShipConfiguration.Sum(kvp => kvp.Key * kvp.Value);
+                    <h3>Game Over - @(aiWon ? "AI Won!" : "You Won!")</h3>
                 }
                 else
                 {
@@ -27,10 +26,10 @@
     <div class="row">
         <div class="col-md-6 mb-4">
             <div class="card">
-                <div class="card-header bg-primary text-white">
+                <div class="card-header bg-primary text-white text-center">
                     <h3>Your Fleet</h3>
                 </div>
-                <div class="card-body">
+                <div class="card-body d-flex justify-content-center">
                     <div class="grid-container">
                         @for (int row = 0; row < GameService.GridRows; row++)
                         {
@@ -42,7 +41,7 @@
                                     var isShip = GameService.IsPlayerShipAt(r, c);
                                     var isHit = GameService.HasAIHit(r, c);
                                     var hitState = isHit ? GameService.GetAIHitState(r, c) : SquareState.Intact;
-                                    
+
                                     <div class="grid-cell @GetPlayerCellClass(isShip, hitState)">
                                         @if (showCoordinates)
                                         {
@@ -56,13 +55,13 @@
                 </div>
             </div>
         </div>
-        
+
         <div class="col-md-6 mb-4">
             <div class="card">
-                <div class="card-header bg-danger text-white">
+                <div class="card-header bg-danger text-white text-center">
                     <h3>Enemy Fleet</h3>
                 </div>
-                <div class="card-body">
+                <div class="card-body d-flex justify-content-center">
                     <div class="grid-container">
                         @for (int row = 0; row < GameService.GridRows; row++)
                         {
@@ -73,7 +72,7 @@
                                     var c = col;
                                     var isHit = GameService.HasPlayerHit(r, c);
                                     var hitState = isHit ? GameService.GetPlayerHitState(r, c) : SquareState.Intact;
-                                    
+
                                     <div class="grid-cell @GetEnemyCellClass(hitState)" @onclick="() => ShootAtEnemy(r, c)">
                                         @if (showCoordinates)
                                         {
@@ -88,7 +87,7 @@
             </div>
         </div>
     </div>
-    
+
     <div class="row">
         <div class="col-12 text-center mt-3 mb-4">
             <button class="btn btn-secondary me-2" @onclick="ToggleCoordinates">@(showCoordinates ? "Hide" : "Show") Coordinates</button>
@@ -102,14 +101,12 @@
     .grid-container {
         display: flex;
         flex-direction: column;
-        margin: 0 auto;
-        max-width: 500px;
     }
-    
+
     .grid-row {
         display: flex;
     }
-    
+
     .grid-cell {
         width: 40px;
         height: 40px;
@@ -121,93 +118,77 @@
         transition: all 0.2s;
         position: relative;
     }
-    
+
     .ship {
         background-color: #0d6efd;
     }
-    
+
     .intact {
         background-color: #f8f9fa;
     }
-    
+
     .missed {
-        background-color: #e9ecef;
+        background-color: #B7C4CF;
     }
-    
+
     .hit {
         background-color: #dc3545;
     }
-    
+
     .sunken {
         background-color: #dc3545;
         border: 2px solid #000;
     }
-    
+
     .enemy-cell:hover {
         background-color: rgba(13, 110, 253, 0.2);
     }
 </style>
 
 @code {
-    [Parameter]
-    [SupplyParameterFromQuery(Name = "gridSize")]
-    public int GridSize { get; set; } = 10;
-
-    [Parameter]
-    [SupplyParameterFromQuery(Name = "ships")]
-    public string ShipsParam { get; set; } = "5,4,3,3,2";
-
     private BaseGameService GameService => GameServiceManager.CurrentGameService;
     private Timer aiTimer;
     private bool showCoordinates = false;
 
     protected override void OnInitialized()
     {
-        var shipLengths = ShipsParam.Split(',').Select(int.Parse).ToArray();
-        var shipConfig = new Dictionary<int, int>();
-        
-        foreach (var length in shipLengths.GroupBy(l => l))
-        {
-            shipConfig[length.Key] = length.Count();
-        }
-        
-        GameServiceManager.InitializeGame(GridSize, shipConfig);
+        GameServiceManager.InitializeGame();
 
         aiTimer = new Timer(1000);
         aiTimer.Elapsed += HandleAITurn;
         aiTimer.AutoReset = false;
     }
-    
+
     private void ShootAtEnemy(int row, int col)
     {
         if (!GameService.IsPlayerTurn || GameService.HasPlayerHit(row, col) || GameService.IsGameOver)
             return;
-            
+
         var result = GameService.PlayerShoot(row, col);
-        
+
         if (!GameService.IsPlayerTurn && !GameService.IsGameOver)
         {
             aiTimer.Start();
         }
-        
+
         StateHasChanged();
     }
-    
+
     private void HandleAITurn(object source, ElapsedEventArgs e)
     {
         if (GameService.IsPlayerTurn || GameService.IsGameOver)
             return;
-            
+
+
         var result = GameService.AIShoot();
-        
+
         if (!GameService.IsPlayerTurn && !GameService.IsGameOver)
         {
             aiTimer.Start();
         }
-        
         InvokeAsync(StateHasChanged);
     }
-    
+
     private string GetPlayerCellClass(bool isShip, SquareState hitState)
     {
         return hitState switch
@@ -218,7 +199,7 @@
             _ => isShip ? "ship" : "intact"
         };
     }
-    
+
     private string GetEnemyCellClass(SquareState hitState)
     {
         return hitState switch
@@ -229,30 +210,22 @@
             _ => "intact enemy-cell"
         };
     }
-    
+
     private void ToggleCoordinates()
     {
         showCoordinates = !showCoordinates;
     }
-    
+
     private void RestartGame()
     {
-        var shipLengths = ShipsParam.Split(',').Select(int.Parse).ToArray();
-        var shipConfig = new Dictionary<int, int>();
-        
-        foreach (var length in shipLengths.GroupBy(l => l))
-        {
-            shipConfig[length.Key] = length.Count();
-        }
-        
-        GameServiceManager.InitializeGame(GridSize, shipConfig);
+        GameServiceManager.InitializeGame();
     }
-    
+
     private void ReturnToSettings()
     {
         NavigationManager.NavigateTo("/");
     }
-    
+
     public void Dispose()
     {
         aiTimer?.Dispose();

@@ -12,8 +12,8 @@ public abstract class BaseGameService
     public Fleet AIFleet { get; protected set; }
     public Gunnery AIGunnery { get; protected set; }
 
-    public virtual bool IsGameOver => PlayerHits.Count(h => h.state == SquareState.Sunken) == ShipLengths.Sum() ||
-                                     AIHits.Count(h => h.state == SquareState.Sunken) == ShipLengths.Sum();
+    public virtual bool IsGameOver => PlayerHits.Count(h => (h.state == SquareState.Sunken || h.state == SquareState.Hit || h.state == SquareState.Eliminated)) == ShipLengths.Sum() ||
+                                     AIHits.Count(h => (h.state == SquareState.Sunken || h.state == SquareState.Hit || h.state == SquareState.Eliminated)) == ShipLengths.Sum();
 
     public bool IsPlayerTurn { get; protected set; } = true;
     public List<(int row, int col, SquareState state)> PlayerHits { get; } = new();

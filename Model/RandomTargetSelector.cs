@@ -16,8 +16,8 @@ public class RandomTargetSelector : ITargetSelector
     {
         var placements = grid.GetAvailablePlacements(shipLength);
         var candidates = placements.SelectMany(s => s);
-
         var selectedIndex = random.Next(candidates.Count());
+
         return candidates.ElementAt(selectedIndex);
     }
 }

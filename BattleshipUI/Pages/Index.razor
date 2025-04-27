@@ -2,7 +2,6 @@
 @inject NavigationManager NavigationManager
 @inject BattleshipGame.Services.GameServiceManager GameServiceManager
 @using BattleshipGame.Services
-@using Model
 
 <div class="container mt-5">
     <div class="row justify-content-center">
@@ -18,7 +17,6 @@
                             <option value="8">8x8</option>
                             <option value="10">10x10</option>
                             <option value="12">12x12</option>
-                            <option value="15">15x15</option>
                         </select>
                     </div>
 
@@ -36,7 +34,11 @@
                             <small>Board configuration: @GetUsedGridSpace() / @GetMaximumGridSpace() ship cells</small>
                             @if (IsShipConfigValid())
                             {
-                                <div class="text-success"><small>Valid configuration</small></div>
+                                    <div class="text-success"><small>Valid configuration</small></div>
+                            }
+                            else if (GetUsedGridSpace() <= 0)
+                            {
+                                <div class="text-danger"><small>Ship count cant be 0</small></div>
                             }
                             else
                             {
@@ -46,28 +48,28 @@
                         <div class="card p-3">
                             @foreach (var shipConfig in shipConfigurations.OrderByDescending(s => s.Key))
                             {
-                                <div class="d-flex align-items-center mb-3">
-                                    <div class="me-3 d-flex" style="width: 150px;">
+                                    <div class="d-flex align-items-center mb-3">
+                                        <div class="me-3 d-flex" style="width: 150px;">
                                         @for (int i = 0; i < shipConfig.Key; i++)
                                         {
-                                            <div class="ship-segment bg-primary" style="width: 20px; height: 20px; margin-right: 2px;"></div>
+                                                    <div class="ship-segment bg-primary" style="width: 20px; height: 20px; margin-right: 2px;"></div>
                                         }
+                                        </div>
+                                        <span class="me-2">Size @shipConfig.Key:</span>
+                                        <div class="input-group" style="width: 120px;">
+                                            <button class="btn btn-outline-secondary" type="button"
+                                                    @onclick="() => DecrementShipCount(shipConfig.Key)"
+                                                    disabled="@(shipConfig.Value <= 0)">
+                                                -
+                                            </button>
+                                            <input type="text" class="form-control text-center" value="@shipConfig.Value" readonly />
+                                            <button class="btn btn-outline-secondary" type="button"
+                                                    @onclick="() => IncrementShipCount(shipConfig.Key)"
+                                                    disabled="@(!CanAddMoreShips())">
+                                                +
+                                            </button>
+                                        </div>
                                     </div>
-                                    <span class="me-2">Size @shipConfig.Key:</span>
-                                    <div class="input-group" style="width: 120px;">
-                                        <button class="btn btn-outline-secondary" type="button"
-                                                @onclick="() => DecrementShipCount(shipConfig.Key)"
-                                                disabled="@(shipConfig.Value <= 0)">
-                                            -
-                                        </button>
-                                        <input type="text" class="form-control text-center" value="@shipConfig.Value" readonly />
-                                        <button class="btn btn-outline-secondary" type="button"
-                                                @onclick="() => IncrementShipCount(shipConfig.Key)"
-                                                disabled="@(!CanAddMoreShips())">
-                                            +
-                                        </button>
-                                    </div>
-                                </div>
                             }
                         </div>
                     </div>
@@ -81,29 +83,29 @@
 </div>
 
 @code {
-    private int gridSize = 10;
-    private GameMode gameMode = GameMode.Normal;
-    private Dictionary<int, int> shipConfigurations = new Dictionary<int, int>
+    private int gridSize;
+    private GameMode gameMode;
+    private Dictionary<int, int> shipConfigurations;
+
+    protected override void OnInitialized()
     {
-        { 5, 1 },
-        { 4, 1 },
-        { 3, 2 },
-        { 2, 1 },
-        { 1, 0 }
-    };
+        gridSize = GameServiceManager.GridSize;
+        gameMode = GameServiceManager.GameMode;
+        shipConfigurations = new Dictionary<int, int>(GameServiceManager.ShipConfiguration);
+    }
 
     private void StartGame()
     {
         if (!IsShipConfigValid())
             return;
 
+        GameServiceManager.SetGridSize(gridSize);
         GameServiceManager.SetGameMode(gameMode);
+        GameServiceManager.SetShipConfiguration(shipConfigurations);
 
-        var shipConfigString = string.Join(",", shipConfigurations
-            .Where(kvp => kvp.Value > 0)
-            .SelectMany(kvp => Enumerable.Repeat(kvp.Key, kvp.Value)));
+        GameServiceManager.InitializeGame();
 
-        NavigationManager.NavigateTo($"/game?gridSize={gridSize}&ships={shipConfigString}");
+        NavigationManager.NavigateTo("/game");
     }
 
     private int GetUsedGridSpace()
@@ -112,8 +114,25 @@
     }
 
     private int GetMaximumGridSpace()
+    {   
+    int totalGridSpace = gridSize * gridSize;
+
+    double averageShipSize = CalculateAverageShipSize();
+    double shipPercentage = 0.15 + (averageShipSize * 0.02);
+
+    shipPercentage = Math.Min(0.24, Math.Max(0.15, shipPercentage));
+
+    return (int)(totalGridSpace * shipPercentage);
+
+    }
+
+    private double CalculateAverageShipSize()
     {
-        return (int)(gridSize * gridSize * 0.3);
+        int totalShips = shipConfigurations.Sum(kvp => kvp.Value);
+        if (totalShips <= 0) return 0;
+
+        int totalShipCells = shipConfigurations.Sum(kvp => kvp.Key * kvp.Value);
+        return (double)totalShipCells / totalShips;
     }
 
     private bool IsShipConfigValid()
