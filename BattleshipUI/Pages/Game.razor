@@ -12,7 +12,7 @@
             <div class="alert @(GameService.IsGameOver ? "alert-info" : GameService.IsPlayerTurn ? "alert-primary" : "alert-warning") mt-2">
                 @if (GameService.IsGameOver)
                 {
-                    var aiWon = GameService.AIHits.Count(h => (h.state == SquareState.Sunken || h.state == SquareState.Hit || h.state == SquareState.Eliminated)) < GameService.ShipConfiguration.Sum(kvp => kvp.Key * kvp.Value);
+                    var aiWon = GameService.AIHits.Count(h => (h.state == SquareState.Sunken || h.state == SquareState.Hit || h.state == SquareState.Eliminated)) >= GameService.ShipConfiguration.Sum(kvp => kvp.Key * kvp.Value);
                     <h3>Game Over - @(aiWon ? "AI Won!" : "You Won!")</h3>
                 }
                 else
@@ -148,15 +148,23 @@
 @code {
     private BaseGameService GameService => GameServiceManager.CurrentGameService;
     private Timer aiTimer;
+    private Random random = new Random();
     private bool showCoordinates = false;
 
     protected override void OnInitialized()
     {
         GameServiceManager.InitializeGame();
 
-        aiTimer = new Timer(1000);
+        aiTimer = new Timer();
         aiTimer.Elapsed += HandleAITurn;
         aiTimer.AutoReset = false;
+    }
+
+    private void StartAITimer()
+    {
+        int randomDelay = random.Next(500, 2000);
+        aiTimer.Interval = randomDelay;
+        aiTimer.Start();
     }
 
     private void ShootAtEnemy(int row, int col)
@@ -168,7 +176,7 @@
 
         if (!GameService.IsPlayerTurn && !GameService.IsGameOver)
         {
-            aiTimer.Start();
+            StartAITimer();
         }
 
         StateHasChanged();
@@ -184,8 +192,9 @@
 
         if (!GameService.IsPlayerTurn && !GameService.IsGameOver)
         {
-            aiTimer.Start();
+            StartAITimer();
         }
+
         InvokeAsync(StateHasChanged);
     }
 
