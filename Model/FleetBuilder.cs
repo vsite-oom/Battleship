@@ -1,6 +1,4 @@
-﻿using Model;
-
-namespace Model;
+﻿namespace Model;
 
 public class FleetBuilder
 {

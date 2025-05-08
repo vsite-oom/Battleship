@@ -83,7 +83,7 @@ public class Grid
         }
         return result;
     }
-    public void EleminateSquare(int row, int column)
+    public void EliminateSquare(int row, int column)
     {
         squares[row, column] = null;
     }
