@@ -2,7 +2,7 @@
 namespace ModelTests;
 
 [TestClass]
-public class GridTests
+public class FleetGridTests
 {
     [TestMethod]
     public void ConstructorCreatesGridWith50SquaresFor5RowsAnd10Columns()
