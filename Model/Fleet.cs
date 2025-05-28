@@ -10,6 +10,7 @@ public class Fleet
 {
     
     private List<Ship> ships = new List<Ship>();
+    private readonly List<Ship> ships = [];
 
     public IEnumerable<Ship> Ships { get { return ships; } }
 
@@ -23,6 +24,16 @@ public class Fleet
     public HitResult Hit(int row, int column)
     {
         throw new NotImplementedException();
+        foreach (var ship in ships)
+        {
+            var result = ship.Hit(row, column);
+            if (result != HitResult.Missed)
+            {
+                return result;
+            }
+        }
+        return HitResult.Missed;
     }
 }
+
 
