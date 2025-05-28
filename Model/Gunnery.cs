@@ -112,6 +112,7 @@ public class Gunnery
         foreach (var square in toEliminate)
         {
             recordGrid.GetSquare(square.Row, square.Column).ChangeState(SquareState.Eliminated);
+            recordGrid.ChangeSquareState(square.Row, square.Column, SquareState.Eliminated);
         }
         shipSquares.Clear();
     }
