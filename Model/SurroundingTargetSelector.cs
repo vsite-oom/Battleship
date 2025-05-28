@@ -18,6 +18,7 @@ public class SurroundingTargetSelector : ITargetSelector
     private readonly ShotsGrid grid;
     private readonly Square firstHit;
     private readonly int shipLength;
+    private readonly Random random = new Random();
 
     public Square Next()
     {
@@ -25,9 +26,15 @@ public class SurroundingTargetSelector : ITargetSelector
 
         var up = grid.GetSquaresInDirection(firstHit.Row, firstHit.Column, Direction.Upwards);
         if (up.Count() > 0)
-        {
-            squares.Add(up);
-        }
+            foreach (Direction direction in Enum.GetValues(typeof(Direction)))
+            {
+        
+                var inDirection = grid.GetSquaresInDirection(firstHit.Row, firstHit.Column, direction);
+                if (inDirection.Any())
+                {
+                    squares.Add(inDirection);
+                }
+            }
         var right = grid.GetSquaresInDirection(firstHit.Row, firstHit.Column, Direction.Rightwards);
         if (right.Count() > 0)
         {
@@ -46,5 +53,7 @@ public class SurroundingTargetSelector : ITargetSelector
 
 
         throw new NotImplementedException();
+        int index = random.Next(squares.Count);
+        return squares[index].First();
     }
 }
