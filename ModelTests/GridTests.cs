@@ -20,7 +20,7 @@ public class GridTests
         int rows = 1;
         int cols = 6;
         int shipLength = 2;
-        var grid = new Grid(rows, cols);
+        var grid = new FleetGrid(rows, cols);
         grid.EleminateSquare(0, 3);
 
         Assert.AreEqual(3, grid.GetAvailablePlacements(shipLength).Count());
@@ -31,7 +31,7 @@ public class GridTests
         int rows = 8;
         int cols = 1;
         int shipLength = 2;
-        var grid = new Grid(rows, cols);
+        var grid = new FleetGrid(rows, cols);
         grid.EleminateSquare(3, 0);
         grid.EleminateSquare(5, 0);
 

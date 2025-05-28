@@ -20,7 +20,8 @@ public class Gunnery
 {
     public Gunnery(int rows, int columns, IEnumerable<int> shipLengths)
     {
-        recordGrid = new Grid(rows, columns);
+        recordGrid = new FleetGrid(rows, columns);
+        recordGrid = new FleetGrid(rows, columns);
         this.shipLengths = new List<int>(shipLengths.OrderDescending());
         targetSelector = new RandomTargetSelector(recordGrid, this.shipLengths[0]);
     }
@@ -84,7 +85,7 @@ public class Gunnery
 
     public ShootingTactics ShootingTactics { get; private set; } = ShootingTactics.Random;
 
-    private readonly Grid recordGrid;
+    private readonly FleetGrid recordGrid;
 
     private readonly List<int> shipLengths = [];
 
