@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Model.Model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,9 +9,23 @@ namespace Model;
 
 public class RandomTargetSelector : ITargetSelector
 {
-    public SquareCoordinate Next()
-     public Square Next()
+    public RandomTargetSelector(Grid grid, int shipLength)
+    {
+        this.grid = grid;
+        this.shipLength = shipLength;
+    }
+
+    public Square Next()
     {
         throw new NotImplementedException();
+        var placements = grid.GetAvailablePlacements(shipLength);
+        var candidates = placements.SelectMany(s => s);
+        var selectedIndex = random.Next(candidates.Count());
+        return candidates.ElementAt(selectedIndex);
     }
+}
+
+    private readonly Grid grid;
+    private readonly int shipLength;
+    private readonly Random random = new Random();
 }
