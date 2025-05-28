@@ -1,16 +1,18 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.Diagnostics.Metrics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Model;
 using Model.Model;
 
 namespace Model.Model;
 
 
-public class FleetGrid 
+public class FleetGrid :Grid
 {
 
     public readonly int Rows;
@@ -18,7 +20,8 @@ public class FleetGrid
 
     private readonly Square?[,] squares;
 
-    public FleetGrid(int rows, int columns)
+    
+   public FleetGrid(int rows, int columns) : base(rows, columns)
     {
         Rows = rows;
         Columns = columns;
@@ -35,11 +38,13 @@ public class FleetGrid
     }
 
     public IEnumerable<Square> Squares
+     public override IEnumerable<Square> Squares
     {
         get { return squares.Cast<Square>().Where(s => s != null); }
     }
 
     public IEnumerable<IEnumerable<Square>> GetAvailablePlacements(int length)
+        public void EliminateSquare(int row, int column)
     {
         return GetHorizontalAvailablePlacements(length);
     }
@@ -78,41 +83,30 @@ public class FleetGrid
             }
         }
         return result;
+        squares[row, column] = null;
     }
 
 
 }
 
- 
+  {
         List<IEnumerable<Square>> result = new List<IEnumerable<Square>>();
 
-        for (int c = 0; c<Columns; c++)
-        for (int c = 0; c<Columns; ++c)
+        for (int r = 0; r<Rows; ++r)
         {
-            int counter = 0;
-            for (int r = 0; r<Rows; r++)
             var queue = new LimitedQueue<Square>(length);
-            for (int r = 0; r<Rows; ++r)
+            for (int c = 0; c<Columns; ++c)
             {
                 if (squares[r, c] != null)
                 {
-                    ++counter;
-                    if (counter >= length)
                     queue.Enqueue(squares[r, c]!);
                     if (queue.Count() == length)
                     {
-                        List<Square> temp = new List<Square>();
-                        for (int r1 = r - length + 1; r1 <= r; ++r1)
-                        {
-                            temp.Add(squares[r1, c]!);
-                        }
-                        result.Add(temp);
-result.Add(queue.ToArray());
+                        result.Add(queue.ToArray());
                     }
                 }
                 else
 {
-    counter = 0;
     queue.Clear();
 }
             }
@@ -120,8 +114,37 @@ result.Add(queue.ToArray());
         return result;
     }
 
-    public void EleminateSquare(int row, int column)
+    private IEnumerable<IEnumerable<Square>> GetVerticalAvailablePlacements(int length)
+{
+    List<IEnumerable<Square>> result = new List<IEnumerable<Square>>();
+
+    for (int c = 0; c < Columns; ++c)
+    {
+        var queue = new LimitedQueue<Square>(length);
+        for (int r = 0; r < Rows; ++r)
+        {
+            if (squares[r, c] != null)
+            {
+                queue.Enqueue(squares[r, c]!);
+                if (queue.Count() == length)
+                {
+                    result.Add(queue.ToArray());
+                }
+            }
+            else
+            {
+                queue.Clear();
+            }
+        }
+    }
+    return result;
+    squares[row, column] = null;
+}
+
+public void EleminateSquare(int row, int column)
+    protected override bool IsSquareAvailable(int row, int column)
 {
     squares[row, column] = null;
+    return squares[row, column] != null;
 }
 }
