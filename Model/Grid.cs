@@ -83,7 +83,7 @@ public class Grid
 
 }
 
- {
+ 
         List<IEnumerable<Square>> result = new List<IEnumerable<Square>>();
 
         for (int c = 0; c<Columns; c++)

@@ -5,11 +5,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ModelTests;
 using Model.Model;
-using Model;
 
 namespace ModelTests;
+
+
 
 [TestClass]
 public class GridTests

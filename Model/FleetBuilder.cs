@@ -22,6 +22,9 @@ public class FleetBuilder
     private readonly List<int> shipLengths;
 
     private readonly Random random;
+    private readonly Random random = new Random();
+
+    private readonly SquareEliminator eliminator = new SquareEliminator();
 
     public Fleet CreateFleet()
     {
@@ -35,6 +38,12 @@ public class FleetBuilder
 
             fleet.CreateShip(selected);
         }
+        var toEliminate = eliminator.ToEliminate(selected, fleetGrid.Rows, fleetGrid.Columns);
+        foreach (var coordinate in toEliminate)
+        {
+            fleetGrid.EleminateSquare(coordinate.Row, coordinate.Column);
+        }
+    }
 
         return fleet;
     }
