@@ -21,7 +21,7 @@ public class Gunnery
     public Gunnery(int rows, int columns, IEnumerable<int> shipLengths)
     {
         recordGrid = new FleetGrid(rows, columns);
-        recordGrid = new FleetGrid(rows, columns);
+        recordGrid = new ShotsGrid(rows, columns);
         this.shipLengths = new List<int>(shipLengths.OrderDescending());
         targetSelector = new RandomTargetSelector(recordGrid, this.shipLengths[0]);
     }
@@ -36,6 +36,7 @@ public class Gunnery
 
     public void ProcessHitResult(HitResult hitResult)
     {
+        RecordTargetResult(hitResult);
         switch (hitResult)
         {
             case HitResult.Missed:
@@ -83,14 +84,49 @@ public class Gunnery
         targetSelector = new InlineTargetSelector();
     }
 
+    private void RecordTargetResult(HitResult hitResult)
+    {
+        switch (hitResult)
+        {
+            case HitResult.Missed:
+                target.ChangeState(SquareState.Missed);
+                return;
+            case HitResult.Hit:
+                target.ChangeState(SquareState.Hit);
+                shipSquares.Add(target);
+                return;
+            case HitResult.Sunken:
+                MarkShipSunken();
+                return;
+        }
+    }
+
+    private void MarkShipSunken()
+    {
+        shipSquares.Add(target);
+        foreach (var square in shipSquares)
+        {
+            square.ChangeState(SquareState.Sunken);
+        }
+        var toEliminate = eliminator.ToEliminate(shipSquares, recordGrid.Rows, recordGrid.Columns);
+        foreach (var square in toEliminate)
+        {
+            recordGrid.GetSquare(square.Row, square.Column).ChangeState(SquareState.Eliminated);
+        }
+        shipSquares.Clear();
+    }
+
+
     public ShootingTactics ShootingTactics { get; private set; } = ShootingTactics.Random;
 
     private readonly FleetGrid recordGrid;
 
     private readonly List<int> shipLengths = [];
+    private List<Square> shipSquares = new List<Square>();
 
     private Square target;
 
     private ITargetSelector targetSelector = new RandomTargetSelector();
     private ITargetSelector targetSelector;
+    private readonly SquareEliminator eliminator = new SquareEliminator();
 }
