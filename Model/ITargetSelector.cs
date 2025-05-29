@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace Model;
 
+
 public interface ITargetSelector
 {
-    SquareCoordinate Next();
     Square Next();
 }

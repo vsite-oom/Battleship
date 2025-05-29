@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Model.Model;
+using System;
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
@@ -19,10 +20,20 @@ public class ShotsGrid : Grid
 {
     public ShotsGrid(int rows, int columns) : base(rows, columns)
     {
-        squares[row, column]!.ChangeState(newState);
-                public IEnumerable<Square> GetSquaresInDirection(int row, int column, Direction direction)
+    }
+
+    protected override bool IsSquareAvailable(int row, int column)
     {
-        throw new NotImplementedException();
+        return squares[row, column]?.SquareState == SquareState.Intact;
+    }
+
+    public void ChangeSquareState(int row, int column, SquareState newState)
+    {
+        squares[row, column]!.ChangeState(newState);
+    }
+
+    public IEnumerable<Square> GetSquaresInDirection(int row, int column, Direction direction)
+    {
         var result = new List<Square>();
 
         int deltaRow = 0;
@@ -57,19 +68,6 @@ public class ShotsGrid : Grid
         }
         return result;
     }
-
-
-    protected override bool IsSquareAvailable(int row, int column)
-    {
-        throw new NotImplementedException();
-        return squares[row, column]?.SquareState == SquareState.Intact;
-    }
-
-    public Square GetSquare(int row, int column);
-    public void ChangeSquareState(int row, int column, SquareState newState)
-    {
-        return squares[row, column]!;
-        squares[row, column]!.ChangeState(newState);
-    }
 }
+
 

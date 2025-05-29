@@ -14,16 +14,13 @@ public class FleetBuilder
     public FleetBuilder(int gridRows, int gridColumns, int[] shipLengths)
     {
         fleetGrid = new FleetGrid(gridRows, gridColumns);
-        fleetGrid = new FleetGrid(gridRows, gridColumns);
         this.shipLengths = new List<int>(shipLengths.OrderByDescending(length => length));
     }
 
     private readonly FleetGrid fleetGrid;
-    private readonly FleetGrid fleetGrid;
 
     private readonly List<int> shipLengths;
 
-    private readonly Random random;
     private readonly Random random = new Random();
 
     private readonly SquareEliminator eliminator = new SquareEliminator();
@@ -39,14 +36,13 @@ public class FleetBuilder
             var selected = candidates.ElementAt(selectedIndex);
 
             fleet.CreateShip(selected);
-        }
-        var toEliminate = eliminator.ToEliminate(selected, fleetGrid.Rows, fleetGrid.Columns);
-        foreach (var coordinate in toEliminate)
-        {
-            fleetGrid.EleminateSquare(coordinate.Row, coordinate.Column);
-        }
-    }
 
+            var toEliminate = eliminator.ToEliminate(selected, fleetGrid.Rows, fleetGrid.Columns);
+            foreach (var coordinate in toEliminate)
+            {
+                fleetGrid.EliminateSquare(coordinate.Row, coordinate.Column);
+            }
+        }
         return fleet;
     }
 }

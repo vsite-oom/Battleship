@@ -7,12 +7,9 @@ using System.Threading.Tasks;
 
 namespace Model;
 
-public class Square
 public enum SquareState
 {
-    public readonly int Row;
-public readonly int Column;
-Intact,
+    Intact,
     Eliminated,
     Missed,
     Hit,
@@ -33,7 +30,6 @@ public class Square
 
     public void Hit()
     {
-        hit = true;
         SquareState = SquareState.Hit;
     }
 
@@ -45,10 +41,7 @@ public class Square
         }
     }
 
-    public bool IsHit => hit;
     public bool IsHit => (int)SquareState >= (int)SquareState.Hit;
 
-    private bool hit = false;
-}
     public SquareState SquareState { get; private set; }
 }

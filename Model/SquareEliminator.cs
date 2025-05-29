@@ -16,4 +16,5 @@ public class SquareCoordinate
 
     public readonly int Row;
     public readonly int Column;
+   
 }

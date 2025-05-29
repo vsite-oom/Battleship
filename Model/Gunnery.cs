@@ -19,17 +19,15 @@ public enum ShootingTactics
 public class Gunnery
 {
     public Gunnery(int rows, int columns, IEnumerable<int> shipLengths)
-    {
-        recordGrid = new FleetGrid(rows, columns);
+
+        {
         recordGrid = new ShotsGrid(rows, columns);
         this.shipLengths = new List<int>(shipLengths.OrderDescending());
         targetSelector = new RandomTargetSelector(recordGrid, this.shipLengths[0]);
     }
 
-    public SquareCoordinate Next()
-         public Square Next()
+    public Square Next()
     {
-        throw new NotImplementedException();
         target = targetSelector.Next();
         return target;
     }
@@ -48,7 +46,6 @@ public class Gunnery
                         ChangeTacticsToSurrounding();
                         return;
                     case ShootingTactics.Surrounding:
-                        ChangeTacticsToInline(); break;
                         ChangeTacticsToInline();
                         return;
                     case ShootingTactics.Inline:
@@ -57,31 +54,10 @@ public class Gunnery
                         Debug.Assert(false);
                         return;
                 }
-                return;
             case HitResult.Sunken:
                 ChangeTacticsToRandom();
                 return;
         }
-
-    }
-
-    private void ChangeTacticsToRandom()
-    {
-        ShootingTactics = ShootingTactics.Random;
-        targetSelector = new RandomTargetSelector();
-        targetSelector = new RandomTargetSelector(recordGrid, shipLengths[0]);
-    }
-
-    private void ChangeTacticsToSurrounding()
-    {
-        ShootingTactics = ShootingTactics.Surrounding;
-        targetSelector = new SurroundingTargetSelector(recordGrid, target, shipLengths[0]);
-    }
-
-    private void ChangeTacticsToInline()
-    {
-        ShootingTactics = ShootingTactics.Inline;
-        targetSelector = new InlineTargetSelector();
     }
 
     private void RecordTargetResult(HitResult hitResult)
@@ -111,23 +87,40 @@ public class Gunnery
         var toEliminate = eliminator.ToEliminate(shipSquares, recordGrid.Rows, recordGrid.Columns);
         foreach (var square in toEliminate)
         {
-            recordGrid.GetSquare(square.Row, square.Column).ChangeState(SquareState.Eliminated);
             recordGrid.ChangeSquareState(square.Row, square.Column, SquareState.Eliminated);
         }
         shipSquares.Clear();
     }
 
+    private void ChangeTacticsToRandom()
+    {
+        ShootingTactics = ShootingTactics.Random;
+        targetSelector = new RandomTargetSelector(recordGrid, shipLengths[0]);
+    }
+
+    private void ChangeTacticsToSurrounding()
+    {
+        ShootingTactics = ShootingTactics.Surrounding;
+        targetSelector = new SurroundingTargetSelector(recordGrid, target, shipLengths[0]);
+    }
+
+    private void ChangeTacticsToInline()
+    {
+        ShootingTactics = ShootingTactics.Inline;
+        targetSelector = new InlineTargetSelector();
+    }
 
     public ShootingTactics ShootingTactics { get; private set; } = ShootingTactics.Random;
 
-    private readonly FleetGrid recordGrid;
+    private readonly ShotsGrid recordGrid;
 
     private readonly List<int> shipLengths = [];
+
     private List<Square> shipSquares = new List<Square>();
 
     private Square target;
 
-    private ITargetSelector targetSelector = new RandomTargetSelector();
     private ITargetSelector targetSelector;
+
     private readonly SquareEliminator eliminator = new SquareEliminator();
 }
