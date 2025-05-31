@@ -25,4 +25,4 @@ jobs:
     - name: Build
       run: dotnet build --no-restore
     - name: Test
-      run: dotnet test ModelTests/ModelTests.csproj --no-build --verbosity normal
+      run: dotnet test ModelTest/ModelTest.csproj --no-build --verbosity normal
