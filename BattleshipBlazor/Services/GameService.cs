@@ -16,8 +16,8 @@ namespace BattleshipBlazor.Services
 
         public Gunnery AIGunnery { get; private set; }
 
-        public virtual bool IsGameOver => PlayerHits.Count(h => (h.state == SquareState.Sunken || h.state == SquareState.Hit || h.state == SquareState.Eliminated)) == ShipLengths.Sum() ||
-                                     AIHits.Count(h => (h.state == SquareState.Sunken || h.state == SquareState.Hit || h.state == SquareState.Eliminated)) == ShipLengths.Sum();
+        public virtual bool IsGameOver => PlayerHits.Count(h => h.state == SquareState.Sunken || h.state == SquareState.Hit || h.state == SquareState.Eliminated) >= ShipLengths.Sum() ||
+                            AIHits.Count(h => h.state == SquareState.Sunken || h.state == SquareState.Hit || h.state == SquareState.Eliminated) >= ShipLengths.Sum();
 
         public bool IsPlayerTurn { get; private set; } = true;
 
@@ -94,6 +94,14 @@ namespace BattleshipBlazor.Services
             return result;
         }
 
+        public bool IsPlayerWinner()
+        {
+            return AIFleet.Ships.All(ship => ship.Squares.All(square => square.IsHit));
+        }
+        public bool IsAIWinner()
+        {
+            return PlayerFleet.Ships.All(ship => ship.Squares.All(square => square.IsHit));
+        }
         public bool HasPlayerHit(int row, int col)
         {
             return PlayerHits.Any(h => h.row == row && h.col == col);

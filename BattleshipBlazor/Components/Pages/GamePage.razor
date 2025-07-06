@@ -11,12 +11,15 @@
             <div class="game-status alert fade-in @(GameService.IsGameOver ? "custom-bg-info" : "custom-bg-light") text-center">
                 @if (GameService.IsGameOver)
                 {
-                    var playerWon = GameService.AIHits.Count(h => h.state == SquareState.Sunken) < GameService.ShipLengths.Sum();
-                    <h3 class="mb-0">Game Over - @(playerWon ? "You Won!" : "AI Won!")</h3>
+                    <h3 class="mb-0">
+                        Game Over - @(GameService.IsPlayerWinner() ? "You Won!" : GameService.IsAIWinner() ? "AI Won!" : "Draw!")
+                    </h3>
                 }
                 else
                 {
-                    <h4 class="mb-0">@(GameService.IsPlayerTurn ? "Your Turn" : "AI is thinking...")</h4>
+                    <h4 class="mb-0">
+                        @(GameService.IsPlayerTurn ? "Your Turn" : "Opponent's Turn")
+                    </h4>
                 }
             </div>
         </div>
@@ -155,4 +158,6 @@
         GameService.InitializeGame(GridSize, shipLengths);
         StateHasChanged();
     }
+
+
 }
