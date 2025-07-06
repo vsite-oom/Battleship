@@ -24,10 +24,6 @@ namespace BattleshipBlazor.Services
         public List<(int row, int col, SquareState state)> PlayerHits { get; } = new();
         public List<(int row, int col, SquareState state)> AIHits { get; } = new();
 
-        public GameService()
-        {
-        }
-
         public void InitializeGame(int gridSize, int[] shipLengths)
         {
             GridRows = gridSize;

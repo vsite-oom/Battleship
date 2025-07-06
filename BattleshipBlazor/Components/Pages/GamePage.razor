@@ -3,7 +3,6 @@
 @inject BattleshipBlazor.Services.GameService GameService
 @rendermode Microsoft.AspNetCore.Components.Web.RenderMode.InteractiveServer
 @using Model
-@using System.Timers
 
 <div class="container mt-3">
     <div class="row justify-content-center">
@@ -97,8 +96,6 @@
     [Parameter]
     [SupplyParameterFromQuery(Name = "ships")]
     public string ShipsParam { get; set; } = "5,4,3,3,2";
-
-    private Timer aiTimer;
 
     protected override void OnInitialized()
     {
