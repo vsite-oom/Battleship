@@ -25,8 +25,8 @@
         </div>
     </div>
 
-    <div class="row">
-        <div class="col-md-6 mb-4">
+    <div class="row justify-content-center">
+        <div class="col-md-5 mb-3">
             <div class="card shadow-sm">
                 <div class="card-header custom-bg-fleets text-white text-center">
                     <h3>Your Fleet</h3>
@@ -35,7 +35,7 @@
                     <div class="grid-container">
                         @for (int row = 0; row < GameService.GridRows; row++)
                         {
-                            <div class="grid-row">
+                            <div class="grid-row justify-content-center">
                                 @for (int col = 0; col < GameService.GridColumns; col++)
                                 {
                                     var r = row;
@@ -53,16 +53,16 @@
             </div>
         </div>
 
-        <div class="col-md-6 mb-4">
+        <div class="col-md-5 mb-3">
             <div class="card shadow-sm">
                 <div class="card-header custom-bg-fleets text-white text-center">
-                    <h3>Enemy Fleet</h3>
+                    <h3>Opponent's Fleet</h3>
                 </div>
                 <div class="card-body">
                     <div class="grid-container">
                         @for (int row = 0; row < GameService.GridRows; row++)
                         {
-                            <div class="grid-row">
+                            <div class="grid-row justify-content-center">
                                 @for (int col = 0; col < GameService.GridColumns; col++)
                                 {
                                     var r = row;
