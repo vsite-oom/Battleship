@@ -25,28 +25,26 @@ public class Gunnery
     public void ProcessHitResult(HitResult hitResult)
     {
         RecordTargetResult(hitResult);
-        switch (hitResult)
+
+        if (hitResult == HitResult.Hit)
         {
-            case HitResult.Missed:
-                return;
-            case HitResult.Hit:
-                switch (ShootingTactics)
-                {
-                    case ShootingTactics.Random:
-                        ChangeTacticsToSurrounding();
-                        return;
-                    case ShootingTactics.Surrounding:
-                        ChangeTacticsToInline();
-                        return;
-                    case ShootingTactics.Inline:
-                        return;
-                    default:
-                        Debug.Assert(false);
-                        return;
-                }
-            case HitResult.Sunken:
-                ChangeTacticsToRandom();
-                return;
+            switch (ShootingTactics)
+            {
+                case ShootingTactics.Random:
+                    ShootingTactics = ShootingTactics.Surrounding;
+                    targetSelector = new SurroundingTargetSelector(recordGrid, target, shipLengths[0]);
+                    break;
+                case ShootingTactics.Surrounding:
+                    ShootingTactics = ShootingTactics.Inline;
+                    targetSelector = new InlineTargetSelector(recordGrid, shipSquares, shipLengths[0]);
+                    break;
+            }
+        }
+        else if (hitResult == HitResult.Sunken)
+        {
+            if (shipLengths.Count == 0) return;
+            ShootingTactics = ShootingTactics.Random;
+            targetSelector = new RandomTargetSelector(recordGrid, shipLengths[0]);
         }
     }
     private void RecordTargetResult(HitResult hitResult)
@@ -55,14 +53,16 @@ public class Gunnery
         {
             case HitResult.Missed:
                 target.ChangeState(SquareState.Missed);
-                return;
+                recordGrid.ChangeSquareState(target.Row, target.Column, SquareState.Missed);
+                break;
             case HitResult.Hit:
                 target.ChangeState(SquareState.Hit);
+                recordGrid.ChangeSquareState(target.Row, target.Column, SquareState.Hit);
                 shipSquares.Add(target);
-                return;
+                break;
             case HitResult.Sunken:
                 MarkShipSunken();
-                return;
+                break;
         }
     }
 
@@ -78,6 +78,7 @@ public class Gunnery
         {
             recordGrid.ChangeSquareState(square.Row, square.Column, SquareState.Eliminated);
         }
+        shipLengths.Remove(shipSquares.Count);
         shipSquares.Clear();
     }
 
