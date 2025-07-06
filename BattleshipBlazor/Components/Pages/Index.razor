@@ -1,0 +1,60 @@
+﻿@page "/"
+@rendermode Microsoft.AspNetCore.Components.Web.RenderMode.InteractiveServer
+@inject NavigationManager NavigationManager
+@using System.Collections.Generic
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-7 col-lg-5">
+            <div class="card shadow-sm">
+                <div class="card-header custom-bg-info text-white text-center">
+                    <h2 class="mb-0">Setup Your Battleship Game</h2>
+                </div>
+                <div class="card-body">
+                    <h5>Select Grid Size</h5>
+                    <div class="d-flex gap-3 mb-4">
+                        @foreach (var size in new int[] { 8, 10, 12 })
+                        {
+                            <button type="button"
+                                    class="grid-size-btn @(gridSize == size ? "selected" : "")"
+                                    @onclick="() => gridSize = size">
+                                @size x @size
+                            </button>
+                        }
+                    </div>
+
+                    <h5>Ship Configuration</h5>
+                    <p class="text-muted small mb-3">Standard ships with their sizes shown:</p>
+
+                    <div class="d-flex flex-wrap gap-3 mb-4">
+                        @for (int i = 0; i < shipLengths.Count; i++)
+                        {
+                            <div class="ship-card p-3 rounded shadow-sm d-flex align-items-center gap-3" style="min-width: 150px;">
+                                <div class="ship-number fs-5 fw-bold">Ship #@(i + 1)</div>
+                                <div class="ship-size text-muted">Size: @shipLengths[i]</div>
+                                <div class="ship-visual d-flex">
+                                    @for (int j = 0; j < shipLengths[i]; j++)
+                                    {
+                                        <div class="ship-segment custom-bg-info rounded me-1" style="width:20px; height:20px;"></div>
+                                    }
+                                </div>
+                            </div>
+                        }
+                    </div>
+                    <button class="btn custom-btn-info w-100 btn-lg" @onclick="StartGame">Start Game</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    private int gridSize = 10;
+    private List<int> shipLengths = new() { 5, 4, 3, 3, 2 };
+
+    private void StartGame()
+    {
+        var shipSizes = string.Join(",", shipLengths);
+        NavigationManager.NavigateTo($"/game?gridSize={gridSize}&ships={shipSizes}");
+    }
+}

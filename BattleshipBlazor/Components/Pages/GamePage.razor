@@ -1,0 +1,158 @@
+﻿@page "/game"
+@inject NavigationManager NavigationManager
+@inject BattleshipBlazor.Services.GameService GameService
+@rendermode Microsoft.AspNetCore.Components.Web.RenderMode.InteractiveServer
+@using Model
+@using System.Timers
+
+<div class="container mt-3">
+    <div class="row justify-content-center">
+        <div class="col-12 mb-3">
+            <div class="game-status alert fade-in @(GameService.IsGameOver ? "custom-bg-info" : "custom-bg-light") text-center">
+                @if (GameService.IsGameOver)
+                {
+                    var playerWon = GameService.AIHits.Count(h => h.state == SquareState.Sunken) < GameService.ShipLengths.Sum();
+                    <h3 class="mb-0">Game Over - @(playerWon ? "You Won!" : "AI Won!")</h3>
+                }
+                else
+                {
+                    <h4 class="mb-0">@(GameService.IsPlayerTurn ? "Your Turn" : "AI is thinking...")</h4>
+                }
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6 mb-4">
+            <div class="card shadow-sm">
+                <div class="card-header custom-bg-fleets text-white text-center">
+                    <h3>Your Fleet</h3>
+                </div>
+                <div class="card-body">
+                    <div class="grid-container">
+                        @for (int row = 0; row < GameService.GridRows; row++)
+                        {
+                            <div class="grid-row">
+                                @for (int col = 0; col < GameService.GridColumns; col++)
+                                {
+                                    var r = row;
+                                    var c = col;
+                                    var isShip = GameService.IsPlayerShipAt(r, c);
+                                    var isHit = GameService.HasAIHit(r, c);
+                                    var hitState = isHit ? GameService.GetAIHitState(r, c) : SquareState.Intact;
+
+                                    <div class="grid-cell animate @(GetPlayerCellClass(isShip, hitState))"></div>
+                                }
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 mb-4">
+            <div class="card shadow-sm">
+                <div class="card-header custom-bg-fleets text-white text-center">
+                    <h3>Enemy Fleet</h3>
+                </div>
+                <div class="card-body">
+                    <div class="grid-container">
+                        @for (int row = 0; row < GameService.GridRows; row++)
+                        {
+                            <div class="grid-row">
+                                @for (int col = 0; col < GameService.GridColumns; col++)
+                                {
+                                    var r = row;
+                                    var c = col;
+                                    var isHit = GameService.HasPlayerHit(r, c);
+                                    var hitState = isHit ? GameService.GetPlayerHitState(r, c) : SquareState.Intact;
+
+                                    <div class="grid-cell animate @(GetEnemyCellClass(hitState))"
+                                         @onclick="() => ShootAtEnemy(r, c)">
+                                    </div>
+                                }
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-3">
+        <div class="col text-center">
+            <button class="btn btn-success btn-lg" @onclick="RestartGame">Restart Game</button>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    [SupplyParameterFromQuery(Name = "gridSize")]
+    public int GridSize { get; set; } = 10;
+
+    [Parameter]
+    [SupplyParameterFromQuery(Name = "ships")]
+    public string ShipsParam { get; set; } = "5,4,3,3,2";
+
+    private Timer aiTimer;
+
+    protected override void OnInitialized()
+    {
+        int[] shipLengths = ShipsParam.Split(',').Select(int.Parse).ToArray();
+        GameService.InitializeGame(GridSize, shipLengths);
+    }
+
+    private async void ShootAtEnemy(int row, int col)
+    {
+        if (!GameService.IsPlayerTurn || GameService.HasPlayerHit(row, col) || GameService.IsGameOver)
+            return;
+
+        GameService.PlayerShoot(row, col);
+        StateHasChanged();
+
+        if (!GameService.IsPlayerTurn && !GameService.IsGameOver)
+        {
+            await Task.Delay(800);
+            await HandleAITurn();
+        }
+    }
+
+    private async Task HandleAITurn()
+    {
+        if (GameService.IsPlayerTurn || GameService.IsGameOver)
+            return;
+
+        GameService.AIShoot();
+        StateHasChanged();
+
+        if (!GameService.IsPlayerTurn && !GameService.IsGameOver)
+        {
+            await Task.Delay(800);
+            await HandleAITurn();
+        }
+    }
+
+    private string GetPlayerCellClass(bool isShip, SquareState hitState) => hitState switch
+    {
+        SquareState.Hit => "hit",
+        SquareState.Sunken => "hit",
+        SquareState.Missed => "missed",
+        _ => isShip ? "ship" : "intact"
+    };
+
+    private string GetEnemyCellClass(SquareState hitState) => hitState switch
+    {
+        SquareState.Hit => "hit",
+        SquareState.Sunken => "hit",
+        SquareState.Missed => "missed",
+        _ => "intact enemy-cell"
+    };
+
+    private void RestartGame()
+    {
+        int[] shipLengths = ShipsParam.Split(',').Select(int.Parse).ToArray();
+        GameService.InitializeGame(GridSize, shipLengths);
+        StateHasChanged();
+    }
+}

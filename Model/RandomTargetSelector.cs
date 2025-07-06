@@ -1,5 +1,6 @@
 ﻿using Model;
 using System;
+using System.Linq;
 
 public class RandomTargetSelector : ITargetSelector
 {
@@ -8,13 +9,19 @@ public class RandomTargetSelector : ITargetSelector
         this.grid = grid;
         this.shipLength = shipLength;
     }
+
     public Square Next()
     {
         var placements = grid.GetAvailablePlacements(shipLength);
-        var candidates = placements.SelectMany(s => s);
-        var selectedIndex = random.Next(candidates.Count());
-        return candidates.ElementAt(selectedIndex);
+        var candidates = placements.SelectMany(s => s).ToList();
+
+        if (!candidates.Any())
+            throw new InvalidOperationException("No available placements for the given ship length.");
+
+        var selectedIndex = random.Next(candidates.Count);
+        return candidates[selectedIndex];
     }
+
     private readonly ShotsGrid grid;
     private readonly int shipLength;
     private readonly Random random = new Random();

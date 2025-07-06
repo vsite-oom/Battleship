@@ -1,0 +1,112 @@
+﻿.game-status {
+    padding: 1rem;
+    border-radius: 12px;
+    font-weight: 500;
+}
+
+.fade-in {
+    animation: fadeIn 0.8s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.grid-container {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin: 0 auto;
+    max-width: 90%;
+}
+
+.grid-row {
+    display: flex;
+    gap: 4px;
+}
+
+.grid-cell {
+    width: 32px;
+    height: 32px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    background-color: #f8f9fa;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.grid-cell.enemy-cell:hover {
+        background-color: #d1eacb;
+}
+
+.intact {
+    background-color: #f8f9fa;
+}
+
+.ship {
+    background-color: #41980c;
+}
+
+.missed {
+    background-color: #c8d6c1;
+}
+
+.hit {
+    background-color: #dc3545;
+    animation: pulse 0.5s;
+}
+
+.animate {
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.15);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+button.btn-success {
+    background-color: #41980c;
+    border-color: #2d5f00;
+    color: white;
+}
+
+button.btn-success:hover {
+        background-color: #2d5f00;
+        border-color: #174000;
+        color: white;
+    }
+
+button.btn-outline-success {
+    background-color: transparent;
+    border: 2px solid #41980c;
+    color: #41980c;
+}
+
+button.btn-outline-success:hover {
+        background-color: #41980c;
+        color: white;
+    }
+
+.custom-bg-fleets {
+    background-color: #41980c !important;
+    color: white;
+}
+
