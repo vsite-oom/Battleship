@@ -3,9 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.33502.453
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Model", "Model\Model.csproj", "{55F52155-7A3F-45D8-8DAB-FBB53FECFC5D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Model", "Model\Model.csproj", "{55F52155-7A3F-45D8-8DAB-FBB53FECFC5D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModelTest", "ModelTest\ModelTest.csproj", "{75D9C3E7-F300-40FD-8F71-9DA79FBA4F55}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ModelTest", "ModelTest\ModelTest.csproj", "{75D9C3E7-F300-40FD-8F71-9DA79FBA4F55}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BattleshipFront", "BallteshipFront\BattleshipFront.csproj", "{C252C39B-247D-41A4-AA74-2DDB3A4775AC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{75D9C3E7-F300-40FD-8F71-9DA79FBA4F55}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{75D9C3E7-F300-40FD-8F71-9DA79FBA4F55}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{75D9C3E7-F300-40FD-8F71-9DA79FBA4F55}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C252C39B-247D-41A4-AA74-2DDB3A4775AC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C252C39B-247D-41A4-AA74-2DDB3A4775AC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C252C39B-247D-41A4-AA74-2DDB3A4775AC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C252C39B-247D-41A4-AA74-2DDB3A4775AC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

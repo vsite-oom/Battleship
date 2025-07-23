@@ -1,0 +1,56 @@
+﻿.title {
+    text-align: center;
+}
+
+.ship-segment {
+    background-color: white;
+}
+
+.ship-card {
+    background-color: white;
+    border: 1px solid #ddd;
+   
+}
+
+.ship-number {
+    min-width: 65px;
+}
+
+.ship-size {
+    min-width: 60px;
+    padding-bottom: 5px;
+}
+
+.custom-bg-info {
+    background-color: #003e7e;
+    color: white;
+}
+
+
+.grid-size-btn {
+    padding: 15px 10px;
+    font-weight: 600;
+    font-size: 1.1rem;
+    border: 2px solid #1e70c1;
+    border-radius: 4px;
+    background-color: #cde3f9;
+    color: #003e7e;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+    user-select: none;
+    text-align: center;
+}
+
+
+    .grid-size-btn:hover {
+        background-color: #1e70c1;
+        color: white;
+        box-shadow: 0 0 6px rgba(30, 112, 193, 0.5);
+    }
+
+    .grid-size-btn.selected {
+        background-color: #1e70c1;
+        color: white;
+        cursor: default;
+        box-shadow: 0 0 8px rgba(30, 112, 193, 0.7);
+    }

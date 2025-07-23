@@ -1,0 +1,213 @@
+﻿.title {
+    text-align: center;
+}
+
+.game-status {
+    padding: 1rem;
+    border-radius: 12px;
+    font-weight: 500;
+    background-color: #cde3f9;
+    color: #003e7e;
+    border: 2px solid #1e70c1;
+}
+
+.fade-in {
+    animation: fadeIn 0.8s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.grid-container {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin: 0 auto;
+    max-width: 90%;
+}
+
+.grid-row {
+    display: flex;
+    gap: 4px;
+}
+
+.grid-cell {
+    width: 32px;
+    height: 32px;
+    border-radius: 6px;
+    border: 1px solid #1e70c1;
+    background-color: #e6f2ff;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+    .grid-cell.enemy-cell:hover {
+        background-color: #b3d1ff;
+    }
+
+.intact {
+    background-color: #e6f2ff;
+}
+
+.ship {
+    background-color: #003e7e;
+}
+
+.missed {
+    background-color: #cde3f9;
+    position: relative;
+}
+
+    .missed::after {
+        content: "•";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        color: #1e70c1;
+        font-size: 24px;
+    }
+
+.hit {
+    background-color: #ff6b6b;
+    position: relative;
+    animation: pulse 0.5s;
+}
+
+    .hit::after {
+        content: "✖";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        color: white;
+    }
+
+.animate {
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.15);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+button.btn-success {
+    background-color: #1e70c1;
+    border-color: #003e7e;
+    color: white;
+    font-weight: 600;
+}
+
+    button.btn-success:hover {
+        background-color: #003e7e;
+        border-color: #002855;
+        color: white;
+    }
+
+button.btn-primary {
+    background-color: #4a90e2;
+    border-color: #1e70c1;
+    color: white;
+    font-weight: 600;
+}
+
+    button.btn-primary:hover {
+        background-color: #1e70c1;
+        border-color: #003e7e;
+        color: white;
+    }
+
+.custom-bg-fleets {
+    background-color: #1e70c1 !important;
+    color: white;
+}
+
+
+.ship-segment {
+    background-color: white;
+    border: 1px solid #1e70c1;
+}
+
+.ship-card {
+    background-color: white;
+    border: 1px solid #1e70c1;
+}
+
+.ship-number {
+    min-width: 65px;
+}
+
+.ship-size {
+    min-width: 60px;
+    color: #003e7e;
+}
+
+.custom-bg-info {
+    background-color: #003e7e;
+    color: white;
+}
+
+
+.grid-size-btn {
+    padding: 15px 10px;
+    font-weight: 600;
+    font-size: 1.1rem;
+    border: 2px solid #1e70c1;
+    border-radius: 4px;
+    background-color: #cde3f9;
+    color: #003e7e;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+    user-select: none;
+    text-align: center;
+}
+
+    .grid-size-btn:hover {
+        background-color: #1e70c1;
+        color: white;
+        box-shadow: 0 0 6px rgba(30, 112, 193, 0.5);
+    }
+
+    .grid-size-btn.selected {
+        background-color: #1e70c1;
+        color: white;
+        cursor: default;
+        box-shadow: 0 0 8px rgba(30, 112, 193, 0.7);
+    }
+
+
+.next-player-card {
+    background-color: white;
+    border: 2px solid #1e70c1;
+    box-shadow: 0 4px 12px rgba(0, 62, 126, 0.15);
+}
+
+    .next-player-card .card-header {
+        background-color: #1e70c1;
+        color: white;
+    }
+
+    .next-player-card .timer-display {
+        color: #003e7e;
+        font-weight: 600;
+        font-size: 1.2rem;
+    }
