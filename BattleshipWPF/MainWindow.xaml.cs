@@ -137,6 +137,9 @@ namespace BattleshipWPF
             // Show player ships
             UpdatePlayerGrid();
             UpdateGridBorders();
+            
+            // Update ship statistics
+            UpdateShipStatistics();
         }
 
         private void UpdatePlayerGrid()
@@ -176,6 +179,8 @@ namespace BattleshipWPF
                     MarkSunkShip(target);
                     break;
             }
+
+            UpdateShipStatistics();
 
             // Check for game over
             if (IsFleetDestroyed(computerFleet))
@@ -225,6 +230,8 @@ namespace BattleshipWPF
                     MarkSunkShip(target, true);
                     break;
             }
+
+            UpdateShipStatistics();
 
             // Check for game over
             if (IsFleetDestroyed(playerFleet))
@@ -324,6 +331,77 @@ namespace BattleshipWPF
                 PlayerGridBorder.BorderBrush = Brushes.Red;
                 ComputerGridBorder.BorderBrush = Brushes.Gray;
             }
+        }
+
+        private void UpdateShipStatistics()
+        {
+            if (playerFleet != null && computerFleet != null)
+            {
+                UpdateFleetStatistics(playerFleet, true);
+                UpdateFleetStatistics(computerFleet, false);
+            }
+        }
+
+        private void UpdateFleetStatistics(Fleet fleet, bool isPlayerFleet)
+        {
+            var shipCounts = GetShipCounts(fleet);
+            var sunkCounts = GetSunkShipCounts(fleet);
+
+            if (isPlayerFleet)
+            {
+                PlayerCarrierLabel.Text = $"Carrier: {sunkCounts[5]}/{shipCounts[5]}";
+                PlayerBattleshipLabel.Text = $"Battleship: {sunkCounts[4]}/{shipCounts[4]}";
+                PlayerCruiserLabel.Text = $"Cruiser: {sunkCounts[3]}/{shipCounts[3]}";
+                PlayerPatrolBoatLabel.Text = $"Patrol Boat: {sunkCounts[2]}/{shipCounts[2]}";
+            }
+            else
+            {
+                ComputerCarrierLabel.Text = $"Carrier: {sunkCounts[5]}/{shipCounts[5]}";
+                ComputerBattleshipLabel.Text = $"Battleship: {sunkCounts[4]}/{shipCounts[4]}";
+                ComputerCruiserLabel.Text = $"Cruiser: {sunkCounts[3]}/{shipCounts[3]}";
+                ComputerPatrolBoatLabel.Text = $"Patrol Boat: {sunkCounts[2]}/{shipCounts[2]}";
+            }
+        }
+
+        private Dictionary<int, int> GetShipCounts(Fleet fleet)
+        {
+            var counts = new Dictionary<int, int>
+            {
+                [2] = 0, [3] = 0, [4] = 0, [5] = 0
+            };
+
+            foreach (var ship in fleet.Ships)
+            {
+                int length = ship.Squares.Count();
+                if (counts.ContainsKey(length))
+                {
+                    counts[length]++;
+                }
+            }
+
+            return counts;
+        }
+
+        private Dictionary<int, int> GetSunkShipCounts(Fleet fleet)
+        {
+            var counts = new Dictionary<int, int>
+            {
+                [2] = 0, [3] = 0, [4] = 0, [5] = 0
+            };
+
+            foreach (var ship in fleet.Ships)
+            {
+                if (ship.Squares.All(s => s.SquareState == SquareState.Sunk))
+                {
+                    int length = ship.Squares.Count();
+                    if (counts.ContainsKey(length))
+                    {
+                        counts[length]++;
+                    }
+                }
+            }
+
+            return counts;
         }
     }
 }

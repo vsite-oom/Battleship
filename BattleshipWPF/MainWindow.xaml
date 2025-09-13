@@ -5,6 +5,81 @@
         WindowStartupLocation="CenterScreen" ResizeMode="CanMinimize">
     
     <Grid Background="MidnightBlue">
+        <!-- Ship Statistics in Top Corners -->
+        <!-- Player Ship Stats - Top Left -->
+        <StackPanel Orientation="Vertical" 
+                   HorizontalAlignment="Left" 
+                   VerticalAlignment="Top"
+                   Margin="15,10,0,0">
+            <TextBlock Text="Player Ships sunk" 
+                      FontSize="16" 
+                      FontWeight="Bold" 
+                      Foreground="White" 
+                      TextAlignment="Left" 
+                      Margin="0,0,0,8"/>
+            <TextBlock x:Name="PlayerCarrierLabel" 
+                      Text="Carrier: 0/1" 
+                      FontSize="14" 
+                      Foreground="White" 
+                      TextAlignment="Left" 
+                      Margin="0,1"/>
+            <TextBlock x:Name="PlayerBattleshipLabel" 
+                      Text="Battleship: 0/2" 
+                      FontSize="14" 
+                      Foreground="White" 
+                      TextAlignment="Left" 
+                      Margin="0,1"/>
+            <TextBlock x:Name="PlayerCruiserLabel" 
+                      Text="Cruiser: 0/3" 
+                      FontSize="14" 
+                      Foreground="White" 
+                      TextAlignment="Left" 
+                      Margin="0,1"/>
+            <TextBlock x:Name="PlayerPatrolBoatLabel" 
+                      Text="Patrol Boat: 0/4" 
+                      FontSize="14" 
+                      Foreground="White" 
+                      TextAlignment="Left" 
+                      Margin="0,1"/>
+        </StackPanel>
+        
+        <!-- Computer Ship Stats - Top Right -->
+        <StackPanel Orientation="Vertical" 
+                   HorizontalAlignment="Right" 
+                   VerticalAlignment="Top"
+                   Margin="0,10,15,0">
+            <TextBlock Text="Computer Ships sunk" 
+                      FontSize="16" 
+                      FontWeight="Bold" 
+                      Foreground="White" 
+                      TextAlignment="Right" 
+                      Margin="0,0,0,8"/>
+            <TextBlock x:Name="ComputerCarrierLabel" 
+                      Text="Carrier: 0/1" 
+                      FontSize="14" 
+                      Foreground="White" 
+                      TextAlignment="Right" 
+                      Margin="0,1"/>
+            <TextBlock x:Name="ComputerBattleshipLabel" 
+                      Text="Battleship: 0/2" 
+                      FontSize="14" 
+                      Foreground="White" 
+                      TextAlignment="Right" 
+                      Margin="0,1"/>
+            <TextBlock x:Name="ComputerCruiserLabel" 
+                      Text="Cruiser: 0/3" 
+                      FontSize="14" 
+                      Foreground="White" 
+                      TextAlignment="Right" 
+                      Margin="0,1"/>
+            <TextBlock x:Name="ComputerPatrolBoatLabel" 
+                      Text="Patrol Boat: 0/4" 
+                      FontSize="14" 
+                      Foreground="White" 
+                      TextAlignment="Right" 
+                      Margin="0,1"/>
+        </StackPanel>
+
         <!-- Center everything vertically and horizontally -->
 		<StackPanel Orientation="Vertical" 
                    HorizontalAlignment="Center" 
