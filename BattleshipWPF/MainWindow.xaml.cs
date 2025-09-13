@@ -27,6 +27,7 @@ namespace BattleshipWPF
         private Button[,] computerButtons;
         private bool gameStarted = false;
         private bool playerTurn = true;
+        private DispatcherTimer computerTimer;
 
         public MainWindow()
         {
@@ -100,6 +101,8 @@ namespace BattleshipWPF
 
         private void NewGameButton_Click(object sender, RoutedEventArgs e)
         {
+            StopComputerTimer();
+            
             // Create fleets
             var fleetBuilder = new FleetBuilder(gameRules);
             playerFleet = fleetBuilder.CreateFleet();
@@ -191,13 +194,7 @@ namespace BattleshipWPF
             if (result == HitResult.Missed)
             {
                 playerTurn = false;
-                var timer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(1000) };
-                timer.Tick += (s, e) =>
-                {
-                    timer.Stop();
-                    ComputerTurn();
-                };
-                timer.Start();
+                StartComputerTimer(1500);
             }
 
             UpdateGridBorders();
@@ -205,6 +202,9 @@ namespace BattleshipWPF
 
         private void ComputerTurn()
         {
+            if (!gameStarted || playerTurn)
+                return;
+
             var target = computerGunnery.NextTarget();
             var result = playerFleet.Fire(target);
             computerGunnery.ProcessHitResult(result);
@@ -245,16 +245,33 @@ namespace BattleshipWPF
             }
             else
             {
-                var timer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(1500) };
-                timer.Tick += (s, e) =>
-                {
-                    timer.Stop();
-                    ComputerTurn();
-                };
-                timer.Start();
+                StartComputerTimer(1500);
             }
 
             UpdateGridBorders();
+        }
+
+        private void StartComputerTimer(int milliseconds)
+        {
+            StopComputerTimer();
+            
+            computerTimer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(milliseconds) };
+            computerTimer.Tick += (s, e) =>
+            {
+                computerTimer.Stop();
+                computerTimer = null;
+                ComputerTurn();
+            };
+            computerTimer.Start();
+        }
+
+        private void StopComputerTimer()
+        {
+            if (computerTimer != null)
+            {
+                computerTimer.Stop();
+                computerTimer = null;
+            }
         }
 
         private void MarkSunkShip(Square lastHit, bool isPlayerShip = false)
@@ -285,6 +302,7 @@ namespace BattleshipWPF
         private void DisableAllButtons()
         {
             gameStarted = false;
+            StopComputerTimer();
             for (int row = 0; row < 10; row++)
             {
                 for (int col = 0; col < 10; col++)
