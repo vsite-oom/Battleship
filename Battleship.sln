@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Model", "Model\Model.csproj
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModelTests", "ModelTests\ModelTests.csproj", "{F0567AB1-17CE-451F-A99A-DF2653C98546}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BattleshipWPF", "BattleshipWPF\BattleshipWPF.csproj", "{A9FA8408-9779-4596-8BD8-60234E9FBA29}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{F0567AB1-17CE-451F-A99A-DF2653C98546}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F0567AB1-17CE-451F-A99A-DF2653C98546}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F0567AB1-17CE-451F-A99A-DF2653C98546}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A9FA8408-9779-4596-8BD8-60234E9FBA29}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A9FA8408-9779-4596-8BD8-60234E9FBA29}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A9FA8408-9779-4596-8BD8-60234E9FBA29}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A9FA8408-9779-4596-8BD8-60234E9FBA29}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
