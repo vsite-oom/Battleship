@@ -51,12 +51,12 @@ namespace BattleshipWPF
             {
                 for (int col = 0; col < 10; col++)
                 {
-                    var playerButton = CreateGridButton(false);
+                    var playerButton = CreateGridButton();
                     playerButtons[row, col] = playerButton;
                     PlayerGrid.Children.Add(playerButton);
 
                     int r = row, c = col; // Capture for lambda
-                    var computerButton = CreateGridButton(true);
+                    var computerButton = CreateGridButton();
                     computerButton.Click += (s, e) => ComputerGrid_Click(r, c);
                     computerButtons[row, col] = computerButton;
                     ComputerGrid.Children.Add(computerButton);
@@ -64,17 +64,20 @@ namespace BattleshipWPF
             }
         }
 
-        private Button CreateGridButton(bool isComputer)
+        private Button CreateGridButton()
         {
-            return new Button
+            var backgroundBrush = new SolidColorBrush(Color.FromRgb(244, 244, 244));
+            var borderBrush = new SolidColorBrush(Color.FromRgb(173, 178, 181));
+
+			return new Button
             {
                 Width = 35,
                 Height = 35,
                 Margin = new Thickness(1),
-                Background = isComputer ? Brushes.LightGray : Brushes.LightBlue,
-                BorderBrush = Brushes.DarkBlue,
-                BorderThickness = new Thickness(1),
-                FontSize = 14,
+                Background = backgroundBrush,
+				BorderBrush = borderBrush,
+				BorderThickness = new Thickness(1),
+                FontSize = 24,
                 FontWeight = FontWeights.Bold,
                 IsEnabled = false,
                 Style = CreateButtonStyle(),
@@ -110,24 +113,27 @@ namespace BattleshipWPF
             
             gameStarted = true;
             playerTurn = true;
-            StatusLabel.Text = "Your turn - click on enemy grid to fire!";
+            StatusLabel.Text = "Your turn - click on your opponent's grid to fire!";
             
             // Reset and enable buttons
             for (int row = 0; row < 10; row++)
             {
                 for (int col = 0; col < 10; col++)
                 {
+                    var grayBrush = new SolidColorBrush(Color.FromRgb(244, 244, 244));
+
                     computerButtons[row, col].IsEnabled = true;
-                    computerButtons[row, col].Background = Brushes.LightGray;
+                    computerButtons[row, col].Background = grayBrush;
                     computerButtons[row, col].Content = "";
-                    
-                    playerButtons[row, col].Background = Brushes.LightBlue;
+        
+                    playerButtons[row, col].Background = grayBrush;
                     playerButtons[row, col].Content = "";
                 }
             }
             
             // Show player ships
             UpdatePlayerGrid();
+            UpdateGridBorders();
         }
 
         private void UpdatePlayerGrid()
@@ -136,10 +142,9 @@ namespace BattleshipWPF
             {
                 foreach (var square in ship.Squares)
                 {
-                    playerButtons[square.Row, square.Column].Background = Brushes.Navy;
+                    playerButtons[square.Row, square.Column].Background = new SolidColorBrush(Color.FromRgb(244, 244, 244));
                     playerButtons[square.Row, square.Column].Content = "⬛";
-                    playerButtons[square.Row, square.Column].Foreground = Brushes.DarkGray;
-                    playerButtons[square.Row, square.Column].FontSize = 24;
+                    playerButtons[square.Row, square.Column].Foreground = Brushes.DimGray;
                 }
             }
         }
@@ -157,22 +162,14 @@ namespace BattleshipWPF
             switch (result)
             {
                 case HitResult.Missed:
-                    computerButtons[row, col].Background = Brushes.White;
-                    computerButtons[row, col].Content = "○";
-                    computerButtons[row, col].Foreground = Brushes.Blue;
-                    computerButtons[row, col].FontSize = 24;
+                    computerButtons[row, col].Content = "◉";
+                    computerButtons[row, col].Foreground = Brushes.SteelBlue;
                     break;
                 case HitResult.Hit:
-                    computerButtons[row, col].Background = Brushes.Orange;
                     computerButtons[row, col].Content = "⬛";
                     computerButtons[row, col].Foreground = Brushes.Black;
-                    computerButtons[row, col].FontSize = 24;
                     break;
                 case HitResult.Sunk:
-                    computerButtons[row, col].Background = Brushes.Red;
-                    computerButtons[row, col].Content = "⬛";
-                    computerButtons[row, col].Foreground = Brushes.White;
-                    computerButtons[row, col].FontSize = 24;
                     MarkSunkShip(target);
                     break;
             }
@@ -202,6 +199,8 @@ namespace BattleshipWPF
                 };
                 timer.Start();
             }
+
+            UpdateGridBorders();
         }
 
         private void ComputerTurn()
@@ -215,29 +214,22 @@ namespace BattleshipWPF
             switch (result)
             {
                 case HitResult.Missed:
-                    playerButtons[target.Row, target.Column].Background = Brushes.White;
-                    playerButtons[target.Row, target.Column].Content = "○";
-                    playerButtons[target.Row, target.Column].Foreground = Brushes.Blue;
-                    playerButtons[target.Row, target.Column].FontSize = 24;
+                    playerButtons[target.Row, target.Column].Content = "◉";
+                    playerButtons[target.Row, target.Column].Foreground = Brushes.SteelBlue;
                     break;
                 case HitResult.Hit:
-                    playerButtons[target.Row, target.Column].Background = Brushes.Orange;
                     playerButtons[target.Row, target.Column].Content = "⬛";
                     playerButtons[target.Row, target.Column].Foreground = Brushes.Black;
-                    playerButtons[target.Row, target.Column].FontSize = 24;
                     break;
                 case HitResult.Sunk:
-                    playerButtons[target.Row, target.Column].Background = Brushes.Red;
-                    playerButtons[target.Row, target.Column].Content = "⬛";
-                    playerButtons[target.Row, target.Column].Foreground = Brushes.White;
-                    playerButtons[target.Row, target.Column].FontSize = 24;
+                    MarkSunkShip(target, true);
                     break;
             }
 
             // Check for game over
             if (IsFleetDestroyed(playerFleet))
             {
-                StatusLabel.Text = "💥 Computer won! Better luck next time! 💥";
+                StatusLabel.Text = "💥 You lost! Better luck next time! 💥";
                 StatusLabel.Foreground = Brushes.Red;
                 DisableAllButtons();
                 return;
@@ -261,19 +253,23 @@ namespace BattleshipWPF
                 };
                 timer.Start();
             }
+
+            UpdateGridBorders();
         }
 
-        private void MarkSunkShip(Square lastHit)
+        private void MarkSunkShip(Square lastHit, bool isPlayerShip = false)
         {
-            foreach (var ship in computerFleet.Ships)
+            var fleet = isPlayerShip ? playerFleet : computerFleet;
+            var buttons = isPlayerShip ? playerButtons : computerButtons;
+            
+            foreach (var ship in fleet.Ships)
             {
                 if (ship.Squares.Any(s => s.Row == lastHit.Row && s.Column == lastHit.Column))
                 {
                     foreach (var square in ship.Squares)
                     {
-                        computerButtons[square.Row, square.Column].Background = Brushes.Red;
-                        computerButtons[square.Row, square.Column].Content = "X";
-                        computerButtons[square.Row, square.Column].Foreground = Brushes.White;
+                        buttons[square.Row, square.Column].Content = "X";
+                        buttons[square.Row, square.Column].Foreground = Brushes.IndianRed;
                     }
                     break;
                 }
@@ -295,6 +291,20 @@ namespace BattleshipWPF
                 {
                     computerButtons[row, col].IsEnabled = false;
                 }
+            }
+        }
+
+        private void UpdateGridBorders()
+        {
+            if (playerTurn)
+            {
+                PlayerGridBorder.BorderBrush = Brushes.Gray;
+                ComputerGridBorder.BorderBrush = Brushes.ForestGreen;
+            }
+            else
+            {
+                PlayerGridBorder.BorderBrush = Brushes.Red;
+                ComputerGridBorder.BorderBrush = Brushes.Gray;
             }
         }
     }
