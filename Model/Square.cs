@@ -22,8 +22,8 @@ namespace Vsite.Oom.Battleship.Model
 
         public readonly int Row;
         public readonly int Column;
-
-        public SquareState SquareState { get; private set; }
+        
+        public SquareState SquareState { get; set; }
 
         public void Mark(HitResult hitResult)
         {
@@ -51,6 +51,9 @@ namespace Vsite.Oom.Battleship.Model
 
         public bool Equals(Square other)
         {
+            if (other == null)
+                return false;
+            
             if (GetType() != other.GetType())
                 return false;
 
@@ -60,5 +63,21 @@ namespace Vsite.Oom.Battleship.Model
         public override bool Equals(object obj) => Equals(obj as Square);
 
         public override int GetHashCode() => HashCode.Combine(Row, Column);
+
+        public static bool operator ==(Square left, Square right)
+        {
+            if (ReferenceEquals(left, right))
+                return true;
+            
+            if (left is null || right is null)
+                return false;
+            
+            return left.Equals(right);
+        }
+
+        public static bool operator !=(Square left, Square right)
+        {
+            return !(left == right);
+        }
     }
 }
