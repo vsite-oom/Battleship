@@ -17,16 +17,39 @@
 
         public Fleet CreateFleet()
         {
+            Fleet fleet;
+            
+            // Only a few iterations in worst case scenario, trust me
+            while (true)
+            {
+                fleet = TryCreateFleet();
+                if (fleet != null)
+                    break;
+            }
+            
+            return fleet;
+        }
+
+        private Fleet TryCreateFleet()
+        {
             var grid = new FleetGrid(rules.GridRows, rules.GridColumns);
             var fleet = new Fleet();
+            
             foreach (var shipLength in rules.ShipLengths)
             {
                 var candidates = grid.GetAvailableSequences(shipLength);
                 var selected = selector.Select(candidates);
+                
+                if (!selected.Any())
+                {
+                    return null;
+                }
+                
                 fleet.CreateShip(selected);
-                var ToEliminate = rules.Terminator.ToEliminate(selected);
-                grid.RemoveSquares(ToEliminate);
+                var toEliminate = rules.Terminator.ToEliminate(selected);
+                grid.RemoveSquares(toEliminate);
             }
+            
             return fleet;
         }
     }

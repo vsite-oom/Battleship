@@ -4,8 +4,15 @@
     {
         public IEnumerable<Square> Select(IEnumerable<IEnumerable<Square>> sequences)
         {
-            var index = random.Next(0, sequences.Count());
-            return sequences.ElementAt(index);
+            var sequenceList = sequences.ToList();
+            
+            if (sequenceList.Count == 0)
+            {
+                return Enumerable.Empty<Square>();
+            }
+            
+            var index = random.Next(0, sequenceList.Count);
+            return sequenceList[index];
         }
 
         private readonly Random random = new Random();
