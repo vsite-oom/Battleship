@@ -1,1 +1,10 @@
-<Solution />
+<Solution>
+  <Folder Name="/Model/">
+    <File Path="Battleship.Model.csproj" />
+    <File Path="Fleet.cs" />
+    <File Path="FleetBuilder.cs" />
+    <File Path="Grid.cs" />
+    <File Path="Ship.cs" />
+    <File Path="Square.cs" />
+  </Folder>
+</Solution>
