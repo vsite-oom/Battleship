@@ -9,11 +9,12 @@
 
 	<ItemGroup>
 		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.12.0" />
-		<PackageReference Include="MSTest" Version="3.6.4" />
+		<PackageReference Include="MSTest.TestAdapter" Version="3.6.4" />
+		<PackageReference Include="MSTest.TestFramework" Version="3.6.4" />
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\Battleship.Model\Battleship.Model.csproj" />
+		<ProjectReference Include="..\Model\Battleship.Model.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>
