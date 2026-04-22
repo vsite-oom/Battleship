@@ -7,4 +7,9 @@
     <File Path="Ship.cs" />
     <File Path="Square.cs" />
   </Folder>
+  <Folder Name="/Tests/">
+    <File Path="Battleship.Tests.csproj" />
+    <File Path="MSTestSetting.cs" />
+    <File Path="UnitTest1.cs" />
+  </Folder>
 </Solution>
