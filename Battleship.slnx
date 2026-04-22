@@ -9,6 +9,7 @@
   </Folder>
   <Folder Name="/Tests/">
     <File Path="Battleship.Tests.csproj" />
+    <File Path="GridTests.cs" />
     <File Path="MSTestSetting.cs" />
     <File Path="SquareTests.cs" />
   </Folder>
