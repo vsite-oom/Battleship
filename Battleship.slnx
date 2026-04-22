@@ -4,12 +4,14 @@
     <File Path="Fleet.cs" />
     <File Path="FleetBuilder.cs" />
     <File Path="Grid.cs" />
+    <File Path="LimitedQuee.cs" />
     <File Path="Ship.cs" />
     <File Path="Square.cs" />
   </Folder>
   <Folder Name="/Tests/">
     <File Path="Battleship.Tests.csproj" />
     <File Path="GridTests.cs" />
+    <File Path="LimitedQueeTests.cs" />
     <File Path="MSTestSetting.cs" />
     <File Path="SquareTests.cs" />
   </Folder>
