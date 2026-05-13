@@ -9,12 +9,14 @@ public class GunneryTests
     public void InitialShootingTacticsIsRandom()
     {
         var gunnery = new Gunnery(10, 10, new List<int> { 1, 2, 3 });
+        gunnery.Next();
         Assert.AreEqual(ShootingTactics.Random, gunnery.ShootingTactics);
     }
     [TestMethod]
     public void ShootingTacticsRemainsRandomIfHitResultIsMissed()
     {
         var gunnery = new Gunnery(10, 10, new List<int> { 1, 2, 3 });
+        gunnery.Next();
         gunnery.ProcessHitResult(HitResult.Missed);
         Assert.AreEqual(ShootingTactics.Random, gunnery.ShootingTactics);
     }
@@ -22,6 +24,7 @@ public class GunneryTests
     public void ShootingTacticsChangesToSurroundingAfterFirstSquareIsHit()
     {
         var gunnery = new Gunnery(10, 10, new List<int> { 1, 2, 3 });
+        gunnery.Next();
         gunnery.ProcessHitResult(HitResult.Hit);
         Assert.AreEqual(ShootingTactics.Surrounding, gunnery.ShootingTactics);
     }
@@ -29,6 +32,7 @@ public class GunneryTests
     public void ShootingTacticsRemainsSurroundingIfNextSquareIsMissed()
     {
         var gunnery = new Gunnery(10, 10, new List<int> { 1, 2, 3 });
+        gunnery.Next();
         gunnery.ProcessHitResult(HitResult.Hit);
         Assert.AreEqual(ShootingTactics.Surrounding, gunnery.ShootingTactics);
         gunnery.ProcessHitResult(HitResult.Missed);
@@ -38,6 +42,7 @@ public class GunneryTests
     public void ShootingTacticsChangesFromSurroundingToInlineAfterSecondSquareIsHit()
     {
         var gunnery = new Gunnery(10, 10, new List<int> { 1, 2, 3 });
+        gunnery.Next();
         gunnery.ProcessHitResult(HitResult.Hit);
         Assert.AreEqual(ShootingTactics.Surrounding, gunnery.ShootingTactics);
         gunnery.ProcessHitResult(HitResult.Hit);
@@ -47,6 +52,7 @@ public class GunneryTests
     public void ShootingTacticsRemainsInlineAfterThirdSquareIsHit()
     {
         var gunnery = new Gunnery(10, 10, new List<int> { 1, 2, 3 });
+        gunnery.Next();
         gunnery.ProcessHitResult(HitResult.Hit);
         Assert.AreEqual(ShootingTactics.Surrounding, gunnery.ShootingTactics);
         gunnery.ProcessHitResult(HitResult.Hit);
@@ -58,6 +64,7 @@ public class GunneryTests
     public void ShootingTacticsRemainsInlineAfterThirdSquareIsMissed()
     {
         var gunnery = new Gunnery(10, 10, new List<int> { 1, 2, 3 });
+        gunnery.Next();
         gunnery.ProcessHitResult(HitResult.Hit);
         Assert.AreEqual(ShootingTactics.Surrounding, gunnery.ShootingTactics);
         gunnery.ProcessHitResult(HitResult.Hit);
@@ -69,6 +76,7 @@ public class GunneryTests
     public void ShootingTacticsChangesToRandomAfterShipIsSunken()
     {
         var gunnery = new Gunnery(10, 10, new List<int> { 1, 2, 3 });
+        gunnery.Next();
         gunnery.ProcessHitResult(HitResult.Hit);
         Assert.AreEqual(ShootingTactics.Surrounding, gunnery.ShootingTactics);
         gunnery.ProcessHitResult(HitResult.Sunken);
