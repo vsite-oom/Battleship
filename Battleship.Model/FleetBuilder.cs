@@ -16,7 +16,9 @@ namespace Battleship.Model
 
         private readonly List<int> shipLengths;
 
-        private readonly Random random;
+        private readonly Random random = new Random();
+
+        private readonly SquareEliminator eliminator = new SquareEliminator();
         public Fleet CreateFleet()
         {
             var fleet = new Fleet();
@@ -28,6 +30,11 @@ namespace Battleship.Model
                 var selected = candidates.ElementAt(selectedIndex);
 
                 fleet.CreateShip(selected);
+                var toEliminate = eliminator.ToEliminate(selected, fleetGrid.Rows, fleetGrid.Columns);
+                foreach (var coordinate in toEliminate)
+                {
+                    fleetGrid.EleminateSquare(coordinate.Row, coordinate.Column);
+                }
             }
 
             return fleet;
