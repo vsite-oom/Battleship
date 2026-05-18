@@ -1,6 +1,4 @@
-﻿using Battleship.Model;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
+using Battleship.Model;
 
 namespace Battleship.Tests;
 
@@ -17,8 +15,6 @@ public class GridTests
 
         Assert.AreEqual(50, grid.Squares.Count());
     }
-
-
     [TestMethod]
     public void GetAvailablePlacementsForGrid1x5Returns3PlacementsForShipWith3Squares()
     {

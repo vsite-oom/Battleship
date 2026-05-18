@@ -1,5 +1,3 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
 using Battleship.Model;
 
 namespace Battleship.Tests;

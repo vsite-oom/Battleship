@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Battleship.Model
 {
-    internal class Ship
+    public class Ship
     {
     }
 }

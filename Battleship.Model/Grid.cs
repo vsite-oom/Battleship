@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Battleship.Model
 {
-    internal class Grid
+    public class Grid
     {
         public readonly int Rows;
         public readonly int Columns;

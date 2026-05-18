@@ -1,4 +1,4 @@
 <Solution>
   <Project Path="Battleship.Model/Battleship.Model.csproj" Id="cbd17753-4584-4851-84d4-5536667be70b" />
-  <Project Path="Battleship.Tests/Battleship.Tests.csproj" Id="3780558b-3415-4533-afd1-e2a2e3742965" />
+  <Project Path="Battleship.Tests/Battleship.Tests.csproj" Id="23fa458a-b701-49e0-8da0-941f154f193b" />
 </Solution>
