@@ -1,6 +1,6 @@
-using Model;
+using model;
 
-namespace Tests;
+namespace tests;
 
 [TestClass]
 public class LimitedQueueTests

@@ -1,4 +1,4 @@
-namespace Model;
+namespace model;
 
 public class LimitedQueue<T> : Queue<T>
 {

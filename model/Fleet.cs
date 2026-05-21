@@ -4,8 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Model;
+namespace model;
 
-public class FleetBuilder
+public class Fleet
 {
 }
