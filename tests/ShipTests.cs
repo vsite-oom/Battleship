@@ -1,7 +1,7 @@
 ﻿
 using model;
 
-namespace Battleship.Tests;
+namespace tests;
 
 [TestClass]
 public class ShipTests

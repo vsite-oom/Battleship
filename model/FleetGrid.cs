@@ -1,8 +1,8 @@
 ﻿
 using model;
 
-namespace model
-{
+namespace model;
+
     public class FleetGrid : Grid
     {
         public FleetGrid(int rows, int columns) : base(rows, columns)
@@ -25,4 +25,4 @@ namespace model
             return squares[row, column] != null;
         }
     }
-}
+
