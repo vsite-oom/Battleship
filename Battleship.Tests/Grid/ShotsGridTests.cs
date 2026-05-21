@@ -3,7 +3,7 @@
 namespace Battleship.Tests;
 
 [TestClass]
-public class ShotsGridTests
+public sealed class ShotsGridTests
 {
     [TestMethod]
     public void GetSquaresInDirectionReturns3SquaresAboveSquare3x3()
@@ -12,7 +12,7 @@ public class ShotsGridTests
         int row = 3;
         int column = 3;
         var squares = grid.GetSquaresInDirection(row, column, Direction.Upwards);
-        Assert.AreEqual(3, squares.Count());
+        Assert.HasCount(3, squares);
     }
     [TestMethod]
     public void GetSquaresInDirectionReturns4SquaresRightFromSquare3x5()
@@ -21,7 +21,7 @@ public class ShotsGridTests
         int row = 3;
         int column = 5;
         var squares = grid.GetSquaresInDirection(row, column, Direction.Rightwards);
-        Assert.AreEqual(4, squares.Count());
+        Assert.HasCount(4, squares);
     }
     [TestMethod]
     public void GetSquaresInDirectionReturns2SquaresBelowSquare7x5()
@@ -30,7 +30,7 @@ public class ShotsGridTests
         int row = 7;
         int column = 5;
         var squares = grid.GetSquaresInDirection(row, column, Direction.Downwards);
-        Assert.AreEqual(2, squares.Count());
+        Assert.HasCount(2, squares);
     }
     [TestMethod]
     public void GetSquaresInDirectionReturns1SquareLeftFromSquare7x1()
@@ -39,6 +39,6 @@ public class ShotsGridTests
         int row = 7;
         int column = 1;
         var squares = grid.GetSquaresInDirection(row, column, Direction.Leftwards);
-        Assert.AreEqual(1, squares.Count());
+        Assert.HasCount(1, squares);
     }
 }

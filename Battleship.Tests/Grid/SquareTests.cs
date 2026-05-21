@@ -3,7 +3,7 @@
 namespace Battleship.Tests;
 
 [TestClass]
-public class SquareTests
+public sealed class SquareTests
 {
     [TestMethod]
     public void ConstructorCreateSquareWithRowAndColumnProvided()
