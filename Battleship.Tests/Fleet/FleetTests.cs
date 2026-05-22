@@ -3,14 +3,14 @@ using Battleship.Model;
 namespace Battleship.Tests;
 
 [TestClass]
-public class FleetTests
+public sealed class FleetTests
 {
     [TestMethod]
     public void ConstructorCreatesEmptyFleet()
     {
         var fleet = new Fleet();
 
-        Assert.AreEqual(0, fleet.Ships.Count());
+        Assert.IsEmpty(fleet.Ships);
     }
 
     [TestMethod]
@@ -22,7 +22,7 @@ public class FleetTests
 
         fleet.CreateShip(squares);
 
-        Assert.AreEqual(1, fleet.Ships.Count());
+        Assert.HasCount(1, fleet.Ships);
     }
     [TestMethod]
     public void HitMethodReturnsMissedForSquareNotInAnyShip()
@@ -33,13 +33,14 @@ public class FleetTests
     }
 
     [TestMethod]
-    public void HitMethodReturnsHitForSquareBelongingToAnyShip()
+    [DataRow(1, 3)]
+    [DataRow(8, 4)]
+    [DataRow(1, 4)]
+    public void HitMethodReturnsHitForSquareBelongingToAnyShip(int row, int column)
     {
         Fleet fleet = CreateFleet();
 
-        Assert.AreEqual(HitResult.Hit, fleet.Hit(1, 3));
-        Assert.AreEqual(HitResult.Hit, fleet.Hit(8, 4));
-        Assert.AreEqual(HitResult.Hit, fleet.Hit(1, 4));
+        Assert.AreEqual(HitResult.Hit, fleet.Hit(row, column));
     }
 
     [TestMethod]
@@ -47,8 +48,8 @@ public class FleetTests
     {
         Fleet fleet = CreateFleet();
 
-        Assert.AreEqual(HitResult.Hit, fleet.Hit(1, 3));
-        Assert.AreEqual(HitResult.Hit, fleet.Hit(1, 4));
+        fleet.Hit(1, 3);
+        fleet.Hit(1, 4);
         Assert.AreEqual(HitResult.Sunken, fleet.Hit(1, 5));
     }
 
@@ -57,11 +58,11 @@ public class FleetTests
     {
         Fleet fleet = CreateFleet();
 
-        Assert.AreEqual(HitResult.Hit, fleet.Hit(1, 3));
-        Assert.AreEqual(HitResult.Hit, fleet.Hit(1, 4));
-        Assert.AreEqual(HitResult.Sunken, fleet.Hit(1, 5));
+        fleet.Hit(1, 3);
+        fleet.Hit(1, 4);
+        fleet.Hit(1, 5);
 
-        Assert.AreEqual(HitResult.Hit, fleet.Hit(8, 5));
+        fleet.Hit(8, 5);
         Assert.AreEqual(HitResult.Sunken, fleet.Hit(8, 4));
     }
 

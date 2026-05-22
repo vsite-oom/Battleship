@@ -3,22 +3,22 @@ using Battleship.Model;
 namespace Battleship.Tests;
 
 [TestClass]
-public class LimitedQueueTests
+public sealed class LimitedQueueTests
 {
     [TestMethod]
-    public void EnqueueInsertsItmToQueue()
+    public void EnqueueInsertsItemToQueue()
     {
         var queue = new LimitedQueue<int>(3);
 
-        Assert.AreEqual(0, queue.Count);
+        Assert.IsEmpty(queue);
 
         queue.Enqueue(1);
 
-        Assert.AreEqual(1, queue.Count);
+        Assert.HasCount(1, queue);
 
         queue.Enqueue(3);
 
-        Assert.AreEqual(2, queue.Count);
+        Assert.HasCount(2, queue);
     }
 
     [TestMethod]
@@ -29,14 +29,14 @@ public class LimitedQueueTests
         queue.Enqueue(2);
         queue.Enqueue(3);
 
-        Assert.AreEqual(3, queue.Count);
+        Assert.HasCount(3, queue);
 
         queue.Enqueue(4);
-        Assert.AreEqual(3, queue.Count);
-        Assert.IsFalse(queue.Contains(1));
+        Assert.HasCount(3, queue);
+        Assert.DoesNotContain(1, queue);
 
         queue.Enqueue(5);
-        Assert.AreEqual(3, queue.Count);
-        Assert.IsFalse(queue.Contains(2));
+        Assert.HasCount(3, queue);
+        Assert.DoesNotContain(2, queue);
     }
 }

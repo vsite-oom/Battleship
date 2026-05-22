@@ -3,7 +3,7 @@ using Battleship.Model;
 namespace Battleship.Tests;
 
 [TestClass]
-public class FleetGridTests
+public sealed class FleetGridTests
 {
     [TestMethod]
     public void ConstructorCreatesGridWith50SquaresFor5RowsAnd10Columns()
@@ -13,7 +13,7 @@ public class FleetGridTests
 
         var grid = new FleetGrid(rows, columns);
 
-        Assert.AreEqual(50, grid.Squares.Count());
+        Assert.HasCount(50, grid.Squares);
     }
     [TestMethod]
     public void GetAvailablePlacementsForGrid1x5Returns3PlacementsForShipWith3Squares()
@@ -24,7 +24,7 @@ public class FleetGridTests
 
         var grid = new FleetGrid(rows, columns);
 
-        Assert.AreEqual(3, grid.GetAvailablePlacements(shipLength).Count());
+        Assert.HasCount(3, grid.GetAvailablePlacements(shipLength));
     }
     [TestMethod]
     public void GetAvailablePlacementsForGrid5x1Returns3PlacementsForShipWith3Squares()
@@ -35,41 +35,41 @@ public class FleetGridTests
 
         var grid = new FleetGrid(rows, columns);
 
-        Assert.AreEqual(3, grid.GetAvailablePlacements(shipLength).Count());
+        Assert.HasCount(3, grid.GetAvailablePlacements(shipLength));
     }
 
     [TestMethod]
     public void GetAvailablePlacementsForGrid5x5Returns20PlacementsForShipWith4Squares()
     {
         int rows = 5;
-        int cols = 5;
+        int columns = 5;
         int shipLength = 4;
-        var grid = new FleetGrid(rows, cols);
+        var grid = new FleetGrid(rows, columns);
 
-        Assert.AreEqual(20, grid.GetAvailablePlacements(shipLength).Count());
+        Assert.HasCount(20, grid.GetAvailablePlacements(shipLength));
     }
     [TestMethod]
     public void GetAvailablePlacementsForGrid1x6Returns3PlacementsForShipWith2SquaresAfterSquareInColumn3IsEliminated()
     {
         int rows = 1;
-        int cols = 6;
+        int columns = 6;
         int shipLength = 2;
-        var grid = new FleetGrid(rows, cols);
+        var grid = new FleetGrid(rows, columns);
         grid.EliminateSquare(0, 3);
 
-        Assert.AreEqual(3, grid.GetAvailablePlacements(shipLength).Count());
+        Assert.HasCount(3, grid.GetAvailablePlacements(shipLength));
     }
 
     [TestMethod]
     public void GetAvailablePlacementsForGrid8x1Returns3PlacementsForShipWith2SquaresAfterSquaresInRows3And5AreEliminated()
     {
         int rows = 8;
-        int cols = 1;
+        int columns = 1;
         int shipLength = 2;
-        var grid = new FleetGrid(rows, cols);
+        var grid = new FleetGrid(rows, columns);
         grid.EliminateSquare(3, 0);
         grid.EliminateSquare(5, 0);
 
-        Assert.AreEqual(3, grid.GetAvailablePlacements(shipLength).Count());
+        Assert.HasCount(3, grid.GetAvailablePlacements(shipLength));
     }
 }

@@ -3,11 +3,11 @@ using Battleship.Model;
 namespace Battleship.Tests;
 
 [TestClass]
-public class SurroundingTargetSelectorTests
+public sealed class SurroundingTargetSelectorTests
 {
     private IEnumerable<Square> CreateCandidates(ShotsGrid grid, IEnumerable<SquareCoordinate> coord)
     {
-        List<Square> result = new List<Square>();
+        List<Square> result = [];
         foreach (var c in coord)
         {
             var square = grid.Squares.FirstOrDefault(s => s.Row == c.Row && s.Column == c.Column);
@@ -22,11 +22,10 @@ public class SurroundingTargetSelectorTests
         var grid = new ShotsGrid(10, 10);
         var squareHit = grid.Squares.FirstOrDefault(s => s.Row == 3 && s.Column == 4);
         squareHit!.ChangeState(SquareState.Hit);
-        int shipLength = 5;
-        var selector = new SurroundingTargetSelector(grid, squareHit, shipLength);
+        var selector = new SurroundingTargetSelector(grid, squareHit);
         var target = selector.Next();
 
         var candidates = CreateCandidates(grid, [new(2, 4), new(3, 5), new(4, 4), new(3, 3)]);
-        Assert.IsTrue(candidates.Contains(target));
+        Assert.Contains(target, candidates);
     }
 }
