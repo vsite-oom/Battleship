@@ -19,8 +19,7 @@ public enum ShootingTactics
 public class Gunnery
 {
     public Gunnery(int rows, int columns, IEnumerable<int> shipLengths)
-
-        {
+    {
         recordGrid = new ShotsGrid(rows, columns);
         this.shipLengths = new List<int>(shipLengths.OrderDescending());
         targetSelector = new RandomTargetSelector(recordGrid, this.shipLengths[0]);
@@ -101,7 +100,7 @@ public class Gunnery
     private void ChangeTacticsToSurrounding()
     {
         ShootingTactics = ShootingTactics.Surrounding;
-        targetSelector = new SurroundingTargetSelector(recordGrid, target, shipLengths[0]);
+        targetSelector = new SurroundingTargetSelector();
     }
 
     private void ChangeTacticsToInline()

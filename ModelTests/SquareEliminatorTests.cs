@@ -12,23 +12,24 @@ namespace ModelTests;
 public class SquareEliminatorTests
 {
     [TestMethod]
-    public void ForSquares4x3To4x6Returns18SquaresIncludingSurroundingSquares(object toEliminate)
+    public void ForSquares4x3To4x6Returns18SquaresIncludingSurroundingSquares()
     {
         var eliminator = new SquareEliminator();
 
         var shipSquares = new List<Square> { new Square(4, 3), new Square(4, 4), new Square(4, 5), new Square(4, 6) };
 
-        Assert.AreEqual(18, eliminator.ToEliminate(shipSquares, 10, 10).Count());
+        var toEliminate = eliminator.ToEliminate(shipSquares, 10, 10);
+        Assert.AreEqual(18, toEliminate.Count());
 
-        Assert.IsTrue(condition: eliminator.ToEliminate(shipSquares, 10, 10).Contains(new SquareCoordinate(3, 2)));
-        Assert.IsTrue(eliminator.ToEliminate(shipSquares, 10, 10).Contains(new SquareCoordinate(5, 2)));
-        Assert.IsTrue(eliminator.ToEliminate(shipSquares, 10, 10).Contains(new SquareCoordinate(3, 7)));
-        Assert.IsTrue(eliminator.ToEliminate(shipSquares, 10, 10).Contains(new SquareCoordinate(5, 7)));
+        Assert.IsTrue(toEliminate.Contains(new SquareCoordinate(3, 2)));
+        Assert.IsTrue(toEliminate.Contains(new SquareCoordinate(5, 2)));
+        Assert.IsTrue(toEliminate.Contains(new SquareCoordinate(3, 7)));
+        Assert.IsTrue(toEliminate.Contains(new SquareCoordinate(5, 7)));
     }
 
 
     [TestMethod]
-    public void ForSquares4x3To4x6Returns18SquaresIncludingSurroundingSquares()
+    public void ForSquares0x3To0x4Returns8SquaresIncludingSurroundingSquares()
     {
         var eliminator = new SquareEliminator();
 
@@ -44,7 +45,7 @@ public class SquareEliminatorTests
     }
 
     [TestMethod]
-    public void ForSquares3x9To4x9Returns8SquaresIncludingSurrondingSquares()
+    public void ForSquares3x9To4x9Returns8SquaresIncludingSurroundingSquares()
     {
         var eliminator = new SquareEliminator();
 
@@ -92,7 +93,7 @@ public class SquareEliminatorTests
     }
 
     [TestMethod]
-    public void ForSquares0x0To0x1Returns6SquaresIncludingSurrondingSquares()
+    public void ForSquares0x0To0x1Returns6SquaresIncludingSurroundingSquares()
     {
         var eliminator = new SquareEliminator();
 
@@ -108,7 +109,7 @@ public class SquareEliminatorTests
     }
 
     [TestMethod]
-    public void ForSquares8x9To9x9Returns6SquaresIncludingSurrondingSquares()
+    public void ForSquares8x9To9x9Returns6SquaresIncludingSurroundingSquares()
     {
         var eliminator = new SquareEliminator();
 

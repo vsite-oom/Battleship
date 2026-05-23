@@ -9,6 +9,7 @@ public class GunneryTests
     public void InitialShootingTacticsIsRandom()
     {
         var gunnery = new Gunnery(10, 10, new List<int> { 1, 2, 3 });
+        gunnery.Next();
         Assert.AreEqual(ShootingTactics.Random, gunnery.ShootingTactics);
     }
     [TestMethod]
@@ -63,6 +64,7 @@ public class GunneryTests
     public void ShootingTacticsRemainsInlineAfterThirdSquareIsMissed()
     {
         var gunnery = new Gunnery(10, 10, new List<int> { 1, 2, 3 });
+        gunnery.Next();
         gunnery.ProcessHitResult(HitResult.Hit);
         Assert.AreEqual(ShootingTactics.Surrounding, gunnery.ShootingTactics);
         gunnery.ProcessHitResult(HitResult.Hit);

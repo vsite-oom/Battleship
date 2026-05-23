@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Model;
 
-public class LimitedQueue<T>:Queue<T>
+public class LimitedQueue<T> : Queue<T>
 {
     private readonly int _maxItems;
     public LimitedQueue(int maxItems)

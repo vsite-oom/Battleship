@@ -43,8 +43,10 @@ public class Ship
             {
                 sq.ChangeState(SquareState.Sunken);
             }
+
             return HitResult.Sunken;
         }
+
         return HitResult.Hit;
     }
 }

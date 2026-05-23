@@ -6,15 +6,42 @@ using System.Threading.Tasks;
 
 namespace Model;
 
-public class SquareCoordinate
+public class SquareEliminator
 {
-    public SquareCoordinate(int row, int column)
+    public IEnumerable<SquareCoordinate> ToEliminate(IEnumerable<Square> shipSquares, int rows, int columns)
     {
-        Row = row;
-        Column = column;
-    }
+        var first = shipSquares.First();
+        int firstRow = first.Row;
+        int firstColumn = first.Column;
+        if (firstRow > 0)
+        {
+            --firstRow;
+        }
+        if (firstColumn > 0)
+        {
+            --firstColumn;
+        }
 
-    public readonly int Row;
-    public readonly int Column;
-   
+        var last = shipSquares.Last();
+        int lastRow = last.Row;
+        int lastColumn = last.Column;
+        if (lastRow < rows - 1)
+        {
+            ++lastRow;
+        }
+        if (lastColumn < columns - 1)
+        {
+            ++lastColumn;
+        }
+
+        var result = new List<SquareCoordinate>();
+        for (int r = firstRow; r <= lastRow; ++r)
+        {
+            for (int c = firstColumn; c <= lastColumn; ++c)
+            {
+                result.Add(new SquareCoordinate(r, c));
+            }
+        }
+        return result;
+    }
 }
