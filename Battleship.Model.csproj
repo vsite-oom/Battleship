@@ -4,16 +4,20 @@
 		<TargetFramework>net8.0</TargetFramework>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
+		
 	</PropertyGroup>
+
+	<ItemGroup>
+	  <Compile Remove="Battleship.tests\bin\**" />
+	  <Compile Remove="Battleship.tests\obj\**" />
+	  <EmbeddedResource Remove="Battleship.tests\bin\**" />
+	  <EmbeddedResource Remove="Battleship.tests\obj\**" />
+	  <None Remove="Battleship.tests\bin\**" />
+	  <None Remove="Battleship.tests\obj\**" />
+	</ItemGroup>
 
 	<ItemGroup>
 	  <PackageReference Include="MSTest.TestFramework" Version="4.1.0" />
 	</ItemGroup>
-
-	<ItemGroup>
-	  <Reference Include="Battleship.Tests">
-	    <HintPath>bin\Debug\net8.0\Battleship.Tests.dll</HintPath>
-	  </Reference>
-	</ItemGroup>
-
+	
 </Project>
