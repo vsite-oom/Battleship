@@ -1,5 +1,6 @@
-using Battleship.Model;
-namespace Battleship.tests;
+﻿using Battleship.Model;
+
+namespace Battleship.Tests;
 
 [TestClass]
 public sealed class LimitedQueueTests

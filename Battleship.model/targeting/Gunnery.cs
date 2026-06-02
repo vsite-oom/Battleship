@@ -70,8 +70,6 @@ public class Gunnery
                     default:
                         throw new InvalidOperationException($"Unexpected ShootingTactics value: {ShootingTactics}");
                 }
-                return;
-
             case HitResult.Sunken:
                 ChangeTacticsToRandom();
                 return;
@@ -94,6 +92,8 @@ public class Gunnery
             case HitResult.Sunken:
                 MarkShipSunken();
                 return;
+            default:
+                throw new InvalidOperationException($"Unexpected HitResult value: {hitResult}");
         }
     }
 
@@ -129,5 +129,4 @@ public class Gunnery
         ShootingTactics = ShootingTactics.Inline;
         targetSelector = new InlineTargetSelector();
     }
-    
 }

@@ -2,12 +2,12 @@
 
 /// <summary>Builds a <see cref="Fleet"/> by randomly placing ships on a <see cref="FleetGrid"/>.</summary>
 public class FleetBuilder
-/// <summary>Initializes a new instance of the <see cref="FleetBuilder"/> class.</summary>
-/// <param name="gridRows">The number of rows in the placement grid.</param>
-/// <param name="gridColumns">The number of columns in the placement grid.</param>
-/// <param name="shipLengths">The lengths of the ships to place, in any order.</param>
-/// <exception cref="ArgumentNullException"><paramref name="shipLengths"/> is <see langword="null"/>.</exception>
 {
+    /// <summary>Initializes a new instance of the <see cref="FleetBuilder"/> class.</summary>
+    /// <param name="gridRows">The number of rows in the placement grid.</param>
+    /// <param name="gridColumns">The number of columns in the placement grid.</param>
+    /// <param name="shipLengths">The lengths of the ships to place, in any order.</param>
+    /// <exception cref="ArgumentNullException"><paramref name="shipLengths"/> is <see langword="null"/>.</exception>
     public FleetBuilder(int gridRows, int gridColumns, int[] shipLengths)
     {
         ArgumentNullException.ThrowIfNull(shipLengths);
@@ -16,8 +16,11 @@ public class FleetBuilder
     }
 
     private readonly FleetGrid fleetGrid;
+
     private readonly List<int> shipLengths;
+
     private readonly Random random = new Random();
+
     private readonly SquareEliminator eliminator = new SquareEliminator();
 
     /// <summary>Creates a fleet with all ships placed randomly on the grid.</summary>
@@ -40,8 +43,6 @@ public class FleetBuilder
                 fleetGrid.EliminateSquare(coordinate.Row, coordinate.Column);
             }
         }
-
         return fleet;
     }
-
 }

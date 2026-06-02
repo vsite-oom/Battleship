@@ -15,7 +15,7 @@ public class SurroundingTargetSelector : ITargetSelector
         this.grid = grid;
         this.firstHit = firstHit;
     }
-  
+
     /// <inheritdoc/>
     public Square Next()
     {

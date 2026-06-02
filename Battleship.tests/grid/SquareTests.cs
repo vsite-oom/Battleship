@@ -1,4 +1,4 @@
-using Battleship.Model;
+﻿using Battleship.Model;
 
 namespace Battleship.Tests;
 
