@@ -49,10 +49,10 @@ public class ShotsGrid : Grid
 
         var (deltaRow, deltaColumn) = direction switch
         {
-            Direction.Upwards => (-1, 0),
-            Direction.Rightwards => (0, +1),
-            Direction.Downwards => (+1, 0),
-            Direction.Leftwards => (0, -1),
+            Direction.Upwards    => (-1,  0),
+            Direction.Rightwards => ( 0, +1),
+            Direction.Downwards  => (+1,  0),
+            Direction.Leftwards  => ( 0, -1),
             _ => throw new ArgumentOutOfRangeException(nameof(direction))
         };
 

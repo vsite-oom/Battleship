@@ -1,6 +1,4 @@
-﻿using Battleship.Model;
-
-namespace Battleship.Model;
+﻿namespace Battleship.Model;
 
 /// <summary>Provides the base implementation for a rectangular grid of squares.</summary>
 public abstract class Grid
@@ -26,6 +24,7 @@ public abstract class Grid
 
     /// <summary>Gets the number of rows in the grid.</summary>
     public int Rows { get; }
+
     /// <summary>Gets the number of columns in the grid.</summary>
     public int Columns { get; }
 
@@ -38,7 +37,6 @@ public abstract class Grid
     /// <summary>Returns all valid placements for a ship of the given length.</summary>
     /// <param name="length">The number of consecutive squares required.</param>
     /// <returns>An enumeration of candidate placements, each represented as a sequence of squares.</returns>
-
     public IEnumerable<IEnumerable<Square>> GetAvailablePlacements(int length)
     {
         return GetHorizontalAvailablePlacements(length).Concat(GetVerticalAvailablePlacements(length));
@@ -101,4 +99,5 @@ public abstract class Grid
         }
         return result;
     }
+
 }

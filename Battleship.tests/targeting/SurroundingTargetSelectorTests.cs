@@ -22,7 +22,6 @@ public sealed class SurroundingTargetSelectorTests
         var grid = new ShotsGrid(10, 10);
         var squareHit = grid.Squares.FirstOrDefault(s => s.Row == 3 && s.Column == 4);
         squareHit!.ChangeState(SquareState.Hit);
-        int shipLength = 5;
         var selector = new SurroundingTargetSelector(grid, squareHit);
         var target = selector.Next();
 

@@ -9,6 +9,7 @@ public sealed class FleetTests
     public void ConstructorCreatesEmptyFleet()
     {
         var fleet = new Fleet();
+
         Assert.IsEmpty(fleet.Ships);
     }
 
