@@ -96,10 +96,13 @@ public class Gunnery
     private void ChangeTacticsToInline()
     {
         ShootingTactics = ShootingTactics.Inline;
-        targetSelector = new InlineTargetSelector();
+        var firstHit = shipSquares[shipSquares.Count - 2];
+        var secondHit = shipSquares[shipSquares.Count - 1];
+        targetSelector = new InlineTargetSelector(recordGrid, firstHit, secondHit);
     }
 
     public ShootingTactics ShootingTactics { get; private set; } = ShootingTactics.Random;
+    public ShotsGrid RecordGrid { get { return recordGrid; } }
     private readonly ShotsGrid recordGrid;
     private readonly List<int> shipLengths = [];
     private List<Square> shipSquares = new List<Square>();
