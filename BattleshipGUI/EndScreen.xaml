@@ -1,0 +1,61 @@
+<UserControl x:Class="BattleshipGUI.EndScreen"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             Background="{StaticResource CrtBgBrush}">
+    <Grid>
+        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+            <TextBlock Text="BATTLE REPORT" Style="{StaticResource CrtTextDim}"
+                       FontSize="11" HorizontalAlignment="Center" Margin="0,0,0,12"/>
+
+            <TextBlock x:Name="OutcomeText" Style="{StaticResource CrtTitle}"
+                       HorizontalAlignment="Center" Margin="0,0,0,8"/>
+
+            <TextBlock x:Name="OutcomeSubtext" Style="{StaticResource CrtTextDim}"
+                       FontSize="10" HorizontalAlignment="Center" Margin="0,0,0,32"/>
+
+            <Border BorderBrush="{StaticResource CrtDimBrush}" BorderThickness="1"
+                    Padding="16" MinWidth="360" Margin="0,0,0,32">
+                <StackPanel>
+                    <TextBlock Text="▌ STATISTICS" Style="{StaticResource CrtText}"
+                               FontSize="11" Margin="0,0,0,12"/>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Text="SHOTS FIRED" Grid.Row="0" Grid.Column="0"
+                                   Style="{StaticResource CrtTextDim}" FontSize="10"/>
+                        <TextBlock x:Name="ShotsLabel" Grid.Row="0" Grid.Column="1"
+                                   Style="{StaticResource CrtTextBright}" FontSize="16"
+                                   HorizontalAlignment="Right"/>
+
+                        <TextBlock Text="HITS LANDED" Grid.Row="1" Grid.Column="0"
+                                   Style="{StaticResource CrtTextDim}" FontSize="10" Margin="0,6,0,0"/>
+                        <TextBlock x:Name="HitsLabel" Grid.Row="1" Grid.Column="1"
+                                   Style="{StaticResource CrtTextBright}" FontSize="16"
+                                   HorizontalAlignment="Right" Margin="0,6,0,0"/>
+
+                        <TextBlock Text="ACCURACY" Grid.Row="2" Grid.Column="0"
+                                   Style="{StaticResource CrtTextDim}" FontSize="10" Margin="0,6,0,0"/>
+                        <TextBlock x:Name="AccuracyLabel" Grid.Row="2" Grid.Column="1"
+                                   Style="{StaticResource CrtTextBright}" FontSize="16"
+                                   HorizontalAlignment="Right" Margin="0,6,0,0"/>
+                    </Grid>
+                </StackPanel>
+            </Border>
+
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <Button Content="▶ NEW BATTLE" Style="{StaticResource CrtButton}"
+                        Margin="0,0,12,0" Click="NewBattle_Click"/>
+                <Button Content="◀ MAIN MENU" Style="{StaticResource CrtButton}"
+                        Click="MainMenu_Click"/>
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</UserControl>

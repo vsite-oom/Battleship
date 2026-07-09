@@ -1,0 +1,70 @@
+<Application x:Class="BattleshipGUI.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:BattleshipGUI"
+             StartupUri="MainWindow.xaml">
+    <Application.Resources>
+        <Color x:Key="CrtBg">#04140A</Color>
+        <Color x:Key="CrtFg">#5CFF8A</Color>
+        <Color x:Key="CrtDim">#1F7A3A</Color>
+        <Color x:Key="CrtBright">#D8FFE2</Color>
+        <Color x:Key="CrtRed">#FF5C5C</Color>
+
+        <SolidColorBrush x:Key="CrtBgBrush" Color="{StaticResource CrtBg}"/>
+        <SolidColorBrush x:Key="CrtFgBrush" Color="{StaticResource CrtFg}"/>
+        <SolidColorBrush x:Key="CrtDimBrush" Color="{StaticResource CrtDim}"/>
+        <SolidColorBrush x:Key="CrtBrightBrush" Color="{StaticResource CrtBright}"/>
+        <SolidColorBrush x:Key="CrtRedBrush" Color="{StaticResource CrtRed}"/>
+
+        <Style x:Key="CrtText" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="{StaticResource CrtFgBrush}"/>
+            <Setter Property="FontFamily" Value="Consolas"/>
+            <Setter Property="FontSize" Value="14"/>
+        </Style>
+
+        <Style x:Key="CrtTextDim" TargetType="TextBlock" BasedOn="{StaticResource CrtText}">
+            <Setter Property="Foreground" Value="{StaticResource CrtDimBrush}"/>
+        </Style>
+
+        <Style x:Key="CrtTextBright" TargetType="TextBlock" BasedOn="{StaticResource CrtText}">
+            <Setter Property="Foreground" Value="{StaticResource CrtBrightBrush}"/>
+        </Style>
+
+        <Style x:Key="CrtTitle" TargetType="TextBlock" BasedOn="{StaticResource CrtText}">
+            <Setter Property="FontSize" Value="48"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+        </Style>
+
+        <Style x:Key="CrtButton" TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="{StaticResource CrtFgBrush}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource CrtFgBrush}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="FontFamily" Value="Consolas"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Padding" Value="16,8"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="{StaticResource CrtFgBrush}"/>
+                                <Setter Property="Foreground" Value="#04140A"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Opacity" Value="0.35"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Application.Resources>
+</Application>

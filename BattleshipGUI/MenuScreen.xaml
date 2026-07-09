@@ -1,0 +1,16 @@
+<UserControl x:Class="BattleshipGUI.MenuScreen"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             Background="{StaticResource CrtBgBrush}">
+    <Grid>
+        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+            <TextBlock Text="BATTLE" Style="{StaticResource CrtTitle}"
+                       HorizontalAlignment="Center" Margin="0,0,0,0"/>
+            <TextBlock Text="SHIP" Style="{StaticResource CrtTitle}"
+                       HorizontalAlignment="Center" Margin="0,4,0,8"/>
+
+            <Button Content="▶  NEW GAME" Style="{StaticResource CrtButton}"
+                    Width="280" Margin="0,4" Click="NewGame_Click"/>
+        </StackPanel>
+    </Grid>
+</UserControl>

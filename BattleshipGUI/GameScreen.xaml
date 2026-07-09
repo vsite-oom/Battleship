@@ -1,0 +1,78 @@
+<UserControl x:Class="BattleshipGUI.GameScreen"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             Background="{StaticResource CrtBgBrush}">
+    <DockPanel Margin="8">
+        <Border DockPanel.Dock="Top" BorderBrush="{StaticResource CrtDimBrush}"
+                BorderThickness="0,0,0,1" Padding="0,0,0,8" Margin="0,0,0,12">
+            <Grid>
+                <TextBlock Text="// BATTLESHIP" Style="{StaticResource CrtText}"
+                           FontSize="14" HorizontalAlignment="Left"/>
+                <TextBlock x:Name="StatsLabel" Style="{StaticResource CrtTextDim}"
+                           FontSize="10" HorizontalAlignment="Center"/>
+                <TextBlock x:Name="TurnLabel" Style="{StaticResource CrtText}"
+                           FontSize="10" HorizontalAlignment="Right"/>
+            </Grid>
+        </Border>
+
+        <Border DockPanel.Dock="Bottom" BorderBrush="{StaticResource CrtDimBrush}"
+                BorderThickness="0,1,0,0" Padding="0,8,0,0" Margin="0,10,0,0">
+            <Grid>
+                <TextBlock Text="[CLICK] FIRE  ·  [ESC] MENU" Style="{StaticResource CrtTextDim}"
+                           FontSize="11" HorizontalAlignment="Left"/>
+                <Button Content="◀ ABORT" Style="{StaticResource CrtButton}"
+                        HorizontalAlignment="Right" Padding="12,4"
+                        Click="Abort_Click"/>
+            </Grid>
+        </Border>
+
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="16"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="16"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <StackPanel Grid.Column="0">
+                <TextBlock Text="▌ ENEMY WATERS" Style="{StaticResource CrtText}" FontSize="11" Margin="0,0,0,6"/>
+                <Border x:Name="EnemyBoardHost"/>
+                <TextBlock x:Name="TargetLabel" Style="{StaticResource CrtText}" FontSize="13" Margin="0,8,0,0"/>
+                <TextBlock x:Name="InstructionLabel" Style="{StaticResource CrtTextDim}" FontSize="11" Margin="0,2,0,0"/>
+            </StackPanel>
+
+            <StackPanel Grid.Column="2">
+                <TextBlock Text="▌ YOUR FLEET" Style="{StaticResource CrtText}" FontSize="10" Margin="0,0,0,6"/>
+                <Border x:Name="PlayerBoardHost"/>
+
+                <Border BorderBrush="{StaticResource CrtDimBrush}" BorderThickness="1"
+                        Padding="8" Margin="0,10,0,0">
+                    <StackPanel>
+                        <TextBlock Text="▌ FLEET STATUS" Style="{StaticResource CrtText}" FontSize="10" Margin="0,0,0,6"/>
+                        <StackPanel x:Name="FleetStatusPanel"/>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+
+            <StackPanel Grid.Column="4">
+                <Border BorderBrush="{StaticResource CrtDimBrush}" BorderThickness="1" Padding="8">
+                    <StackPanel>
+                        <TextBlock Text="▌ ENEMY INTEL" Style="{StaticResource CrtText}" FontSize="10" Margin="0,0,0,6"/>
+                        <StackPanel x:Name="EnemyIntelPanel"/>
+                    </StackPanel>
+                </Border>
+
+                <Border BorderBrush="{StaticResource CrtDimBrush}" BorderThickness="1"
+                        Padding="8" Margin="0,10,0,0" MaxHeight="300">
+                    <StackPanel>
+                        <TextBlock Text="▌ COMMS LOG" Style="{StaticResource CrtText}" FontSize="10" Margin="0,0,0,6"/>
+                        <ScrollViewer x:Name="LogScroller" VerticalScrollBarVisibility="Auto" MaxHeight="240">
+                            <StackPanel x:Name="LogPanel"/>
+                        </ScrollViewer>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+        </Grid>
+    </DockPanel>
+</UserControl>
